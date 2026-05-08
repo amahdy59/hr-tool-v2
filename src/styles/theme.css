@@ -12,43 +12,43 @@
   --text-xs: 12px;
   
   /* Core brand colors */
-  --color-primary-brand: #3F51B5;
-  --color-primary-dark: #303F9F;
-  --color-secondary-accent: #FFCA28;
-  --color-accent-warm: #FF9800;
-  --color-success: #558B2F;
-  --color-bg-main: #FAFAFA;
-  --color-bg-subtle: #EDE7F6;
-  --color-text-main: #212121;
-  --color-text-muted: #616161;
-  --color-border-divider: #E0E0E0;
+  --color-primary-brand: #1D4ED8;
+  --color-primary-dark: #1E3A8A;
+  --color-secondary-accent: #F59E0B;
+  --color-accent-warm: #0F766E;
+  --color-success: #166534;
+  --color-bg-main: #F8FAFC;
+  --color-bg-subtle: #E0F2FE;
+  --color-text-main: #0F172A;
+  --color-text-muted: #475569;
+  --color-border-divider: #CBD5E1;
   
   /* The default background color for the application. */
-  --background: #FAFAFA;
+  --background: #F8FAFC;
   /* The default color for elements or text that appears on top of the background. */
-  --foreground: #212121;
+  --foreground: #0F172A;
   /* The background color for cards, modals, and other containers. */
   --card: #FFFFFF;
   /* The default color for text or elements that appear on top of cards, modals and other background containers. */
-  --card-foreground: #212121;
+  --card-foreground: #0F172A;
   /* The background color for dropdowns and tooltips. */
   --popover: #FFFFFF;
   /* The default color for text or elements that appear on top of dropdowns and tooltips. */
-  --popover-foreground: #212121;
+  --popover-foreground: #0F172A;
   /* The primary color used for buttons, links, and other interactive elements. */
-  --primary: #3F51B5;
+  --primary: #1D4ED8;
   /* The default color for text or elements that appear on top of primary colored elements. */
   --primary-foreground: #FFFFFF;
   /* The secondary color used for secondary(but NOT-DESTRUCTIVE) buttons and interactive elements. */
-  --secondary: #FFCA28;
+  --secondary: #F59E0B;
   /* The default color for text or elements that appear on top of secondary colored elements. */
-  --secondary-foreground: #212121;
+  --secondary-foreground: #111827;
   /* The muted color used for less prominent elements, such as disabled buttons or disabled text. */
-  --muted: #FAFAFA;
+  --muted: #EEF2F7;
   /* The default color for text or elements that appear on top of muted colored elements. */
-  --muted-foreground: #616161;
+  --muted-foreground: #475569;
   /* The accent color used for highlights, links, and other interactive elements. */
-  --accent: #FF9800;
+  --accent: #0F766E;
   /* The default color for text or elements that appear on top of accent colored elements. */
   --accent-foreground: #FFFFFF;
   /* The color used for background in destructive actions, such as delete buttons or error messages. */
@@ -56,7 +56,7 @@
   /* The default color for text or elements that appear on top of destructive colored elements. */
   --destructive-foreground: #FFFFFF;
   /* The default border color for elements such as inputs, buttons, and other containers. */
-  --border: #E0E0E0;
+  --border: #CBD5E1;
   /* The default background color for input fields once the text has been filled. Should be either transparent or match the input-background. */
   --input: #FFFFFF;
   /* The default background color for input fields, text areas, and other input elements. */
@@ -68,21 +68,21 @@
   /* The default font weight for semi bold text. */
   --font-weight-semibold: 600;
   /* The color for focus rings, outlines, and other focus indicators. */
-  --ring: #3F51B5;
+  --ring: #2563EB;
   /* Small elevation shadow for cards, buttons, and modals. */
   --elevation-sm: 0px 1px 2px 0px rgba(33, 33, 33, 0.1);
   /* Large elevation shadow for prominent elements. */
   --elevation-lg: 0px 10px 30px 0px rgba(33, 33, 33, 0.15), 0px 4px 8px 0px rgba(33, 33, 33, 0.1);
   /* The color for chart elements, such as a bar or line in a chart. */
-  --chart-1: #3F51B5;
+  --chart-1: #2563EB;
   /* The color for another chart element, such as a bar or line in a chart. */
-  --chart-2: #FFCA28;
+  --chart-2: #F59E0B;
   /* The color for another chart element, such as a bar or line in a chart. */
-  --chart-3: #558B2F;
+  --chart-3: #047857;
   /* The color for another chart element, such as a bar or line in a chart. */
-  --chart-4: #FF9800;
+  --chart-4: #C2410C;
   /* The color for another chart element, such as a bar or line in a chart. */
-  --chart-5: #616161;
+  --chart-5: #475569;
   /* The default border radius for elements such as buttons, tooltip, and other containers. */
   --radius: 8px;
   /* The border radius for buttons. */
@@ -115,19 +115,19 @@
   --section-heading-weight: var(--font-weight-semibold);
 
   /* The background color for sidebars */
-  --sidebar: #3F51B5;
+  --sidebar: #102A56;
   /* The default color for text or elements that appear on top of sidebars, navigation menus, and other persistent elements. */
   --sidebar-foreground: #FFFFFF;
   /* The primary color used for buttons, links, and other interactive elements in sidebars and navigation menus. */
   --sidebar-primary: #EDE7F6;
   /* The default color for text or elements that appear on top of primary colored elements in sidebars and navigation menus. */
-  --sidebar-primary-foreground: #3F51B5;
+  --sidebar-primary-foreground: #102A56;
   /* The accent color used for highlights, links, and other interactive elements in sidebars and navigation menus. */
   --sidebar-accent: #EDE7F6;
   /* The default color for text or elements that appear on top of accent colored elements in sidebars and navigation menus. */
-  --sidebar-accent-foreground: #3F51B5;
+  --sidebar-accent-foreground: #102A56;
   /* The default border color for elements in sidebars and navigation menus. */
-  --sidebar-border: #303F9F;
+  --sidebar-border: #1E3A8A;
   /* The default color for focus rings, outlines, and other focus indicators in sidebars and navigation menus. */
   --sidebar-ring: #EDE7F6;
 }

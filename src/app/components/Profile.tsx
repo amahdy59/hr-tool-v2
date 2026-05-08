@@ -24,6 +24,36 @@ import { BasicInfo } from './BasicInfo';
 const inputClass = 'w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 
+interface DocumentItem {
+  id: string;
+  title: string;
+  desc: string;
+  fileName: string;
+  status: 'Required' | 'Uploaded';
+  uploadedAt?: string;
+  url?: string;
+  img: string;
+}
+
+const defaultDocuments: DocumentItem[] = [
+  {
+    id: 'identification',
+    title: 'Identification Card',
+    desc: 'Please ensure you upload both the front and back of your ID.',
+    fileName: 'Not uploaded yet',
+    status: 'Required',
+    img: 'https://images.unsplash.com/photo-1621348160394-211bc0a5a60d?w=400&h=200&fit=crop',
+  },
+  {
+    id: 'passport',
+    title: 'Passport',
+    desc: 'Upload a clear copy of your passport main page.',
+    fileName: 'Not uploaded yet',
+    status: 'Required',
+    img: 'https://images.unsplash.com/photo-1593006517807-19c67fdc54b2?w=400&h=200&fit=crop',
+  },
+];
+
 // Helper function to get initials from name
 const getInitials = (name: string): string => {
   return name
@@ -45,6 +75,7 @@ interface ProfileProps {
 
 export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) => {
   const [activeTab, setActiveTab] = useState('basic');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const tabs = [
     { id: 'basic', label: 'Basic Information' },
@@ -60,6 +91,8 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
         {tabs.map(tab => (
           <button
             key={tab.id}
+            type="button"
+            aria-pressed={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
               'pb-3 text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
@@ -78,14 +111,14 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
       <div>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input type="text" placeholder="Search Employees" className={cn(inputClass, 'pl-10')} style={{ fontFamily: "'Inter', sans-serif" }} />
+          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search this profile area..." className={cn(inputClass, 'pl-10')} style={{ fontFamily: "'Inter', sans-serif" }} />
         </div>
       </div>
 
       {activeTab === 'basic' && <BasicInfo currentUser={currentUser} onUpdateImage={onUpdateImage} />}
       {activeTab === 'professional' && <ProfessionalProfile currentUser={currentUser} />}
-      {activeTab === 'bulletin' && <EmployeeBulletin />}
-      {activeTab === 'documents' && <DownloadCenter />}
+      {activeTab === 'bulletin' && <EmployeeBulletin searchQuery={searchQuery} />}
+      {activeTab === 'documents' && <DownloadCenter searchQuery={searchQuery} />}
     </div>
   );
 };
@@ -93,15 +126,22 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
 // ═══════════════════════════════════
 // ── Employee Bulletin Tab ──
 // ═══════════════════════════════════
-const EmployeeBulletin = () => (
+const EmployeeBulletin: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
+  const bulletins = [
+    { title: 'Annual Health Screening', date: 'February 10, 2026', content: 'All employees are required to complete their annual health screening by March 15, 2026. Please book your appointment through the HR portal.' },
+    { title: 'New Parking Policy', date: 'January 28, 2026', content: 'Starting February 1st, parking spots will be assigned on a first-come-first-served basis. Please register your vehicle through the facilities portal.' },
+    { title: 'Ramadan Working Hours', date: 'January 15, 2026', content: 'During the month of Ramadan, working hours will be reduced to 6 hours per day (9:00 AM - 3:00 PM). This applies to all offices in the MEA region.' },
+    { title: 'Q1 Town Hall Meeting', date: 'January 5, 2026', content: 'The Q1 Town Hall meeting will be held on February 20, 2026 at 10:00 AM in the main auditorium. All employees are encouraged to attend.' },
+  ].filter((bulletin) => {
+    const normalized = searchQuery.trim().toLowerCase();
+    if (!normalized) return true;
+    return [bulletin.title, bulletin.date, bulletin.content].some((value) => value.toLowerCase().includes(normalized));
+  });
+
+  return (
   <div className="space-y-6">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Employee Bulletin</h3>
-    {[
-      { title: 'Annual Health Screening', date: 'February 10, 2026', content: 'All employees are required to complete their annual health screening by March 15, 2026. Please book your appointment through the HR portal.' },
-      { title: 'New Parking Policy', date: 'January 28, 2026', content: 'Starting February 1st, parking spots will be assigned on a first-come-first-served basis. Please register your vehicle through the facilities portal.' },
-      { title: 'Ramadan Working Hours', date: 'January 15, 2026', content: 'During the month of Ramadan, working hours will be reduced to 6 hours per day (9:00 AM - 3:00 PM). This applies to all offices in the MEA region.' },
-      { title: 'Q1 Town Hall Meeting', date: 'January 5, 2026', content: 'The Q1 Town Hall meeting will be held on February 20, 2026 at 10:00 AM in the main auditorium. All employees are encouraged to attend.' },
-    ].map((bulletin, i) => (
+    {bulletins.map((bulletin, i) => (
       <div key={i} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-2">
         <div className="flex items-center justify-between">
           <h4 className="text-foreground text-[var(--text-base)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>{bulletin.title}</h4>
@@ -110,13 +150,101 @@ const EmployeeBulletin = () => (
         <p className="text-[var(--text-sm)] text-muted-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{bulletin.content}</p>
       </div>
     ))}
+    {bulletins.length === 0 && (
+      <div className="bg-card border border-border rounded-[var(--radius-card)] p-6 text-center text-muted-foreground">
+        No bulletin posts match your search.
+      </div>
+    )}
   </div>
-);
+  );
+};
 
 // ════════════════════════════════════
 // ── Download Center Tab ──
 // ════════════════════════════════════
-const DownloadCenter = () => (
+const DownloadCenter: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
+  const [documents, setDocuments] = useState<DocumentItem[]>(defaultDocuments);
+  const [uploadingDocumentId, setUploadingDocumentId] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const pendingDocumentIdRef = useRef<string | null>(null);
+
+  const visibleDocuments = documents.filter((document) => {
+    const normalized = searchQuery.trim().toLowerCase();
+    if (!normalized) return true;
+    return [document.title, document.desc, document.fileName, document.status].some((value) => value.toLowerCase().includes(normalized));
+  });
+
+  const openPicker = (documentId?: string) => {
+    pendingDocumentIdRef.current = documentId ?? null;
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const targetId = pendingDocumentIdRef.current ?? `doc-${Date.now()}`;
+    const existingDocument = documents.find((document) => document.id === targetId);
+    const nextDocument: DocumentItem = {
+      id: targetId,
+      title: existingDocument?.title ?? file.name.replace(/\.[^.]+$/, ''),
+      desc: existingDocument?.desc ?? 'Temporary uploaded document for testing.',
+      fileName: file.name,
+      status: 'Uploaded',
+      uploadedAt: new Date().toLocaleString(),
+      url: URL.createObjectURL(file),
+      img: existingDocument?.img ?? defaultDocuments[0].img,
+    };
+
+    setUploadingDocumentId(targetId);
+    window.setTimeout(() => {
+      setDocuments((current) => {
+        const exists = current.some((document) => document.id === targetId);
+        return exists ? current.map((document) => (document.id === targetId ? nextDocument : document)) : [nextDocument, ...current];
+      });
+      setUploadingDocumentId(null);
+      toast.success('Document added', { description: file.name });
+    }, 350);
+
+    event.target.value = '';
+  };
+
+  const removeDocument = (documentId: string) => {
+    setDocuments((current) => current.filter((document) => document.id !== documentId));
+    toast.info('Document removed from this test session');
+  };
+
+  return (
+    <div className="space-y-6">
+      <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">My Documents</h3>
+        <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => openPicker()}>
+          <Upload className="w-4 h-4" /> Upload Document
+        </Button>
+      </div>
+
+      <div className="space-y-4">
+        {visibleDocuments.map((document) => (
+          <DocumentCard
+            key={document.id}
+            document={document}
+            isUploading={uploadingDocumentId === document.id}
+            onUpload={() => openPicker(document.id)}
+            onRemove={() => removeDocument(document.id)}
+          />
+        ))}
+        {visibleDocuments.length === 0 && (
+          <div className="bg-card border border-border rounded-[var(--radius-card)] p-6 text-center text-muted-foreground">
+            No documents match your search.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const LegacyDownloadCenter = () => (
   <div className="space-y-6">
     <div className="flex items-center justify-between">
       <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">My Documents</h3>
@@ -254,28 +382,78 @@ const CertificationItem: React.FC<{ title: string; issuer: string; date: string 
   </div>
 );
 
-const DocumentCard: React.FC<{ title: string; desc: string; img: string }> = ({ title, desc, img }) => (
-  <div className="flex flex-col md:flex-row bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
-    <div className="w-full md:w-60 h-36 bg-muted relative group shrink-0">
-      <ImageWithFallback src={img} alt={title} className="w-full h-full object-cover opacity-85" />
-      <div className="absolute inset-0 flex items-center justify-between px-2">
-        <button className="p-1 bg-card/60 rounded-full hover:bg-card transition-colors cursor-pointer"><ChevronLeft className="w-4 h-4 text-foreground" /></button>
-        <button className="p-1 bg-card/60 rounded-full hover:bg-card transition-colors cursor-pointer"><ChevronRight className="w-4 h-4 text-foreground" /></button>
+const DocumentCard: React.FC<{
+  document?: DocumentItem;
+  isUploading?: boolean;
+  onUpload?: () => void;
+  onRemove?: () => void;
+  title?: string;
+  desc?: string;
+  img?: string;
+}> = ({ document, isUploading = false, onUpload, onRemove, title, desc, img }) => {
+  const item: DocumentItem = document ?? {
+    id: title ?? 'document',
+    title: title ?? 'Document',
+    desc: desc ?? '',
+    fileName: 'Not uploaded yet',
+    status: 'Required',
+    img: img ?? defaultDocuments[0].img,
+  };
+
+  return (
+    <div className="flex flex-col md:flex-row bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+      <div className="w-full md:w-60 h-36 bg-muted relative group shrink-0">
+        <ImageWithFallback src={item.img} alt="" className="w-full h-full object-cover opacity-85" />
+        <div className="absolute inset-0 flex items-center justify-between px-2">
+          <button type="button" aria-label={`Previous preview for ${item.title}`} className="p-1 bg-card/70 rounded-full hover:bg-card transition-colors cursor-pointer"><ChevronLeft className="w-4 h-4 text-foreground" /></button>
+          <button type="button" aria-label={`Next preview for ${item.title}`} className="p-1 bg-card/70 rounded-full hover:bg-card transition-colors cursor-pointer"><ChevronRight className="w-4 h-4 text-foreground" /></button>
+        </div>
+      </div>
+      <div className="flex-1 p-5 flex flex-col justify-center gap-3">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground">{item.title}</p>
+            <span className={cn(
+              'px-2 py-0.5 rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)]',
+              item.status === 'Uploaded' ? 'bg-chart-3/15 text-chart-3' : 'bg-chart-4/15 text-chart-4'
+            )}>
+              {item.status}
+            </span>
+          </div>
+          <p className="text-[var(--text-xs)] text-muted-foreground mt-0.5">{item.desc}</p>
+          <p className="text-[var(--text-xs)] text-foreground mt-2">
+            {item.fileName}{item.uploadedAt ? ` - uploaded ${item.uploadedAt}` : ''}
+          </p>
+        </div>
+        {isUploading && (
+          <div className="space-y-2" role="status" aria-live="polite">
+            <p className="text-[var(--text-xs)] text-muted-foreground">Uploading...</p>
+            <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+              <div className="bg-chart-3 h-full w-2/3 rounded-full transition-all" />
+            </div>
+          </div>
+        )}
+        <div className="border-t border-dashed border-border pt-3 flex flex-col sm:flex-row gap-2">
+          <Button variant="outline" className="flex-1 gap-2" onClick={onUpload}>
+            <Upload className="w-4 h-4" /> {item.status === 'Uploaded' ? 'Reupload File' : 'Upload File'}
+          </Button>
+          {item.url && (
+            <Button asChild variant="outline" className="flex-1 gap-2">
+              <a href={item.url} download={item.fileName}>
+                <Download className="w-4 h-4" /> Download
+              </a>
+            </Button>
+          )}
+          {item.status === 'Uploaded' && onRemove && (
+            <Button variant="ghost" className="text-destructive hover:bg-destructive/10" onClick={onRemove} aria-label={`Remove ${item.title}`}>
+              <X className="w-4 h-4" />
+            </Button>
+          )}
+        </div>
       </div>
     </div>
-    <div className="flex-1 p-5 flex flex-col justify-center gap-3">
-      <div>
-        <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground">{title}</p>
-        <p className="text-[var(--text-xs)] text-muted-foreground mt-0.5">{desc}</p>
-      </div>
-      <div className="border-t border-dashed border-border pt-3">
-        <button className="w-full h-10 border border-border rounded-[var(--radius-button)] text-[var(--text-sm)] font-[var(--font-weight-medium)] flex items-center justify-center gap-2 hover:bg-muted transition-colors cursor-pointer text-foreground">
-          <Upload className="w-4 h-4" /> Reupload File(s)
-        </button>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 // ════════════════════════════════════
 // ── Edit Modals ──

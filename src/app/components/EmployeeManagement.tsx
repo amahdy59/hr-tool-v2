@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   MoreVertical,
   Download,
@@ -138,12 +138,17 @@ const JOB_TITLES: JobTitle[] = [
 
 const DEPARTMENTS_LIST = ['Marketing', 'Software', 'Oil & Gas', 'Sales', 'SCADA', 'IT', 'Finance', 'HR', 'Engineering'];
 const JOB_TITLES_LIST = ['Senior Solutions Architect', 'Global Operations Manager', 'Senior Project Manager', 'Cybersecurity Specialist', 'Director of Supply Chain Optimization', 'Software Developer', 'Engineer'];
-const ACTIVITY_TYPES = ['My team', 'Lead Engineer', 'Application Consultant', 'Project Manager'];
-const EMPLOYMENT_TYPES = ['Direct (SE)', 'InDirect (non SE)'];
+const ACTIVITY_TYPES = ['Direct', 'InDirect'];
+const EMPLOYMENT_TYPES = ['Permanent', 'Contract', 'Freelance'];
 
 // ── Shared input style ──
 const inputClass = "w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow";
 const labelClass = "text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground";
+const includesQuery = (values: Array<string | number>, query: string) => {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return true;
+  return values.some((value) => String(value).toLowerCase().includes(normalized));
+};
 
 // ── Main Component ──
 export const EmployeeManagement: React.FC = () => {
@@ -219,6 +224,37 @@ export const EmployeeManagement: React.FC = () => {
     toast.info('Filters cleared');
   };
 
+  const filteredEmployees = useMemo(() => {
+    return EMPLOYEES.filter((employee) => {
+      const matchesSearch = includesQuery(
+        [employee.name, employee.employeeNumber, employee.email, employee.department, employee.jobTitle],
+        searchQuery
+      );
+      const matchesDepartment = filterDept === 'All' || employee.department === filterDept;
+      const matchesTitle = filterTitle === 'All' || employee.jobTitle === filterTitle;
+      const matchesHireDate = !filterHiredAfter || employee.hireDate >= filterHiredAfter;
+      const matchesActivity = filterActivityTypes.length === 0 || filterActivityTypes.includes(employee.activityType);
+      const matchesEmployment = filterEmploymentTypes.length === 0 || filterEmploymentTypes.includes(employee.contractType);
+
+      return matchesSearch && matchesDepartment && matchesTitle && matchesHireDate && matchesActivity && matchesEmployment;
+    });
+  }, [filterActivityTypes, filterDept, filterEmploymentTypes, filterHiredAfter, filterTitle, searchQuery]);
+
+  const filteredActivityLog = useMemo(
+    () => ACTIVITY_LOG.filter((log) => includesQuery([log.admin, log.action, log.date, log.affectedEmployeeNumber, log.affectedCount], searchQuery)),
+    [searchQuery]
+  );
+
+  const filteredDepartments = useMemo(
+    () => DEPARTMENTS.filter((department) => includesQuery([department.name, department.deptId, department.totalNumber], deptSearch)),
+    [deptSearch]
+  );
+
+  const filteredJobTitles = useMemo(
+    () => JOB_TITLES.filter((jobTitle) => includesQuery([jobTitle.title, jobTitle.count], jtSearch)),
+    [jtSearch]
+  );
+
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
       {/* Header */}
@@ -270,7 +306,7 @@ export const EmployeeManagement: React.FC = () => {
                 <label className={labelClass}>Search Employees</label>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button>
+                    <button type="button" aria-label="Search help" className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button>
                   </TooltipTrigger>
                   <TooltipContent side="top" className="max-w-[240px] text-[var(--text-xs)]">
                     <p>Search by name, Employee number, or email.</p>
@@ -284,12 +320,12 @@ export const EmployeeManagement: React.FC = () => {
                 </div>
                 <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                   <PopoverTrigger asChild>
-                    <button className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center', activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
+                    <button type="button" aria-label="Open employee filters" className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center', activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
                       <Filter className="w-4 h-4" />
                       {activeFiltersCount > 0 && <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFiltersCount}</span>}
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent align="end" className="w-80 p-0">
+                  <PopoverContent align="end" side="bottom" collisionPadding={16} className="w-80 max-w-[calc(100vw-2rem)] p-0">
                     <EmployeeFilterPanel
                       dept={filterDept} setDept={setFilterDept}
                       title={filterTitle} setTitle={setFilterTitle}
@@ -311,7 +347,7 @@ export const EmployeeManagement: React.FC = () => {
               <table className="w-full text-[var(--text-sm)] text-left">
                 <thead>
                   <tr className="bg-muted border-b border-border">
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground w-8"><Checkbox /></th>
+                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground w-8"><Checkbox aria-label="Select all employees" /></th>
                     <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
                     <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Employee Number</th>
                     <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
@@ -320,16 +356,11 @@ export const EmployeeManagement: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {EMPLOYEES.map((emp) => (
+                  {filteredEmployees.map((emp) => (
                     <tr key={emp.id} className="hover:bg-muted/30 transition-colors group">
-                      <td className="px-4 py-3"><Checkbox /></td>
+                      <td className="px-4 py-3"><Checkbox aria-label={`Select ${emp.name}`} /></td>
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full overflow-hidden border border-border shrink-0">
-                            <ImageWithFallback src={emp.img} alt={emp.name} className="w-full h-full object-cover" />
-                          </div>
-                          <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{emp.name}</span>
-                        </div>
+                        <span className="text-primary font-[var(--font-weight-medium)]">{emp.name}</span>
                       </td>
                       <td className="px-4 py-3 text-muted-foreground uppercase tabular-nums">{emp.employeeNumber}</td>
                       <td className="px-4 py-3 text-foreground">{emp.department}</td>
@@ -337,7 +368,7 @@ export const EmployeeManagement: React.FC = () => {
                       <td className="px-4 py-3 text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
+                            <button type="button" aria-label={`Open actions for ${emp.name}`} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
                               <MoreVertical className="w-4 h-4 text-muted-foreground" />
                             </button>
                           </DropdownMenuTrigger>
@@ -363,6 +394,11 @@ export const EmployeeManagement: React.FC = () => {
                       </td>
                     </tr>
                   ))}
+                  {filteredEmployees.length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">No employees match your search.</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -372,6 +408,12 @@ export const EmployeeManagement: React.FC = () => {
 
         {/* ── Activity Log Tab ── */}
         <TabsContent value="activity" className="space-y-4 mt-4">
+          <div className="flex items-center gap-3">
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search activity log..." className={cn(inputClass, 'pl-10')} />
+            </div>
+          </div>
           <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
             <div className="overflow-x-auto">
               <table className="w-full text-[var(--text-sm)] text-left">
@@ -385,26 +427,26 @@ export const EmployeeManagement: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {ACTIVITY_LOG.map((log) => (
+                  {filteredActivityLog.map((log) => (
                     <tr key={log.id} className="hover:bg-muted/30 transition-colors">
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full overflow-hidden border border-border shrink-0">
-                            <ImageWithFallback src={log.adminImg} alt={log.admin} className="w-full h-full object-cover" />
-                          </div>
-                          <span className="font-[var(--font-weight-medium)] text-foreground">{log.admin}</span>
-                        </div>
+                        <span className="font-[var(--font-weight-medium)] text-foreground">{log.admin}</span>
                       </td>
                       <td className="px-4 py-3 text-foreground">{log.action}</td>
                       <td className="px-4 py-3 text-muted-foreground">{log.date}</td>
                       <td className="px-4 py-3 text-foreground tabular-nums">{log.affectedCount}</td>
                       <td className="px-4 py-3 text-right">
-                        <button onClick={() => { setActivityLogDetail(log); setActivityLogDetailOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
+                        <button type="button" aria-label={`View details for ${log.action}`} onClick={() => { setActivityLogDetail(log); setActivityLogDetailOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
                           <MoreVertical className="w-4 h-4 text-muted-foreground" />
                         </button>
                       </td>
                     </tr>
                   ))}
+                  {filteredActivityLog.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">No activity entries match your search.</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -432,23 +474,28 @@ export const EmployeeManagement: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {DEPARTMENTS.filter(d => d.name.toLowerCase().includes(deptSearch.toLowerCase())).map((dept) => (
+                  {filteredDepartments.map((dept) => (
                     <tr key={dept.id} className="hover:bg-muted/30 transition-colors">
                       <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{dept.name}</td>
                       <td className="px-4 py-3 text-muted-foreground tabular-nums">{dept.deptId}</td>
                       <td className="px-4 py-3 text-foreground tabular-nums">{dept.totalNumber}</td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <button onClick={() => { setEditDeptData(dept); setEditDeptOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
+                          <button type="button" aria-label={`Edit ${dept.name}`} onClick={() => { setEditDeptData(dept); setEditDeptOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
                             <Edit className="w-4 h-4 text-muted-foreground" />
                           </button>
-                          <button onClick={() => { setDeleteDeptData(dept); setDeleteDeptOpen(true); }} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] transition-colors cursor-pointer">
+                          <button type="button" aria-label={`Delete ${dept.name}`} onClick={() => { setDeleteDeptData(dept); setDeleteDeptOpen(true); }} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] transition-colors cursor-pointer">
                             <Trash2 className="w-4 h-4 text-destructive" />
                           </button>
                         </div>
                       </td>
                     </tr>
                   ))}
+                  {filteredDepartments.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="px-4 py-8 text-center text-muted-foreground">No departments match your search.</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -475,22 +522,27 @@ export const EmployeeManagement: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {JOB_TITLES.filter(j => j.title.toLowerCase().includes(jtSearch.toLowerCase())).map((jt) => (
+                  {filteredJobTitles.map((jt) => (
                     <tr key={jt.id} className="hover:bg-muted/30 transition-colors">
                       <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{jt.title}</td>
                       <td className="px-4 py-3 text-foreground tabular-nums">{jt.count}</td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <button onClick={() => { setEditJtData(jt); setEditJtOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
+                          <button type="button" aria-label={`Edit ${jt.title}`} onClick={() => { setEditJtData(jt); setEditJtOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
                             <Edit className="w-4 h-4 text-muted-foreground" />
                           </button>
-                          <button onClick={() => { setDeleteJtData(jt); setDeleteJtOpen(true); }} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] transition-colors cursor-pointer">
+                          <button type="button" aria-label={`Delete ${jt.title}`} onClick={() => { setDeleteJtData(jt); setDeleteJtOpen(true); }} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] transition-colors cursor-pointer">
                             <Trash2 className="w-4 h-4 text-destructive" />
                           </button>
                         </div>
                       </td>
                     </tr>
                   ))}
+                  {filteredJobTitles.length === 0 && (
+                    <tr>
+                      <td colSpan={3} className="px-4 py-8 text-center text-muted-foreground">No job titles match your search.</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -639,7 +691,7 @@ const EmployeeFilterPanel: React.FC<{
   <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
     <div className="flex items-center justify-between">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
-      <button onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
+      <button type="button" aria-label="Close filters" onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
     </div>
     <div className="p-3 bg-primary/5 rounded-[var(--radius)] border border-primary/20">
       <ul className="space-y-1 text-[var(--text-xs)] text-foreground">
@@ -685,7 +737,7 @@ const CheckboxGroup: React.FC<{ label: string; items: string[]; selected: string
     <div className="space-y-2">
       {items.map(item => (
         <label key={item} className="flex items-center gap-2.5 cursor-pointer group">
-          <Checkbox checked={selected.includes(item)} onCheckedChange={() => toggle(item)} />
+          <Checkbox aria-label={`${selected.includes(item) ? 'Remove' : 'Add'} ${item} filter`} checked={selected.includes(item)} onCheckedChange={() => toggle(item)} />
           <span className="text-[var(--text-sm)] text-foreground group-hover:text-primary transition-colors font-[var(--font-weight-normal)]">{item}</span>
         </label>
       ))}

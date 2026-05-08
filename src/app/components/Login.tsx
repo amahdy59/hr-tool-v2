@@ -15,7 +15,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetSuccess, setResetSuccess] = useState(false);
-  const showDevLogin = import.meta.env.DEV;
+  const showTempLogin = true;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,7 +60,6 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   const handleQuickLogin = () => {
-    // Quick login with default credentials (temp dev feature)
     onLogin('ahmed.mahdy@advansys-is.com');
   };
 
@@ -283,20 +282,21 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
               {isLoading ? 'Logging in...' : 'Login'}
             </button>
 
-            {showDevLogin && (
+            {showTempLogin && (
               <div className="space-y-3">
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center" aria-hidden="true">
                     <div className="w-full border-t border-border/50" />
                   </div>
                   <div className="relative flex justify-center text-[var(--text-xs)]" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    <span className="px-2 bg-card text-muted-foreground uppercase tracking-wide">Dev Only</span>
+                    <span className="px-2 bg-card text-muted-foreground uppercase tracking-wide">Temporary Access</span>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={handleQuickLogin}
+                  aria-label="Enter the HR tool with temporary test access"
                   className={cn(
                     'w-full h-10 rounded-[var(--radius-button)] bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-700 dark:text-yellow-400 border-2 border-yellow-500/50 transition-all shadow-sm flex items-center justify-center gap-2 group relative overflow-hidden'
                   )}
@@ -308,12 +308,12 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/0 via-yellow-500/10 to-yellow-500/0 animate-shimmer" />
                   <Zap className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  <span>Quick Login</span>
+                  <span>Enter without credentials</span>
                 </button>
                 
                 <div className="flex items-center justify-center gap-1.5 text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
                   <span className="inline-block w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
-                  <span>Temporary development login</span>
+                  <span>Temporary testing access</span>
                 </div>
               </div>
             )}
