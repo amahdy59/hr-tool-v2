@@ -262,7 +262,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
 
           {/* Progress Stepper */}
           <div className="space-y-3">
-            <div className="flex items-start px-2">
+            <div className="mx-auto flex w-full max-w-[640px] items-start justify-center px-2">
               {stepLabels.map((label, idx) => {
                 const isCompleted = idx <= currentStep;
                 const isCurrent = idx === currentStep;

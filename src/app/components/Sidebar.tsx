@@ -51,11 +51,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
       <button
         onClick={() => setActiveTab(item.id)}
         className={cn(
-          'relative flex min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center text-[11px] transition-all duration-300 ease-out cursor-pointer overflow-hidden group sm:w-full sm:min-w-0 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-left sm:text-[var(--text-sm)]',
+          'relative flex min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center text-[11px] transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-0 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-left sm:text-[var(--text-sm)]',
           collapsed ? 'sm:justify-center' : 'sm:justify-start',
           isActive
             ? 'bg-sidebar-accent text-sidebar-accent-foreground shadow-sm scale-[0.98]'
-            : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/20 hover:text-sidebar-foreground hover:scale-[1.02] active:scale-[0.98]'
+            : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:scale-[1.02] active:scale-[0.98]'
         )}
       >
         {/* Ripple effect on click */}
@@ -138,7 +138,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                   fontSize: 'var(--text-xs)',
                   fontWeight: 'var(--font-weight-medium)',
                 }}
-                className="text-sidebar-foreground/70"
+                className="text-sidebar-foreground/90"
               >
                 Technologies
               </div>
@@ -169,7 +169,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                 type="button"
                 onClick={handleClick}
                 aria-label={item.label}
-                className="flex min-w-12 cursor-pointer items-center justify-center rounded-[var(--radius)] px-3 py-2 text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent/20 hover:text-sidebar-foreground"
+                className="flex min-w-12 cursor-pointer items-center justify-center rounded-[var(--radius)] px-3 py-2 text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
               >
                 <item.icon className="h-5 w-5" />
               </button>
@@ -195,7 +195,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                     <button
                       onClick={handleClick}
                       className={cn(
-                        'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-[var(--text-sm)] text-sidebar-foreground/70 hover:bg-sidebar-accent/20 hover:text-sidebar-foreground cursor-pointer justify-center'
+                        'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-[var(--text-sm)] text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring'
                       )}
                     >
                       <item.icon className="w-5 h-5 shrink-0" />
@@ -213,7 +213,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                 key={item.id}
                 onClick={handleClick}
                 className={cn(
-                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-[var(--text-sm)] text-sidebar-foreground/70 hover:bg-sidebar-accent/20 hover:text-sidebar-foreground cursor-pointer'
+                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-[var(--text-sm)] text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring'
                 )}
               >
                 <item.icon className="w-5 h-5 shrink-0" />
@@ -226,7 +226,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
           <button
             onClick={onToggle}
             className={cn(
-              'w-full flex items-center gap-3 px-3 py-2 rounded-[var(--radius)] transition-all text-[var(--text-sm)] text-sidebar-foreground/50 hover:bg-sidebar-accent/20 hover:text-sidebar-foreground cursor-pointer mt-2',
+              'w-full flex items-center gap-3 px-3 py-2 rounded-[var(--radius)] transition-all text-[var(--text-sm)] text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
               collapsed ? 'justify-center' : ''
             )}
           >
