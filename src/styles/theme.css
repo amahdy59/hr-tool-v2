@@ -229,6 +229,43 @@
     min-width: 0;
   }
 
+  :where(
+    a[href],
+    button:not(:disabled),
+    input[type="button"]:not(:disabled),
+    input[type="checkbox"]:not(:disabled),
+    input[type="file"]:not(:disabled),
+    input[type="radio"]:not(:disabled),
+    input[type="reset"]:not(:disabled),
+    input[type="submit"]:not(:disabled),
+    label[for],
+    select:not(:disabled),
+    summary,
+    [role="button"]:not([aria-disabled="true"]),
+    [role="checkbox"]:not([aria-disabled="true"]),
+    [role="menuitem"]:not([aria-disabled="true"]),
+    [role="option"]:not([aria-disabled="true"]),
+    [role="radio"]:not([aria-disabled="true"]),
+    [role="switch"]:not([aria-disabled="true"]),
+    [role="tab"]:not([aria-disabled="true"]),
+    [data-slot="button"]:not(:disabled):not([aria-disabled="true"]),
+    [data-slot="select-trigger"]:not(:disabled):not([aria-disabled="true"]),
+    [data-clickable="true"]
+  ) {
+    cursor: pointer;
+  }
+
+  :where(
+    button:disabled,
+    input:disabled,
+    select:disabled,
+    textarea:disabled,
+    [aria-disabled="true"],
+    [data-disabled]
+  ) {
+    cursor: not-allowed;
+  }
+
   table {
     border-collapse: collapse;
   }
@@ -243,11 +280,6 @@
     outline: 2px solid var(--ring);
     outline-offset: 2px;
     border-radius: var(--radius-sm, 4px);
-  }
-  
-  /* Native select cursor */
-  select {
-    cursor: pointer;
   }
   
   /* Ensure smooth scrolling */
@@ -313,7 +345,9 @@
     transition: all 0.2s ease-out;
   }
   
-  button:active, a:active, [role="button"]:active {
+  button:not(:disabled):active,
+  a:active,
+  [role="button"]:not([aria-disabled="true"]):active {
     transform: scale(0.98);
   }
   
