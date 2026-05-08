@@ -462,13 +462,13 @@ const DocumentCard: React.FC<{
 // ════════════════════════════════════
 
 const EditPersonalInfoModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
-  const [name, setName] = useState('Mahmoud Shalaby');
-  const [email, setEmail] = useState('m.shalaby@personal.com');
-  const [phone, setPhone] = useState('01002346123');
-  const [homePhone, setHomePhone] = useState('02123456');
-  const [address, setAddress] = useState('12 El-Tahrir Street, Dokki, Giza');
+  const [name, setName] = useState('Ahmed Mahdy');
+  const [email, setEmail] = useState('amahdy59@gmail.com');
+  const [phone, setPhone] = useState('+20 150 *** 0111');
+  const [homePhone, setHomePhone] = useState('Not provided');
+  const [address, setAddress] = useState('Cairo, Egypt');
   const [gender, setGender] = useState('Male');
-  const [idNumber, setIdNumber] = useState('14911972536555');
+  const [idNumber, setIdNumber] = useState('0000******0000');
   const [nationality, setNationality] = useState('Egyptian');
   const [dob, setDob] = useState('1980-09-02');
 
@@ -761,9 +761,9 @@ const ChangeImageModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
 };
 
 const EditEmergencyContactsModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
-  const [contactName, setContactName] = useState('Fatma Mahdy');
+  const [contactName, setContactName] = useState('Emergency Contact');
   const [relationship, setRelationship] = useState('Mother');
-  const [phone, setPhone] = useState('01223456789');
+  const [phone, setPhone] = useState('+20 150 *** 0111');
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

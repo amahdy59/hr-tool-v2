@@ -38,12 +38,12 @@ export interface ContactData {
 
 export const useProfileData = () => {
   const [about, setAbout] = useState(
-    'UX Designer & Data Analyst with 4+ years of experience turning user and business needs into clear dashboards and user-centered digital experiences. Skilled in exploring data, building insightful visualizations, and designing intuitive, accessible interfaces that support decision-making. Proficient in Excel, Power BI, and Tableau, and currently growing technical depth with Python.'
+    'UX Designer & Data Analyst with 4+ years of experience turning user and business needs into decision-ready dashboards and user-centered digital experiences. Skilled in user research, information architecture, data storytelling, visualization, and accessible interface design with Excel, Power BI, Tableau, SQL, and Python.'
   );
 
   const [contact, setContact] = useState<ContactData>({
-    email: 'ahmed.mahdy@advansys-is.com',
-    phone: '01500590111',
+    email: 'amahdy59@gmail.com',
+    phone: '+20 150 *** 0111',
     linkedin: 'linkedin.com/in/creativemahdy',
   });
 
@@ -84,19 +84,19 @@ export const useProfileData = () => {
       id: '1',
       title: 'A Data-Driven LEGO Explorer',
       date: 'Data Analysis Project',
-      desc: 'This visualization allows users to explore LEGO sets based on various criteria, such as theme, age, price, and number of pieces in a modern easy to use look.',
+      desc: 'A visualization experience that helps users explore LEGO sets by theme, age, price, and set count.',
     },
     {
       id: '2',
       title: 'Sales Performance Dashboard',
       date: 'Data Analysis Project',
-      desc: 'An interactive CRM Sales Dashboard in Google Sheets for sales managers to track quarterly team performance, including data preparation, pivot-table exploration, and chart-based visualization.',
+      desc: 'CRM sales dashboard in Google Sheets for quarterly team performance, data preparation, pivot exploration, and chart-based visualization.',
     },
     {
       id: '3',
       title: 'People Tool',
       date: 'UX Project',
-      desc: 'I contributed to revamping an outdated internal HR tool, transforming it into a modern, user-friendly platform.',
+      desc: 'Redesigned an internal HR tool into a clearer platform for vacation, sick leave, and mission requests.',
     },
   ]);
 
@@ -110,11 +110,22 @@ export const useProfileData = () => {
   ]);
 
   const [skills, setSkills] = useState<string[]>([
-    'Interaction & Visual Design',
+    'Interaction Design',
     'Information Architecture',
+    'User Research',
+    'Usability Testing',
+    'Wireframing',
+    'Prototyping',
+    'Design Systems',
+    'Accessibility',
     'Microsoft Excel (Advanced)',
     'Microsoft Power BI',
     'Tableau',
+    'SQL',
+    'Python',
+    'Dashboard Design',
+    'Data Storytelling',
+    'KPI Analysis',
   ]);
 
   // Update functions

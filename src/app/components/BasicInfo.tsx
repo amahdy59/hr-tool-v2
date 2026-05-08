@@ -36,6 +36,11 @@ const maskAccountNumber = (account: string): string => {
   return '****' + account.substring(account.length - 4);
 };
 
+const maskPhoneNumber = (phone: string): string => {
+  if (!phone || phone.length < 7) return phone;
+  return phone.replace(/(\+?\d{2,3}|0\d{2})(\d+)(\d{3})$/, '$1 *** $3');
+};
+
 interface PersonalInfoData {
   dateOfBirth: string;
   nationalId: string;
@@ -75,28 +80,20 @@ interface BasicInfoProps {
 export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage }) => {
   // State
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoData>({
-    dateOfBirth: '1992-03-15',
-    nationalId: '29203151234567',
-    email: 'ahmed.mahdy@advansys-is.com',
-    mobile: '01500590111',
-    landline: '(02) 3345 6789',
+    dateOfBirth: '1990-01-01',
+    nationalId: '00000000000000',
+    email: 'amahdy59@gmail.com',
+    mobile: '0150***0111',
+    landline: 'Not provided',
     gender: 'Male',
     nationality: 'Egyptian',
-    address: 'Nasr City, Cairo',
+    address: 'Cairo, Egypt',
   });
 
-  const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContactData[]>([
-    {
-      id: '1',
-      name: 'Fatma Mahdy',
-      relationship: 'Mother',
-      phone: '01223456789',
-    },
-  ]);
+  const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContactData[]>([]);
 
   const [bankAccounts, setBankAccounts] = useState<BankAccountData[]>([
-    { id: '1', currency: 'EGP', accountNumber: '1234567890123456', bankName: 'CIB', iban: '' },
-    { id: '2', currency: 'USD', accountNumber: '9876543210987654', bankName: 'CIB', iban: '' },
+    { id: '1', currency: 'EGP', accountNumber: '0000000012345678', bankName: 'Example Bank', iban: '' },
   ]);
 
   // Modal states
@@ -213,7 +210,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
           <InfoItem label="Date of Birth" value={new Date(personalInfo.dateOfBirth).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} />
           <InfoItem label="Gender" value={personalInfo.gender} />
           <InfoItem label="Email" value={personalInfo.email} />
-          <InfoItem label="Mobile" value={personalInfo.mobile} />
+          <InfoItem label="Mobile" value={maskPhoneNumber(personalInfo.mobile)} sensitive />
           <InfoItem label="Landline" value={personalInfo.landline} />
           <InfoItem label="National ID" value={maskPersonalId(personalInfo.nationalId)} sensitive />
           <InfoItem label="Nationality" value={personalInfo.nationality} />
@@ -273,7 +270,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
                       Phone
                     </span>
                     <span className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      {contact.phone}
+                      {maskPhoneNumber(contact.phone)}
                     </span>
                   </div>
                 </div>
@@ -300,7 +297,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
             <EmploymentInfoItem label="Department" value="Design & Analytics" />
             <EmploymentInfoItem 
               label="Manager" 
-              value="Heba El-Sayed" 
+              value="Manager name hidden"
               clickable 
               onClick={() => toast.info('Manager profile coming soon')}
             />
@@ -469,7 +466,9 @@ const InfoItem: React.FC<{ label: string; value: string; sensitive?: boolean; in
   <div className={cn("flex gap-3 text-[var(--text-sm)]", inline ? "flex-col" : "flex-row items-start")} style={{ fontFamily: "'Inter', sans-serif" }}>
     <span className={cn("text-muted-foreground font-[var(--font-weight-medium)]", inline ? "" : "w-32 shrink-0")}>{label}</span>
     <div className="flex items-center gap-2">
-      <span className="text-foreground">{value}</span>
+      <span className={cn('text-foreground', sensitive && 'inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide')}>
+        {value}
+      </span>
       {sensitive && <Shield className="w-3 h-3 text-muted-foreground" />}
     </div>
   </div>
@@ -513,7 +512,7 @@ const EditPersonalInfoModal: React.FC<{
     }
 
     // Validate mobile number format
-    if (!/^01[0-9]{9}$/.test(mobile)) {
+    if (!/^01[0-9]{9}$/.test(mobile) && !mobile.includes('*')) {
       toast.error('Please enter a valid Egyptian mobile number');
       return;
     }

@@ -60,7 +60,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   const handleQuickLogin = () => {
-    onLogin('ahmed.mahdy@advansys-is.com');
+    onLogin('amahdy59@gmail.com');
   };
 
   return (

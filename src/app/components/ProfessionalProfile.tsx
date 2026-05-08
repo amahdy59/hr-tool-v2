@@ -18,6 +18,10 @@ import html2canvas from 'html2canvas';
 // ── Shared styles ──
 const inputClass = 'w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
+const maskPhoneNumber = (phone: string): string => {
+  if (!phone || phone.includes('*')) return phone;
+  return phone.replace(/(\+?\d{2,3}\s?\d{2,3}|0\d{2,3})([\s-]?\d+)(\d{3})$/, '$1 *** $3');
+};
 
 // ── Data Types ──
 interface ExperienceData {
@@ -97,13 +101,13 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
   // State management
   const [about, setAbout] = useState(
-    'UX Designer & Data Analyst with 4+ years of experience turning user and business needs into clear dashboards and user-centered digital experiences. Skilled in exploring data, building insightful visualizations, and designing intuitive, accessible interfaces that support decision-making. Proficient in Excel, Power BI, and Tableau, and currently growing technical depth with Python.'
+    'UX Designer & Data Analyst with 4+ years of experience turning user and business needs into decision-ready dashboards and user-centered digital experiences. Skilled in user research, information architecture, data storytelling, visualization, and accessible interface design with Excel, Power BI, Tableau, SQL, and Python.'
   );
   const [lastUpdated, setLastUpdated] = useState(new Date().toISOString());
 
   const [contact, setContact] = useState<ContactData>({
-    email: 'ahmed.mahdy@advansys-is.com',
-    phone: '01500590111',
+    email: 'amahdy59@gmail.com',
+    phone: '+20 150 *** 0111',
     linkedin: 'linkedin.com/in/creativemahdy',
   });
 
@@ -176,9 +180,9 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       category: 'Data Analysis',
       role: 'Data Analyst',
       issueDate: '2024',
-      desc: 'This visualization allows users to explore LEGO sets based on various criteria, such as theme, age, price, and number of pieces in a modern easy to use look.',
+      desc: 'A visualization experience that helps users explore LEGO sets by theme, age, price, and set count.',
       toolsUsed: ['Tableau', 'Excel', 'Python'],
-      url: '#',
+      url: 'https://mavenshowcase.com/project/24967',
       featured: true,
       orderIndex: 0,
       createdAt: '2024-01-01T00:00:00Z',
@@ -190,9 +194,9 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       category: 'Data Analysis',
       role: 'Data Analyst',
       issueDate: '2023',
-      desc: 'An interactive CRM Sales Dashboard in Google Sheets for sales managers to track quarterly team performance, including data preparation, pivot-table exploration, and chart-based visualization.',
+      desc: 'CRM sales dashboard in Google Sheets for quarterly team performance, data preparation, pivot exploration, and chart-based visualization.',
       toolsUsed: ['Google Sheets', 'Power BI'],
-      url: '#',
+      url: 'https://mavenshowcase.com/project/26891',
       featured: false,
       orderIndex: 1,
       createdAt: '2023-06-01T00:00:00Z',
@@ -204,9 +208,9 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       category: 'UX Design',
       role: 'UX Designer',
       issueDate: '2023',
-      desc: 'I contributed to revamping an outdated internal HR tool, transforming it into a modern, user-friendly platform.',
+      desc: 'Redesigned an internal HR tool into a clearer platform for vacation, sick leave, and mission requests.',
       toolsUsed: ['Figma', 'Adobe XD', 'User Research'],
-      url: '#',
+      url: 'https://oculus-paste-25250067.figma.site/',
       featured: false,
       orderIndex: 2,
       createdAt: '2023-03-01T00:00:00Z',
@@ -215,20 +219,31 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
   ]);
 
   const [certifications, setCertifications] = useState<CertificationData[]>([
-    { id: '1', title: 'Google Data Analytics', issuer: 'Google', issueDate: 'Mar 2023', expiryDate: '', credentialId: 'GDA-2023-001', credentialUrl: '#', orderIndex: 0, createdAt: '2023-03-01T00:00:00Z', updatedAt: new Date().toISOString() },
-    { id: '2', title: 'Tableau Business Intelligence Analyst', issuer: 'Tableau', issueDate: 'Jan 2023', expiryDate: '', credentialId: 'TBI-2023-002', credentialUrl: '#', orderIndex: 1, createdAt: '2023-01-01T00:00:00Z', updatedAt: new Date().toISOString() },
-    { id: '3', title: 'Excel for Data Analytics and Visualization', issuer: 'Microsoft', issueDate: 'Nov 2022', expiryDate: '', credentialId: 'MSFT-2022-003', credentialUrl: '#', orderIndex: 2, createdAt: '2022-11-01T00:00:00Z', updatedAt: new Date().toISOString() },
-    { id: '4', title: 'Excel Skills for Business', issuer: 'Microsoft', issueDate: 'Sep 2022', expiryDate: '', credentialId: 'MSFT-2022-004', credentialUrl: '#', orderIndex: 3, createdAt: '2022-09-01T00:00:00Z', updatedAt: new Date().toISOString() },
-    { id: '5', title: 'Google UX Design', issuer: 'Google', issueDate: 'Jul 2022', expiryDate: '', credentialId: 'GUXD-2022-005', credentialUrl: '#', orderIndex: 4, createdAt: '2022-07-01T00:00:00Z', updatedAt: new Date().toISOString() },
-    { id: '6', title: 'Robotic Process Automation (RPA)', issuer: 'Certification Provider', issueDate: 'May 2022', expiryDate: 'May 2025', credentialId: 'RPA-2022-006', credentialUrl: '#', orderIndex: 5, createdAt: '2022-05-01T00:00:00Z', updatedAt: new Date().toISOString() },
+    { id: '1', title: 'Google Data Analytics', issuer: 'Google', issueDate: 'Mar 2023', expiryDate: '', credentialId: 'GDA-2023-001', credentialUrl: 'https://www.coursera.org/account/accomplishments/professional-cert/0OYUGNC1DRF5', orderIndex: 0, createdAt: '2023-03-01T00:00:00Z', updatedAt: new Date().toISOString() },
+    { id: '2', title: 'Tableau Business Intelligence Analyst', issuer: 'Tableau', issueDate: 'Jan 2023', expiryDate: '', credentialId: 'TBI-2023-002', credentialUrl: 'https://www.coursera.org/account/accomplishments/professional-cert/JQPVYZ6VYF52', orderIndex: 1, createdAt: '2023-01-01T00:00:00Z', updatedAt: new Date().toISOString() },
+    { id: '3', title: 'Excel Skills for Data Analytics and Visualization', issuer: 'Microsoft', issueDate: 'Nov 2022', expiryDate: '', credentialId: 'MSFT-2022-003', credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/5XR5AHBP79KW', orderIndex: 2, createdAt: '2022-11-01T00:00:00Z', updatedAt: new Date().toISOString() },
+    { id: '4', title: 'Excel Skills for Business', issuer: 'Microsoft', issueDate: 'Sep 2022', expiryDate: '', credentialId: 'MSFT-2022-004', credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/DCL8H4YT5UWG', orderIndex: 3, createdAt: '2022-09-01T00:00:00Z', updatedAt: new Date().toISOString() },
+    { id: '5', title: 'Google UX Design', issuer: 'Google', issueDate: 'Jul 2022', expiryDate: '', credentialId: 'GUXD-2022-005', credentialUrl: 'https://www.coursera.org/account/accomplishments/professional-cert/49PCMPYYGLJV', orderIndex: 4, createdAt: '2022-07-01T00:00:00Z', updatedAt: new Date().toISOString() },
+    { id: '6', title: 'Robotic Process Automation (RPA)', issuer: 'Certification Provider', issueDate: 'May 2022', expiryDate: 'May 2025', credentialId: 'RPA-2022-006', credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/8MWPVHD9GALR', orderIndex: 5, createdAt: '2022-05-01T00:00:00Z', updatedAt: new Date().toISOString() },
   ]);
 
   const [skills, setSkills] = useState<SkillData[]>([
-    { id: '1', name: 'Interaction & Visual Design', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '1', name: 'Interaction Design', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
     { id: '2', name: 'Information Architecture', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '3', name: 'Microsoft Excel (Advanced)', category: 'Data Analysis', level: 'Expert', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '4', name: 'Microsoft Power BI', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '5', name: 'Tableau', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '3', name: 'User Research', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '4', name: 'Usability Testing', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '5', name: 'Wireframing', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '6', name: 'Prototyping', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '7', name: 'Design Systems', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '8', name: 'Accessibility', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '9', name: 'Microsoft Excel (Advanced)', category: 'Data Analysis', level: 'Expert', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '10', name: 'Microsoft Power BI', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '11', name: 'Tableau', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '12', name: 'SQL', category: 'Data Analysis', level: 'Intermediate', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '13', name: 'Python', category: 'Data Analysis', level: 'Intermediate', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '14', name: 'Dashboard Design', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '15', name: 'Data Storytelling', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '16', name: 'KPI Analysis', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
   ]);
 
   // Modal states
@@ -613,7 +628,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
     name: currentUser?.name || 'Ahmed Mahdy',
     title: currentUser?.position || 'UX Designer & Data Analyst',
     email: contact.email,
-    phone: contact.phone,
+    phone: maskPhoneNumber(contact.phone),
     linkedin: contact.linkedin,
     about,
     employment: experiences
@@ -693,7 +708,12 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       <ProfileCard title="Contact Information" onEdit={() => setEditContactOpen(true)}>
         <div className="space-y-2.5 text-[var(--text-sm)]" style={{ fontFamily: "'Inter', sans-serif" }}>
           <div className="flex items-center gap-2.5 text-primary"><Mail className="w-4 h-4" /> <span>{contact.email}</span></div>
-          <div className="flex items-center gap-2.5 text-foreground"><Phone className="w-4 h-4 text-muted-foreground" /> <span>{contact.phone}</span></div>
+          <div className="flex items-center gap-2.5 text-foreground">
+            <Phone className="w-4 h-4 text-muted-foreground" />
+            <span className="inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide">
+              {maskPhoneNumber(contact.phone)}
+            </span>
+          </div>
           <div className="flex items-center gap-2.5 text-primary"><Globe className="w-4 h-4" /> <span>{contact.linkedin}</span></div>
         </div>
       </ProfileCard>
@@ -805,7 +825,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       {/* Export Resume Button */}
       <div className="flex justify-end pt-4">
         <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
-          <Download className="w-4 h-4" /> Export Resume
+          <Download className="w-4 h-4" /> Download PDF Resume
         </Button>
       </div>
 

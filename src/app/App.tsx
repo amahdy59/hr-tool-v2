@@ -40,14 +40,6 @@ const contentByTab: Record<AppTab, (currentUser: CurrentUser, onUpdateImage: (ne
   payrolls: () => <PayrollUnderDevelopment />,
 };
 
-const formatNameFromEmail = (email: string) =>
-  email
-    .split('@')[0]
-    .split(/[._-]/)
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
@@ -69,9 +61,9 @@ export default function App() {
     setIsAuthenticated(true);
 
     setCurrentUser({
-      name: formatNameFromEmail(email),
-      email,
-      position: 'Cloud Engineer',
+      name: 'Ahmed Mahdy',
+      email: 'amahdy59@gmail.com',
+      position: 'UX Designer & Data Analyst',
       image: '',
     });
   };
