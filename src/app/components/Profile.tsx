@@ -1,0 +1,622 @@
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  Pencil, Mail, Phone, Globe, Plus, ExternalLink, Upload,
+  Pause, X, Search, Info, ChevronLeft, ChevronRight, Download, Camera, ArrowUp,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
+import { DatePicker } from './ui/date-picker';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from './ui/select';
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+} from './ui/dialog';
+import { ImageWithFallback } from './figma/ImageWithFallback';
+import { toast } from 'sonner';
+import { Resume } from './Resume';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { ProfessionalProfile } from './ProfessionalProfile';
+import { BasicInfo } from './BasicInfo';
+
+// ── Shared styles ──
+const inputClass = 'w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const labelClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
+
+// Helper function to get initials from name
+const getInitials = (name: string): string => {
+  return name
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase())
+    .slice(0, 2)
+    .join('');
+};
+
+interface ProfileProps {
+  currentUser: {
+    name: string;
+    email: string;
+    position: string;
+    image: string;
+  } | null;
+  onUpdateImage: (newImage: string) => void;
+}
+
+export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) => {
+  const [activeTab, setActiveTab] = useState('basic');
+
+  const tabs = [
+    { id: 'basic', label: 'Basic Information' },
+    { id: 'professional', label: 'Professional Profile' },
+    { id: 'bulletin', label: 'Employee Bulletin' },
+    { id: 'documents', label: 'Download Center' },
+  ];
+
+  return (
+    <div className="p-6 lg:p-8 max-w-3xl mx-auto space-y-6">
+      {/* Tabs */}
+      <div className="flex border-b border-border gap-6 overflow-x-auto">
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              'pb-3 text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
+              activeTab === tab.id
+                ? "text-chart-3 font-[var(--font-weight-semibold)] border-b-2 border-chart-3"
+                : 'text-muted-foreground hover:text-foreground font-[var(--font-weight-medium)]'
+            )}
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Search */}
+      <div>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input type="text" placeholder="Search Employees" className={cn(inputClass, 'pl-10')} style={{ fontFamily: "'Inter', sans-serif" }} />
+        </div>
+      </div>
+
+      {activeTab === 'basic' && <BasicInfo currentUser={currentUser} onUpdateImage={onUpdateImage} />}
+      {activeTab === 'professional' && <ProfessionalProfile currentUser={currentUser} />}
+      {activeTab === 'bulletin' && <EmployeeBulletin />}
+      {activeTab === 'documents' && <DownloadCenter />}
+    </div>
+  );
+};
+
+// ═══════════════════════════════════
+// ── Employee Bulletin Tab ──
+// ═══════════════════════════════════
+const EmployeeBulletin = () => (
+  <div className="space-y-6">
+    <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Employee Bulletin</h3>
+    {[
+      { title: 'Annual Health Screening', date: 'February 10, 2026', content: 'All employees are required to complete their annual health screening by March 15, 2026. Please book your appointment through the HR portal.' },
+      { title: 'New Parking Policy', date: 'January 28, 2026', content: 'Starting February 1st, parking spots will be assigned on a first-come-first-served basis. Please register your vehicle through the facilities portal.' },
+      { title: 'Ramadan Working Hours', date: 'January 15, 2026', content: 'During the month of Ramadan, working hours will be reduced to 6 hours per day (9:00 AM - 3:00 PM). This applies to all offices in the MEA region.' },
+      { title: 'Q1 Town Hall Meeting', date: 'January 5, 2026', content: 'The Q1 Town Hall meeting will be held on February 20, 2026 at 10:00 AM in the main auditorium. All employees are encouraged to attend.' },
+    ].map((bulletin, i) => (
+      <div key={i} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-2">
+        <div className="flex items-center justify-between">
+          <h4 className="text-foreground text-[var(--text-base)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>{bulletin.title}</h4>
+          <span className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{bulletin.date}</span>
+        </div>
+        <p className="text-[var(--text-sm)] text-muted-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{bulletin.content}</p>
+      </div>
+    ))}
+  </div>
+);
+
+// ════════════════════════════════════
+// ── Download Center Tab ──
+// ════════════════════════════════════
+const DownloadCenter = () => (
+  <div className="space-y-6">
+    <div className="flex items-center justify-between">
+      <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">My Documents</h3>
+      <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => toast.success('Upload dialog would open')}>
+        <Upload className="w-4 h-4" /> Upload Document
+      </Button>
+    </div>
+
+    <div className="space-y-4">
+      <DocumentCard title="Identification Card" desc="Please ensure you upload both the front and back of your ID." img="https://images.unsplash.com/photo-1621348160394-211bc0a5a60d?w=400&h=200&fit=crop" />
+      <DocumentCard title="Passport" desc="Upload a clear copy of your passport main page." img="https://images.unsplash.com/photo-1593006517807-19c67fdc54b2?w=400&h=200&fit=crop" />
+
+      {/* Upload progress */}
+      <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground">Uploading...</p>
+            <p className="text-[var(--text-xs)] text-muted-foreground">65% • 10 seconds remaining</p>
+          </div>
+          <div className="flex gap-1.5">
+            <button className="p-1.5 text-muted-foreground hover:bg-muted rounded-[var(--radius-sm)] cursor-pointer transition-colors"><Pause className="w-4 h-4" /></button>
+            <button className="p-1.5 text-destructive hover:bg-destructive/10 rounded-[var(--radius-sm)] cursor-pointer transition-colors"><X className="w-4 h-4" /></button>
+          </div>
+        </div>
+        <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+          <div className="bg-chart-3 h-full w-[65%] rounded-full transition-all" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// ════════════════════════════════════
+// ── Reusable sub-components ──
+// ════════════════════════════════════
+
+const InfoSection: React.FC<{ title: string; onEdit?: () => void; children: React.ReactNode }> = ({ title, onEdit, children }) => (
+  <div className="space-y-3">
+    <div className="flex items-center justify-between border-b border-border pb-2">
+      <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</span>
+      {onEdit && <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Pencil className="w-4 h-4" /></button>}
+    </div>
+    <div className="space-y-2.5">{children}</div>
+  </div>
+);
+
+const InfoItem: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+  <div className="flex items-start gap-3 text-[var(--text-sm)]">
+    <span className="w-32 shrink-0 text-muted-foreground font-[var(--font-weight-medium)]">{label}</span>
+    <span className="text-foreground">{value}</span>
+  </div>
+);
+
+const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?: () => void; showAdd?: boolean; onAdd?: () => void }> = ({ title, children, onEdit, showAdd, onAdd }) => (
+  <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="flex items-center justify-between border-b border-border pb-2.5">
+      <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</span>
+      <div className="flex gap-1">
+        {showAdd && <button onClick={onAdd} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Plus className="w-4 h-4" /></button>}
+        {onEdit && <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Pencil className="w-4 h-4" /></button>}
+      </div>
+    </div>
+    {children}
+  </div>
+);
+
+const ExperienceItem: React.FC<{ company: string; role: string; period: string; desc: string; onEdit?: () => void }> = ({ company, role, period, desc, onEdit }) => (
+  <div className="relative group">
+    <div className="absolute -left-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
+    <div className="space-y-1 pr-8">
+      <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{company}</p>
+      <p className="text-[var(--text-sm)] text-primary font-[var(--font-weight-medium)]">{role}</p>
+      <p className="text-[var(--text-xs)] text-muted-foreground">{period}</p>
+      <p className="text-[var(--text-sm)] text-muted-foreground pt-1">{desc}</p>
+    </div>
+    {onEdit && (
+      <button 
+        onClick={onEdit}
+        className="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+      >
+        <Pencil className="w-4 h-4" />
+      </button>
+    )}
+  </div>
+);
+
+const EducationItem: React.FC<{ school: string; degree: string; period: string; onEdit?: () => void }> = ({ school, degree, period, onEdit }) => (
+  <div className="relative group">
+    <div className="absolute -left-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
+    <div className="space-y-0.5 pr-8">
+      <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{school}</p>
+      <p className="text-[var(--text-sm)] text-muted-foreground">{degree}</p>
+      <p className="text-[var(--text-xs)] text-muted-foreground">{period}</p>
+    </div>
+    {onEdit && (
+      <button 
+        onClick={onEdit}
+        className="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+      >
+        <Pencil className="w-4 h-4" />
+      </button>
+    )}
+  </div>
+);
+
+const ProjectItem: React.FC<{ title: string; date: string; desc: string; onEdit?: () => void }> = ({ title, date, desc, onEdit }) => (
+  <div className="relative group space-y-1 pr-8">
+    <div className="flex items-center justify-between">
+      <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</p>
+    </div>
+    <p className="text-[var(--text-xs)] text-muted-foreground">Issued {date}</p>
+    <p className="text-[var(--text-sm)] text-muted-foreground">{desc}</p>
+    <Button variant="outline" size="sm" className="gap-1.5 mt-1 text-[var(--text-xs)]">
+      Show Credential <ExternalLink className="w-3 h-3" />
+    </Button>
+    {onEdit && (
+      <button 
+        onClick={onEdit}
+        className="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+      >
+        <Pencil className="w-4 h-4" />
+      </button>
+    )}
+  </div>
+);
+
+const CertificationItem: React.FC<{ title: string; issuer: string; date: string }> = ({ title, issuer, date }) => (
+  <div className="space-y-1">
+    <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</p>
+    <p className="text-[var(--text-xs)] text-muted-foreground">{issuer}</p>
+    <p className="text-[var(--text-xs)] text-muted-foreground">{date}</p>
+    <Button variant="outline" size="sm" className="gap-1.5 mt-1 text-[var(--text-xs)]">
+      Show Credential <ExternalLink className="w-3 h-3" />
+    </Button>
+  </div>
+);
+
+const DocumentCard: React.FC<{ title: string; desc: string; img: string }> = ({ title, desc, img }) => (
+  <div className="flex flex-col md:flex-row bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+    <div className="w-full md:w-60 h-36 bg-muted relative group shrink-0">
+      <ImageWithFallback src={img} alt={title} className="w-full h-full object-cover opacity-85" />
+      <div className="absolute inset-0 flex items-center justify-between px-2">
+        <button className="p-1 bg-card/60 rounded-full hover:bg-card transition-colors cursor-pointer"><ChevronLeft className="w-4 h-4 text-foreground" /></button>
+        <button className="p-1 bg-card/60 rounded-full hover:bg-card transition-colors cursor-pointer"><ChevronRight className="w-4 h-4 text-foreground" /></button>
+      </div>
+    </div>
+    <div className="flex-1 p-5 flex flex-col justify-center gap-3">
+      <div>
+        <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground">{title}</p>
+        <p className="text-[var(--text-xs)] text-muted-foreground mt-0.5">{desc}</p>
+      </div>
+      <div className="border-t border-dashed border-border pt-3">
+        <button className="w-full h-10 border border-border rounded-[var(--radius-button)] text-[var(--text-sm)] font-[var(--font-weight-medium)] flex items-center justify-center gap-2 hover:bg-muted transition-colors cursor-pointer text-foreground">
+          <Upload className="w-4 h-4" /> Reupload File(s)
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+// ════════════════════════════════════
+// ── Edit Modals ──
+// ════════════════════════════════════
+
+const EditPersonalInfoModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+  const [name, setName] = useState('Mahmoud Shalaby');
+  const [email, setEmail] = useState('m.shalaby@personal.com');
+  const [phone, setPhone] = useState('01002346123');
+  const [homePhone, setHomePhone] = useState('02123456');
+  const [address, setAddress] = useState('12 El-Tahrir Street, Dokki, Giza');
+  const [gender, setGender] = useState('Male');
+  const [idNumber, setIdNumber] = useState('14911972536555');
+  const [nationality, setNationality] = useState('Egyptian');
+  const [dob, setDob] = useState('1980-09-02');
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Personal Information</DialogTitle><DialogDescription className="sr-only">Edit your personal information</DialogDescription></DialogHeader>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Personal Information</p>
+            <FormField label="Name" value={name} onChange={setName} />
+            <FormField label="Email" value={email} onChange={setEmail} type="email" />
+            <FormField label="Phone" value={phone} onChange={setPhone} />
+            <FormField label="Home Phone" value={homePhone} onChange={setHomePhone} />
+            <div className="space-y-1.5">
+              <label className={labelClass}>Address</label>
+              <textarea value={address} onChange={e => setAddress(e.target.value)} rows={2} className={cn(inputClass, 'h-auto py-2')} />
+            </div>
+          </div>
+          <div className="space-y-4">
+            <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">National Information</p>
+            <div className="space-y-1.5">
+              <label className={labelClass}>Gender</label>
+              <Select value={gender} onValueChange={setGender}>
+                <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
+                <SelectContent><SelectItem value="Male">Male</SelectItem><SelectItem value="Female">Female</SelectItem></SelectContent>
+              </Select>
+            </div>
+            <FormField label="Personal ID" value={idNumber} onChange={setIdNumber} />
+            <FormField label="Nationality" value={nationality} onChange={setNationality} />
+            <FormField label="Date of Birth" value={dob} onChange={setDob} type="date" />
+          </div>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Discard Changes</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Personal information updated successfully'); }}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const EditNoteModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+  const [note, setNote] = useState('Experienced cybersecurity engineer with 15+ years in enterprise security infrastructure. Specialized in SCADA systems protection, vulnerability assessment, and compliance frameworks.');
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Note</DialogTitle><DialogDescription className="sr-only">Edit about section</DialogDescription></DialogHeader>
+        <div className="space-y-1.5"><label className={labelClass}>About</label><textarea value={note} onChange={e => setNote(e.target.value)} rows={5} className={cn(inputClass, 'h-auto py-2')} /></div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('About section updated'); }}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+  const [company, setCompany] = useState('AM Technologies');
+  const [role, setRole] = useState('Cybersecurity Engineer');
+  const [desc, setDesc] = useState('Lead security assessments for SCADA systems across the MEA region.');
+  const [startM, setStartM] = useState('January');
+  const [startY, setStartY] = useState('2023');
+  const [endM, setEndM] = useState('');
+  const [endY, setEndY] = useState('');
+  const [current, setCurrent] = useState(true);
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md max-h-[85vh] overflow-y-auto">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Experience</DialogTitle><DialogDescription className="sr-only">Edit experience</DialogDescription></DialogHeader>
+        <div className="space-y-4">
+          <FormField label="Company" value={company} onChange={setCompany} />
+          <FormField label="Job Title" value={role} onChange={setRole} />
+          <div className="space-y-1.5"><label className={labelClass}>Description</label><textarea value={desc} onChange={e => setDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} /></div>
+          <label className="flex items-center gap-2.5 cursor-pointer">
+            <input type="checkbox" checked={current} onChange={e => setCurrent(e.target.checked)} className="w-4 h-4 rounded border-border accent-[var(--chart-3)]" />
+            <span className="text-[var(--text-sm)] text-foreground font-[var(--font-weight-normal)]">I am currently working in this role</span>
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <SelectField label="Start Month" value={startM} onChange={setStartM} options={MONTHS} />
+            <SelectField label="Start Year" value={startY} onChange={setStartY} options={YEARS} />
+          </div>
+          {!current && <div className="grid grid-cols-2 gap-3">
+            <SelectField label="End Month" value={endM} onChange={setEndM} options={MONTHS} />
+            <SelectField label="End Year" value={endY} onChange={setEndY} options={YEARS} />
+          </div>}
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Experience updated'); }}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+  const [school, setSchool] = useState('Information Technology Institute (ITI)');
+  const [degree, setDegree] = useState('Diploma');
+  const [field, setField] = useState('Instructional Technology');
+  const [startM, setStartM] = useState('September');
+  const [startY, setStartY] = useState('2016');
+  const [endM, setEndM] = useState('June');
+  const [endY, setEndY] = useState('2017');
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Education</DialogTitle><DialogDescription className="sr-only">Edit education</DialogDescription></DialogHeader>
+        <div className="space-y-4">
+          <FormField label="School" value={school} onChange={setSchool} />
+          <FormField label="Degree" value={degree} onChange={setDegree} />
+          <FormField label="Field of Study" value={field} onChange={setField} />
+          <div className="grid grid-cols-2 gap-3">
+            <SelectField label="Start Month" value={startM} onChange={setStartM} options={MONTHS} />
+            <SelectField label="Start Year" value={startY} onChange={setStartY} options={YEARS} />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <SelectField label="End Month" value={endM} onChange={setEndM} options={MONTHS} />
+            <SelectField label="End Year" value={endY} onChange={setEndY} options={YEARS} />
+          </div>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Education updated'); }}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const EditCertificationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+  const [certName, setCertName] = useState('CISSP');
+  const [issuer, setIssuer] = useState('(ISC)²');
+  const [credId, setCredId] = useState('');
+  const [credUrl, setCredUrl] = useState('');
+  const [issueM, setIssueM] = useState('July');
+  const [issueY, setIssueY] = useState('2024');
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Certification</DialogTitle><DialogDescription className="sr-only">Edit certification</DialogDescription></DialogHeader>
+        <div className="space-y-4">
+          <FormField label="Name" value={certName} onChange={setCertName} />
+          <FormField label="Issuing Organization" value={issuer} onChange={setIssuer} />
+          <FormField label="Credential ID" value={credId} onChange={setCredId} placeholder="Optional" />
+          <FormField label="Credential URL" value={credUrl} onChange={setCredUrl} placeholder="https://" />
+          <div className="grid grid-cols-2 gap-3">
+            <SelectField label="Issue Month" value={issueM} onChange={setIssueM} options={MONTHS} />
+            <SelectField label="Issue Year" value={issueY} onChange={setIssueY} options={YEARS} />
+          </div>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Certification updated'); }}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const EditSkillsModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+  const [skill, setSkill] = useState('');
+  const skills = ['Cybersecurity', 'SCADA', 'Penetration Testing', 'Network Security', 'SIEM', 'Incident Response', 'Python', 'Cloud Security'];
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Skills</DialogTitle><DialogDescription className="sr-only">Edit skills</DialogDescription></DialogHeader>
+        <div className="space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {skills.map(s => (
+              <span key={s} className="px-3 py-1 rounded-full bg-primary/10 text-primary text-[var(--text-xs)] font-[var(--font-weight-medium)] flex items-center gap-1.5">
+                {s} <button className="hover:text-destructive cursor-pointer"><X className="w-3 h-3" /></button>
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <input type="text" value={skill} onChange={e => setSkill(e.target.value)} placeholder="Add a skill..." className={inputClass} />
+            <Button variant="outline" className="shrink-0 rounded-[var(--radius-button)] border-border" onClick={() => { if (skill) { toast.success(`${skill} added`); setSkill(''); } }}>Add</Button>
+          </div>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Skills updated'); }}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+  const [pName, setPName] = useState('HR Tool');
+  const [pDesc, setPDesc] = useState('Full-stack HR management platform built with React and Node.js.');
+  const [pUrl, setPUrl] = useState('');
+  const [pMonth, setPMonth] = useState('July');
+  const [pYear, setPYear] = useState('2024');
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Project</DialogTitle><DialogDescription className="sr-only">Edit project</DialogDescription></DialogHeader>
+        <div className="space-y-4">
+          <FormField label="Project Name" value={pName} onChange={setPName} />
+          <div className="space-y-1.5"><label className={labelClass}>Description</label><textarea value={pDesc} onChange={e => setPDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} /></div>
+          <FormField label="Project URL" value={pUrl} onChange={setPUrl} placeholder="https://" />
+          <div className="grid grid-cols-2 gap-3">
+            <SelectField label="Month" value={pMonth} onChange={setPMonth} options={MONTHS} />
+            <SelectField label="Year" value={pYear} onChange={setPYear} options={YEARS} />
+          </div>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Project updated'); }}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const ChangeImageModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; onUpdateImage: (newImage: string) => void; currentUser: ProfileProps['currentUser']; }> = ({ open, onOpenChange, onUpdateImage, currentUser }) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const handleUpload = () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+      // Simulate an upload (replace with actual API call)
+      setTimeout(() => {
+        onUpdateImage(preview || '');
+        toast.success('Profile picture updated');
+        onOpenChange(false);
+      }, 1000);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Change Profile Picture</DialogTitle><DialogDescription className="sr-only">Upload a new profile picture</DialogDescription></DialogHeader>
+        <div className="space-y-4">
+          <div className="flex flex-col items-center">
+            <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-card shadow-[var(--elevation-sm)] mb-3 mx-auto">
+              {preview ? (
+                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+              ) : (
+                <div 
+                  className="w-full h-full bg-primary/10 flex items-center justify-center"
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: '2rem',
+                    fontWeight: 'var(--font-weight-bold)',
+                  }}
+                >
+                  <span className="text-primary">
+                    {currentUser ? getInitials(currentUser.name) : 'U'}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+          <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" id="profile-image-upload" />
+          <label htmlFor="profile-image-upload" className="w-full h-10 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow cursor-pointer flex items-center justify-center gap-2">
+            <Upload className="w-4 h-4" /> Upload Image
+          </label>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleUpload}>Upload</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const EditEmergencyContactsModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+  const [contactName, setContactName] = useState('Fatma Mahdy');
+  const [relationship, setRelationship] = useState('Mother');
+  const [phone, setPhone] = useState('01223456789');
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Emergency Contacts</DialogTitle><DialogDescription className="sr-only">Edit emergency contacts</DialogDescription></DialogHeader>
+        <div className="space-y-4">
+          <FormField label="Contact Name" value={contactName} onChange={setContactName} />
+          <FormField label="Relationship" value={relationship} onChange={setRelationship} />
+          <FormField label="Phone" value={phone} onChange={setPhone} />
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Emergency contacts updated'); }}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// ── Shared helpers ──
+const FormField: React.FC<{ label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }> = ({ label, value, onChange, placeholder, type = 'text' }) => (
+  <div className="space-y-1.5"><label className={labelClass}>{label}</label>{type === 'date' ? <DatePicker value={value} onChange={onChange} placeholder={placeholder} /> : <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} />}</div>
+);
+
+const SelectField: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => (
+  <div className="space-y-1.5">
+    <label className={labelClass}>{label}</label>
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
+      <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+    </Select>
+  </div>
+);
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const YEARS = ['2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1998'];

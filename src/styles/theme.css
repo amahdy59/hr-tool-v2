@@ -1,0 +1,466 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  /* Typography scale */
+  --text-3xl: 48px;
+  --text-2xl: 30px;
+  --text-xl: 24px;
+  --text-lg: 18px;
+  --text-base: 16px;
+  --text-sm: 14px;
+  --text-xs: 12px;
+  
+  /* Core brand colors */
+  --color-primary-brand: #3F51B5;
+  --color-primary-dark: #303F9F;
+  --color-secondary-accent: #FFCA28;
+  --color-accent-warm: #FF9800;
+  --color-success: #558B2F;
+  --color-bg-main: #FAFAFA;
+  --color-bg-subtle: #EDE7F6;
+  --color-text-main: #212121;
+  --color-text-muted: #616161;
+  --color-border-divider: #E0E0E0;
+  
+  /* The default background color for the application. */
+  --background: #FAFAFA;
+  /* The default color for elements or text that appears on top of the background. */
+  --foreground: #212121;
+  /* The background color for cards, modals, and other containers. */
+  --card: #FFFFFF;
+  /* The default color for text or elements that appear on top of cards, modals and other background containers. */
+  --card-foreground: #212121;
+  /* The background color for dropdowns and tooltips. */
+  --popover: #FFFFFF;
+  /* The default color for text or elements that appear on top of dropdowns and tooltips. */
+  --popover-foreground: #212121;
+  /* The primary color used for buttons, links, and other interactive elements. */
+  --primary: #3F51B5;
+  /* The default color for text or elements that appear on top of primary colored elements. */
+  --primary-foreground: #FFFFFF;
+  /* The secondary color used for secondary(but NOT-DESTRUCTIVE) buttons and interactive elements. */
+  --secondary: #FFCA28;
+  /* The default color for text or elements that appear on top of secondary colored elements. */
+  --secondary-foreground: #212121;
+  /* The muted color used for less prominent elements, such as disabled buttons or disabled text. */
+  --muted: #FAFAFA;
+  /* The default color for text or elements that appear on top of muted colored elements. */
+  --muted-foreground: #616161;
+  /* The accent color used for highlights, links, and other interactive elements. */
+  --accent: #FF9800;
+  /* The default color for text or elements that appear on top of accent colored elements. */
+  --accent-foreground: #FFFFFF;
+  /* The color used for background in destructive actions, such as delete buttons or error messages. */
+  --destructive: #D32F2F;
+  /* The default color for text or elements that appear on top of destructive colored elements. */
+  --destructive-foreground: #FFFFFF;
+  /* The default border color for elements such as inputs, buttons, and other containers. */
+  --border: #E0E0E0;
+  /* The default background color for input fields once the text has been filled. Should be either transparent or match the input-background. */
+  --input: #FFFFFF;
+  /* The default background color for input fields, text areas, and other input elements. */
+  --input-background: #FFFFFF;
+  /* The default font weight for medium text. */
+  --font-weight-medium: 500;
+  /* The default font weight for normal text. */
+  --font-weight-normal: 400;
+  /* The default font weight for semi bold text. */
+  --font-weight-semibold: 600;
+  /* The color for focus rings, outlines, and other focus indicators. */
+  --ring: #3F51B5;
+  /* Small elevation shadow for cards, buttons, and modals. */
+  --elevation-sm: 0px 1px 2px 0px rgba(33, 33, 33, 0.1);
+  /* Large elevation shadow for prominent elements. */
+  --elevation-lg: 0px 10px 30px 0px rgba(33, 33, 33, 0.15), 0px 4px 8px 0px rgba(33, 33, 33, 0.1);
+  /* The color for chart elements, such as a bar or line in a chart. */
+  --chart-1: #3F51B5;
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-2: #FFCA28;
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-3: #558B2F;
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-4: #FF9800;
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-5: #616161;
+  /* The default border radius for elements such as buttons, tooltip, and other containers. */
+  --radius: 8px;
+  /* The border radius for buttons. */
+  --radius-button: 8px;
+  /* The border radius for cards and containers. */
+  --radius-card: 8px;
+  /* The border radius for input fields. */
+  --radius-input: 8px;
+  
+  /* Button styles */
+  --button-height-sm: 40px;
+  --button-height-default: 40px;
+  --button-height-lg: 40px;
+  --button-padding-x-sm: 24px;
+  --button-padding-x-default: 24px;
+  --button-padding-x-lg: 24px;
+  --button-padding-y: 0px;
+  --button-font-size-sm: var(--text-sm);
+  --button-font-size-default: var(--text-sm);
+  --button-font-size-lg: var(--text-sm);
+  --button-font-weight: var(--font-weight-medium);
+  
+  /* Page title */
+  --page-title-size: var(--text-xl);
+  --page-title-weight: var(--font-weight-semibold);
+  --page-subtitle-size: var(--text-sm);
+  
+  /* Section heading */
+  --section-heading-size: var(--text-lg);
+  --section-heading-weight: var(--font-weight-semibold);
+
+  /* The background color for sidebars */
+  --sidebar: #3F51B5;
+  /* The default color for text or elements that appear on top of sidebars, navigation menus, and other persistent elements. */
+  --sidebar-foreground: #FFFFFF;
+  /* The primary color used for buttons, links, and other interactive elements in sidebars and navigation menus. */
+  --sidebar-primary: #EDE7F6;
+  /* The default color for text or elements that appear on top of primary colored elements in sidebars and navigation menus. */
+  --sidebar-primary-foreground: #3F51B5;
+  /* The accent color used for highlights, links, and other interactive elements in sidebars and navigation menus. */
+  --sidebar-accent: #EDE7F6;
+  /* The default color for text or elements that appear on top of accent colored elements in sidebars and navigation menus. */
+  --sidebar-accent-foreground: #3F51B5;
+  /* The default border color for elements in sidebars and navigation menus. */
+  --sidebar-border: #303F9F;
+  /* The default color for focus rings, outlines, and other focus indicators in sidebars and navigation menus. */
+  --sidebar-ring: #EDE7F6;
+}
+
+.dark {
+  --background: #212121;
+  --foreground: #FFFFFF;
+  --card: #303030;
+  --card-foreground: #FFFFFF;
+  --popover: #303030;
+  --popover-foreground: #FFFFFF;
+  --primary: #3F51B5;
+  --primary-foreground: #FFFFFF;
+  --secondary: #FFCA28;
+  --secondary-foreground: #212121;
+  --muted: #424242;
+  --muted-foreground: #9E9E9E;
+  --accent: #FF9800;
+  --accent-foreground: #FFFFFF;
+  --destructive: #D32F2F;
+  --destructive-foreground: #FFFFFF;
+  --border: #424242;
+  --input: #303030;
+  --input-background: #303030;
+  --ring: #3F51B5;
+  --elevation-sm: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+  --chart-1: #3F51B5;
+  --chart-2: #FFCA28;
+  --chart-3: #558B2F;
+  --chart-4: #FF9800;
+  --chart-5: #9E9E9E;
+  --sidebar: #303F9F;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #3F51B5;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EDE7F6;
+  --sidebar-accent-foreground: #212121;
+  --sidebar-border: #424242;
+  --sidebar-ring: #3F51B5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --shadow-sm: var(--elevation-sm);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    scrollbar-gutter: stable;
+  }
+  
+  /* Global focus-visible ring for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm, 4px);
+  }
+  
+  /* Native select cursor */
+  select {
+    cursor: pointer;
+  }
+  
+  /* Ensure smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Modern, stylish scrollbar styles */
+  /* Webkit browsers (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--muted);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
+  
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted-foreground) var(--muted);
+  }
+  
+  /* Ensure scrollbars have smooth transitions */
+  ::-webkit-scrollbar-thumb:active {
+    background: var(--primary);
+  }
+  
+  /* Clean horizontal scrollbar for tabs */
+  .clean-scrollbar::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .clean-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+  
+  .clean-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+  
+  .clean-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+  }
+  
+  /* Smooth micro-interactions */
+  button, a, [role="button"] {
+    transition: all 0.2s ease-out;
+  }
+  
+  button:active, a:active, [role="button"]:active {
+    transform: scale(0.98);
+  }
+  
+  /* Card hover effects */
+  .card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elevation-md);
+  }
+  
+  /* Input focus effects */
+  input:focus, textarea:focus, select:focus {
+    transition: all 0.2s ease-out;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-3xl);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.5;
+    }
+
+    h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.5;
+    }
+
+    h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.5;
+    }
+
+    p {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    label {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+    
+    /* Date input styling */
+    input[type="date"] {
+      color-scheme: light;
+    }
+    
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+    }
+    
+    input[type="date"]:focus {
+      color: var(--foreground);
+    }
+    
+    /* Ensure date inputs show the selected value in the foreground color */
+    input[type="date"]:not(:placeholder-shown),
+    input[type="date"]:valid {
+      color: var(--foreground);
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+/* Login page animations */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+    opacity: 0.6;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-3000 {
+  animation-delay: 3s;
+}

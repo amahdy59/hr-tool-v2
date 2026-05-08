@@ -1,0 +1,629 @@
+import React, { useState } from 'react';
+import {
+  MoreVertical, Download, Plus, Search, Filter,
+  Info, Edit, Trash2, Eye, ChevronLeft, ChevronRight, X, Check,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
+import { DatePicker } from './ui/date-picker';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from './ui/select';
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+} from './ui/dialog';
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
+} from './ui/dropdown-menu';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { Checkbox } from './ui/checkbox';
+import { ImageWithFallback } from './figma/ImageWithFallback';
+import { StatusBadge } from './StatusBadge';
+import { toast } from 'sonner';
+
+// ── Shared styles ──
+const inputClass = 'w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const labelClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
+const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)]';
+
+// ── Types ──
+interface LeaveRequest {
+  id: string;
+  name: string;
+  img: string;
+  type: string;
+  range: string;
+  duration: string;
+  notes: string;
+  status?: string;
+  employeeNumber?: string;
+}
+
+interface Holiday {
+  id: string;
+  type: 'Bridge' | 'Holiday';
+  name: string;
+  range: string;
+  duration: string;
+  notes: string;
+}
+
+// ── Mock Data ──
+const PENDING_LEAVES: LeaveRequest[] = [
+  { id: '1', name: 'Sara Abdallah', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop', type: 'Sick', range: 'Sep 10 - Sep 14', duration: '5 days', notes: 'Fever and flu', employeeNumber: '49201' },
+  { id: '2', name: 'Vinay Ansari', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', type: 'Vacation', range: 'Oct 5 - Oct 12', duration: '8 days', notes: 'Annual leave', employeeNumber: '31245' },
+  { id: '3', name: 'Sara Kasongo', img: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop', type: 'Sick', range: 'Nov 3 - Nov 6', duration: '4 days', notes: 'Stomachache', employeeNumber: '20124' },
+  { id: '4', name: 'María Fernanda', img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop', type: 'Vacation', range: 'Dec 20 - Jan 2', duration: '14 days', notes: 'Holiday travel', employeeNumber: '55102' },
+  { id: '5', name: 'Luka Silva', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', type: 'Vacation', range: 'Jan 15 - Jan 17', duration: '3 days', notes: 'Cold symptoms', employeeNumber: '12098' },
+];
+
+const HISTORY_LEAVES: LeaveRequest[] = [
+  { id: '1', name: 'Sara Abdallah', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop', type: 'Sick', range: 'Sep 10 - Sep 14', duration: '5 days', notes: 'Fever and flu', status: 'approved' },
+  { id: '2', name: 'Priyanka Ram', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop', type: 'Vacation', range: 'Oct 5 - Oct 12', duration: '8 days', notes: 'Annual leave', status: 'approved' },
+  { id: '3', name: 'Natalia Díaz', img: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?w=100&h=100&fit=crop', type: 'Sick', range: 'Nov 3 - Nov 6', duration: '4 days', notes: 'Stomachache', status: 'approved' },
+  { id: '4', name: 'Jay Gupta', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop', type: 'Vacation', range: 'Dec 20 - Jan 2', duration: '14 days', notes: 'Holiday travel', status: 'rejected' },
+  { id: '5', name: 'Charles Brown', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', type: 'Vacation', range: 'Jan 15 - Jan 17', duration: '3 days', notes: 'Cold symptoms', status: 'rejected' },
+];
+
+const HOLIDAYS: Holiday[] = [
+  { id: '1', type: 'Bridge', name: 'National Day Bridge', range: 'Sep 10 - Sep 14', duration: '5 days', notes: 'Extended weekend following National Day' },
+  { id: '2', type: 'Holiday', name: 'Eid Al-Fitr', range: 'Oct 5 - Oct 12', duration: '8 days', notes: 'End of Ramadan celebration' },
+  { id: '3', type: 'Bridge', name: 'New Year Bridge', range: 'Nov 3 - Nov 6', duration: '4 days', notes: 'Bridge between holidays' },
+  { id: '4', type: 'Holiday', name: 'Christmas', range: 'Dec 20 - Jan 2', duration: '14 days', notes: 'End of year holidays' },
+  { id: '5', type: 'Holiday', name: 'Spring Day', range: 'Jan 15 - Jan 17', duration: '3 days', notes: 'Spring celebration' },
+];
+
+const DEPARTMENTS = ['All', 'Marketing', 'Software', 'Oil & Gas', 'Sales', 'SCADA', 'IT', 'Finance', 'HR'];
+const LEAVE_TYPES = ['All', 'Sick', 'Vacation', 'Maternity', 'Paternity', 'Family Care', 'Hajj', 'Marriage', 'Bereavement', 'Unpaid'];
+const ACTIVITY_TYPES = ['My team', 'Lead Engineer', 'Application Consultant', 'Project Manager'];
+const EMPLOYMENT_TYPES = ['Direct (SE)', 'InDirect (non SE)'];
+
+export const LeavesManagement: React.FC = () => {
+  // Pending
+  const [pendingSearch, setPendingSearch] = useState('');
+  const [selectedPending, setSelectedPending] = useState<string[]>([]);
+  const [pendingPage, setPendingPage] = useState(1);
+
+  // Holiday
+  const [holidayMonth, setHolidayMonth] = useState('All');
+  const [holidayYear, setHolidayYear] = useState('2026');
+  const [holidayPage, setHolidayPage] = useState(1);
+
+  // History
+  const [historySearch, setHistorySearch] = useState('');
+  const [historyPage, setHistoryPage] = useState(1);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterDept, setFilterDept] = useState('All');
+  const [filterLeaveType, setFilterLeaveType] = useState('All');
+  const [filterFrom, setFilterFrom] = useState('');
+  const [filterTo, setFilterTo] = useState('');
+  const [filterActivityTypes, setFilterActivityTypes] = useState<string[]>([]);
+  const [filterEmploymentTypes, setFilterEmploymentTypes] = useState<string[]>([]);
+  const [activeFilters, setActiveFilters] = useState(0);
+
+  // Modals
+  const [createLeaveOpen, setCreateLeaveOpen] = useState(false);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [confirmApprovalOpen, setConfirmApprovalOpen] = useState(false);
+  const [viewProfileOpen, setViewProfileOpen] = useState(false);
+  const [viewProfileData, setViewProfileData] = useState<LeaveRequest | null>(null);
+  const [declineOpen, setDeclineOpen] = useState(false);
+  const [declineData, setDeclineData] = useState<LeaveRequest | null>(null);
+  const [addHolidayOpen, setAddHolidayOpen] = useState(false);
+  const [editHolidayOpen, setEditHolidayOpen] = useState(false);
+  const [editHolidayData, setEditHolidayData] = useState<Holiday | null>(null);
+  const [deleteHolidayOpen, setDeleteHolidayOpen] = useState(false);
+  const [deleteHolidayData, setDeleteHolidayData] = useState<Holiday | null>(null);
+
+  const togglePending = (id: string) => setSelectedPending(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id]);
+  const toggleAllPending = () => setSelectedPending(p => p.length === PENDING_LEAVES.length ? [] : PENDING_LEAVES.map(l => l.id));
+
+  const applyFilters = () => {
+    let c = 0;
+    if (filterDept !== 'All') c++;
+    if (filterLeaveType !== 'All') c++;
+    if (filterFrom) c++;
+    if (filterTo) c++;
+    if (filterActivityTypes.length) c++;
+    if (filterEmploymentTypes.length) c++;
+    setActiveFilters(c);
+    setFilterOpen(false);
+    toast.success('Filters applied', { description: `${c} filter${c !== 1 ? 's' : ''} active` });
+  };
+
+  const clearFilters = () => {
+    setFilterDept('All'); setFilterLeaveType('All'); setFilterFrom(''); setFilterTo('');
+    setFilterActivityTypes([]); setFilterEmploymentTypes([]);
+    setActiveFilters(0);
+    toast.info('Filters cleared');
+  };
+
+  return (
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-10">
+      {/* ══ Pending Approval ══ */}
+      <section className="space-y-4">
+        <div>
+          <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Leaves Pending Approval</h2>
+        </div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="flex-1 max-w-md space-y-1.5">
+            <div className="flex items-center gap-2">
+              <label className={labelClass}>Search Employee</label>
+              <Tooltip><TooltipTrigger asChild><button className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
+            </div>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input type="text" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'pl-10')} />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
+              Approve
+            </Button>
+            <Button size="sm" className="gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setCreateLeaveOpen(true)}>
+              <Plus className="w-4 h-4" /> Create Leave
+            </Button>
+          </div>
+        </div>
+
+        <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+          <div className="overflow-x-auto">
+            <table className="w-full text-[var(--text-sm)] text-left">
+              <thead>
+                <tr className="bg-muted border-b border-border">
+                  <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === PENDING_LEAVES.length && PENDING_LEAVES.length > 0} onCheckedChange={toggleAllPending} /></th>
+                  <th className={thClass}>Employee Name</th>
+                  <th className={thClass}>Leave Type</th>
+                  <th className={thClass}>Date Range</th>
+                  <th className={thClass}>Duration</th>
+                  <th className={thClass}>Notes</th>
+                  <th className={cn(thClass, 'text-right')}>Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {PENDING_LEAVES.map(leave => (
+                  <tr key={leave.id} className="hover:bg-muted/30 transition-colors">
+                    <td className="px-4 py-3"><Checkbox checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} /></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={leave.img} alt={leave.name} className="w-full h-full object-cover" /></div>
+                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{leave.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-foreground">{leave.type}</td>
+                    <td className="px-4 py-3 text-foreground">{leave.range}</td>
+                    <td className="px-4 py-3 text-foreground">{leave.duration}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{leave.notes}</td>
+                    <td className="px-4 py-3 text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Profile</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve</DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(leave); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <TablePagination page={pendingPage} setPage={setPendingPage} totalPages={3} />
+        </div>
+      </section>
+
+      {/* ══ Holidays & Bridges ══ */}
+      <section className="space-y-4">
+        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Holidays and Bridges</h2>
+        <div className="flex flex-wrap items-end gap-4">
+          <div className="w-44 space-y-1.5">
+            <label className={labelClass}>Select Month</label>
+            <Select value={holidayMonth} onValueChange={setHolidayMonth}>
+              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
+              <SelectContent>{['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}</SelectContent>
+            </Select>
+          </div>
+          <div className="w-32 space-y-1.5">
+            <label className={labelClass}>Select Year</label>
+            <Select value={holidayYear} onValueChange={setHolidayYear}>
+              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
+              <SelectContent>{['2024', '2025', '2026'].map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}</SelectContent>
+            </Select>
+          </div>
+          <div className="ml-auto">
+            <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => setAddHolidayOpen(true)}>
+              Assign Holiday / Bridge
+            </Button>
+          </div>
+        </div>
+
+        <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+          <div className="overflow-x-auto">
+            <table className="w-full text-[var(--text-sm)] text-left">
+              <thead>
+                <tr className="bg-muted border-b border-border">
+                  <th className={thClass}>Leave Type</th>
+                  <th className={thClass}>Date Range</th>
+                  <th className={thClass}>Duration</th>
+                  <th className={thClass}>Notes</th>
+                  <th className={cn(thClass, 'text-right')}>Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {HOLIDAYS.map(h => (
+                  <tr key={h.id} className="hover:bg-muted/30 transition-colors">
+                    <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{h.type}</td>
+                    <td className="px-4 py-3 text-foreground">{h.range}</td>
+                    <td className="px-4 py-3 text-foreground">{h.duration}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{h.notes}</td>
+                    <td className="px-4 py-3 text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-44">
+                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setEditHolidayData(h); setEditHolidayOpen(true); }}><Edit className="w-4 h-4" /> Edit</DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeleteHolidayData(h); setDeleteHolidayOpen(true); }}><Trash2 className="w-4 h-4" /> Delete</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <TablePagination page={holidayPage} setPage={setHolidayPage} totalPages={1} />
+        </div>
+      </section>
+
+      {/* ══ Leaves History ══ */}
+      <section className="space-y-4">
+        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Leaves History</h2>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="flex-1 max-w-md space-y-1.5">
+            <label className={labelClass}>Search Employee</label>
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input type="text" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'pl-10')} />
+              </div>
+              <Popover open={filterOpen} onOpenChange={setFilterOpen}>
+                <PopoverTrigger asChild>
+                  <button className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center', activeFilters > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
+                    <Filter className="w-4 h-4" />
+                    {activeFilters > 0 && <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFilters}</span>}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-80 p-0">
+                  <FilterPanel
+                    dept={filterDept} setDept={setFilterDept}
+                    leaveType={filterLeaveType} setLeaveType={setFilterLeaveType}
+                    from={filterFrom} setFrom={setFilterFrom}
+                    to={filterTo} setTo={setFilterTo}
+                    activityTypes={filterActivityTypes} toggleActivity={t => setFilterActivityTypes(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])}
+                    employmentTypes={filterEmploymentTypes} toggleEmployment={t => setFilterEmploymentTypes(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])}
+                    onApply={applyFilters} onClear={clearFilters} onClose={() => setFilterOpen(false)}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+          <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => toast.success('Download started', { description: 'Leaves data exported to CSV.' })}>
+            <Download className="w-4 h-4" /> Download Data
+          </Button>
+        </div>
+
+        <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+          <div className="overflow-x-auto">
+            <table className="w-full text-[var(--text-sm)] text-left">
+              <thead>
+                <tr className="bg-muted border-b border-border">
+                  <th className={thClass}>Employee Name</th>
+                  <th className={thClass}>Leave Type</th>
+                  <th className={thClass}>Date Range</th>
+                  <th className={thClass}>Duration</th>
+                  <th className={thClass}>Notes</th>
+                  <th className={thClass}>Status</th>
+                  <th className={cn(thClass, 'text-right')}>Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {HISTORY_LEAVES.map(leave => (
+                  <tr key={leave.id} className="hover:bg-muted/30 transition-colors">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={leave.img} alt={leave.name} className="w-full h-full object-cover" /></div>
+                        <span className="text-foreground font-[var(--font-weight-medium)]">{leave.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-foreground">{leave.type}</td>
+                    <td className="px-4 py-3 text-foreground">{leave.range}</td>
+                    <td className="px-4 py-3 text-foreground">{leave.duration}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{leave.notes}</td>
+                    <td className="px-4 py-3"><StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
+                    <td className="px-4 py-3 text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-44">
+                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <TablePagination page={historyPage} setPage={setHistoryPage} totalPages={4} />
+        </div>
+      </section>
+
+      {/* ═══ MODALS ═══ */}
+
+      {/* Create Leave */}
+      <CreateLeaveModal open={createLeaveOpen} onOpenChange={setCreateLeaveOpen} />
+
+      {/* Review Selected */}
+      <ReviewSelectedModal
+        open={reviewOpen} onOpenChange={setReviewOpen}
+        items={PENDING_LEAVES.filter(l => selectedPending.includes(l.id))}
+        onApprove={() => { setReviewOpen(false); setConfirmApprovalOpen(true); }}
+      />
+
+      {/* Confirm Approval */}
+      <ConfirmDialog
+        open={confirmApprovalOpen} onOpenChange={setConfirmApprovalOpen}
+        title="Confirm Approval"
+        message={`You are approving ${selectedPending.length} leave request(s). This action cannot be undone.`}
+        confirmLabel="Confirm" cancelLabel="Cancel"
+        onConfirm={() => { setConfirmApprovalOpen(false); setSelectedPending([]); toast.success(`${selectedPending.length} request(s) approved successfully`); }}
+      />
+
+      {/* View Profile / Leave Details */}
+      <ViewLeaveDetailModal open={viewProfileOpen} onOpenChange={setViewProfileOpen} leave={viewProfileData} />
+
+      {/* Decline Leave */}
+      <ConfirmDialog
+        open={declineOpen} onOpenChange={setDeclineOpen}
+        title="Decline Leave"
+        message={<>You are declining <strong>{declineData?.name}</strong>'s {declineData?.type?.toLowerCase()} leave from <strong>{declineData?.range}</strong>. This action is permanent.</>}
+        confirmLabel="Decline" cancelLabel="Cancel" variant="destructive"
+        onConfirm={() => { setDeclineOpen(false); toast.success(`${declineData?.name}'s leave request declined`); }}
+      />
+
+      {/* Add Holiday */}
+      <HolidayFormModal open={addHolidayOpen} onOpenChange={setAddHolidayOpen} title="Add Holiday / Bridge" onSave={() => { setAddHolidayOpen(false); toast.success('Holiday added successfully'); }} />
+
+      {/* Edit Holiday */}
+      <HolidayFormModal open={editHolidayOpen} onOpenChange={setEditHolidayOpen} title="Edit Holiday / Bridge" holiday={editHolidayData} onSave={() => { setEditHolidayOpen(false); toast.success('Holiday updated successfully'); }} />
+
+      {/* Delete Holiday */}
+      <ConfirmDialog
+        open={deleteHolidayOpen} onOpenChange={setDeleteHolidayOpen}
+        title={`Delete ${deleteHolidayData?.type}`}
+        message={<>You are deleting <strong>{deleteHolidayData?.name}</strong> ({deleteHolidayData?.range}). This action is permanent.</>}
+        confirmLabel="Confirm" cancelLabel="Cancel" variant="destructive"
+        onConfirm={() => { setDeleteHolidayOpen(false); toast.success(`${deleteHolidayData?.name} deleted`); }}
+      />
+    </div>
+  );
+};
+
+// ════════════════════════════════════
+// ── Sub-components ──
+// ════════════════════════════════════
+
+const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; totalPages: number }> = ({ page, setPage, totalPages }) => {
+  const [pi, setPi] = useState(String(page));
+  const go = (p: number) => { const v = Math.max(1, Math.min(p, totalPages)); setPage(v); setPi(String(v)); };
+  return (
+    <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-muted/20">
+      <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground">
+        Items Per Page
+        <select className="h-8 px-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none cursor-pointer" defaultValue="15"><option>10</option><option>15</option><option>30</option></select>
+      </div>
+      <div className="flex items-center gap-2">
+        <button onClick={() => go(page - 1)} disabled={page <= 1} className="p-1.5 border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"><ChevronLeft className="w-4 h-4 text-foreground" /></button>
+        <span className="text-[var(--text-sm)] text-foreground flex items-center gap-1">Page <input type="text" value={pi} onChange={e => setPi(e.target.value)} onBlur={() => go(Number(pi) || 1)} onKeyDown={e => e.key === 'Enter' && go(Number(pi) || 1)} className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]" /> of {totalPages}</span>
+        <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="p-1.5 border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"><ChevronRight className="w-4 h-4 text-foreground" /></button>
+      </div>
+    </div>
+  );
+};
+
+// ── Filter Panel ──
+const FilterPanel: React.FC<{
+  dept: string; setDept: (v: string) => void;
+  leaveType: string; setLeaveType: (v: string) => void;
+  from: string; setFrom: (v: string) => void;
+  to: string; setTo: (v: string) => void;
+  activityTypes: string[]; toggleActivity: (v: string) => void;
+  employmentTypes: string[]; toggleEmployment: (v: string) => void;
+  onApply: () => void; onClear: () => void; onClose: () => void;
+}> = ({ dept, setDept, leaveType, setLeaveType, from, setFrom, to, setTo, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose }) => (
+  <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+    <div className="flex items-center justify-between">
+      <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
+      <button onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
+    </div>
+    <SelectField label="Department" value={dept} onChange={setDept} options={DEPARTMENTS} />
+    <SelectField label="Leave Type" value={leaveType} onChange={setLeaveType} options={LEAVE_TYPES} />
+    <div className="space-y-1.5"><label className={labelClass}>From</label><DatePicker value={from} onChange={setFrom} placeholder="Select from date" /></div>
+    <div className="space-y-1.5"><label className={labelClass}>To</label><DatePicker value={to} onChange={setTo} placeholder="Select to date" /></div>
+    <CheckboxGroup label="Activity Type" items={ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
+    <CheckboxGroup label="Employment Type" items={EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
+    <div className="space-y-2 pt-2">
+      <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
+      <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)] border-border">Clear Filter</Button>
+    </div>
+  </div>
+);
+
+const SelectField: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => (
+  <div className="space-y-1.5">
+    <label className={labelClass}>{label}</label>
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
+      <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+    </Select>
+  </div>
+);
+
+const CheckboxGroup: React.FC<{ label: string; items: string[]; selected: string[]; toggle: (v: string) => void }> = ({ label, items, selected, toggle }) => (
+  <div className="space-y-2">
+    <label className={labelClass}>{label}</label>
+    <div className="space-y-2">{items.map(item => (
+      <label key={item} className="flex items-center gap-2.5 cursor-pointer group">
+        <Checkbox checked={selected.includes(item)} onCheckedChange={() => toggle(item)} />
+        <span className="text-[var(--text-sm)] text-foreground group-hover:text-primary transition-colors font-[var(--font-weight-normal)]">{item}</span>
+      </label>
+    ))}</div>
+  </div>
+);
+
+// ── Create Leave Modal ──
+const CreateLeaveModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+  const [name, setName] = useState('');
+  const [employeeNumber, setEmployeeNumber] = useState('');
+  const [leaveType, setLeaveType] = useState('Sick');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Create Leave</DialogTitle><DialogDescription className="sr-only">Create a new leave request</DialogDescription></DialogHeader>
+        <div className="space-y-4">
+          <FormField label="Employee Name" value={name} onChange={setName} placeholder="Full name" />
+          <FormField label="Employee Number" value={employeeNumber} onChange={setEmployeeNumber} placeholder="XXXXX" />
+          <SelectField label="Leave Type" value={leaveType} onChange={setLeaveType} options={LEAVE_TYPES.filter(l => l !== 'All')} />
+          <div className="grid grid-cols-2 gap-3">
+            <FormField label="Start Date" value={startDate} onChange={setStartDate} type="date" />
+            <FormField label="End Date" value={endDate} onChange={setEndDate} type="date" />
+          </div>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Leave created successfully'); }}>Create Leave</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// ── Review Selected Modal ──
+const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; items: LeaveRequest[]; onApprove: () => void }> = ({ open, onOpenChange, items, onApprove }) => (
+  <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogContent className="sm:max-w-2xl">
+      <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Review Selected Requests</DialogTitle><DialogDescription className="sr-only">Review and approve selected leave requests</DialogDescription></DialogHeader>
+      <div className="border border-border rounded-[var(--radius-card)] overflow-hidden">
+        <table className="w-full text-[var(--text-sm)]">
+          <thead><tr className="bg-muted border-b border-border">
+            <th className={thClass}>Employee Name</th><th className={thClass}>Leave Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
+          </tr></thead>
+          <tbody className="divide-y divide-border">
+            {items.map(l => (
+              <tr key={l.id} className="hover:bg-muted/30">
+                <td className="px-4 py-2.5"><div className="flex items-center gap-2"><div className="w-6 h-6 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={l.img} alt={l.name} className="w-full h-full object-cover" /></div><span className="text-foreground font-[var(--font-weight-medium)]">{l.name}</span></div></td>
+                <td className="px-4 py-2.5 text-foreground">{l.type}</td>
+                <td className="px-4 py-2.5 text-foreground">{l.range}</td>
+                <td className="px-4 py-2.5 text-foreground">{l.duration}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">{l.notes}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <DialogFooter className="pt-4 gap-2">
+        <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+        <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+);
+
+// ── View Leave Detail Modal ──
+const ViewLeaveDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; leave: LeaveRequest | null }> = ({ open, onOpenChange, leave }) => (
+  <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogContent className="sm:max-w-md">
+      <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Leave Details</DialogTitle><DialogDescription className="sr-only">Leave request details</DialogDescription></DialogHeader>
+      {leave && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
+            <div className="w-10 h-10 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={leave.img} alt={leave.name} className="w-full h-full object-cover" /></div>
+            <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{leave.name}</p><p className="text-[var(--text-xs)] text-muted-foreground uppercase">{leave.employeeNumber || '00000'}</p></div>
+          </div>
+          <div className="space-y-3 text-[var(--text-sm)]">
+            <InfoRow label="Leave Type" value={leave.type} />
+            <InfoRow label="Date Range" value={leave.range} />
+            <InfoRow label="Duration" value={leave.duration} />
+            <InfoRow label="Notes" value={leave.notes} />
+            {leave.status && <InfoRow label="Status" value={leave.status.charAt(0).toUpperCase() + leave.status.slice(1)} />}
+          </div>
+        </div>
+      )}
+      <DialogFooter className="pt-2"><Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Close</Button></DialogFooter>
+    </DialogContent>
+  </Dialog>
+);
+
+// ── Holiday Form Modal ──
+const HolidayFormModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; title: string; holiday?: Holiday | null; onSave: () => void }> = ({ open, onOpenChange, title, holiday, onSave }) => {
+  const [hName, setHName] = useState('');
+  const [hType, setHType] = useState<string>('Holiday');
+  const [startD, setStartD] = useState('');
+  const [endD, setEndD] = useState('');
+  const [notes, setNotes] = useState('');
+
+  React.useEffect(() => {
+    if (holiday) { setHName(holiday.name); setHType(holiday.type); setNotes(holiday.notes); } else { setHName(''); setHType('Holiday'); setStartD(''); setEndD(''); setNotes(''); }
+  }, [holiday, open]);
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">{title}</DialogTitle><DialogDescription className="sr-only">{title}</DialogDescription></DialogHeader>
+        <div className="space-y-4">
+          <FormField label="Name" value={hName} onChange={setHName} placeholder="e.g. Eid Al-Fitr" />
+          <SelectField label="Type" value={hType} onChange={setHType} options={['Holiday', 'Bridge']} />
+          <div className="grid grid-cols-2 gap-3">
+            <FormField label="Start Date" value={startD} onChange={setStartD} type="date" />
+            <FormField label="End Date" value={endD} onChange={setEndD} type="date" />
+          </div>
+          <div className="space-y-1.5"><label className={labelClass}>Notes</label><textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Optional notes..." /></div>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onSave}>{holiday ? 'Save' : 'Add'}</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// ── Confirm Dialog ──
+const ConfirmDialog: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; title: string; message: React.ReactNode; confirmLabel: string; cancelLabel: string; variant?: 'default' | 'destructive'; onConfirm: () => void }> = ({ open, onOpenChange, title, message, confirmLabel, cancelLabel, variant = 'default', onConfirm }) => (
+  <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogContent className="sm:max-w-md">
+      <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">{title}</DialogTitle><DialogDescription className="sr-only">{title}</DialogDescription></DialogHeader>
+      <div className={cn('p-3 rounded-[var(--radius)] border flex gap-3', variant === 'destructive' ? 'bg-destructive/5 border-destructive/20' : 'bg-primary/5 border-primary/20')}>
+        <Info className={cn('w-5 h-5 shrink-0 mt-0.5', variant === 'destructive' ? 'text-destructive' : 'text-primary')} />
+        <p className="text-[var(--text-sm)] text-foreground">{message}</p>
+      </div>
+      <DialogFooter className="pt-2 gap-2">
+        <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">{cancelLabel}</Button>
+        <Button variant={variant === 'destructive' ? 'destructive' : 'default'} className={cn('rounded-[var(--radius-button)]', variant !== 'destructive' && 'bg-chart-3 hover:bg-chart-3/90 text-white')} onClick={onConfirm}>{confirmLabel}</Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+);
+
+// ── Shared helpers ──
+const FormField: React.FC<{ label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }> = ({ label, value, onChange, placeholder, type = 'text' }) => (
+  <div className="space-y-1.5"><label className={labelClass}>{label}</label>{type === 'date' ? <DatePicker value={value} onChange={onChange} placeholder={placeholder} /> : <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} />}</div>
+);
+const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+  <div className="flex gap-3"><span className="text-muted-foreground w-24 shrink-0 font-[var(--font-weight-medium)]">{label}:</span><span className="text-foreground">{value}</span></div>
+);
