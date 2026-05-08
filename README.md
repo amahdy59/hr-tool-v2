@@ -1,11 +1,35 @@
+# HR Tool V2
 
-  # HR System Development
+React + Vite HR management tool generated from the HR System Development design.
 
-  This is a code bundle for HR System Development. The original project is available at https://www.figma.com/design/Z8lVZssRryEplcmvDfDnnQ/HR-System-Development.
+Original Figma project: https://www.figma.com/design/Z8lVZssRryEplcmvDfDnnQ/HR-System-Development
 
-  ## Running the code
+## Development
 
-  Run `npm i` to install the dependencies.
+Install dependencies:
 
-  Run `npm run dev` to start the development server.
-  
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## Deployment
+
+This project is configured for Vercel with `vercel.json`. The production output directory is `dist`.
