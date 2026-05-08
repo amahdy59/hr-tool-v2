@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Pencil, Mail, Phone, Globe, Plus, ExternalLink, Download, X, Trash2, ChevronUp, ChevronDown, Star, Calendar, MapPin, Briefcase, GripVertical, ChevronRight,
 } from 'lucide-react';
@@ -1164,6 +1164,18 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
   const [currentlyWorking, setCurrentlyWorking] = useState(data.currentlyWorking);
   const [desc, setDesc] = useState(data.desc);
 
+  useEffect(() => {
+    if (!open) return;
+    setCompany(data.company);
+    setRole(data.role);
+    setEmploymentType(data.employmentType);
+    setLocation(data.location);
+    setStartDate(data.startDate);
+    setEndDate(data.endDate);
+    setCurrentlyWorking(data.currentlyWorking);
+    setDesc(data.desc);
+  }, [data, open]);
+
   const handleSave = () => {
     if (!company || !role || !startDate) {
       toast.error('Company, role, and start date are required');
@@ -1236,6 +1248,18 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
   const [grade, setGrade] = useState(data.grade);
   const [desc, setDesc] = useState(data.desc);
 
+  useEffect(() => {
+    if (!open) return;
+    setSchool(data.school);
+    setDegree(data.degree);
+    setFieldOfStudy(data.fieldOfStudy);
+    setStartDate(data.startDate);
+    setEndDate(data.endDate);
+    setCurrentlyStudying(data.currentlyStudying);
+    setGrade(data.grade);
+    setDesc(data.desc);
+  }, [data, open]);
+
   const handleSave = () => {
     if (!school || !degree || !startDate) {
       toast.error('School, degree, and start date are required');
@@ -1278,7 +1302,7 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)} border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
           <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
         </DialogFooter>
       </DialogContent>
