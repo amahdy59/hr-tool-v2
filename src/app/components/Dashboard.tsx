@@ -329,7 +329,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Timesheet Section */}
-      <section className="hidden space-y-4 sm:block">
+      <section className="hidden space-y-4 min-[990px]:block">
         <h3
           style={{
             fontFamily: "'Inter', sans-serif",

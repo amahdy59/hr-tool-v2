@@ -34,16 +34,6 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
         >
           Human Resources Tool
         </h1>
-        <span
-          className="hidden bg-muted px-2 py-0.5 rounded-[var(--radius-sm)] border border-border text-muted-foreground sm:inline-flex"
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'var(--text-xs)',
-            fontWeight: 'var(--font-weight-normal)',
-          }}
-        >
-          Beta 1.0
-        </span>
       </div>
 
       <div className="hidden items-center gap-6 sm:flex">
