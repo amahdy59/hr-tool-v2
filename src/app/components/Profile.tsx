@@ -35,6 +35,41 @@ interface DocumentItem {
   img: string;
 }
 
+const svgDataUri = (svg: string) => `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+
+const identificationCardPlaceholder = svgDataUri(`
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="440" viewBox="0 0 720 440">
+  <rect width="720" height="440" rx="28" fill="#f8fafc"/>
+  <rect x="28" y="28" width="664" height="384" rx="22" fill="#ffffff" stroke="#94a3b8" stroke-width="4"/>
+  <rect x="28" y="28" width="664" height="86" rx="22" fill="#1d4ed8"/>
+  <text x="56" y="82" font-family="Inter, Arial" font-size="30" font-weight="700" fill="#ffffff">EMPLOYEE IDENTIFICATION</text>
+  <rect x="56" y="150" width="140" height="168" rx="16" fill="#e2e8f0"/>
+  <circle cx="126" cy="212" r="38" fill="#94a3b8"/>
+  <path d="M76 306c18-42 82-42 100 0" fill="#94a3b8"/>
+  <g fill="#334155" font-family="Inter, Arial">
+    <text x="230" y="166" font-size="18" font-weight="700">NAME</text>
+    <text x="230" y="196" font-size="28" font-weight="700">Sample Employee</text>
+    <text x="230" y="244" font-size="18" font-weight="700">ROLE</text>
+    <text x="230" y="274" font-size="24">UX Designer</text>
+    <text x="230" y="322" font-size="18" font-weight="700">ID NUMBER</text>
+    <text x="230" y="352" font-size="24" letter-spacing="4">EMP-0000</text>
+  </g>
+  <rect x="520" y="152" width="118" height="118" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <path d="M544 246h70M544 222h70M544 198h70M568 176v70M592 176v70" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/>
+  <rect x="56" y="358" width="582" height="18" rx="9" fill="#cbd5e1"/>
+</svg>`);
+
+const passportPlaceholder = svgDataUri(`
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="440" viewBox="0 0 720 440">
+  <rect width="720" height="440" rx="28" fill="#eff6ff"/>
+  <rect x="132" y="38" width="456" height="364" rx="24" fill="#1e3a8a"/>
+  <rect x="164" y="72" width="392" height="300" rx="18" fill="#1d4ed8" stroke="#bfdbfe" stroke-width="3"/>
+  <text x="360" y="134" text-anchor="middle" font-family="Inter, Arial" font-size="34" font-weight="700" fill="#ffffff">PASSPORT</text>
+  <circle cx="360" cy="224" r="72" fill="none" stroke="#bfdbfe" stroke-width="8"/>
+  <path d="M288 224h144M360 152c34 38 34 106 0 144M360 152c-34 38-34 106 0 144M310 184c30 16 70 16 100 0M310 264c30-16 70-16 100 0" stroke="#bfdbfe" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <text x="360" y="332" text-anchor="middle" font-family="Inter, Arial" font-size="22" fill="#dbeafe" letter-spacing="5">SAMPLE DOCUMENT</text>
+</svg>`);
+
 const defaultDocuments: DocumentItem[] = [
   {
     id: 'identification',
@@ -42,7 +77,7 @@ const defaultDocuments: DocumentItem[] = [
     desc: 'Please ensure you upload both the front and back of your ID.',
     fileName: 'Not uploaded yet',
     status: 'Required',
-    img: 'https://images.unsplash.com/photo-1621348160394-211bc0a5a60d?w=400&h=200&fit=crop',
+    img: identificationCardPlaceholder,
   },
   {
     id: 'passport',
@@ -50,7 +85,7 @@ const defaultDocuments: DocumentItem[] = [
     desc: 'Upload a clear copy of your passport main page.',
     fileName: 'Not uploaded yet',
     status: 'Required',
-    img: 'https://images.unsplash.com/photo-1593006517807-19c67fdc54b2?w=400&h=200&fit=crop',
+    img: passportPlaceholder,
   },
 ];
 
@@ -85,9 +120,9 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
   ];
 
   return (
-    <div className="p-6 lg:p-8 max-w-3xl mx-auto space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto space-y-6">
       {/* Tabs */}
-      <div className="flex border-b border-border gap-6 overflow-x-auto">
+      <div className="flex flex-col sm:flex-row border-b border-border gap-1 sm:gap-6 sm:overflow-x-auto">
         {tabs.map(tab => (
           <button
             key={tab.id}
@@ -95,7 +130,7 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
             aria-pressed={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              'border-b-2 border-transparent pb-3 pt-1 text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
+              'border-l-2 border-b-0 sm:border-l-0 sm:border-b-2 border-transparent px-3 py-2 sm:px-0 sm:pb-3 sm:pt-1 text-left sm:text-center text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
               activeTab === tab.id
                 ? "text-accent font-[var(--font-weight-semibold)] border-accent"
                 : 'text-muted-foreground hover:text-foreground font-[var(--font-weight-medium)]'
@@ -115,10 +150,12 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
         </div>
       </div>
 
-      {activeTab === 'basic' && <BasicInfo currentUser={currentUser} onUpdateImage={onUpdateImage} />}
-      {activeTab === 'professional' && <ProfessionalProfile currentUser={currentUser} />}
-      {activeTab === 'bulletin' && <EmployeeBulletin searchQuery={searchQuery} />}
-      {activeTab === 'documents' && <DownloadCenter searchQuery={searchQuery} />}
+      <div className="min-h-[560px]">
+        {activeTab === 'basic' && <BasicInfo currentUser={currentUser} onUpdateImage={onUpdateImage} />}
+        {activeTab === 'professional' && <ProfessionalProfile currentUser={currentUser} />}
+        {activeTab === 'bulletin' && <EmployeeBulletin searchQuery={searchQuery} />}
+        {activeTab === 'documents' && <DownloadCenter searchQuery={searchQuery} />}
+      </div>
     </div>
   );
 };
@@ -416,8 +453,10 @@ const DocumentCard: React.FC<{
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground">{item.title}</p>
             <span className={cn(
-              'px-2 py-0.5 rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)]',
-              item.status === 'Uploaded' ? 'bg-chart-3/15 text-chart-3' : 'bg-chart-4/15 text-chart-4'
+              'px-2 py-0.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)]',
+              item.status === 'Uploaded'
+                ? 'bg-[#E7F6EF] text-[#064E3B] border-[#047857]'
+                : 'bg-[#FFF4DE] text-[#7C2D12] border-[#C2410C]'
             )}>
               {item.status}
             </span>
@@ -644,7 +683,7 @@ const EditSkillsModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => v
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2">
             {skills.map(s => (
-              <span key={s} className="px-3 py-1 rounded-full bg-primary/10 text-primary text-[var(--text-xs)] font-[var(--font-weight-medium)] flex items-center gap-1.5">
+              <span key={s} className="px-3 py-1 rounded-full border border-[#2563EB] bg-[#EAF2FF] text-[#1E3A8A] text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5">
                 {s} <button className="hover:text-destructive cursor-pointer"><X className="w-3 h-3" /></button>
               </span>
             ))}

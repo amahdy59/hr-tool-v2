@@ -894,7 +894,7 @@ const EmploymentInfoItem: React.FC<{
       </span>
       <div className="flex items-center gap-2 shrink-0">
         {badge && (
-          <span className="px-2 py-0.5 bg-primary/10 text-primary rounded-[var(--radius-sm)] text-[var(--text-xs)] font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <span className="rounded-[var(--radius-sm)] border border-[#2563EB] bg-[#EAF2FF] px-2 py-0.5 text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-[#1E3A8A]" style={{ fontFamily: "'Inter', sans-serif" }}>
             {badge}
           </span>
         )}

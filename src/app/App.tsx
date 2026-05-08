@@ -116,7 +116,7 @@ export default function App() {
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Header currentUser={currentUser} />
-        <main ref={mainRef} className="flex-1 overflow-y-auto bg-muted cursor-default">
+        <main ref={mainRef} className="flex-1 overflow-y-auto bg-muted cursor-default pb-24 sm:pb-0">
           {renderContent()}
         </main>
       </div>

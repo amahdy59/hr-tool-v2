@@ -1012,8 +1012,10 @@ const AccessCardsModal: React.FC<{
                         <td className="px-4 py-2.5 text-foreground">{card.cardType}</td>
                         <td className="px-4 py-2.5">
                           <span className={cn(
-                            'px-2.5 py-0.5 rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)]',
-                            card.status === 'Active' ? 'bg-chart-3/15 text-chart-3' : 'bg-destructive/15 text-destructive'
+                            'px-2.5 py-0.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)]',
+                            card.status === 'Active'
+                              ? 'bg-[#E7F6EF] text-[#064E3B] border-[#047857]'
+                              : 'bg-[#FDECEC] text-[#7F1D1D] border-[#B91C1C]'
                           )}>{card.status}</span>
                         </td>
                       </tr>

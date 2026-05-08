@@ -1041,7 +1041,7 @@ const CertificationItem: React.FC<{
     <div className="relative group space-y-1 pr-20">
       <div className="flex items-center gap-2">
         <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.title}</p>
-        {isExpired && <span className="px-2 py-0.5 bg-destructive/10 text-destructive rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>Expired</span>}
+        {isExpired && <span className="px-2 py-0.5 bg-[#FDECEC] text-[#7F1D1D] border border-[#B91C1C] rounded-full text-[var(--text-xs)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>Expired</span>}
       </div>
       <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.issuer}</p>
       <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -1066,16 +1066,16 @@ const CertificationItem: React.FC<{
 const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () => void }> = ({ data, onEdit, onDelete }) => {
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'Beginner': return 'bg-gray-100 text-gray-700';
-      case 'Intermediate': return 'bg-blue-100 text-blue-700';
-      case 'Advanced': return 'bg-purple-100 text-purple-700';
-      case 'Expert': return 'bg-chart-3/10 text-chart-3';
-      default: return 'bg-primary/10 text-primary';
+      case 'Beginner': return 'bg-[#EEF2F7] text-[#334155] border-[#94A3B8]';
+      case 'Intermediate': return 'bg-[#EAF2FF] text-[#1E3A8A] border-[#2563EB]';
+      case 'Advanced': return 'bg-[#F3E8FF] text-[#581C87] border-[#7E22CE]';
+      case 'Expert': return 'bg-[#E7F6EF] text-[#064E3B] border-[#047857]';
+      default: return 'bg-[#EAF2FF] text-[#1E3A8A] border-[#2563EB]';
     }
   };
 
   return (
-    <span className={cn("group relative px-3 py-1.5 rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm", getLevelColor(data.level))} onClick={onEdit} style={{ fontFamily: "'Inter', sans-serif" }}>
+    <span className={cn("group relative px-3 py-1.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm", getLevelColor(data.level))} onClick={onEdit} style={{ fontFamily: "'Inter', sans-serif" }}>
       {data.name}
       <button 
         onClick={(e) => { e.stopPropagation(); onDelete(); }} 
