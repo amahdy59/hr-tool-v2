@@ -44,6 +44,8 @@ const footerItems = [
   { id: 'logout', label: 'Log out', icon: LogOut },
 ] as const;
 
+const sidebarItemTextClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)]';
+
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, collapsed, onToggle, onLogout }) => {
   const NavButton = ({ item }: { item: typeof navItems[0] }) => {
     const isActive = activeTab === item.id;
@@ -51,7 +53,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
       <button
         onClick={() => setActiveTab(item.id)}
         className={cn(
-          'relative flex min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center text-[11px] transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-0 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-left sm:text-[var(--text-sm)]',
+          'relative flex min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-0 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-left',
+          sidebarItemTextClass,
           collapsed ? 'sm:justify-center' : 'sm:justify-start',
           isActive
             ? '!bg-[#EDEFFB] !text-[#111827] shadow-sm scale-[0.98]'
@@ -68,7 +71,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         <span
           style={{
             fontFamily: "'Inter', sans-serif",
-            fontWeight: 'var(--font-weight-medium)',
           }}
           className={cn(
             "max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap transition-all duration-300 sm:max-w-none sm:text-left",
@@ -196,7 +198,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                     <button
                       onClick={handleClick}
                       className={cn(
-                        'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-[var(--text-sm)] text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring'
+                        'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+                        sidebarItemTextClass
                       )}
                     >
                       <item.icon className="w-5 h-5 shrink-0" />
@@ -214,11 +217,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                 key={item.id}
                 onClick={handleClick}
                 className={cn(
-                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-[var(--text-sm)] text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring'
+                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+                  sidebarItemTextClass
                 )}
               >
                 <item.icon className="w-5 h-5 shrink-0" />
-                <span className="font-[var(--font-weight-medium)]">{item.label}</span>
+                <span>{item.label}</span>
               </button>
             );
           })}
@@ -227,7 +231,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
           <button
             onClick={onToggle}
             className={cn(
-              'w-full flex items-center gap-3 px-3 py-2 rounded-[var(--radius)] transition-all text-[var(--text-sm)] text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+              'w-full flex items-center gap-3 px-3 py-2 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+              sidebarItemTextClass,
               collapsed ? 'justify-center' : ''
             )}
           >
@@ -236,7 +241,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             ) : (
               <>
                 <ChevronsLeft className="w-5 h-5" />
-                <span className="font-[var(--font-weight-medium)]">Collapse</span>
+                <span>Collapse</span>
               </>
             )}
           </button>
