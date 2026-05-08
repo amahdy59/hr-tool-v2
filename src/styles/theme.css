@@ -220,6 +220,23 @@
     font-family: 'Inter', sans-serif;
     scrollbar-gutter: stable;
   }
+
+  input,
+  textarea,
+  select,
+  button,
+  [role="button"] {
+    min-width: 0;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    vertical-align: middle;
+  }
   
   /* Global focus-visible ring for accessibility */
   :focus-visible {

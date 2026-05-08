@@ -390,13 +390,13 @@ export const Dashboard: React.FC = () => {
           Leaves and Mission History
         </h3>
 
-        <div className="flex flex-col md:flex-row gap-4 items-end justify-between bg-muted/30 p-4 rounded-[var(--radius)]">
-          <Button variant="outline" className="gap-2">
+        <div className="grid gap-4 bg-muted/30 p-4 rounded-[var(--radius)] lg:grid-cols-[minmax(180px,auto)_1fr] lg:items-end">
+          <Button variant="outline" className="w-full gap-2 sm:w-fit lg:justify-self-start">
             <Download className="w-4 h-4" /> Download Data
           </Button>
 
-          <div className="flex flex-1 gap-4 items-center justify-end">
-            <div className="space-y-1">
+          <div className="grid w-full gap-3 sm:grid-cols-2 xl:grid-cols-3 xl:justify-self-end">
+            <div className="min-w-0 space-y-1.5">
               <label
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -408,7 +408,7 @@ export const Dashboard: React.FC = () => {
                 Leave Type
               </label>
               <Select defaultValue="vacation">
-                <SelectTrigger className="h-10 w-48 rounded-[var(--radius-input)] bg-card border-border">
+                <SelectTrigger className="h-10 w-full rounded-[var(--radius-input)] bg-card border-border">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -420,7 +420,7 @@ export const Dashboard: React.FC = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-1">
+            <div className="min-w-0 space-y-1.5">
               <label
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -435,7 +435,7 @@ export const Dashboard: React.FC = () => {
                 type="text"
                 value="3 November 2023"
                 readOnly
-                className="h-10 px-3 border border-border rounded-[var(--radius-input)] bg-card w-40"
+                className="h-10 w-full min-w-0 px-3 border border-border rounded-[var(--radius-input)] bg-card"
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',
@@ -443,7 +443,7 @@ export const Dashboard: React.FC = () => {
                 }}
               />
             </div>
-            <div className="space-y-1">
+            <div className="min-w-0 space-y-1.5 sm:col-span-2 xl:col-span-1">
               <label
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -458,7 +458,7 @@ export const Dashboard: React.FC = () => {
                 type="text"
                 value="3 November 2023"
                 readOnly
-                className="h-10 px-3 border border-border rounded-[var(--radius-input)] bg-card w-40"
+                className="h-10 w-full min-w-0 px-3 border border-border rounded-[var(--radius-input)] bg-card"
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',
@@ -469,8 +469,8 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
-          <table className="w-full text-left">
+        <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card shadow-[var(--elevation-sm)]">
+          <table className="w-full min-w-[760px] text-left">
             <thead className="bg-muted/50 border-b border-border">
               <tr>
                 {[
