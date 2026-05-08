@@ -185,6 +185,8 @@ const DownloadCenter: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
 
     const targetId = pendingDocumentIdRef.current ?? `doc-${Date.now()}`;
     const existingDocument = documents.find((document) => document.id === targetId);
+    const objectUrl = URL.createObjectURL(file);
+    const isImage = file.type.startsWith('image/');
     const nextDocument: DocumentItem = {
       id: targetId,
       title: existingDocument?.title ?? file.name.replace(/\.[^.]+$/, ''),
@@ -192,8 +194,8 @@ const DownloadCenter: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
       fileName: file.name,
       status: 'Uploaded',
       uploadedAt: new Date().toLocaleString(),
-      url: URL.createObjectURL(file),
-      img: existingDocument?.img ?? defaultDocuments[0].img,
+      url: objectUrl,
+      img: isImage ? objectUrl : existingDocument?.img ?? defaultDocuments[0].img,
     };
 
     setUploadingDocumentId(targetId);
