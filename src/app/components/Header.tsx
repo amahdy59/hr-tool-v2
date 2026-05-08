@@ -21,21 +21,21 @@ const getInitials = (name: string): string => {
 
 export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
   return (
-    <header className="h-16 border-b border-border bg-card px-6 flex items-center justify-between sticky top-0 z-10">
+    <header className="min-h-14 border-b border-border bg-card px-4 py-3 flex items-center justify-between sticky top-0 z-10 sm:h-16 sm:px-6 sm:py-0">
       <div className="flex items-center gap-3">
         <h1
           className="text-primary"
           style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: 'var(--text-lg)',
+            fontSize: 'clamp(var(--text-base), 4vw, var(--text-lg))',
             fontWeight: 'var(--font-weight-semibold)',
-            lineHeight: 1.5,
+            lineHeight: 1.2,
           }}
         >
           Human Resources Tool
         </h1>
         <span
-          className="bg-muted px-2 py-0.5 rounded-[var(--radius-sm)] border border-border text-muted-foreground"
+          className="hidden bg-muted px-2 py-0.5 rounded-[var(--radius-sm)] border border-border text-muted-foreground sm:inline-flex"
           style={{
             fontFamily: "'Inter', sans-serif",
             fontSize: 'var(--text-xs)',
@@ -46,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
         </span>
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="hidden items-center gap-6 sm:flex">
         <div className="flex items-center gap-2.5">
           {currentUser?.image ? (
             <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-border">

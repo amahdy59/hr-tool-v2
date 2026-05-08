@@ -268,7 +268,7 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 p-8 max-w-7xl mx-auto">
+    <div className="space-y-6 p-4 sm:space-y-8 sm:p-8 max-w-7xl mx-auto">
 
       {/* Top Controls */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -296,7 +296,7 @@ export const Dashboard: React.FC = () => {
             </span>
             <HelpCircle className="w-4 h-4 text-primary" />
           </div>
-          <div className="mt-2 w-64">
+          <div className="mt-2 w-full sm:w-64">
             <Select value={currentWeekend} onValueChange={handleWeekendChange}>
               <SelectTrigger className="w-full rounded-[var(--radius-input)] bg-card border-border">
                 <SelectValue />
@@ -311,15 +311,16 @@ export const Dashboard: React.FC = () => {
             </Select>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
           <Button
             variant="outline"
+            className="w-full sm:w-auto"
             onClick={() => setRequestLeaveOpen(true)}
           >
             Request Leave
           </Button>
           <Button
-            className="bg-chart-3 hover:bg-chart-3/90 text-white"
+            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white sm:w-auto"
             onClick={() => setRequestMissionOpen(true)}
           >
             Request Mission
@@ -328,7 +329,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Timesheet Section */}
-      <section className="space-y-4">
+      <section className="hidden space-y-4 sm:block">
         <h3
           style={{
             fontFamily: "'Inter', sans-serif",
