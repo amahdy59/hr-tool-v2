@@ -269,7 +269,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
   // Handlers - Experience
   const handleEditExperience = (exp: ExperienceData) => {
-    setSelectedExperience(exp);
+    setSelectedExperience({ ...exp });
     setEditExpOpen(true);
   };
 
@@ -329,7 +329,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
   // Handlers - Education
   const handleEditEducation = (edu: EducationData) => {
-    setSelectedEducation(edu);
+    setSelectedEducation({ ...edu });
     setEditEduOpen(true);
   };
 
@@ -837,8 +837,8 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       {/* Edit Modals */}
       <EditAboutModal open={editAboutOpen} onOpenChange={setEditAboutOpen} data={about} onSave={setAbout} />
       <EditContactModal open={editContactOpen} onOpenChange={setEditContactOpen} data={contact} onSave={setContact} />
-      {selectedExperience && <EditExperienceModal open={editExpOpen} onOpenChange={setEditExpOpen} data={selectedExperience} onSave={handleSaveExperience} />}
-      {selectedEducation && <EditEducationModal open={editEduOpen} onOpenChange={setEditEduOpen} data={selectedEducation} onSave={handleSaveEducation} />}
+      {selectedExperience && <EditExperienceModal key={selectedExperience.id} open={editExpOpen} onOpenChange={setEditExpOpen} data={selectedExperience} onSave={handleSaveExperience} />}
+      {selectedEducation && <EditEducationModal key={selectedEducation.id} open={editEduOpen} onOpenChange={setEditEduOpen} data={selectedEducation} onSave={handleSaveEducation} />}
       {selectedProject && <EditProjectModal open={editProjectOpen} onOpenChange={setEditProjectOpen} data={selectedProject} onSave={handleSaveProject} />}
       {selectedCertification && <EditCertificationModal open={editCertOpen} onOpenChange={setEditCertOpen} data={selectedCertification} onSave={handleSaveCertification} />}
       {selectedSkill && <EditSkillModal open={editSkillOpen} onOpenChange={setEditSkillOpen} data={selectedSkill} onSave={handleSaveSkill} />}
