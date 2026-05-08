@@ -54,8 +54,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
           'relative flex min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center text-[11px] transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-0 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-left sm:text-[var(--text-sm)]',
           collapsed ? 'sm:justify-center' : 'sm:justify-start',
           isActive
-            ? 'bg-sidebar-accent text-sidebar-accent-foreground shadow-sm scale-[0.98]'
-            : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:scale-[1.02] active:scale-[0.98]'
+            ? 'bg-[#EDEFFB] text-[#102A56] shadow-sm scale-[0.98]'
+            : 'text-sidebar-foreground hover:bg-[#EDEFFB] hover:text-[#102A56] hover:scale-[1.02] active:scale-[0.98]'
         )}
       >
         {/* Ripple effect on click */}
@@ -80,7 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         
         {/* Active indicator */}
         {isActive && !collapsed && (
-          <span className="hidden sm:block ml-auto w-1.5 h-1.5 rounded-full bg-sidebar-accent-foreground animate-pulse shrink-0" />
+          <span className="hidden sm:block ml-auto w-1.5 h-1.5 rounded-full bg-[#102A56] animate-pulse shrink-0" />
         )}
       </button>
     );
