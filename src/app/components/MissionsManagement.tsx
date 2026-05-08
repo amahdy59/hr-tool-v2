@@ -18,7 +18,6 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { Checkbox } from './ui/checkbox';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 import { StatusBadge } from './StatusBadge';
 import { toast } from 'sonner';
 
@@ -159,8 +158,7 @@ export const MissionsManagement: React.FC = () => {
                   <tr key={m.id} className="hover:bg-muted/30 transition-colors">
                     <td className="px-4 py-3"><Checkbox checked={selectedPending.includes(m.id)} onCheckedChange={() => togglePending(m.id)} /></td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={m.img} alt={m.name} className="w-full h-full object-cover" /></div>
+                      <div className="flex items-center">
                         <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{m.name}</span>
                       </div>
                     </td>
@@ -242,8 +240,7 @@ export const MissionsManagement: React.FC = () => {
                 {HISTORY_MISSIONS.map(m => (
                   <tr key={m.id} className="hover:bg-muted/30 transition-colors">
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={m.img} alt={m.name} className="w-full h-full object-cover" /></div>
+                      <div className="flex items-center">
                         <span className="text-foreground font-[var(--font-weight-medium)]">{m.name}</span>
                       </div>
                     </td>
@@ -422,7 +419,7 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
           <tbody className="divide-y divide-border">
             {items.map(m => (
               <tr key={m.id} className="hover:bg-muted/30">
-                <td className="px-4 py-2.5"><div className="flex items-center gap-2"><div className="w-6 h-6 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={m.img} alt={m.name} className="w-full h-full object-cover" /></div><span className="text-foreground font-[var(--font-weight-medium)]">{m.name}</span></div></td>
+                <td className="px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{m.name}</span></td>
                 <td className="px-4 py-2.5 text-foreground">{m.type}</td>
                 <td className="px-4 py-2.5 text-foreground">{m.range}</td>
                 <td className="px-4 py-2.5 text-foreground">{m.duration}</td>
@@ -449,12 +446,11 @@ const ViewMissionDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
         {mission && (
           <div className="space-y-4">
             <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={mission.img} alt={mission.name} className="w-full h-full object-cover" /></div>
               <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{mission.name}</p><p className="text-[var(--text-xs)] text-muted-foreground">{mission.employeeNumber || '00000'}</p></div>
             </div>
             <div className="flex border-b border-border gap-4">
-              <button onClick={() => setDetailTab('details')} className={cn('pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'details' ? 'border-b-2 border-primary text-primary font-[var(--font-weight-medium)]' : 'text-muted-foreground hover:text-foreground')}>Details</button>
-              <button onClick={() => setDetailTab('history')} className={cn('pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'history' ? 'border-b-2 border-primary text-primary font-[var(--font-weight-medium)]' : 'text-muted-foreground hover:text-foreground')}>History</button>
+              <button onClick={() => setDetailTab('details')} className={cn('border-b-2 border-transparent pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'details' ? 'border-accent text-accent font-[var(--font-weight-semibold)]' : 'text-muted-foreground hover:text-foreground')}>Details</button>
+              <button onClick={() => setDetailTab('history')} className={cn('border-b-2 border-transparent pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'history' ? 'border-accent text-accent font-[var(--font-weight-semibold)]' : 'text-muted-foreground hover:text-foreground')}>History</button>
             </div>
             {detailTab === 'details' && (
               <div className="space-y-3 text-[var(--text-sm)]">

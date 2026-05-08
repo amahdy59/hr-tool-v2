@@ -95,9 +95,9 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
             aria-pressed={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              'pb-3 text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
+              'border-b-2 border-transparent pb-3 pt-1 text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
               activeTab === tab.id
-                ? "text-chart-3 font-[var(--font-weight-semibold)] border-b-2 border-chart-3"
+                ? "text-accent font-[var(--font-weight-semibold)] border-accent"
                 : 'text-muted-foreground hover:text-foreground font-[var(--font-weight-medium)]'
             )}
             style={{ fontFamily: "'Inter', sans-serif" }}
@@ -111,7 +111,7 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
       <div>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search this profile area..." className={cn(inputClass, 'pl-10')} style={{ fontFamily: "'Inter', sans-serif" }} />
+          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search this profile area..." className={cn(inputClass, 'pl-10 cursor-text')} style={{ fontFamily: "'Inter', sans-serif" }} />
         </div>
       </div>
 

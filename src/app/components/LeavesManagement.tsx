@@ -18,7 +18,6 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { Checkbox } from './ui/checkbox';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 import { StatusBadge } from './StatusBadge';
 import { toast } from 'sonner';
 
@@ -186,8 +185,7 @@ export const LeavesManagement: React.FC = () => {
                   <tr key={leave.id} className="hover:bg-muted/30 transition-colors">
                     <td className="px-4 py-3"><Checkbox checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} /></td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={leave.img} alt={leave.name} className="w-full h-full object-cover" /></div>
+                      <div className="flex items-center">
                         <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{leave.name}</span>
                       </div>
                     </td>
@@ -333,8 +331,7 @@ export const LeavesManagement: React.FC = () => {
                 {HISTORY_LEAVES.map(leave => (
                   <tr key={leave.id} className="hover:bg-muted/30 transition-colors">
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={leave.img} alt={leave.name} className="w-full h-full object-cover" /></div>
+                      <div className="flex items-center">
                         <span className="text-foreground font-[var(--font-weight-medium)]">{leave.name}</span>
                       </div>
                     </td>
@@ -526,7 +523,7 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
           <tbody className="divide-y divide-border">
             {items.map(l => (
               <tr key={l.id} className="hover:bg-muted/30">
-                <td className="px-4 py-2.5"><div className="flex items-center gap-2"><div className="w-6 h-6 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={l.img} alt={l.name} className="w-full h-full object-cover" /></div><span className="text-foreground font-[var(--font-weight-medium)]">{l.name}</span></div></td>
+                <td className="px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{l.name}</span></td>
                 <td className="px-4 py-2.5 text-foreground">{l.type}</td>
                 <td className="px-4 py-2.5 text-foreground">{l.range}</td>
                 <td className="px-4 py-2.5 text-foreground">{l.duration}</td>
@@ -552,7 +549,6 @@ const ViewLeaveDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean)
       {leave && (
         <div className="space-y-4">
           <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
-            <div className="w-10 h-10 rounded-full overflow-hidden border border-border shrink-0"><ImageWithFallback src={leave.img} alt={leave.name} className="w-full h-full object-cover" /></div>
             <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{leave.name}</p><p className="text-[var(--text-xs)] text-muted-foreground uppercase">{leave.employeeNumber || '00000'}</p></div>
           </div>
           <div className="space-y-3 text-[var(--text-sm)]">

@@ -9,7 +9,6 @@ import { LeavesManagement } from './components/LeavesManagement';
 import { MissionsManagement } from './components/MissionsManagement';
 import { RolesManagement } from './components/RolesManagement';
 import { Profile } from './components/Profile';
-import { Payroll } from './components/Payroll';
 import { Login } from './components/Login';
 import { ScrollToTop } from './components/ScrollToTop';
 
@@ -38,7 +37,7 @@ const contentByTab: Record<AppTab, (currentUser: CurrentUser, onUpdateImage: (ne
   missions: () => <MissionsManagement />,
   roles: () => <RolesManagement />,
   profile: (currentUser, onUpdateImage) => <Profile currentUser={currentUser} onUpdateImage={onUpdateImage} />,
-  payrolls: () => <Payroll />,
+  payrolls: () => <PayrollUnderDevelopment />,
 };
 
 const formatNameFromEmail = (email: string) =>
@@ -125,7 +124,7 @@ export default function App() {
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Header currentUser={currentUser} />
-        <main ref={mainRef} className="flex-1 overflow-y-auto bg-muted">
+        <main ref={mainRef} className="flex-1 overflow-y-auto bg-muted cursor-default">
           {renderContent()}
         </main>
       </div>
@@ -133,3 +132,28 @@ export default function App() {
     </div>
   );
 }
+
+const PayrollUnderDevelopment: React.FC = () => (
+  <div className="p-6 lg:p-8 max-w-7xl mx-auto">
+    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
+      <section className="w-full max-w-2xl rounded-[var(--radius-card)] border border-border bg-card p-8 text-center shadow-[var(--elevation-sm)]">
+        <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] uppercase tracking-[0.08em] text-accent">
+          Under development
+        </p>
+        <h2
+          className="mt-3 text-foreground"
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: 'var(--page-title-size)',
+            fontWeight: 'var(--page-title-weight)',
+          }}
+        >
+          Payrolls are coming soon
+        </h2>
+        <p className="mt-2 text-[var(--text-sm)] text-muted-foreground">
+          This section is intentionally paused while payroll workflows, permissions, and audit controls are finalized.
+        </p>
+      </section>
+    </div>
+  </div>
+);

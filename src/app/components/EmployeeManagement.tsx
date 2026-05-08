@@ -53,7 +53,6 @@ import {
   TooltipTrigger,
 } from './ui/tooltip';
 import { Checkbox } from './ui/checkbox';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 import { toast } from 'sonner';
 
 // ── Types ──
@@ -76,7 +75,6 @@ interface Employee {
 interface ActivityEntry {
   id: string;
   admin: string;
-  adminImg: string;
   action: string;
   date: string;
   affectedCount: number;
@@ -115,10 +113,10 @@ const EMPLOYEES: Employee[] = [
 ];
 
 const ACTIVITY_LOG: ActivityEntry[] = [
-  { id: '1', admin: 'Muhammed Habib', adminImg: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop', action: 'Edited Employee Info', date: 'February 25, 2013', affectedCount: 2, affectedEmployeeNumber: '12345' },
-  { id: '2', admin: 'Lena Mohamed', adminImg: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop', action: 'Terminated Employee', date: 'April 25, 2011', affectedCount: 1, affectedEmployeeNumber: '54321' },
-  { id: '3', admin: 'Mohammed Habib', adminImg: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop', action: 'Added New Employee', date: 'January 4, 2014', affectedCount: 3, affectedEmployeeNumber: '98765' },
-  { id: '4', admin: 'Mohammed Habib', adminImg: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop', action: 'Edited Access Card Details', date: 'January 4, 2014', affectedCount: 1, affectedEmployeeNumber: '98765' },
+  { id: '1', admin: 'Muhammed Habib', action: 'Edited Employee Info', date: 'February 25, 2013', affectedCount: 2, affectedEmployeeNumber: '12345' },
+  { id: '2', admin: 'Lena Mohamed', action: 'Terminated Employee', date: 'April 25, 2011', affectedCount: 1, affectedEmployeeNumber: '54321' },
+  { id: '3', admin: 'Mohammed Habib', action: 'Added New Employee', date: 'January 4, 2014', affectedCount: 3, affectedEmployeeNumber: '98765' },
+  { id: '4', admin: 'Mohammed Habib', action: 'Edited Access Card Details', date: 'January 4, 2014', affectedCount: 1, affectedEmployeeNumber: '98765' },
 ];
 
 const DEPARTMENTS: Department[] = [
@@ -1103,9 +1101,6 @@ const ActivityLogDetailModal: React.FC<{
         {entry && (
           <div className="space-y-4">
             <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-border shrink-0">
-                <ImageWithFallback src={entry.adminImg} alt={entry.admin} className="w-full h-full object-cover" />
-              </div>
               <div>
                 <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{entry.admin}</p>
                 <p className="text-[var(--text-xs)] text-muted-foreground">{entry.action}</p>
@@ -1114,8 +1109,8 @@ const ActivityLogDetailModal: React.FC<{
 
             {/* Tabs */}
             <div className="flex border-b border-border gap-4">
-              <button onClick={() => setDetailTab('admin')} className={cn('pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'admin' ? 'border-b-2 border-primary text-primary font-[var(--font-weight-medium)]' : 'text-muted-foreground hover:text-foreground')}>Admin</button>
-              <button onClick={() => setDetailTab('affected')} className={cn('pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'affected' ? 'border-b-2 border-primary text-primary font-[var(--font-weight-medium)]' : 'text-muted-foreground hover:text-foreground')}>Affected Accounts</button>
+              <button onClick={() => setDetailTab('admin')} className={cn('border-b-2 border-transparent pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'admin' ? 'border-accent text-accent font-[var(--font-weight-semibold)]' : 'text-muted-foreground hover:text-foreground')}>Admin</button>
+              <button onClick={() => setDetailTab('affected')} className={cn('border-b-2 border-transparent pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'affected' ? 'border-accent text-accent font-[var(--font-weight-semibold)]' : 'text-muted-foreground hover:text-foreground')}>Affected Accounts</button>
             </div>
 
             {detailTab === 'admin' && (
