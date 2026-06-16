@@ -497,32 +497,32 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
 const oldSystemScreens = [
   {
-    src: './old-system/add-employee.png',
+    src: `${import.meta.env.BASE_URL}old-system/add-employee.png`,
     title: 'Dense employee forms',
     desc: 'The original design packed too many fields into tight spaces without clear visual hierarchy, making data entry overwhelming and prone to errors.',
   },
   {
-    src: './old-system/approval.png',
+    src: `${import.meta.env.BASE_URL}old-system/approval.png`,
     title: 'Unclear request statuses',
     desc: 'Employees struggled to track their requests because the status indicators blended in with the table data and lacked descriptive context.',
   },
   {
-    src: './old-system/upload-notes.png',
+    src: `${import.meta.env.BASE_URL}old-system/upload-notes.png`,
     title: 'Vacation requests split across pages',
     desc: 'Submitting or tracking leave required separate search and export screens.',
   },
   {
-    src: './old-system/mission-form.png',
+    src: `${import.meta.env.BASE_URL}old-system/mission-form.png`,
     title: 'Mission submission friction',
     desc: 'A mission request required multiple fields and disconnected approval context.',
   },
   {
-    src: '/old-system/mission-approver.png',
+    src: `${import.meta.env.BASE_URL}old-system/mission-approver.png`,
     title: 'Approver setup complexity',
     desc: 'Approver management depended on manual lookup and form-heavy setup.',
   },
   {
-    src: '/old-system/approval-list.png',
+    src: `${import.meta.env.BASE_URL}old-system/approval-list.png`,
     title: 'Unclear support messaging',
     desc: 'Critical notes were visually loud but not structured for quick comprehension.',
   },
