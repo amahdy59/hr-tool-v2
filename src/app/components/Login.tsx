@@ -497,22 +497,22 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
 const oldSystemScreens = [
   {
-    src: '/old-system/add-employee.png',
+    src: './old-system/add-employee.png',
     title: 'Dense employee forms',
-    desc: 'Long two-column forms made scanning difficult and increased the chance of missed required fields.',
+    desc: 'The original design packed too many fields into tight spaces without clear visual hierarchy, making data entry overwhelming and prone to errors.',
   },
   {
-    src: '/old-system/find-employees.png',
-    title: 'Search-heavy flows',
-    desc: 'Employees and HR teams had to search and move through several screens before taking action.',
+    src: './old-system/approval.png',
+    title: 'Unclear request statuses',
+    desc: 'Employees struggled to track their requests because the status indicators blended in with the table data and lacked descriptive context.',
   },
   {
-    src: '/old-system/search-vacations.png',
+    src: './old-system/upload-notes.png',
     title: 'Vacation requests split across pages',
     desc: 'Submitting or tracking leave required separate search and export screens.',
   },
   {
-    src: '/old-system/mission-form.png',
+    src: './old-system/mission-form.png',
     title: 'Mission submission friction',
     desc: 'A mission request required multiple fields and disconnected approval context.',
   },
