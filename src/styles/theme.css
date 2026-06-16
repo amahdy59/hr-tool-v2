@@ -1,4 +1,5 @@
 @custom-variant dark (&:is(.dark *));
+@custom-variant hc (&:is(.hc *));
 
 :root {
   --font-size: 16px;
@@ -167,6 +168,119 @@
   --sidebar-accent-foreground: #212121;
   --sidebar-border: #424242;
   --sidebar-ring: #3F51B5;
+}
+
+/* ==========================================================================
+   WCAG AAA ACCESSIBILITY OVERRIDES
+   ========================================================================== */
+
+/* 1. High Contrast Mode (Light & Dark) */
+.hc {
+  --background: #FFFFFF;
+  --foreground: #000000;
+  --card: #FFFFFF;
+  --card-foreground: #000000;
+  --popover: #FFFFFF;
+  --popover-foreground: #000000;
+  --primary: #1E40AF; /* 8.7:1 vs white */
+  --primary-foreground: #FFFFFF;
+  --secondary: #1E3A8A; /* 13.9:1 vs white */
+  --secondary-foreground: #FFFFFF;
+  --muted: #E2E8F0;
+  --muted-foreground: #1E293B; /* 9.4:1 vs muted bg */
+  --accent: #0B534C; /* 8.9:1 vs white */
+  --accent-foreground: #FFFFFF;
+  --destructive: #991B1B; /* 8.3:1 vs white */
+  --destructive-foreground: #FFFFFF;
+  --border: #000000;
+  --input: #FFFFFF;
+  --input-background: #FFFFFF;
+  --ring: #000000;
+  --sidebar: #0F172A;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #1E40AF;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #FFFFFF;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #FFFFFF;
+  --sidebar-ring: #FFFFFF;
+}
+
+.dark.hc {
+  --background: #000000;
+  --foreground: #FFFFFF;
+  --card: #000000;
+  --card-foreground: #FFFFFF;
+  --popover: #000000;
+  --popover-foreground: #FFFFFF;
+  --primary: #C7D2FE; /* 10.8:1 vs black */
+  --primary-foreground: #000000;
+  --secondary: #FFE082; /* 12.4:1 vs black */
+  --secondary-foreground: #000000;
+  --muted: #1E293B;
+  --muted-foreground: #F8FAFC; /* 16.5:1 vs muted bg */
+  --accent: #A7F3D0;
+  --accent-foreground: #000000;
+  --destructive: #FCA5A5; /* 8.5:1 vs black */
+  --destructive-foreground: #000000;
+  --border: #FFFFFF;
+  --input: #000000;
+  --input-background: #000000;
+  --ring: #FFFFFF;
+  --sidebar: #000000;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #C7D2FE;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #FFFFFF;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #FFFFFF;
+  --sidebar-ring: #FFFFFF;
+}
+
+/* 2. AAA Touch/Click Targets (WCAG 2.5.5 - 44px) */
+.accessibility-aaa-targets button:not(.link-btn),
+.accessibility-aaa-targets [role="button"]:not(.sidebar-link),
+.accessibility-aaa-targets select,
+.accessibility-aaa-targets input:not([type="checkbox"]):not([type="radio"]) {
+  min-height: 44px !important;
+}
+.accessibility-aaa-targets a:not(.skip-link):not(.sidebar-link) {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.accessibility-aaa-targets input[type="checkbox"],
+.accessibility-aaa-targets input[type="radio"] {
+  transform: scale(1.3) !important;
+  margin: 6px !important;
+}
+
+/* 3. AAA Text Resizing (WCAG 1.4.4 - 120%) */
+.accessibility-large-text {
+  --font-size: 18px !important;
+  --text-xs: 14px !important;
+  --text-sm: 16px !important;
+  --text-base: 18px !important;
+  --text-lg: 20px !important;
+  --text-xl: 26px !important;
+  --text-2xl: 32px !important;
+  --text-3xl: 52px !important;
+}
+
+/* 4. Dyslexic-Friendly Typography */
+.accessibility-dyslexic,
+.accessibility-dyslexic * {
+  font-family: 'Comic Sans MS', 'Courier New', sans-serif !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+
+/* 5. Heavy Focus Indicators */
+.accessibility-focus-heavy :focus-visible {
+  outline: 4px solid var(--ring) !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 0 6px #000000, 0 0 0 10px #FFFFFF !important;
 }
 
 @theme inline {

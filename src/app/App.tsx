@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Toaster } from 'sonner';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
@@ -47,6 +47,51 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const mainRef = useRef<HTMLElement>(null);
 
+  // Accessibility states
+  const [highContrast, setHighContrast] = useState(() => localStorage.getItem('accessibility-aaa-contrast') === 'true');
+  const [largeTargets, setLargeTargets] = useState(() => localStorage.getItem('accessibility-aaa-targets') === 'true');
+  const [largeText, setLargeText] = useState(() => localStorage.getItem('accessibility-large-text') === 'true');
+  const [dyslexic, setDyslexic] = useState(() => localStorage.getItem('accessibility-dyslexic') === 'true');
+  const [focusHeavy, setFocusHeavy] = useState(() => localStorage.getItem('accessibility-focus-heavy') === 'true');
+
+  useEffect(() => {
+    const el = document.documentElement;
+    el.classList.toggle('hc', highContrast);
+    localStorage.setItem('accessibility-aaa-contrast', String(highContrast));
+  }, [highContrast]);
+
+  useEffect(() => {
+    const el = document.documentElement;
+    el.classList.toggle('accessibility-aaa-targets', largeTargets);
+    localStorage.setItem('accessibility-aaa-targets', String(largeTargets));
+  }, [largeTargets]);
+
+  useEffect(() => {
+    const el = document.documentElement;
+    el.classList.toggle('accessibility-large-text', largeText);
+    localStorage.setItem('accessibility-large-text', String(largeText));
+  }, [largeText]);
+
+  useEffect(() => {
+    const el = document.documentElement;
+    el.classList.toggle('accessibility-dyslexic', dyslexic);
+    localStorage.setItem('accessibility-dyslexic', String(dyslexic));
+  }, [dyslexic]);
+
+  useEffect(() => {
+    const el = document.documentElement;
+    el.classList.toggle('accessibility-focus-heavy', focusHeavy);
+    localStorage.setItem('accessibility-focus-heavy', String(focusHeavy));
+  }, [focusHeavy]);
+
+  const accessibility = {
+    highContrast, setHighContrast,
+    largeTargets, setLargeTargets,
+    largeText, setLargeText,
+    dyslexic, setDyslexic,
+    focusHeavy, setFocusHeavy
+  };
+
   const toasterOptions = useMemo(
     () => ({
       style: {
@@ -86,7 +131,7 @@ export default function App() {
           position="bottom-right"
           toastOptions={toasterOptions}
         />
-        <Login onLogin={handleLogin} />
+        <Login onLogin={handleLogin} accessibility={accessibility} />
       </>
     );
   }
@@ -103,6 +148,13 @@ export default function App() {
 
   return (
     <div className="flex h-screen bg-background text-foreground overflow-hidden">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2.5 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        style={{ fontFamily: "'Inter', sans-serif" }}
+      >
+        Skip to main content
+      </a>
       <Toaster
         position="bottom-right"
         toastOptions={toasterOptions}
@@ -115,8 +167,8 @@ export default function App() {
         onLogout={handleLogout}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <Header currentUser={currentUser} />
-        <main ref={mainRef} className="flex-1 overflow-y-auto bg-muted cursor-default pb-24 sm:pb-0">
+        <Header currentUser={currentUser} accessibility={accessibility} />
+        <main ref={mainRef} id="main-content" className="flex-1 overflow-y-auto bg-muted cursor-default pb-24 sm:pb-0">
           {renderContent()}
         </main>
       </div>

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle, Eye, EyeOff, Info, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 
 interface LoginProps {
   onLogin: (email: string) => void;
+  accessibility: AccessibilitySettings;
 }
 
-export const Login: React.FC<LoginProps> = ({ onLogin }) => {
+export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -70,6 +72,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Floating Accessibility settings for pre-login accessibility configuration */}
+      <div className="absolute top-4 right-4 z-50">
+        <AccessibilityPanel settings={accessibility} />
+      </div>
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#1a237e] via-[#283593] to-[#3949ab]">
         {/* Animated overlay gradients */}
@@ -235,8 +241,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  tabIndex={-1}
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -249,22 +255,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
             {/* Remember Me & Forgot Password */}
             <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer">
+              <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
+                  id="rememberMe"
                   className="w-4 h-4 rounded border-border accent-primary cursor-pointer"
                 />
-                <span
+                <label
+                  htmlFor="rememberMe"
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontSize: 'var(--text-sm)',
                     fontWeight: 'var(--font-weight-normal)',
                   }}
-                  className="text-foreground"
+                  className="text-foreground cursor-pointer"
                 >
                   Remember me
-                </span>
-              </label>
+                </label>
+              </div>
               <button
                 type="button"
                 style={{

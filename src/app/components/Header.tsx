@@ -1,5 +1,6 @@
 import React from 'react';
 import { User } from 'lucide-react';
+import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 
 interface HeaderProps {
   currentUser: {
@@ -8,6 +9,7 @@ interface HeaderProps {
     position: string;
     image: string;
   } | null;
+  accessibility: AccessibilitySettings;
 }
 
 // Helper function to get initials from name
@@ -19,7 +21,7 @@ const getInitials = (name: string): string => {
     .join('');
 };
 
-export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
+export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility }) => {
   return (
     <header className="min-h-14 border-b border-border bg-card px-4 py-3 flex items-center justify-between sticky top-0 z-10 sm:h-16 sm:px-6 sm:py-0">
       <div className="flex items-center gap-3">
@@ -36,8 +38,10 @@ export const Header: React.FC<HeaderProps> = ({ currentUser }) => {
         </h1>
       </div>
 
-      <div className="hidden items-center gap-6 sm:flex">
-        <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-4">
+        <AccessibilityPanel settings={accessibility} />
+
+        <div className="hidden items-center gap-2.5 sm:flex">
           {currentUser?.image ? (
             <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-border">
               <img 

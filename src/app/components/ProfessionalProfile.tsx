@@ -1075,11 +1075,19 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
   };
 
   return (
-    <span className={cn("group relative px-3 py-1.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm", getLevelColor(data.level))} onClick={onEdit} style={{ fontFamily: "'Inter', sans-serif" }}>
+    <span 
+      tabIndex={0} 
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }} 
+      className={cn("group relative px-3 py-1.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary", getLevelColor(data.level))} 
+      onClick={onEdit} 
+      style={{ fontFamily: "'Inter', sans-serif" }}
+    >
       {data.name}
       <button 
+        type="button"
         onClick={(e) => { e.stopPropagation(); onDelete(); }} 
-        className="opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110"
+        aria-label={`Delete ${data.name} skill`}
+        className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1 rounded-full"
       >
         <X className="w-3 h-3" />
       </button>
