@@ -340,7 +340,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
             </Button>
             <Button
               variant="destructive"
-              className="rounded-[var(--radius-button)] flex items-center gap-2 flex-1 ml-3"
+              className="rounded-[var(--radius-button)] flex items-center gap-2 flex-1 ms-3"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontSize: 'var(--text-sm)',

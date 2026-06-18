@@ -471,7 +471,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card shadow-[var(--elevation-sm)]">
-          <table className="w-full min-w-[760px] text-left">
+          <table className="w-full min-w-[760px] text-start">
             <thead className="bg-muted/50 border-b border-border">
               <tr>
                 {[
@@ -487,7 +487,7 @@ export const Dashboard: React.FC = () => {
                     key={header}
                     className={cn(
                       'px-4 py-3',
-                      header === 'Actions' && 'text-right'
+                      header === 'Actions' && 'text-end'
                     )}
                     style={{
                       fontFamily: "'Inter', sans-serif",
@@ -586,7 +586,7 @@ export const Dashboard: React.FC = () => {
             Annual and Sick Leaves
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-hidden">
-            <table className="w-full text-left">
+            <table className="w-full text-start">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {[
@@ -658,7 +658,7 @@ export const Dashboard: React.FC = () => {
             Other Leaves
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-hidden">
-            <table className="w-full text-left">
+            <table className="w-full text-start">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {['Leave Type', 'Balance'].map((h) => (
@@ -893,7 +893,7 @@ const HistoryRow: React.FC<{
           )}
         </div>
       </td>
-      <td className="px-4 py-3 text-right">
+      <td className="px-4 py-3 text-end">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="p-1 hover:bg-muted rounded-[var(--radius)]">
@@ -902,7 +902,7 @@ const HistoryRow: React.FC<{
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
             <DropdownMenuItem onClick={onView} className="cursor-pointer">
-              <Eye className="w-4 h-4 mr-2" />
+              <Eye className="w-4 h-4 me-2" />
               <span
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -921,7 +921,7 @@ const HistoryRow: React.FC<{
                   className="cursor-pointer"
                   variant="destructive"
                 >
-                  <XCircle className="w-4 h-4 mr-2" />
+                  <XCircle className="w-4 h-4 me-2" />
                   <span
                     style={{
                       fontFamily: "'Inter', sans-serif",
@@ -936,7 +936,7 @@ const HistoryRow: React.FC<{
             )}
             {item.canEdit && (
               <DropdownMenuItem onClick={onEdit} className="cursor-pointer">
-                <Pencil className="w-4 h-4 mr-2" />
+                <Pencil className="w-4 h-4 me-2" />
                 <span
                   style={{
                     fontFamily: "'Inter', sans-serif",

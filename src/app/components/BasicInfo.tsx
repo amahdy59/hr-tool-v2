@@ -194,7 +194,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
           {/* Change Image Button */}
           <button
             onClick={() => setChangeImageOpen(true)}
-            className="absolute bottom-3 right-0 w-9 h-9 rounded-full bg-chart-3 hover:bg-chart-3/90 text-white flex items-center justify-center shadow-[var(--elevation-md)] transition-all cursor-pointer border-2 border-card"
+            className="absolute bottom-3 end-0 w-9 h-9 rounded-full bg-chart-3 hover:bg-chart-3/90 text-white flex items-center justify-center shadow-[var(--elevation-md)] transition-all cursor-pointer border-2 border-card"
             aria-label="Change profile picture"
           >
             <Camera className="w-4 h-4" />
@@ -229,7 +229,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
               Add a contact so HR can reach someone in case of emergency.
             </p>
             <Button onClick={handleAddEmergency} variant="outline" size="sm">
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               Add Contact
             </Button>
           </div>
@@ -394,7 +394,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
           onClick={() => setBankRequestOpen(true)}
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <Upload className="w-4 h-4 mr-2" /> Request Bank Update
+          <Upload className="w-4 h-4 me-2" /> Request Bank Update
         </Button>
       </ProfileCard>
 
@@ -706,7 +706,7 @@ const ChangeImageModal: React.FC<{
                 type="file" 
                 accept="image/jpeg,image/png" 
                 onChange={handleFileChange}
-                className="block w-full text-[var(--text-sm)] file:mr-4 file:py-2 file:px-4 file:rounded-[var(--radius-button)] file:border-0 file:text-[var(--text-sm)] file:font-[var(--font-weight-medium)] file:bg-chart-3 file:text-white hover:file:bg-chart-3/90 file:cursor-pointer cursor-pointer"
+                className="block w-full text-[var(--text-sm)] file:me-4 file:py-2 file:px-4 file:rounded-[var(--radius-button)] file:border-0 file:text-[var(--text-sm)] file:font-[var(--font-weight-medium)] file:bg-chart-3 file:text-white hover:file:bg-chart-3/90 file:cursor-pointer cursor-pointer"
                 style={{ fontFamily: "'Inter', sans-serif" }}
                 disabled={uploading}
               />
@@ -776,7 +776,7 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
             <input 
               type="file" 
               accept="application/pdf,image/*"
-              className="block w-full text-[var(--text-sm)] file:mr-4 file:py-2 file:px-4 file:rounded-[var(--radius-button)] file:border-0 file:text-[var(--text-sm)] file:font-[var(--font-weight-medium)] file:bg-muted file:text-foreground hover:file:bg-muted/80 file:cursor-pointer cursor-pointer"
+              className="block w-full text-[var(--text-sm)] file:me-4 file:py-2 file:px-4 file:rounded-[var(--radius-button)] file:border-0 file:text-[var(--text-sm)] file:font-[var(--font-weight-medium)] file:bg-muted file:text-foreground hover:file:bg-muted/80 file:cursor-pointer cursor-pointer"
               style={{ fontFamily: "'Inter', sans-serif" }}
             />
             <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -868,22 +868,30 @@ const FormField: React.FC<{
   autoComplete?: string;
   placeholder?: string;
   maxLength?: number;
-}> = ({ label, value, onChange, type = 'text', inputMode, autoComplete, placeholder, maxLength }) => (
-  <div className="space-y-1.5">
-    <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>{label}</label>
-    <input 
-      type={type} 
-      value={value} 
-      onChange={e => onChange(e.target.value)} 
-      className={inputClass} 
-      placeholder={placeholder} 
-      maxLength={maxLength}
-      inputMode={inputMode}
-      autoComplete={autoComplete}
-      style={{ fontFamily: "'Inter', sans-serif" }} 
-    />
-  </div>
-);
+  required?: boolean;
+}> = ({ label, value, onChange, type = 'text', inputMode, autoComplete, placeholder, maxLength, required }) => {
+  const id = `field-${label.replace(/\s+/g, '-').toLowerCase()}`;
+  return (
+    <div className="space-y-1.5">
+      <label htmlFor={id} className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>
+        {label} {required && <span className="text-destructive" aria-hidden="true">*</span>}
+      </label>
+      <input 
+        id={id}
+        type={type} 
+        value={value} 
+        onChange={e => onChange(e.target.value)} 
+        className={inputClass} 
+        placeholder={placeholder} 
+        maxLength={maxLength}
+        inputMode={inputMode}
+        autoComplete={autoComplete}
+        aria-required={required ? "true" : undefined}
+        style={{ fontFamily: "'Inter', sans-serif" }} 
+      />
+    </div>
+  );
+};
 
 // Employment Info Item
 const EmploymentInfoItem: React.FC<{ 

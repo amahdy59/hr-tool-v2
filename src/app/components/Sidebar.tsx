@@ -52,7 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         onClick={() => setActiveTab(item.id)}
         aria-current={isActive ? 'page' : undefined}
         className={cn(
-          'relative flex min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-0 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-left',
+          'relative flex min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-0 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-start',
           sidebarItemTextClass,
           collapsed ? 'sm:justify-center' : 'sm:justify-start',
           isActive
@@ -72,7 +72,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             fontFamily: "'Inter', sans-serif",
           }}
           className={cn(
-            "max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap transition-all duration-300 sm:max-w-none sm:text-left",
+            "max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap transition-all duration-300 sm:max-w-none sm:text-start",
             isActive && "!text-[#111827]",
             collapsed && "sm:hidden"
           )}
@@ -82,7 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         
         {/* Active indicator */}
         {isActive && !collapsed && (
-          <span className="hidden sm:block ml-auto w-1.5 h-1.5 rounded-full !bg-[#111827] animate-pulse shrink-0" />
+          <span className="hidden sm:block ms-auto w-1.5 h-1.5 rounded-full !bg-[#111827] animate-pulse shrink-0" />
         )}
       </button>
     );
@@ -105,7 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
     <TooltipProvider delayDuration={0}>
       <aside
         className={cn(
-          'fixed bottom-0 left-0 right-0 z-30 flex h-auto flex-row border-t border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 sm:relative sm:h-screen sm:flex-col sm:border-r sm:border-t-0',
+          'fixed bottom-0 start-0 end-0 z-30 flex h-auto flex-row border-t border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 sm:relative sm:h-screen sm:flex-col sm:border-e sm:border-t-0',
           collapsed ? 'sm:w-[72px]' : 'sm:w-64'
         )}
       >
@@ -139,13 +139,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         </div>
 
         {/* Navigation */}
-        <nav className={cn('flex flex-1 gap-1 overflow-x-auto p-2 sm:flex-col sm:overflow-y-auto sm:space-y-1', collapsed ? 'sm:p-2' : 'sm:p-3')}>
-          {navItems.map((item) => (
-            <NavButton key={item.id} item={item} />
-          ))}
+        <nav aria-label="Main navigation" className={cn('flex flex-1 gap-1 overflow-x-auto p-2 sm:flex-col sm:overflow-y-auto sm:space-y-1', collapsed ? 'sm:p-2' : 'sm:p-3')}>
+          <ul className="flex flex-1 gap-1 overflow-x-auto sm:flex-col sm:overflow-y-auto sm:space-y-1 w-full m-0 p-0 list-none">
+            {navItems.map((item) => (
+              <li key={item.id} className="sm:w-full">
+                <NavButton item={item} />
+              </li>
+            ))}
+          </ul>
         </nav>
 
-        <div className="flex shrink-0 gap-1 border-l border-sidebar-border p-2 sm:hidden">
+        <div className="flex shrink-0 gap-1 border-s border-sidebar-border p-2 sm:hidden">
           {footerItems.map((item) => {
             const handleClick = () => {
               if (item.id === 'profile') {

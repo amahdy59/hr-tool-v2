@@ -174,7 +174,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             Accessibility
           </span>
           {activeCount > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-card shadow-sm">
+            <span className="absolute -top-1.5 -end-1.5 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-card shadow-sm">
               {activeCount}
             </span>
           )}

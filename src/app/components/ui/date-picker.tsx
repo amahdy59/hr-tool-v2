@@ -57,7 +57,7 @@ export function DatePicker({
           variant="outline"
           disabled={disabled}
           className={cn(
-            "w-full justify-start text-left h-10 px-3 rounded-[var(--radius-input)] border-border bg-input-background",
+            "w-full justify-start text-start h-10 px-3 rounded-[var(--radius-input)] border-border bg-input-background",
             !selectedDate && "text-muted-foreground",
             className
           )}
@@ -67,7 +67,7 @@ export function DatePicker({
             fontWeight: "var(--font-weight-normal)",
           }}
         >
-          <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+          <CalendarIcon className="me-2 h-4 w-4 shrink-0" />
           {selectedDate ? (
             <span className="text-foreground truncate">
               {format(selectedDate, "dd MMM yyyy")}

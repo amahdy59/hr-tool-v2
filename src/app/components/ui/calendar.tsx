@@ -29,14 +29,14 @@ function Calendar({
           buttonVariants({ variant: "outline" }),
           "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 cursor-pointer"
         ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
+        nav_button_previous: "absolute start-1",
+        nav_button_next: "absolute end-1",
         table: "w-full border-collapse space-y-1",
         head_row: "flex",
         head_cell:
           "text-muted-foreground rounded-[var(--radius)] w-9 font-[var(--font-weight-normal)] text-[var(--text-xs)]",
         row: "flex w-full mt-2",
-        cell: "h-9 w-9 text-center p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-[var(--radius)] [&:has([aria-selected].day-outside)]:bg-muted/50 [&:has([aria-selected])]:bg-muted first:[&:has([aria-selected])]:rounded-l-[var(--radius)] last:[&:has([aria-selected])]:rounded-r-[var(--radius)] focus-within:relative focus-within:z-20",
+        cell: "h-9 w-9 text-center p-0 relative [&:has([aria-selected].day-range-end)]:rounded-e-[var(--radius)] [&:has([aria-selected].day-outside)]:bg-muted/50 [&:has([aria-selected])]:bg-muted first:[&:has([aria-selected])]:rounded-s-[var(--radius)] last:[&:has([aria-selected])]:rounded-e-[var(--radius)] focus-within:relative focus-within:z-20",
         day: cn(
           buttonVariants({ variant: "ghost" }),
           "h-9 w-9 p-0 font-[var(--font-weight-normal)] aria-selected:opacity-100"

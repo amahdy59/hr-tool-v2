@@ -20,6 +20,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { Checkbox } from './ui/checkbox';
 import { StatusBadge } from './StatusBadge';
 import { toast } from 'sonner';
+import { EmptyState } from './EmptyState';
+import { exportToCSV } from '../../lib/export';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -125,8 +127,8 @@ export const MissionsManagement: React.FC = () => {
               <Tooltip><TooltipTrigger asChild><button className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
             </div>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'pl-10')} />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input type="text" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -141,47 +143,57 @@ export const MissionsManagement: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-left">
-              <thead>
-                <tr className="bg-muted border-b border-border">
-                  <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === PENDING_MISSIONS.length && PENDING_MISSIONS.length > 0} onCheckedChange={toggleAll} /></th>
-                  <th className={thClass}>Employee Name</th>
-                  <th className={thClass}>Mission Type</th>
-                  <th className={thClass}>Date Range</th>
-                  <th className={thClass}>Duration</th>
-                  <th className={thClass}>Notes</th>
-                  <th className={cn(thClass, 'text-right')}>Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {PENDING_MISSIONS.map(m => (
-                  <tr key={m.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3"><Checkbox checked={selectedPending.includes(m.id)} onCheckedChange={() => togglePending(m.id)} /></td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center">
-                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{m.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-foreground">{m.type}</td>
-                    <td className="px-4 py-3 text-foreground">{m.range}</td>
-                    <td className="px-4 py-3 text-foreground">{m.duration}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{m.notes}</td>
-                    <td className="px-4 py-3 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve</DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(m); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+            {PENDING_MISSIONS.length === 0 ? (
+              <EmptyState 
+                icon={Rocket} 
+                title="No Pending Missions" 
+                description="There are currently no pending missions to review." 
+                className="py-16"
+              />
+              ) : (
+                <table className="w-full text-[var(--text-sm)] text-start">
+                  <thead className="hidden md:table-header-group">
+                    <tr className="bg-muted border-b border-border">
+                      <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === PENDING_MISSIONS.length && PENDING_MISSIONS.length > 0} onCheckedChange={toggleAllPending} /></th>
+                      <th className={thClass}>Employee Name</th>
+                      <th className={thClass}>Mission Type</th>
+                      <th className={thClass}>Date Range</th>
+                      <th className={thClass}>Duration</th>
+                      <th className={thClass}>Notes</th>
+                      <th className={cn(thClass, 'text-end')}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {PENDING_MISSIONS.map(m => (
+                      <tr key={m.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                        <td className="px-4 py-3 hidden md:table-cell"><Checkbox checked={selectedPending.includes(m.id)} onCheckedChange={() => togglePending(m.id)} /></td>
+                        <td className="px-4 py-1 md:py-3 font-semibold md:font-normal">
+                          <div className="flex items-center gap-2">
+                            <Checkbox className="md:hidden" checked={selectedPending.includes(m.id)} onCheckedChange={() => togglePending(m.id)} />
+                            <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{m.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{m.type}</td>
+                        <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{m.range}</td>
+                        <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{m.duration}</td>
+                        <td className="px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{m.notes}</td>
+                        <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48">
+                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
+                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve</DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(m); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           <TablePagination page={pendingPage} setPage={setPendingPage} totalPages={2} />
         </div>
       </section>
@@ -194,14 +206,14 @@ export const MissionsManagement: React.FC = () => {
             <label className={labelClass}>Search Employee</label>
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input type="text" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'pl-10')} />
+                <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input type="text" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
               </div>
               <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                 <PopoverTrigger asChild>
                   <button className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center', activeFilters > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
                     <Filter className="w-4 h-4" />
-                    {activeFilters > 0 && <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFilters}</span>}
+                    {activeFilters > 0 && <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFilters}</span>}
                   </button>
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-80 p-0">
@@ -217,51 +229,61 @@ export const MissionsManagement: React.FC = () => {
               </Popover>
             </div>
           </div>
-          <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => toast.success('Download started', { description: 'Missions data exported to CSV.' })}>
+          <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
+            exportToCSV(HISTORY_MISSIONS, 'Missions_History');
+            toast.success('Download started', { description: 'Missions data exported to CSV.' });
+          }}>
             <Download className="w-4 h-4" /> Download Data
           </Button>
         </div>
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-left">
-              <thead>
-                <tr className="bg-muted border-b border-border">
-                  <th className={thClass}>Employee Name</th>
-                  <th className={thClass}>Mission Type</th>
-                  <th className={thClass}>Date Range</th>
-                  <th className={thClass}>Duration</th>
-                  <th className={thClass}>Notes</th>
-                  <th className={thClass}>Status</th>
-                  <th className={cn(thClass, 'text-right')}>Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {HISTORY_MISSIONS.map(m => (
-                  <tr key={m.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center">
-                        <span className="text-foreground font-[var(--font-weight-medium)]">{m.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-foreground">{m.type}</td>
-                    <td className="px-4 py-3 text-foreground">{m.range}</td>
-                    <td className="px-4 py-3 text-foreground">{m.duration}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{m.notes}</td>
-                    <td className="px-4 py-3"><StatusBadge variant={m.status as any}>{m.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
-                    <td className="px-4 py-3 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
-                          {m.status === 'approved' && <><DropdownMenuSeparator /><DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeleteData(m); setDeleteOpen(true); }}><Trash2 className="w-4 h-4" /> Delete Mission</DropdownMenuItem></>}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
+            {HISTORY_MISSIONS.length === 0 ? (
+              <EmptyState 
+                icon={Rocket} 
+                title="No Mission History" 
+                description="There are no past missions matching your criteria." 
+                className="py-16"
+              />
+            ) : (
+              <table className="w-full text-[var(--text-sm)] text-start">
+                <thead className="hidden md:table-header-group">
+                  <tr className="bg-muted border-b border-border">
+                    <th className={thClass}>Employee Name</th>
+                    <th className={thClass}>Mission Type</th>
+                    <th className={thClass}>Date Range</th>
+                    <th className={thClass}>Duration</th>
+                    <th className={thClass}>Notes</th>
+                    <th className={thClass}>Status</th>
+                    <th className={cn(thClass, 'text-end')}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {HISTORY_MISSIONS.map(m => (
+                    <tr key={m.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                      <td className="px-4 py-1 md:py-3 font-semibold md:font-normal">
+                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{m.name}</span>
+                      </td>
+                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{m.type}</td>
+                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{m.range}</td>
+                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{m.duration}</td>
+                      <td className="px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{m.notes}</td>
+                      <td className="px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">Status:</span><StatusBadge variant={m.status as any}>{m.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
+                      <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-44">
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
+                            {m.status === 'approved' && <><DropdownMenuSeparator /><DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeleteData(m); setDeleteOpen(true); }}><Trash2 className="w-4 h-4" /> Delete Mission</DropdownMenuItem></>}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
           <TablePagination page={historyPage} setPage={setHistoryPage} totalPages={3} />
         </div>

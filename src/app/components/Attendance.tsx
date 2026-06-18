@@ -317,13 +317,13 @@ export const Attendance: React.FC = () => {
 
           <div className="relative flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search by name, email, or Employee#..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 pl-10 pr-4 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow text-[var(--text-sm)]"
+                className="w-full h-10 ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow text-[var(--text-sm)]"
               />
             </div>
 
@@ -338,7 +338,7 @@ export const Attendance: React.FC = () => {
                 >
                   <Filter className="w-4 h-4" />
                   {activeFiltersCount > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
+                    <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
                       {activeFiltersCount}
                     </span>
                   )}
@@ -434,8 +434,8 @@ export const Attendance: React.FC = () => {
             {/* Header */}
             <div className="grid grid-cols-3 text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground pb-3 border-b border-border uppercase tracking-wide">
               <span>Category</span>
-              <span className="text-right">Hours</span>
-              <span className="text-right">Percentage</span>
+              <span className="text-end">Hours</span>
+              <span className="text-end">Percentage</span>
             </div>
 
             {summaryData.map((item) => (
@@ -450,16 +450,16 @@ export const Attendance: React.FC = () => {
                   />
                   <span className="text-foreground">{item.name}</span>
                 </div>
-                <span className="text-right text-foreground font-[var(--font-weight-medium)]">{item.hours}h</span>
-                <span className="text-right text-muted-foreground">{item.percentage}%</span>
+                <span className="text-end text-foreground font-[var(--font-weight-medium)]">{item.hours}h</span>
+                <span className="text-end text-muted-foreground">{item.percentage}%</span>
               </div>
             ))}
 
             {/* Total */}
             <div className="grid grid-cols-3 text-[var(--text-sm)] items-center pt-4">
               <span className="font-[var(--font-weight-semibold)] text-foreground">Total Hours</span>
-              <span className="text-right font-[var(--font-weight-semibold)] text-foreground">{totalHours}h</span>
-              <span className="text-right font-[var(--font-weight-semibold)] text-foreground">100%</span>
+              <span className="text-end font-[var(--font-weight-semibold)] text-foreground">{totalHours}h</span>
+              <span className="text-end font-[var(--font-weight-semibold)] text-foreground">100%</span>
             </div>
           </div>
 
@@ -501,7 +501,7 @@ export const Attendance: React.FC = () => {
         <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Annual and Sick Leaves</h3>
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-left">
+            <table className="w-full text-[var(--text-sm)] text-start">
               <thead>
                 <tr className="bg-muted border-b border-border">
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Leave Type</th>
@@ -567,7 +567,7 @@ export const Attendance: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-left">
+            <table className="w-full text-[var(--text-sm)] text-start">
               <thead>
                 <tr className="bg-muted border-b border-border">
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Day</th>

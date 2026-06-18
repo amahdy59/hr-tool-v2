@@ -35,7 +35,7 @@ export const ScrollToTop: React.FC<ScrollToTopProps> = ({ scrollContainerRef }) 
   return (
     <>
       {isVisible && (
-        <div className="fixed bottom-8 right-8 z-50">
+        <div className="fixed bottom-8 end-8 z-50">
           <button
             onClick={scrollToTop}
             onMouseEnter={() => setShowTooltip(true)}
@@ -52,13 +52,13 @@ export const ScrollToTop: React.FC<ScrollToTopProps> = ({ scrollContainerRef }) 
           {/* Tooltip */}
           {showTooltip && (
             <div 
-              className="absolute bottom-full right-0 mb-2 px-3 py-1.5 bg-foreground text-background text-[var(--text-xs)] font-[var(--font-weight-medium)] rounded-[var(--radius-sm)] shadow-[var(--elevation-md)] whitespace-nowrap animate-fadeIn"
+              className="absolute bottom-full end-0 mb-2 px-3 py-1.5 bg-foreground text-background text-[var(--text-xs)] font-[var(--font-weight-medium)] rounded-[var(--radius-sm)] shadow-[var(--elevation-md)] whitespace-nowrap animate-fadeIn"
               style={{
                 fontFamily: "'Inter', sans-serif",
               }}
             >
               Back to top
-              <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-foreground" />
+              <div className="absolute top-full end-4 w-0 h-0 border-s-4 border-e-4 border-t-4 border-transparent border-t-foreground" />
             </div>
           )}
         </div>

@@ -11,6 +11,8 @@ import { RolesManagement } from './components/RolesManagement';
 import { Profile } from './components/Profile';
 import { Login } from './components/Login';
 import { ScrollToTop } from './components/ScrollToTop';
+import { CommandPalette } from './components/CommandPalette';
+import { KeyboardShortcutsPanel } from './components/KeyboardShortcutsPanel';
 
 export type AppTab =
   | 'dashboard'
@@ -45,6 +47,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
 
   // Accessibility states
@@ -53,6 +57,24 @@ export default function App() {
   const [largeText, setLargeText] = useState(() => localStorage.getItem('accessibility-large-text') === 'true');
   const [dyslexic, setDyslexic] = useState(() => localStorage.getItem('accessibility-dyslexic') === 'true');
   const [focusHeavy, setFocusHeavy] = useState(() => localStorage.getItem('accessibility-focus-heavy') === 'true');
+  const [announcement, setAnnouncement] = useState('');
+
+  const pageTitles: Record<AppTab, string> = {
+    dashboard: 'Dashboard — HR Tool',
+    attendance: 'Attendance — HR Tool',
+    employees: 'Employees — HR Tool',
+    leaves: 'Leave Management — HR Tool',
+    missions: 'Missions — HR Tool',
+    roles: 'Roles & Permissions — HR Tool',
+    profile: 'My Profile — HR Tool',
+    payrolls: 'Payrolls — HR Tool',
+  };
+
+  useEffect(() => {
+    const title = pageTitles[activeTab];
+    document.title = title;
+    setAnnouncement(`Navigated to ${title}`);
+  }, [activeTab]);
 
   useEffect(() => {
     const el = document.documentElement;
@@ -65,6 +87,17 @@ export default function App() {
     el.classList.toggle('accessibility-aaa-targets', largeTargets);
     localStorage.setItem('accessibility-aaa-targets', String(largeTargets));
   }, [largeTargets]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setCommandPaletteOpen(open => !open);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     const el = document.documentElement;
@@ -150,11 +183,15 @@ export default function App() {
     <div className="flex h-screen bg-background text-foreground overflow-hidden">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2.5 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2.5 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
         style={{ fontFamily: "'Inter', sans-serif" }}
       >
         Skip to main content
       </a>
+      {/* Accessibility Announcement Region */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </div>
       <Toaster
         position="bottom-right"
         toastOptions={toasterOptions}
@@ -167,12 +204,27 @@ export default function App() {
         onLogout={handleLogout}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <Header currentUser={currentUser} accessibility={accessibility} />
+        <Header 
+          currentUser={currentUser} 
+          accessibility={accessibility} 
+          onOpenCommandPalette={() => setCommandPaletteOpen(true)}
+          onOpenShortcuts={() => setShortcutsOpen(true)}
+        />
         <main ref={mainRef} id="main-content" className="flex-1 overflow-y-auto bg-muted cursor-default pb-24 sm:pb-0">
           {renderContent()}
         </main>
       </div>
       <ScrollToTop scrollContainerRef={mainRef} />
+      <CommandPalette 
+        open={commandPaletteOpen} 
+        onOpenChange={setCommandPaletteOpen} 
+        onSelectTab={setActiveTab}
+        onLogout={handleLogout}
+      />
+      <KeyboardShortcutsPanel 
+        open={shortcutsOpen} 
+        onOpenChange={setShortcutsOpen} 
+      />
     </div>
   );
 }

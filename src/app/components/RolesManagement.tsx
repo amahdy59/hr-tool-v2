@@ -231,7 +231,7 @@ export const RolesManagement: React.FC = () => {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 ml-auto">
+        <div className="flex items-center gap-3 ms-auto">
           <Button variant="outline" className="gap-2" onClick={handleUploadData}>
             <Upload className="w-4 h-4" /> Upload Data
           </Button>
@@ -271,7 +271,7 @@ export const RolesManagement: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-left">
+            <table className="w-full text-[var(--text-sm)] text-start">
               <thead>
                 <tr className="bg-muted border-b border-border">
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
@@ -286,7 +286,7 @@ export const RolesManagement: React.FC = () => {
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
                     Job Title
                   </th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-right">
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">
                     Actions
                   </th>
                 </tr>
@@ -300,7 +300,7 @@ export const RolesManagement: React.FC = () => {
                     <td className="px-4 py-3 text-foreground">{role.dateEnrolled}</td>
                     <td className="px-4 py-3 text-muted-foreground">{role.dateLeft}</td>
                     <td className="px-4 py-3 text-foreground">{role.jobTitle}</td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3 text-end">
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => handleEditRole(role)}

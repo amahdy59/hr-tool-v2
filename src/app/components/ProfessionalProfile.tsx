@@ -720,7 +720,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
       {/* Experience */}
       <ProfileCard title="Experience" showAdd onAdd={handleAddExperience}>
-        <div className="space-y-6 relative pl-4 before:content-[''] before:absolute before:left-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
+        <div className="space-y-6 relative ps-4 before:content-[''] before:absolute before:start-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
           {experiences.sort((a, b) => a.orderIndex - b.orderIndex).map((exp, index) => (
             <ExperienceItem 
               key={exp.id} 
@@ -747,7 +747,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
       {/* Education */}
       <ProfileCard title="Education" showAdd onAdd={handleAddEducation}>
-        <div className="space-y-6 relative pl-4 before:content-[''] before:absolute before:left-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
+        <div className="space-y-6 relative ps-4 before:content-[''] before:absolute before:start-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
           {educations.sort((a, b) => a.orderIndex - b.orderIndex).map((edu, index) => (
             <EducationItem 
               key={edu.id} 
@@ -894,8 +894,8 @@ const ExperienceItem: React.FC<{
 
   return (
     <div className="relative group">
-      <div className="absolute -left-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
-      <div className="space-y-1 pr-20">
+      <div className="absolute -start-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
+      <div className="space-y-1 pe-20">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1">
             <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.company}</p>
@@ -942,7 +942,7 @@ const ExperienceItem: React.FC<{
           </div>
         )}
       </div>
-      <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
         {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
         {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
         <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -961,8 +961,8 @@ const EducationItem: React.FC<{
   onMove: (dir: 'up' | 'down') => void;
 }> = ({ data, isFirst, isLast, onEdit, onDelete, onMove }) => (
   <div className="relative group">
-    <div className="absolute -left-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
-    <div className="space-y-0.5 pr-20">
+    <div className="absolute -start-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
+    <div className="space-y-0.5 pe-20">
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">
           <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.school}</p>
@@ -977,7 +977,7 @@ const EducationItem: React.FC<{
         {data.grade && ` • ${data.grade}`}
       </p>
     </div>
-    <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+    <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
       {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
       {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
       <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -994,7 +994,7 @@ const ProjectItem: React.FC<{
   onDelete: () => void; 
   onMove: (dir: 'up' | 'down') => void;
 }> = ({ data, isFirst, isLast, onEdit, onDelete, onMove }) => (
-  <div className="relative group space-y-1 pr-20">
+  <div className="relative group space-y-1 pe-20">
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-2 flex-1">
         <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.title}</p>
@@ -1018,7 +1018,7 @@ const ProjectItem: React.FC<{
         View Project <ExternalLink className="w-3 h-3" />
       </Button>
     )}
-    <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+    <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
       {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
       {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
       <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -1038,7 +1038,7 @@ const CertificationItem: React.FC<{
   const isExpired = data.expiryDate && new Date(data.expiryDate) < new Date();
 
   return (
-    <div className="relative group space-y-1 pr-20">
+    <div className="relative group space-y-1 pe-20">
       <div className="flex items-center gap-2">
         <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.title}</p>
         {isExpired && <span className="px-2 py-0.5 bg-[#FDECEC] text-[#7F1D1D] border border-[#B91C1C] rounded-full text-[var(--text-xs)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>Expired</span>}
@@ -1053,7 +1053,7 @@ const CertificationItem: React.FC<{
           Show Credential <ExternalLink className="w-3 h-3" />
         </Button>
       )}
-      <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
         {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
         {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
         <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -1116,7 +1116,7 @@ const EditAboutModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
         <div className="space-y-1.5">
           <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>About</label>
           <textarea value={text} onChange={e => setText(e.target.value.slice(0, maxChars))} rows={5} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
-          <p className="text-[var(--text-xs)] text-muted-foreground text-right" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <p className="text-[var(--text-xs)] text-muted-foreground text-end" style={{ fontFamily: "'Inter', sans-serif" }}>
             {text.length}/{maxChars} characters
           </p>
         </div>

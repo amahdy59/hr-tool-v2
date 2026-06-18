@@ -20,6 +20,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { Checkbox } from './ui/checkbox';
 import { StatusBadge } from './StatusBadge';
 import { toast } from 'sonner';
+import { EmptyState } from './EmptyState';
+import { exportToCSV } from '../../lib/export';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -152,8 +154,8 @@ export const LeavesManagement: React.FC = () => {
               <Tooltip><TooltipTrigger asChild><button className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
             </div>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'pl-10')} />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input type="text" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -168,46 +170,56 @@ export const LeavesManagement: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-left">
-              <thead>
-                <tr className="bg-muted border-b border-border">
-                  <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === PENDING_LEAVES.length && PENDING_LEAVES.length > 0} onCheckedChange={toggleAllPending} /></th>
-                  <th className={thClass}>Employee Name</th>
-                  <th className={thClass}>Leave Type</th>
-                  <th className={thClass}>Date Range</th>
-                  <th className={thClass}>Duration</th>
-                  <th className={thClass}>Notes</th>
-                  <th className={cn(thClass, 'text-right')}>Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {PENDING_LEAVES.map(leave => (
-                  <tr key={leave.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3"><Checkbox checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} /></td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center">
-                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{leave.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-foreground">{leave.type}</td>
-                    <td className="px-4 py-3 text-foreground">{leave.range}</td>
-                    <td className="px-4 py-3 text-foreground">{leave.duration}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{leave.notes}</td>
-                    <td className="px-4 py-3 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Profile</DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve</DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(leave); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
+            {PENDING_LEAVES.length === 0 ? (
+              <EmptyState 
+                icon={FileText} 
+                title="No Pending Requests" 
+                description="There are currently no pending leave requests to review." 
+                className="py-16"
+              />
+            ) : (
+              <table className="w-full text-[var(--text-sm)] text-start">
+                <thead>
+                  <tr className="bg-muted border-b border-border">
+                    <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === PENDING_LEAVES.length && PENDING_LEAVES.length > 0} onCheckedChange={toggleAllPending} /></th>
+                    <th className={thClass}>Employee Name</th>
+                    <th className={thClass}>Leave Type</th>
+                    <th className={thClass}>Date Range</th>
+                    <th className={thClass}>Duration</th>
+                    <th className={thClass}>Notes</th>
+                    <th className={cn(thClass, 'text-end')}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {PENDING_LEAVES.map(leave => (
+                    <tr key={leave.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                      <td className="px-4 py-3 hidden md:table-cell"><Checkbox checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} /></td>
+                      <td className="px-4 py-1 md:py-3 font-semibold md:font-normal">
+                        <div className="flex items-center gap-2">
+                          <Checkbox className="md:hidden" checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} />
+                          <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{leave.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
+                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{leave.range}</td>
+                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{leave.duration}</td>
+                      <td className="px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{leave.notes}</td>
+                      <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Profile</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve</DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(leave); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
           <TablePagination page={pendingPage} setPage={setPendingPage} totalPages={3} />
         </div>
@@ -231,7 +243,7 @@ export const LeavesManagement: React.FC = () => {
               <SelectContent>{['2024', '2025', '2026'].map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}</SelectContent>
             </Select>
           </div>
-          <div className="ml-auto">
+          <div className="ms-auto">
             <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => setAddHolidayOpen(true)}>
               Assign Holiday / Bridge
             </Button>
@@ -240,14 +252,14 @@ export const LeavesManagement: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-left">
+            <table className="w-full text-[var(--text-sm)] text-start">
               <thead>
                 <tr className="bg-muted border-b border-border">
                   <th className={thClass}>Leave Type</th>
                   <th className={thClass}>Date Range</th>
                   <th className={thClass}>Duration</th>
                   <th className={thClass}>Notes</th>
-                  <th className={cn(thClass, 'text-right')}>Actions</th>
+                  <th className={cn(thClass, 'text-end')}>Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -257,7 +269,7 @@ export const LeavesManagement: React.FC = () => {
                     <td className="px-4 py-3 text-foreground">{h.range}</td>
                     <td className="px-4 py-3 text-foreground">{h.duration}</td>
                     <td className="px-4 py-3 text-muted-foreground">{h.notes}</td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3 text-end">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-44">
@@ -284,14 +296,14 @@ export const LeavesManagement: React.FC = () => {
             <label className={labelClass}>Search Employee</label>
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input type="text" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'pl-10')} />
+                <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input type="text" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
               </div>
               <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                 <PopoverTrigger asChild>
                   <button className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center', activeFilters > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
                     <Filter className="w-4 h-4" />
-                    {activeFilters > 0 && <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFilters}</span>}
+                    {activeFilters > 0 && <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFilters}</span>}
                   </button>
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-80 p-0">
@@ -308,50 +320,59 @@ export const LeavesManagement: React.FC = () => {
               </Popover>
             </div>
           </div>
-          <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => toast.success('Download started', { description: 'Leaves data exported to CSV.' })}>
+          <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
+            exportToCSV(HISTORY_LEAVES, 'Leaves_History');
+            toast.success('Download started', { description: 'Leaves data exported to CSV.' });
+          }}>
             <Download className="w-4 h-4" /> Download Data
           </Button>
         </div>
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-left">
-              <thead>
-                <tr className="bg-muted border-b border-border">
-                  <th className={thClass}>Employee Name</th>
-                  <th className={thClass}>Leave Type</th>
-                  <th className={thClass}>Date Range</th>
-                  <th className={thClass}>Duration</th>
-                  <th className={thClass}>Notes</th>
-                  <th className={thClass}>Status</th>
-                  <th className={cn(thClass, 'text-right')}>Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {HISTORY_LEAVES.map(leave => (
-                  <tr key={leave.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center">
-                        <span className="text-foreground font-[var(--font-weight-medium)]">{leave.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-foreground">{leave.type}</td>
-                    <td className="px-4 py-3 text-foreground">{leave.range}</td>
-                    <td className="px-4 py-3 text-foreground">{leave.duration}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{leave.notes}</td>
-                    <td className="px-4 py-3"><StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
-                    <td className="px-4 py-3 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-44">
-                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
+            {HISTORY_LEAVES.length === 0 ? (
+              <EmptyState 
+                icon={FileText} 
+                title="No History Found" 
+                description="There are no past leave requests matching your criteria." 
+                className="py-16"
+              />
+            ) : (
+              <table className="w-full text-[var(--text-sm)] text-start">
+                <thead className="hidden md:table-header-group">
+                  <tr className="bg-muted border-b border-border">
+                    <th className={thClass}>Employee Name</th>
+                    <th className={thClass}>Leave Type</th>
+                    <th className={thClass}>Date Range</th>
+                    <th className={thClass}>Duration</th>
+                    <th className={thClass}>Status</th>
+                    <th className={cn(thClass, 'text-end')}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {HISTORY_LEAVES.map(leave => (
+                    <tr key={leave.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                      <td className="px-4 py-1 md:py-3 font-semibold md:font-normal">
+                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{leave.name}</span>
+                      </td>
+                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
+                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{leave.range}</td>
+                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{leave.duration}</td>
+                      <td className="px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">Status:</span><StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
+                      <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Profile</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => toast.success('Details sent to employee')}><Download className="w-4 h-4" /> Download Letter</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
           <TablePagination page={historyPage} setPage={setHistoryPage} totalPages={4} />
         </div>

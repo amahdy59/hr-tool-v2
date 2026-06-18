@@ -31,12 +31,12 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       
       if (!emailRegex.test(username)) {
-        setError('Enter a valid email address — e.g. name@company.com');
+        setError('Invalid email address.');
         setIsLoading(false);
       } else if (password === '123456') {
         onLogin(username);
       } else {
-        setError('Wrong password. Try again or use \'Forgot password?\' below.');
+        setError('Invalid password.');
         setIsLoading(false);
       }
     }, 600);
@@ -55,7 +55,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
         setResetSuccess(true);
         setIsLoading(false);
       } else {
-        setError('Enter a valid email address — e.g. name@company.com');
+        setError('Invalid email address.');
         setIsLoading(false);
       }
     }, 600);
@@ -72,16 +72,16 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Floating Accessibility settings for pre-login accessibility configuration */}
-      <div className="absolute top-4 right-4 z-50">
+      <div className="absolute top-4 end-4 z-50">
         <AccessibilityPanel settings={accessibility} />
       </div>
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#1a237e] via-[#283593] to-[#3949ab]">
         {/* Animated overlay gradients */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" />
+          <div className="absolute top-0 -start-4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob" />
+          <div className="absolute top-0 -end-4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 start-20 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" />
         </div>
         
         {/* Grid pattern overlay */}
@@ -100,10 +100,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
       {/* Floating shapes for visual interest */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/20 rounded-full animate-float" />
-        <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-white/10 rounded-full animate-float animation-delay-1000" />
-        <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-white/15 rounded-full animate-float animation-delay-2000" />
-        <div className="absolute top-2/3 right-1/3 w-2 h-2 bg-white/20 rounded-full animate-float animation-delay-3000" />
+        <div className="absolute top-1/4 start-1/4 w-2 h-2 bg-white/20 rounded-full animate-float" />
+        <div className="absolute top-1/3 end-1/4 w-3 h-3 bg-white/10 rounded-full animate-float animation-delay-1000" />
+        <div className="absolute bottom-1/4 start-1/3 w-2 h-2 bg-white/15 rounded-full animate-float animation-delay-2000" />
+        <div className="absolute top-2/3 end-1/3 w-2 h-2 bg-white/20 rounded-full animate-float animation-delay-3000" />
       </div>
 
       {/* Login Card */}
@@ -148,6 +148,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             {/* Error Message */}
             {error && (
               <div
+                id="login-error"
+                role="alert"
+                aria-live="assertive"
                 className="rounded-[var(--radius)] border border-[#B91C1C] bg-[#FDECEC] p-3 text-center text-[#7F1D1D]"
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -180,8 +183,11 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   setUsername(e.target.value);
                   setError('');
                 }}
-              placeholder="e.g. name@company.com"
+              placeholder="name@company.com"
               required
+              aria-required="true"
+              aria-invalid={!!error}
+              aria-describedby={error ? "login-error" : undefined}
               autoComplete="email"
               inputMode="email"
                 className={cn(
@@ -220,9 +226,12 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   }}
                   placeholder="••••••••"
                   required
+                  aria-required="true"
+                  aria-invalid={!!error}
+                  aria-describedby={error ? "login-error" : undefined}
                   autoComplete="current-password"
                   className={cn(
-                    'w-full h-10 px-3 pr-10 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                    'w-full h-10 px-3 pe-10 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
                     error ? 'border-destructive focus:border-destructive focus:ring-2 focus:ring-destructive/50' : 'border-border focus:ring-2 focus:ring-ring/50 focus:border-ring'
                   )}
                   style={{
@@ -235,7 +244,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -299,35 +308,25 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
             {showTempLogin && (
               <div
-                className="rounded-[var(--radius-card)] border-2 border-dashed border-[#C2410C]/40 bg-[#FFF8EE] p-4 space-y-3"
+                className="rounded-[var(--radius-card)] border-2 border-dashed border-[#C2410C]/40 bg-[#FFF8EE] p-4 flex flex-col items-center justify-center gap-3"
                 role="region"
                 aria-labelledby="demo-access-heading"
               >
-                <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius)] bg-[#FDECC8]">
-                    <KeyRound className="h-4 w-4 text-[#C2410C]" aria-hidden="true" />
-                  </div>
-                  <div className="min-w-0 flex-1 space-y-1">
-                    <h2
-                      id="demo-access-heading"
-                      className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-[#7C2D12]"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      Demo access
-                    </h2>
-                    <p
-                      className="text-[var(--text-xs)] leading-5 text-[#9A3412]/90"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      This is a prototype for reviewers. No account or password is required — continue with sample employee data.
-                    </p>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <KeyRound className="h-4 w-4 text-[#C2410C]" aria-hidden="true" />
+                  <h2
+                    id="demo-access-heading"
+                    className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-[#7C2D12]"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Demo Access
+                  </h2>
                 </div>
 
                 <button
                   type="button"
                   onClick={handleQuickLogin}
-                  aria-label="Continue to the HR tool demo with sample data"
+                  aria-label="Continue to demo"
                   className={cn(
                     'relative flex h-10 w-full items-center justify-center gap-2 overflow-hidden rounded-[var(--radius-button)] border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-sm transition-all hover:bg-[#FDECC8] group'
                   )}
@@ -337,18 +336,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     fontWeight: 'var(--font-weight-semibold)',
                   }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-shimmer" aria-hidden="true" />
                   <Zap className="h-4 w-4 transition-transform group-hover:scale-110" aria-hidden="true" />
-                  <span>Continue to demo</span>
+                  <span>Quick Login</span>
                 </button>
-
-                <p
-                  className="flex items-center justify-center gap-1.5 text-[var(--text-xs)] text-[#9A3412]/80"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  <ShieldCheck className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                  <span>Privacy-safe sample data only</span>
-                </p>
               </div>
             )}
           </form>

@@ -267,13 +267,13 @@ export const Payroll: React.FC = () => {
       {/* Search */}
       <div className="max-w-xl">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input 
             type="text" 
             placeholder="Search employees, payroll records..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-10 px-3 pl-10 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow" 
+            className="w-full h-10 px-3 ps-10 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow" 
             style={{
               fontFamily: "'Inter', sans-serif",
             }}
@@ -530,7 +530,7 @@ const NotificationItem = ({ icon: Icon, iconColor, bgColor, borderColor, title, 
 );
 
 const TableHeader = ({ children }: { children: React.ReactNode }) => (
-  <th className="text-left px-3 py-3 whitespace-nowrap text-[var(--text-sm)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+  <th className="text-start px-3 py-3 whitespace-nowrap text-[var(--text-sm)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>
     {children}
   </th>
 );

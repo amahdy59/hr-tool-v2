@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from 'lucide-react';
+import { User, Search, Keyboard } from 'lucide-react';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 
 interface HeaderProps {
@@ -10,6 +10,8 @@ interface HeaderProps {
     image: string;
   } | null;
   accessibility: AccessibilitySettings;
+  onOpenCommandPalette?: () => void;
+  onOpenShortcuts?: () => void;
 }
 
 // Helper function to get initials from name
@@ -21,7 +23,7 @@ const getInitials = (name: string): string => {
     .join('');
 };
 
-export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility }) => {
+export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts }) => {
   return (
     <header className="min-h-14 border-b border-border bg-card px-4 py-3 flex items-center justify-between sticky top-0 z-10 sm:h-16 sm:px-6 sm:py-0">
       <div className="flex items-center gap-3">
@@ -38,7 +40,38 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility }) =>
         </h1>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
+        <button
+          onClick={onOpenCommandPalette}
+          className="hidden sm:flex items-center justify-between w-48 sm:w-64 h-9 px-3 border border-border rounded-md bg-muted/50 text-sm text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label="Search or command palette (Ctrl+K)"
+        >
+          <span className="flex items-center gap-2">
+            <Search className="w-4 h-4" />
+            <span>Search...</span>
+          </span>
+          <kbd className="hidden sm:inline-flex h-5 items-center justify-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+            Ctrl K
+          </kbd>
+        </button>
+
+        <button
+          onClick={onOpenCommandPalette}
+          className="flex sm:hidden w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors"
+          aria-label="Search"
+        >
+          <Search className="w-4 h-4" />
+        </button>
+
+        <button
+          onClick={onOpenShortcuts}
+          className="flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label="Keyboard Shortcuts (?)"
+          title="Keyboard Shortcuts (?)"
+        >
+          <Keyboard className="w-4 h-4" />
+        </button>
+
         <AccessibilityPanel settings={accessibility} />
 
         <div className="hidden items-center gap-2.5 sm:flex">

@@ -174,8 +174,8 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
         <section aria-labelledby="hero-heading">
           <div className="relative overflow-hidden rounded-[var(--radius-card)] border border-border bg-gradient-to-br from-primary/10 via-card to-accent/10 px-6 py-10 shadow-[var(--elevation-lg)] sm:px-10 sm:py-14">
             {/* decorative blobs */}
-            <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-accent/15 blur-3xl" aria-hidden="true" />
-            <div className="pointer-events-none absolute -bottom-10 -left-10 h-48 w-48 rounded-full bg-primary/10 blur-3xl" aria-hidden="true" />
+            <div className="pointer-events-none absolute -end-16 -top-16 h-64 w-64 rounded-full bg-accent/15 blur-3xl" aria-hidden="true" />
+            <div className="pointer-events-none absolute -bottom-10 -start-10 h-48 w-48 rounded-full bg-primary/10 blur-3xl" aria-hidden="true" />
 
             <div className="relative space-y-5 max-w-3xl">
               <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent">

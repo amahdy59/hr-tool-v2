@@ -15,6 +15,7 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  Users,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -54,6 +55,8 @@ import {
 } from './ui/tooltip';
 import { Checkbox } from './ui/checkbox';
 import { toast } from 'sonner';
+import { EmptyState } from './EmptyState';
+import { exportToCSV } from '../../lib/export';
 
 // ── Types ──
 interface Employee {
@@ -275,8 +278,11 @@ export const EmployeeManagement: React.FC = () => {
 
           {activeSubTab === 'directory' && (
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)]" onClick={() => toast.success('Download started', { description: 'Employee list exported to CSV.' })}>
-                <Download className="w-4 h-4" /> Download List
+              <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
+                exportToCSV(filteredEmployees, 'Employees_Data');
+                toast.success('Download started', { description: 'Employee data exported to CSV.' });
+              }}>
+                <Download className="w-4 h-4" /> <span className="hidden sm:inline">Download Data</span>
               </Button>
               <Button size="sm" className="gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
                 <Plus className="w-4 h-4" /> Add an Employee
@@ -313,14 +319,14 @@ export const EmployeeManagement: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <input type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Enter Employee# or Name..." className={cn(inputClass, 'pl-10')} aria-label="Search employees" />
+                  <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Enter Employee# or Name..." className={cn(inputClass, 'ps-10')} aria-label="Search employees" />
                 </div>
                 <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                   <PopoverTrigger asChild>
                     <button type="button" aria-label="Open employee filters" className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center', activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
                       <Filter className="w-4 h-4" />
-                      {activeFiltersCount > 0 && <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFiltersCount}</span>}
+                      {activeFiltersCount > 0 && <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFiltersCount}</span>}
                     </button>
                   </PopoverTrigger>
                   <PopoverContent align="end" side="bottom" collisionPadding={16} className="w-80 max-w-[calc(100vw-2rem)] p-0">
@@ -342,63 +348,68 @@ export const EmployeeManagement: React.FC = () => {
           {/* Employee table */}
           <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
             <div className="overflow-x-auto">
-              <table className="w-full text-[var(--text-sm)] text-left">
-                <thead>
-                  <tr className="bg-muted border-b border-border">
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground w-8"><Checkbox aria-label="Select all employees" /></th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Employee Number</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {filteredEmployees.map((emp) => (
-                    <tr key={emp.id} className="hover:bg-muted/30 transition-colors group">
-                      <td className="px-4 py-3"><Checkbox aria-label={`Select ${emp.name}`} /></td>
-                      <td className="px-4 py-3">
-                        <span className="text-primary font-[var(--font-weight-medium)]">{emp.name}</span>
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground uppercase tabular-nums">{emp.employeeNumber}</td>
-                      <td className="px-4 py-3 text-foreground">{emp.department}</td>
-                      <td className="px-4 py-3 text-foreground">{emp.jobTitle}</td>
-                      <td className="px-4 py-3 text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button type="button" aria-label={`Open actions for ${emp.name}`} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
-                              <MoreVertical className="w-4 h-4 text-muted-foreground" />
-                            </button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-52">
-                            <DropdownMenuItem onClick={() => { setEditEmpData(emp); setEditEmpOpen(true); }} className="cursor-pointer gap-2">
-                              <Edit className="w-4 h-4" /> Edit Info
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => { setAccessCardEmp(emp); setAccessCardsOpen(true); }} className="cursor-pointer gap-2">
-                              <CreditCard className="w-4 h-4" /> Manage Access Cards
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => { setActivityLogDetail(ACTIVITY_LOG[0]); setActivityLogDetailOpen(true); }} className="cursor-pointer gap-2">
-                              <Eye className="w-4 h-4" /> View Activity Log
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setAddFormerOpen(true)} className="cursor-pointer gap-2">
-                              <UserPlus className="w-4 h-4" /> Add Former Employee
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem variant="destructive" onClick={() => { setTerminateEmp(emp); setTerminateOpen(true); }} className="cursor-pointer gap-2">
-                              <UserX className="w-4 h-4" /> Terminate Employee
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </td>
+              {filteredEmployees.length === 0 ? (
+                <EmptyState 
+                  icon={Users} 
+                  title="No Employees Found" 
+                  description="No employees match your search criteria." 
+                  className="py-16"
+                />
+              ) : (
+                <table className="w-full text-[var(--text-sm)] text-start">
+                  <thead className="hidden md:table-header-group">
+                    <tr className="bg-muted border-b border-border">
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground w-8"><Checkbox aria-label="Select all employees" /></th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Employee Number</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
                     </tr>
-                  ))}
-                  {filteredEmployees.length === 0 && (
-                    <tr>
-                      <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">No employees match your search.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {filteredEmployees.map((emp) => (
+                      <tr key={emp.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
+                        <td className="px-4 py-3 hidden md:table-cell"><Checkbox aria-label={`Select ${emp.name}`} /></td>
+                        <td className="px-4 py-1 md:py-3">
+                          <div className="flex items-center gap-2">
+                            <Checkbox className="md:hidden mt-0.5" aria-label={`Select ${emp.name}`} />
+                            <span className="text-primary font-[var(--font-weight-medium)]">{emp.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span>{emp.employeeNumber}</td>
+                        <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Department:</span>{emp.department}</td>
+                        <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Title:</span>{emp.jobTitle}</td>
+                        <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-52">
+                              <DropdownMenuItem onClick={() => { setEditEmpData(emp); setEditEmpOpen(true); }} className="cursor-pointer gap-2">
+                                <Edit className="w-4 h-4" /> Edit Info
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => { setAccessCardEmp(emp); setAccessCardsOpen(true); }} className="cursor-pointer gap-2">
+                                <CreditCard className="w-4 h-4" /> Manage Access Cards
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => { setActivityLogDetail(ACTIVITY_LOG[0]); setActivityLogDetailOpen(true); }} className="cursor-pointer gap-2">
+                                <Eye className="w-4 h-4" /> View Activity Log
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => setAddFormerOpen(true)} className="cursor-pointer gap-2">
+                                <UserPlus className="w-4 h-4" /> Add Former Employee
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem variant="destructive" onClick={() => { setTerminateEmp(emp); setTerminateOpen(true); }} className="cursor-pointer gap-2">
+                                <UserX className="w-4 h-4" /> Terminate Employee
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
             <TablePagination page={empPage} setPage={setEmpPage} totalPages={4} />
           </div>
@@ -408,45 +419,47 @@ export const EmployeeManagement: React.FC = () => {
         <TabsContent value="activity" className="space-y-4 mt-4">
           <div className="flex items-center gap-3">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search activity log..." className={cn(inputClass, 'pl-10')} />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search activity log..." className={cn(inputClass, 'ps-10')} />
             </div>
           </div>
           <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
             <div className="overflow-x-auto">
-              <table className="w-full text-[var(--text-sm)] text-left">
-                <thead>
-                  <tr className="bg-muted border-b border-border">
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Admin</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Action Taken</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Date</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Amount Affected</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {filteredActivityLog.map((log) => (
-                    <tr key={log.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3">
-                        <span className="font-[var(--font-weight-medium)] text-foreground">{log.admin}</span>
-                      </td>
-                      <td className="px-4 py-3 text-foreground">{log.action}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{log.date}</td>
-                      <td className="px-4 py-3 text-foreground tabular-nums">{log.affectedCount}</td>
-                      <td className="px-4 py-3 text-right">
-                        <button type="button" aria-label={`View details for ${log.action}`} onClick={() => { setActivityLogDetail(log); setActivityLogDetailOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
-                          <MoreVertical className="w-4 h-4 text-muted-foreground" />
-                        </button>
-                      </td>
+              {filteredActivityLog.length === 0 ? (
+                <EmptyState 
+                  icon={FileText} 
+                  title="No Activity Found" 
+                  description="No activity matches your search criteria." 
+                  className="py-16"
+                />
+              ) : (
+                <table className="w-full text-[var(--text-sm)] text-start">
+                  <thead className="hidden md:table-header-group">
+                    <tr className="bg-muted border-b border-border">
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Admin</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Action Taken</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Date</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Amount Affected</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
                     </tr>
-                  ))}
-                  {filteredActivityLog.length === 0 && (
-                    <tr>
-                      <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">No activity entries match your search.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {filteredActivityLog.map((log) => (
+                      <tr key={log.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                        <td className="px-4 py-1 md:py-3">
+                          <span className="font-[var(--font-weight-medium)] text-foreground">{log.admin}</span>
+                        </td>
+                        <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Action:</span>{log.action}</td>
+                        <td className="px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Date:</span>{log.date}</td>
+                        <td className="px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Affected:</span>{log.affectedCount}</td>
+                        <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                          <Button variant="outline" size="sm" onClick={() => { setActivityLogDetail(log); setActivityLogDetailOpen(true); }} className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">View Details</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
             <TablePagination page={actPage} setPage={setActPage} totalPages={2} />
           </div>
@@ -456,46 +469,48 @@ export const EmployeeManagement: React.FC = () => {
         <TabsContent value="departments" className="space-y-4 mt-4">
           <div className="flex items-center gap-3">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={deptSearch} onChange={(e) => setDeptSearch(e.target.value)} placeholder="Search departments..." className={cn(inputClass, 'pl-10')} />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input type="text" value={deptSearch} onChange={(e) => setDeptSearch(e.target.value)} placeholder="Search departments..." className={cn(inputClass, 'ps-10')} />
             </div>
           </div>
           <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
             <div className="overflow-x-auto">
-              <table className="w-full text-[var(--text-sm)] text-left">
-                <thead>
-                  <tr className="bg-muted border-b border-border">
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department ID</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Total Number</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {filteredDepartments.map((dept) => (
-                    <tr key={dept.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{dept.name}</td>
-                      <td className="px-4 py-3 text-muted-foreground tabular-nums">{dept.deptId}</td>
-                      <td className="px-4 py-3 text-foreground tabular-nums">{dept.totalNumber}</td>
-                      <td className="px-4 py-3 text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <button type="button" aria-label={`Edit ${dept.name}`} onClick={() => { setEditDeptData(dept); setEditDeptOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
-                            <Edit className="w-4 h-4 text-muted-foreground" />
-                          </button>
-                          <button type="button" aria-label={`Delete ${dept.name}`} onClick={() => { setDeleteDeptData(dept); setDeleteDeptOpen(true); }} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] transition-colors cursor-pointer">
-                            <Trash2 className="w-4 h-4 text-destructive" />
-                          </button>
-                        </div>
-                      </td>
+              {filteredDepartments.length === 0 ? (
+                <EmptyState 
+                  icon={Users} 
+                  title="No Departments Found" 
+                  description="No departments match your search criteria." 
+                  className="py-16"
+                />
+              ) : (
+                <table className="w-full text-[var(--text-sm)] text-start">
+                  <thead className="hidden md:table-header-group">
+                    <tr className="bg-muted border-b border-border">
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department ID</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Total Number</th>
+                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
                     </tr>
-                  ))}
-                  {filteredDepartments.length === 0 && (
-                    <tr>
-                      <td colSpan={4} className="px-4 py-8 text-center text-muted-foreground">No departments match your search.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {filteredDepartments.map((dept) => (
+                      <tr key={dept.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                        <td className="px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)]">{dept.name}</td>
+                        <td className="px-4 py-1 md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">ID:</span>{dept.deptId}</td>
+                        <td className="px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Total:</span>{dept.totalNumber}</td>
+                        <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                          <div className="flex items-center md:justify-end gap-2">
+                            <Button variant="outline" size="sm" aria-label={`Edit ${dept.name}`} onClick={() => { setEditDeptData(dept); setEditDeptOpen(true); }} className="w-full md:w-auto justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted">
+                              <span className="md:hidden">Edit</span>
+                              <PenLine className="hidden md:block w-4 h-4 text-muted-foreground" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
             <TablePagination page={deptPage} setPage={setDeptPage} totalPages={1} />
           </div>
@@ -505,18 +520,18 @@ export const EmployeeManagement: React.FC = () => {
         <TabsContent value="jobtitles" className="space-y-4 mt-4">
           <div className="flex items-center gap-3">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={jtSearch} onChange={(e) => setJtSearch(e.target.value)} placeholder="Search job titles..." className={cn(inputClass, 'pl-10')} />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input type="text" value={jtSearch} onChange={(e) => setJtSearch(e.target.value)} placeholder="Search job titles..." className={cn(inputClass, 'ps-10')} />
             </div>
           </div>
           <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
             <div className="overflow-x-auto">
-              <table className="w-full text-[var(--text-sm)] text-left">
+              <table className="w-full text-[var(--text-sm)] text-start">
                 <thead>
                   <tr className="bg-muted border-b border-border">
                     <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
                     <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground"># Employees</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-right">Actions</th>
+                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -524,7 +539,7 @@ export const EmployeeManagement: React.FC = () => {
                     <tr key={jt.id} className="hover:bg-muted/30 transition-colors">
                       <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{jt.title}</td>
                       <td className="px-4 py-3 text-foreground tabular-nums">{jt.count}</td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-4 py-3 text-end">
                         <div className="flex items-center justify-end gap-1">
                           <button type="button" aria-label={`Edit ${jt.title}`} onClick={() => { setEditJtData(jt); setEditJtOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
                             <Edit className="w-4 h-4 text-muted-foreground" />
@@ -871,8 +886,8 @@ const FormerEmployeeModal: React.FC<{
           <div className="space-y-1.5">
             <label className={labelClass}>Search Former Employees</label>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={searchFormer} onChange={(e) => setSearchFormer(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'pl-10')} />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input type="text" value={searchFormer} onChange={(e) => setSearchFormer(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
             </div>
           </div>
 
@@ -881,11 +896,11 @@ const FormerEmployeeModal: React.FC<{
             <table className="w-full text-[var(--text-sm)]">
               <thead>
                 <tr className="bg-muted border-b border-border">
-                  <th className="px-4 py-2.5 text-left font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
-                  <th className="px-4 py-2.5 text-left font-[var(--font-weight-medium)] text-muted-foreground">Employee#</th>
-                  <th className="px-4 py-2.5 text-left font-[var(--font-weight-medium)] text-muted-foreground">Dept</th>
-                  <th className="px-4 py-2.5 text-left font-[var(--font-weight-medium)] text-muted-foreground">Title</th>
-                  <th className="px-4 py-2.5 text-right font-[var(--font-weight-medium)] text-muted-foreground">Action</th>
+                  <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
+                  <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Employee#</th>
+                  <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Dept</th>
+                  <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Title</th>
+                  <th className="px-4 py-2.5 text-end font-[var(--font-weight-medium)] text-muted-foreground">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -895,7 +910,7 @@ const FormerEmployeeModal: React.FC<{
                     <td className="px-4 py-2.5 text-muted-foreground uppercase tabular-nums">{fe.employeeNumber}</td>
                     <td className="px-4 py-2.5 text-foreground">{fe.dept}</td>
                     <td className="px-4 py-2.5 text-foreground">{fe.title}</td>
-                    <td className="px-4 py-2.5 text-right">
+                    <td className="px-4 py-2.5 text-end">
                       <Button size="sm" variant="outline" className="gap-1.5 rounded-[var(--radius-button)]" onClick={() => { onOpenChange(false); toast.success(`${fe.name} added back as an employee`); }}>
                         <Plus className="w-3 h-3" /> Add
                       </Button>
@@ -952,9 +967,9 @@ const AccessCardsModal: React.FC<{
             <div className="p-4 bg-muted rounded-[var(--radius-card)] space-y-2">
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Employee Info</p>
               <div className="grid grid-cols-2 gap-2 text-[var(--text-sm)]">
-                <div><span className="text-muted-foreground">Name:</span> <span className="text-foreground ml-1">{employee.name}</span></div>
-                <div><span className="text-muted-foreground">Employee#:</span> <span className="text-foreground ml-1 uppercase">{employee.employeeNumber}</span></div>
-                <div><span className="text-muted-foreground">Department:</span> <span className="text-foreground ml-1">{employee.department}</span></div>
+                <div><span className="text-muted-foreground">Name:</span> <span className="text-foreground ms-1">{employee.name}</span></div>
+                <div><span className="text-muted-foreground">Employee#:</span> <span className="text-foreground ms-1 uppercase">{employee.employeeNumber}</span></div>
+                <div><span className="text-muted-foreground">Department:</span> <span className="text-foreground ms-1">{employee.department}</span></div>
               </div>
             </div>
 
@@ -996,11 +1011,11 @@ const AccessCardsModal: React.FC<{
                 <table className="w-full text-[var(--text-sm)]">
                   <thead>
                     <tr className="bg-muted border-b border-border">
-                      <th className="px-4 py-2.5 text-left font-[var(--font-weight-medium)] text-muted-foreground">Card Number</th>
-                      <th className="px-4 py-2.5 text-left font-[var(--font-weight-medium)] text-muted-foreground">Start Date</th>
-                      <th className="px-4 py-2.5 text-left font-[var(--font-weight-medium)] text-muted-foreground">End Date</th>
-                      <th className="px-4 py-2.5 text-left font-[var(--font-weight-medium)] text-muted-foreground">Card Type</th>
-                      <th className="px-4 py-2.5 text-left font-[var(--font-weight-medium)] text-muted-foreground">Status</th>
+                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Number</th>
+                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Start Date</th>
+                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">End Date</th>
+                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Type</th>
+                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -1056,7 +1071,7 @@ const TerminateModal: React.FC<{
             <p className="text-[var(--text-sm)] text-foreground">
               <strong>{employee?.name}</strong> is about to be terminated.
             </p>
-            <ul className="mt-2 space-y-1 text-[var(--text-xs)] text-muted-foreground list-disc pl-4">
+            <ul className="mt-2 space-y-1 text-[var(--text-xs)] text-muted-foreground list-disc ps-4">
               <li>All access to company resources will be revoked.</li>
               <li>Attendance records will be finalized and archived.</li>
               <li>Active leave requests will be automatically denied.</li>

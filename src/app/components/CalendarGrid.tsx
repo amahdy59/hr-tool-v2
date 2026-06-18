@@ -69,7 +69,7 @@ export const CalendarGrid: React.FC = () => {
       {/* Days of Week */}
       <div className="grid grid-cols-7 border-b border-border">
         {days.map((day) => (
-          <div key={day} className="py-2 text-center text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground bg-muted/50 border-r border-border last:border-r-0">
+          <div key={day} className="py-2 text-center text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground bg-muted/50 border-e border-border last:border-e-0">
             {day}
           </div>
         ))}
@@ -81,9 +81,9 @@ export const CalendarGrid: React.FC = () => {
           <div 
             key={idx} 
             className={cn(
-              "border-r border-b border-border p-2 flex flex-col items-center justify-start gap-1 relative cursor-default",
+              "border-e border-b border-border p-2 flex flex-col items-center justify-start gap-1 relative cursor-default",
               item.month !== 'curr' && "bg-muted/20 text-muted-foreground",
-              idx % 7 === 6 && "border-r-0"
+              idx % 7 === 6 && "border-e-0"
             )}
           >
             <div className={cn(

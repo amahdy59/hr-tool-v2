@@ -130,7 +130,7 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
             aria-pressed={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              'border-l-2 border-b-0 sm:border-l-0 sm:border-b-2 border-transparent px-3 py-2 sm:px-0 sm:pb-3 sm:pt-1 text-left sm:text-center text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
+              'border-s-2 border-b-0 sm:border-s-0 sm:border-b-2 border-transparent px-3 py-2 sm:px-0 sm:pb-3 sm:pt-1 text-start sm:text-center text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
               activeTab === tab.id
                 ? "text-accent font-[var(--font-weight-semibold)] border-accent"
                 : 'text-muted-foreground hover:text-foreground font-[var(--font-weight-medium)]'
@@ -145,8 +145,8 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
       {/* Search */}
       <div>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search this profile area..." className={cn(inputClass, 'pl-10 cursor-text')} style={{ fontFamily: "'Inter', sans-serif" }} />
+          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search this profile area..." className={cn(inputClass, 'ps-10 cursor-text')} style={{ fontFamily: "'Inter', sans-serif" }} />
         </div>
       </div>
 
@@ -352,8 +352,8 @@ const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?:
 
 const ExperienceItem: React.FC<{ company: string; role: string; period: string; desc: string; onEdit?: () => void }> = ({ company, role, period, desc, onEdit }) => (
   <div className="relative group">
-    <div className="absolute -left-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
-    <div className="space-y-1 pr-8">
+    <div className="absolute -start-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
+    <div className="space-y-1 pe-8">
       <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{company}</p>
       <p className="text-[var(--text-sm)] text-primary font-[var(--font-weight-medium)]">{role}</p>
       <p className="text-[var(--text-xs)] text-muted-foreground">{period}</p>
@@ -362,7 +362,7 @@ const ExperienceItem: React.FC<{ company: string; role: string; period: string; 
     {onEdit && (
       <button 
         onClick={onEdit}
-        className="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+        className="absolute top-0 end-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
       >
         <Pencil className="w-4 h-4" />
       </button>
@@ -372,8 +372,8 @@ const ExperienceItem: React.FC<{ company: string; role: string; period: string; 
 
 const EducationItem: React.FC<{ school: string; degree: string; period: string; onEdit?: () => void }> = ({ school, degree, period, onEdit }) => (
   <div className="relative group">
-    <div className="absolute -left-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
-    <div className="space-y-0.5 pr-8">
+    <div className="absolute -start-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
+    <div className="space-y-0.5 pe-8">
       <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{school}</p>
       <p className="text-[var(--text-sm)] text-muted-foreground">{degree}</p>
       <p className="text-[var(--text-xs)] text-muted-foreground">{period}</p>
@@ -381,7 +381,7 @@ const EducationItem: React.FC<{ school: string; degree: string; period: string; 
     {onEdit && (
       <button 
         onClick={onEdit}
-        className="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+        className="absolute top-0 end-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
       >
         <Pencil className="w-4 h-4" />
       </button>
@@ -390,7 +390,7 @@ const EducationItem: React.FC<{ school: string; degree: string; period: string; 
 );
 
 const ProjectItem: React.FC<{ title: string; date: string; desc: string; onEdit?: () => void }> = ({ title, date, desc, onEdit }) => (
-  <div className="relative group space-y-1 pr-8">
+  <div className="relative group space-y-1 pe-8">
     <div className="flex items-center justify-between">
       <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</p>
     </div>
@@ -402,7 +402,7 @@ const ProjectItem: React.FC<{ title: string; date: string; desc: string; onEdit?
     {onEdit && (
       <button 
         onClick={onEdit}
-        className="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+        className="absolute top-0 end-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
       >
         <Pencil className="w-4 h-4" />
       </button>

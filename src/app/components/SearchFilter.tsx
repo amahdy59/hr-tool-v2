@@ -25,11 +25,11 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
       )}
       <div className="relative flex items-center gap-2 cursor-default">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
             placeholder={placeholder}
-            className="w-full h-10 pl-10 pr-4 border border-border rounded-[var(--radius-input)] bg-input-background focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none text-[var(--text-sm)] text-foreground transition-shadow cursor-text"
+            className="w-full h-10 ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none text-[var(--text-sm)] text-foreground transition-shadow cursor-text"
           />
         </div>
         <button className="h-10 px-3 border border-border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center">

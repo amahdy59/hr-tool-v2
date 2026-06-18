@@ -275,7 +275,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 </p>
               </div>
             )}
-            <div className="text-right">
+            <div className="text-end">
               <p
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -333,7 +333,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
           >
             ✈ Book time off
             {daysRequested > 0 && (
-              <span className="ml-1 opacity-80">
+              <span className="ms-1 opacity-80">
                 ({daysRequested} day{daysRequested !== 1 ? 's' : ''})
               </span>
             )}
