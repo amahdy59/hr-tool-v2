@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Accessibility,
-  ChevronDown,
   Eye,
   Highlighter,
   Target,
@@ -11,7 +10,6 @@ import {
 import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 import { Switch } from './ui/switch';
 import { Button } from './ui/button';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import { cn } from '@/lib/utils';
 
 export interface AccessibilitySettings {
@@ -41,46 +39,59 @@ type OptionDef = {
   ariaLabel: string;
 };
 
-const AccessibilityOption: React.FC<{ option: OptionDef; emphasized?: boolean }> = ({
-  option,
-  emphasized = false,
-}) => {
+const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
   const { id, icon: Icon, label, description, checked, onChange, ariaLabel } = option;
 
   return (
-    <div
+    <label
+      htmlFor={id}
       className={cn(
-        'flex items-center justify-between gap-4 rounded-[var(--radius-sm)] px-2 py-1.5 -mx-2 transition-colors',
-        emphasized && checked && 'bg-primary/5',
-        !checked && 'opacity-90'
+        'flex items-center justify-between gap-3 rounded-[var(--radius)] px-3 py-2.5 -mx-3 cursor-pointer transition-all duration-200 group',
+        checked
+          ? 'bg-primary/8 ring-1 ring-primary/15'
+          : 'hover:bg-muted/60'
       )}
     >
-      <div className="flex gap-2.5 items-start min-w-0">
+      <div className="flex gap-2.5 items-center min-w-0">
         <Icon
           className={cn(
-            'w-4 h-4 mt-0.5 shrink-0',
-            checked ? 'text-primary' : 'text-muted-foreground'
+            'w-4 h-4 shrink-0 transition-colors duration-200',
+            checked ? 'text-primary' : 'text-muted-foreground/50'
           )}
           aria-hidden="true"
         />
         <div className="min-w-0">
-          <label
-            htmlFor={id}
+          <span
             className={cn(
-              'text-xs font-medium block cursor-pointer',
+              'text-xs font-medium block transition-colors duration-200',
               checked ? 'text-foreground' : 'text-muted-foreground'
             )}
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {label}
-          </label>
-          <span className="text-[10px] text-muted-foreground block" style={{ fontFamily: "'Inter', sans-serif" }}>
+          </span>
+          <span
+            className={cn(
+              'text-[10px] block leading-4 transition-colors duration-200',
+              checked ? 'text-muted-foreground' : 'text-muted-foreground/60'
+            )}
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
             {description}
           </span>
         </div>
       </div>
-      <Switch id={id} checked={checked} onCheckedChange={onChange} aria-label={ariaLabel} />
-    </div>
+      <Switch
+        id={id}
+        checked={checked}
+        onCheckedChange={onChange}
+        aria-label={ariaLabel}
+        className={cn(
+          'shrink-0 transition-opacity duration-200',
+          !checked && 'opacity-40'
+        )}
+      />
+    </label>
   );
 };
 
@@ -97,8 +108,6 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     focusHeavy,
     setFocusHeavy,
   } = settings;
-
-  const [showInactive, setShowInactive] = useState(false);
 
   const options: OptionDef[] = [
     {
@@ -148,11 +157,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     },
   ];
 
-  const activeOptions = options.filter((o) => o.checked);
-  const inactiveOptions = options.filter((o) => !o.checked);
-  const activeCount = activeOptions.length;
-  const inactiveCount = inactiveOptions.length;
-  const allInactive = activeCount === 0;
+  const activeCount = options.filter((o) => o.checked).length;
 
   return (
     <Popover>
@@ -179,8 +184,8 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         className="w-80 p-5 rounded-[var(--radius-card)] border-border bg-card shadow-[var(--elevation-lg)]"
         align="end"
       >
-        <div className="space-y-4">
-          <div className="border-b border-border pb-2.5">
+        <div className="space-y-1">
+          <div className="border-b border-border pb-3 mb-4">
             <h2
               className="text-sm font-semibold text-foreground flex items-center gap-2"
               style={{ fontFamily: "'Inter', sans-serif" }}
@@ -189,67 +194,18 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
               Accessibility Tools
             </h2>
             <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Customize your viewing and interaction experience to meet WCAG 2.1 AAA accessibility.
+              Adjust your viewing and interaction preferences.
             </p>
           </div>
 
-          <div className="space-y-3.5">
-            {allInactive ? (
-              <div className="space-y-3.5">
-                {options.map((option) => (
-                  <AccessibilityOption key={option.id} option={option} />
-                ))}
-              </div>
-            ) : (
-              <>
-                {activeOptions.length > 0 && (
-                  <div className="space-y-3.5">
-                    <p
-                      className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      Active ({activeCount})
-                    </p>
-                    {activeOptions.map((option) => (
-                      <AccessibilityOption key={option.id} option={option} emphasized />
-                    ))}
-                  </div>
-                )}
-
-                {inactiveCount > 0 && (
-                  <Collapsible open={showInactive} onOpenChange={setShowInactive}>
-                    <CollapsibleTrigger asChild>
-                      <button
-                        type="button"
-                        className="flex w-full items-center justify-between gap-2 rounded-[var(--radius-sm)] border border-dashed border-border px-3 py-2 text-left text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:bg-muted/50 hover:text-foreground"
-                        style={{ fontFamily: "'Inter', sans-serif" }}
-                        aria-expanded={showInactive}
-                      >
-                        <span>
-                          {showInactive ? 'Hide' : 'Show'} inactive options ({inactiveCount})
-                        </span>
-                        <ChevronDown
-                          className={cn(
-                            'h-4 w-4 shrink-0 transition-transform',
-                            showInactive && 'rotate-180'
-                          )}
-                          aria-hidden="true"
-                        />
-                      </button>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-3 space-y-3.5 border-t border-border pt-3">
-                      {inactiveOptions.map((option) => (
-                        <AccessibilityOption key={option.id} option={option} />
-                      ))}
-                    </CollapsibleContent>
-                  </Collapsible>
-                )}
-              </>
-            )}
+          <div className="space-y-0.5">
+            {options.map((option) => (
+              <AccessibilityOption key={option.id} option={option} />
+            ))}
           </div>
 
           {activeCount > 0 && (
-            <div className="border-t border-border pt-2.5 flex justify-end">
+            <div className="border-t border-border pt-2.5 mt-3 flex justify-end">
               <Button
                 variant="ghost"
                 size="sm"
@@ -260,11 +216,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
                   setLargeText(false);
                   setDyslexic(false);
                   setFocusHeavy(false);
-                  setShowInactive(false);
                 }}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                Reset all settings
+                Reset all
               </Button>
             </div>
           )}

@@ -2,7 +2,6 @@ import React from 'react';
 import {
   LayoutDashboard,
   CalendarCheck,
-  Wallet,
   Users,
   FileText,
   Rocket,
@@ -32,7 +31,6 @@ interface SidebarProps {
 const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'attendance', label: 'Attendance', icon: CalendarCheck },
-  { id: 'payrolls', label: 'Payrolls', icon: Wallet },
   { id: 'employees', label: 'Employees', icon: Users },
   { id: 'leaves', label: 'Leaves Management', icon: FileText },
   { id: 'missions', label: 'Missions Management', icon: Rocket },
@@ -116,35 +114,25 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             <div
               style={{
                 fontFamily: "'Orbitron', sans-serif",
-                fontSize: '18px',
+                fontSize: '14px',
                 fontWeight: 700,
+                letterSpacing: '0.05em',
               }}
               className="text-sidebar-foreground"
             >
-              AM
+              HR
             </div>
           ) : (
-            <div className="flex flex-col">
-              <div
-                style={{
-                  fontFamily: "'Orbitron', sans-serif",
-                  fontSize: '20px',
-                  fontWeight: 700,
-                }}
-                className="text-sidebar-foreground"
-              >
-                AM
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: 'var(--font-weight-medium)',
-                }}
-                className="text-sidebar-foreground/90"
-              >
-                Technologies
-              </div>
+            <div
+              style={{
+                fontFamily: "'Orbitron', sans-serif",
+                fontSize: '18px',
+                fontWeight: 700,
+                letterSpacing: '0.04em',
+              }}
+              className="text-sidebar-foreground"
+            >
+              HR Tool
             </div>
           )}
         </div>

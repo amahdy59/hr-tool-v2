@@ -116,37 +116,28 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             <div
               style={{
                 fontFamily: "'Orbitron', sans-serif",
-                fontSize: '32px',
+                fontSize: '26px',
                 fontWeight: 700,
+                letterSpacing: '0.04em',
               }}
-              className="text-primary mb-2"
+              className="text-primary mb-1"
             >
-              AM
+              HR Tool
             </div>
-            <h1
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--section-heading-size)',
-                fontWeight: 'var(--section-heading-weight)',
-              }}
-              className="text-foreground mb-1"
-            >
-              Login
-            </h1>
             <p
               style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--text-sm)',
+                fontSize: 'var(--text-xs)',
                 fontWeight: 'var(--font-weight-normal)',
               }}
-              className="text-muted-foreground"
+              className="text-muted-foreground mb-5"
             >
-              Welcome to AM Technologies HR Tool
+              Workforce management, simplified.
             </p>
             <button
               type="button"
               onClick={() => setShowInfoPage(true)}
-              className="mt-4 inline-flex items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 py-2 text-[var(--text-sm)] font-[var(--font-weight-medium)] text-primary shadow-[var(--elevation-sm)] transition-colors hover:bg-muted"
+              className="inline-flex items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 py-1.5 text-[var(--text-sm)] font-[var(--font-weight-medium)] text-primary shadow-[var(--elevation-sm)] transition-colors hover:bg-muted"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               <Info className="w-4 h-4" />
@@ -361,38 +352,20 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             )}
           </form>
 
-          {/* Footer */}
-          <div className="mt-6 pt-6 border-t border-border text-center">
-            <p
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--text-xs)',
-                fontWeight: 'var(--font-weight-normal)',
-              }}
-              className="text-muted-foreground"
-            >
-              Need help? Contact{' '}
-              <a
-                href="mailto:support@amtechnologies.com"
-                className="text-primary hover:underline font-[var(--font-weight-medium)]"
-              >
-                support@amtechnologies.com
-              </a>
-            </p>
-          </div>
+
         </div>
 
         {/* Bottom Footer */}
-        <div className="text-center mt-6">
+        <div className="text-center mt-4">
           <p
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: 'var(--text-xs)',
               fontWeight: 'var(--font-weight-normal)',
             }}
-            className="text-white/90 drop-shadow-lg"
+            className="text-white/70 drop-shadow-lg"
           >
-            &copy; 2026 AM Technologies. All rights reserved.
+            All rights reserved. Ahmed Mahdy's redesign.
           </p>
         </div>
       </div>

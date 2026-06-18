@@ -464,12 +464,17 @@ const ProfileCard: React.FC<{
 
 const InfoItem: React.FC<{ label: string; value: string; sensitive?: boolean; inline?: boolean }> = ({ label, value, sensitive, inline }) => (
   <div className={cn("flex gap-3 text-[var(--text-sm)]", inline ? "flex-col" : "flex-row items-start")} style={{ fontFamily: "'Inter', sans-serif" }}>
-    <span className={cn("text-muted-foreground font-[var(--font-weight-medium)]", inline ? "" : "w-32 shrink-0")}>{label}</span>
-    <div className="flex items-center gap-2">
-      <span className={cn('text-foreground', sensitive && 'inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide')}>
+    <span className={cn("text-muted-foreground font-[var(--font-weight-medium)] shrink-0", inline ? "" : "w-28")}>{label}</span>
+    <div className="flex items-center gap-2 min-w-0 flex-1">
+      <span className={cn(
+        'text-foreground min-w-0',
+        sensitive
+          ? 'inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide max-w-full truncate'
+          : 'break-all'
+      )}>
         {value}
       </span>
-      {sensitive && <Shield className="w-3 h-3 text-muted-foreground" />}
+      {sensitive && <Shield className="w-3 h-3 text-muted-foreground shrink-0" />}
     </div>
   </div>
 );
@@ -888,13 +893,13 @@ const EmploymentInfoItem: React.FC<{
     <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
       {label}
     </span>
-    <div className="flex items-center justify-between gap-2">
-      <span className="text-[15px] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex items-start justify-between gap-2 min-w-0">
+      <span className="text-[15px] font-[var(--font-weight-semibold)] text-foreground break-words min-w-0" style={{ fontFamily: "'Inter', sans-serif" }}>
         {value}
       </span>
       <div className="flex items-center gap-2 shrink-0">
         {badge && (
-          <span className="rounded-[var(--radius-sm)] border border-[#2563EB] bg-[#EAF2FF] px-2 py-0.5 text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-[#1E3A8A]" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <span className="rounded-[var(--radius-sm)] border border-[#2563EB] bg-[#EAF2FF] px-2 py-0.5 text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-[#1E3A8A] whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif" }}>
             {badge}
           </span>
         )}
