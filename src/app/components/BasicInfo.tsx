@@ -537,10 +537,10 @@ const EditPersonalInfoModal: React.FC<{
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField label="Date of Birth *" value={dateOfBirth} onChange={setDateOfBirth} type="date" />
-          <FormField label="National ID * (14 digits)" value={nationalId} onChange={setNationalId} maxLength={14} />
-          <FormField label="Email" value={email} onChange={setEmail} />
-          <FormField label="Mobile *" value={mobile} onChange={setMobile} placeholder="01XXXXXXXXX" />
-          <FormField label="Landline" value={landline} onChange={setLandline} />
+          <FormField label="National ID * (14 digits)" value={nationalId} onChange={setNationalId} maxLength={14} inputMode="numeric" />
+          <FormField label="Email" value={email} onChange={setEmail} type="email" inputMode="email" autoComplete="email" />
+          <FormField label="Mobile *" value={mobile} onChange={setMobile} type="tel" inputMode="tel" placeholder="01XXXXXXXXX" autoComplete="tel" />
+          <FormField label="Landline" value={landline} onChange={setLandline} type="tel" inputMode="tel" />
           <div className="space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Gender *</label>
             <Select value={gender} onValueChange={setGender}>
@@ -863,10 +863,12 @@ const FormField: React.FC<{
   label: string; 
   value: string; 
   onChange: (v: string) => void; 
-  type?: string; 
+  type?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
+  autoComplete?: string;
   placeholder?: string;
   maxLength?: number;
-}> = ({ label, value, onChange, type = 'text', placeholder, maxLength }) => (
+}> = ({ label, value, onChange, type = 'text', inputMode, autoComplete, placeholder, maxLength }) => (
   <div className="space-y-1.5">
     <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>{label}</label>
     <input 
@@ -876,6 +878,8 @@ const FormField: React.FC<{
       className={inputClass} 
       placeholder={placeholder} 
       maxLength={maxLength}
+      inputMode={inputMode}
+      autoComplete={autoComplete}
       style={{ fontFamily: "'Inter', sans-serif" }} 
     />
   </div>

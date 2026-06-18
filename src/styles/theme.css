@@ -93,10 +93,10 @@
   /* The border radius for input fields. */
   --radius-input: 8px;
   
-  /* Button styles */
-  --button-height-sm: 40px;
-  --button-height-default: 40px;
-  --button-height-lg: 40px;
+  /* Button styles — 44px meets WCAG 2.5.5 minimum touch target */
+  --button-height-sm: 44px;
+  --button-height-default: 44px;
+  --button-height-lg: 44px;
   --button-padding-x-sm: 24px;
   --button-padding-x-default: 24px;
   --button-padding-x-lg: 24px;
@@ -643,4 +643,44 @@ html {
 
 .animation-delay-3000 {
   animation-delay: 3s;
+}
+
+/* ==========================================================================
+   REDUCED MOTION — Respect system preference (WCAG 2.3.3)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Stop login page blob/float animations entirely */
+  .animate-blob,
+  .animate-float,
+  .animate-shimmer {
+    animation: none !important;
+  }
+
+  /* Disable card hover lift */
+  .card-hover:hover {
+    transform: none !important;
+  }
+
+  /* Disable button press scale */
+  button:not(:disabled):active,
+  a:active,
+  [role="button"]:not([aria-disabled="true"]):active {
+    transform: none !important;
+  }
+
+  /* Keep fadeIn but make it instant */
+  .animate-fadeIn {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

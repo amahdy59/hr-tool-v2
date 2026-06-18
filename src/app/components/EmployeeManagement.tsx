@@ -314,7 +314,7 @@ export const EmployeeManagement: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Enter Employee# or Name..." className={cn(inputClass, 'pl-10')} />
+                  <input type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Enter Employee# or Name..." className={cn(inputClass, 'pl-10')} aria-label="Search employees" />
                 </div>
                 <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                   <PopoverTrigger asChild>
@@ -702,7 +702,7 @@ const EmployeeFilterPanel: React.FC<{
     <FilterSelect label="Job Title" value={title} onChange={setTitle} options={['All', ...JOB_TITLES_LIST]} />
     <div className="space-y-1.5">
       <label className={labelClass}>Graduation Year</label>
-      <input type="text" value={gradYear} onChange={(e) => setGradYear(e.target.value)} placeholder="e.g. 2013" className={inputClass} />
+      <input type="text" inputMode="numeric" value={gradYear} onChange={(e) => setGradYear(e.target.value)} placeholder="e.g. 2013" className={inputClass} />
     </div>
     <div className="space-y-1.5">
       <label className={labelClass}>Hired After</label>
@@ -1256,13 +1256,15 @@ const FormField: React.FC<{
   onChange: (v: string) => void;
   placeholder?: string;
   type?: string;
-}> = ({ label, value, onChange, placeholder, type = 'text' }) => (
+  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
+  autoComplete?: string;
+}> = ({ label, value, onChange, placeholder, type = 'text', inputMode, autoComplete }) => (
   <div className="space-y-1.5">
     <label className={labelClass}>{label}</label>
     {type === 'date' ? (
       <DatePicker value={value} onChange={onChange} placeholder={placeholder} />
     ) : (
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={inputClass} />
+      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={inputClass} inputMode={inputMode} autoComplete={autoComplete} />
     )}
   </div>
 );

@@ -28,16 +28,15 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
     // Simulate a small delay for better UX
     setTimeout(() => {
-      // Basic email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       
       if (!emailRegex.test(username)) {
-        setError('Please enter a valid email address');
+        setError('Enter a valid email address — e.g. name@company.com');
         setIsLoading(false);
       } else if (password === '123456') {
         onLogin(username);
       } else {
-        setError('Invalid password');
+        setError('Wrong password. Try again or use \'Forgot password?\' below.');
         setIsLoading(false);
       }
     }, 600);
@@ -50,14 +49,13 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
     // Simulate a small delay for better UX
     setTimeout(() => {
-      // Basic email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       
       if (emailRegex.test(resetEmail)) {
         setResetSuccess(true);
         setIsLoading(false);
       } else {
-        setError('Please enter a valid email address');
+        setError('Enter a valid email address — e.g. name@company.com');
         setIsLoading(false);
       }
     }, 600);
@@ -182,8 +180,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   setUsername(e.target.value);
                   setError('');
                 }}
-                placeholder="Enter your email"
-                required
+              placeholder="e.g. name@company.com"
+              required
+              autoComplete="email"
+              inputMode="email"
                 className={cn(
                   'w-full h-10 px-3 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
                   error ? 'border-destructive focus:border-destructive focus:ring-2 focus:ring-destructive/50' : 'border-border focus:ring-2 focus:ring-ring/50 focus:border-ring'
@@ -218,8 +218,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     setPassword(e.target.value);
                     setError('');
                   }}
-                  placeholder="Enter your password"
+                  placeholder="••••••••"
                   required
+                  autoComplete="current-password"
                   className={cn(
                     'w-full h-10 px-3 pr-10 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
                     error ? 'border-destructive focus:border-destructive focus:ring-2 focus:ring-destructive/50' : 'border-border focus:ring-2 focus:ring-ring/50 focus:border-ring'

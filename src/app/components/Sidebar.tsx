@@ -50,6 +50,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
     const button = (
       <button
         onClick={() => setActiveTab(item.id)}
+        aria-current={isActive ? 'page' : undefined}
         className={cn(
           'relative flex min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-0 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-left',
           sidebarItemTextClass,
@@ -160,7 +161,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                 type="button"
                 onClick={handleClick}
                 aria-label={item.label}
-                className="flex min-w-12 cursor-pointer items-center justify-center rounded-[var(--radius)] px-3 py-2 text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
+                className="flex min-w-[44px] min-h-[44px] cursor-pointer items-center justify-center rounded-[var(--radius)] px-3 py-2 text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
               >
                 <item.icon className="h-5 w-5" />
               </button>

@@ -53,6 +53,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility }) =>
           ) : (
             <div 
               className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border-2 border-border"
+              role="img"
+              aria-label={`Profile: ${currentUser?.name || 'User'}`}
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontSize: 'var(--text-xs)',
