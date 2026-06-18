@@ -143,16 +143,17 @@ const weekendOptions = [
   'Thursday and Friday',
 ];
 
-export const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onRequestLeave: () => void;
+  onRequestMission: () => void;
+}
+
+export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestMission }) => {
   // Modal states
-  const [requestLeaveOpen, setRequestLeaveOpen] = useState(false);
-  const [requestMissionOpen, setRequestMissionOpen] = useState(false);
   const [leaveDetailOpen, setLeaveDetailOpen] = useState(false);
   const [selectedLeave, setSelectedLeave] = useState<LeaveDetail | null>(null);
 
   // Confirm dialog states
-  const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
-  const [confirmMissionOpen, setConfirmMissionOpen] = useState(false);
   const [confirmCancelOpen, setConfirmCancelOpen] = useState(false);
   const [confirmCancelId, setConfirmCancelId] = useState<string>('');
   const [changeWeekendOpen, setChangeWeekendOpen] = useState(false);
@@ -161,57 +162,7 @@ export const Dashboard: React.FC = () => {
   const [currentWeekend, setCurrentWeekend] = useState('Friday and Saturday');
   const [pendingWeekend, setPendingWeekend] = useState('');
 
-  // Pending form data
-  const [pendingLeaveData, setPendingLeaveData] = useState<any>(null);
-  const [pendingMissionData, setPendingMissionData] = useState<any>(null);
-
   // --- Handlers ---
-  const handleLeaveSubmit = (data: any) => {
-    setPendingLeaveData(data);
-    setRequestLeaveOpen(false);
-    setConfirmLeaveOpen(true);
-  };
-
-  const handleMissionSubmit = (data: any) => {
-    setPendingMissionData(data);
-    setRequestMissionOpen(false);
-    setConfirmMissionOpen(true);
-  };
-
-  const handleConfirmLeave = () => {
-    if (pendingLeaveData) {
-      const type = pendingLeaveData.leaveType || 'annual';
-      const fromStr = pendingLeaveData.fromDate ? format(parseISO(pendingLeaveData.fromDate), 'dd MMMM yyyy') : '—';
-      const toStr = pendingLeaveData.toDate ? format(parseISO(pendingLeaveData.toDate), 'dd MMMM yyyy') : '—';
-      const days = pendingLeaveData.daysRequested || 0;
-      if (type === 'Sick') {
-        toast.success(
-          `Your sick leave request (${days} day${days !== 1 ? 's' : ''}) has been submitted. Take care! 🤗`,
-          { duration: 5000 }
-        );
-      } else {
-        toast.success(
-          `Got it! Your ${type.toLowerCase()} from ${fromStr} to ${toStr} (${days} day${days !== 1 ? 's' : ''}) has been submitted. Enjoy your time off 🎉`,
-          { duration: 5000 }
-        );
-      }
-    }
-    setPendingLeaveData(null);
-  };
-
-  const handleConfirmMission = () => {
-    if (pendingMissionData) {
-      const mType = pendingMissionData.missionType || 'Work From Home';
-      const fromStr = pendingMissionData.fromDate ? format(parseISO(pendingMissionData.fromDate), 'dd MMMM yyyy') : '—';
-      const toStr = pendingMissionData.toDate ? format(parseISO(pendingMissionData.toDate), 'dd MMMM yyyy') : '—';
-      const days = pendingMissionData.daysRequested || 0;
-      toast.success(
-        `${mType} from ${fromStr} to ${toStr} (${days} day${days !== 1 ? 's' : ''}) submitted successfully.`,
-        { duration: 5000 }
-      );
-    }
-    setPendingMissionData(null);
-  };
 
   const handleViewRequest = (item: HistoryItem) => {
     setSelectedLeave({
@@ -268,7 +219,7 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 p-4 sm:space-y-8 sm:p-8 max-w-7xl mx-auto">
+    <div className="space-y-6 px-2 py-4 sm:p-8 sm:space-y-8 max-w-7xl mx-auto">
 
       {/* Top Controls */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -314,14 +265,14 @@ export const Dashboard: React.FC = () => {
         <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
           <Button
             variant="outline"
-            className="w-full sm:w-auto"
-            onClick={() => setRequestLeaveOpen(true)}
+            className="w-full sm:w-auto cursor-pointer"
+            onClick={onRequestLeave}
           >
             Request Leave
           </Button>
           <Button
-            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white sm:w-auto"
-            onClick={() => setRequestMissionOpen(true)}
+            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white sm:w-auto cursor-pointer"
+            onClick={onRequestMission}
           >
             Request Mission
           </Button>
@@ -710,20 +661,6 @@ export const Dashboard: React.FC = () => {
 
       {/* === MODALS === */}
 
-      {/* Request Leave Modal */}
-      <RequestLeaveModal
-        open={requestLeaveOpen}
-        onOpenChange={setRequestLeaveOpen}
-        onSubmit={handleLeaveSubmit}
-      />
-
-      {/* Request Mission Modal */}
-      <RequestMissionModal
-        open={requestMissionOpen}
-        onOpenChange={setRequestMissionOpen}
-        onSubmit={handleMissionSubmit}
-      />
-
       {/* Leave Detail Modal */}
       <LeaveDetailModal
         open={leaveDetailOpen}
@@ -731,72 +668,6 @@ export const Dashboard: React.FC = () => {
         leaveData={selectedLeave}
         onEditRequest={handleEditRequest}
         onCancelRequest={handleCancelRequest}
-      />
-
-      {/* Confirm Leave Dialog */}
-      <ConfirmDialog
-        open={confirmLeaveOpen}
-        onOpenChange={setConfirmLeaveOpen}
-        title="Confirm Leave"
-        message={
-          <>
-            You're requesting{' '}
-            <strong style={{ fontWeight: 'var(--font-weight-semibold)' }}>
-              {pendingLeaveData?.leaveType?.toLowerCase() || 'annual'} leave
-            </strong>{' '}
-            {pendingLeaveData?.fromDate && pendingLeaveData?.toDate ? (
-              <>
-                from{' '}
-                <strong style={{ fontWeight: 'var(--font-weight-semibold)' }}>
-                  {isValid(parseISO(pendingLeaveData.fromDate)) ? format(parseISO(pendingLeaveData.fromDate), 'dd MMMM yyyy') : '—'}
-                </strong>{' '}
-                to{' '}
-                <strong style={{ fontWeight: 'var(--font-weight-semibold)' }}>
-                  {isValid(parseISO(pendingLeaveData.toDate)) ? format(parseISO(pendingLeaveData.toDate), 'dd MMMM yyyy') : '—'}
-                </strong>
-                {' '}({pendingLeaveData.daysRequested || 0} day{(pendingLeaveData.daysRequested || 0) !== 1 ? 's' : ''}).
-              </>
-            ) : null}{' '}
-            Ready to submit?
-          </>
-        }
-        confirmLabel="Submit"
-        cancelLabel="Cancel"
-        confirmVariant="destructive"
-        onConfirm={handleConfirmLeave}
-      />
-
-      {/* Confirm Mission Dialog */}
-      <ConfirmDialog
-        open={confirmMissionOpen}
-        onOpenChange={setConfirmMissionOpen}
-        title="Confirm Mission"
-        message={
-          <>
-            You're requesting{' '}
-            <strong style={{ fontWeight: 'var(--font-weight-semibold)' }}>
-              {pendingMissionData?.missionType?.toLowerCase() || 'work from home'}
-            </strong>{' '}
-            {pendingMissionData?.fromDate && pendingMissionData?.toDate ? (
-              <>
-                from{' '}
-                <strong style={{ fontWeight: 'var(--font-weight-semibold)' }}>
-                  {isValid(parseISO(pendingMissionData.fromDate)) ? format(parseISO(pendingMissionData.fromDate), 'dd MMMM yyyy') : '—'}
-                </strong>{' '}
-                to{' '}
-                <strong style={{ fontWeight: 'var(--font-weight-semibold)' }}>
-                  {isValid(parseISO(pendingMissionData.toDate)) ? format(parseISO(pendingMissionData.toDate), 'dd MMMM yyyy') : '—'}
-                </strong>
-                {' '}({pendingMissionData.daysRequested || 0} day{(pendingMissionData.daysRequested || 0) !== 1 ? 's' : ''}).
-              </>
-            ) : null}{' '}
-            Ready to submit?
-          </>
-        }
-        confirmLabel="Submit"
-        cancelLabel="Cancel"
-        confirmVariant="destructive"
-        onConfirm={handleConfirmMission}
       />
 
       {/* Confirm Cancellation Dialog */}

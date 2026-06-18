@@ -16,6 +16,8 @@ import {
   ChevronRight,
   X,
   Users,
+  FileText,
+  PenLine,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -257,7 +259,7 @@ export const EmployeeManagement: React.FC = () => {
   );
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="px-2 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Manage Employees</h2>
@@ -667,23 +669,23 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
   const go = (p: number) => { const v = Math.max(1, Math.min(p, totalPages)); setPage(v); setPageInput(String(v)); };
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-muted/20">
-      <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/20">
+      <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
         Items Per Page
         <select className="h-8 px-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none cursor-pointer" defaultValue="15">
           <option>10</option><option>15</option><option>30</option>
         </select>
       </div>
-      <div className="flex items-center gap-2">
-        <button onClick={() => go(page - 1)} disabled={page <= 1} className="p-1.5 border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer">
+      <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
+        <button onClick={() => go(page - 1)} disabled={page <= 1} className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Previous page">
           <ChevronLeft className="w-4 h-4 text-foreground" />
         </button>
-        <span className="text-[var(--text-sm)] text-foreground flex items-center gap-1">
+        <span className="text-[var(--text-sm)] text-foreground flex items-center gap-1 whitespace-nowrap shrink-0">
           Page
-          <input type="text" value={pageInput} onChange={(e) => setPageInput(e.target.value)} onBlur={() => go(Number(pageInput) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(pageInput) || 1)} className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]" />
+          <input type="text" value={pageInput} onChange={(e) => setPageInput(e.target.value)} onBlur={() => go(Number(pageInput) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(pageInput) || 1)} className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]" aria-label="Page number input" />
           of {totalPages}
         </span>
-        <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="p-1.5 border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer">
+        <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Next page">
           <ChevronRight className="w-4 h-4 text-foreground" />
         </button>
       </div>

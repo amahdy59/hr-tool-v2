@@ -284,7 +284,7 @@ export const Attendance: React.FC = () => {
   const monthLabel = months.find((m) => m.value === selectedMonth)?.label ?? 'All';
 
   return (
-    <div className="space-y-6 p-6 lg:p-8 max-w-7xl mx-auto">
+    <div className="space-y-6 px-2 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       {/* ── Page Title ── */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Employee Attendance</h2>
@@ -430,37 +430,42 @@ export const Attendance: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Left: summary table */}
-          <div className="space-y-0">
-            {/* Header */}
-            <div className="grid grid-cols-3 text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground pb-3 border-b border-border uppercase tracking-wide">
-              <span>Category</span>
-              <span className="text-end">Hours</span>
-              <span className="text-end">Percentage</span>
-            </div>
-
-            {summaryData.map((item) => (
-              <div
-                key={item.id}
-                className="grid grid-cols-3 text-[var(--text-sm)] items-center py-3 border-b border-border/50 hover:bg-muted/30 transition-colors cursor-default"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div
-                    className="w-3 h-3 rounded-sm shrink-0"
-                    style={{ backgroundColor: item.cssColor }}
-                  />
-                  <span className="text-foreground">{item.name}</span>
-                </div>
-                <span className="text-end text-foreground font-[var(--font-weight-medium)]">{item.hours}h</span>
-                <span className="text-end text-muted-foreground">{item.percentage}%</span>
-              </div>
-            ))}
-
-            {/* Total */}
-            <div className="grid grid-cols-3 text-[var(--text-sm)] items-center pt-4">
-              <span className="font-[var(--font-weight-semibold)] text-foreground">Total Hours</span>
-              <span className="text-end font-[var(--font-weight-semibold)] text-foreground">{totalHours}h</span>
-              <span className="text-end font-[var(--font-weight-semibold)] text-foreground">100%</span>
-            </div>
+          <div className="space-y-0 overflow-x-auto w-full">
+            <table className="w-full text-start border-collapse cursor-default table-fixed">
+              <thead>
+                <tr className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground border-b border-border uppercase tracking-wide">
+                  <th className="text-start pb-3 font-medium w-1/2">Category</th>
+                  <th className="text-end pb-3 font-medium w-1/4">Hours</th>
+                  <th className="text-end pb-3 font-medium w-1/4">Percentage</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/50">
+                {summaryData.map((item) => (
+                  <tr
+                    key={item.id}
+                    className="text-[var(--text-sm)] hover:bg-muted/30 transition-colors"
+                  >
+                    <td className="py-3 text-start">
+                      <div className="flex items-center gap-2.5">
+                        <div
+                          className="w-3 h-3 rounded-sm shrink-0"
+                          style={{ backgroundColor: item.cssColor }}
+                        />
+                        <span className="text-foreground">{item.name}</span>
+                      </div>
+                    </td>
+                    <td className="py-3 text-end text-foreground font-[var(--font-weight-medium)]">{item.hours}h</td>
+                    <td className="py-3 text-end text-muted-foreground">{item.percentage}%</td>
+                  </tr>
+                ))}
+                {/* Total */}
+                <tr className="font-[var(--font-weight-semibold)] text-[var(--text-sm)] text-foreground border-t border-border">
+                  <td className="py-4 text-start font-semibold">Total Hours</td>
+                  <td className="py-4 text-end font-semibold">{totalHours}h</td>
+                  <td className="py-4 text-end font-semibold">100%</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
           {/* Right: bar chart */}
@@ -610,11 +615,11 @@ export const Attendance: React.FC = () => {
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-muted/20">
-            <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/20">
+            <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
               Items Per Page
               <Select value={String(itemsPerPage)} onValueChange={(v) => { setItemsPerPage(Number(v)); setCurrentPage(1); setPageInput('1'); }}>
-                <SelectTrigger className="h-8 w-20 rounded-[var(--radius-input)]">
+                <SelectTrigger className="h-8 w-20 rounded-[var(--radius-input)] bg-input-background text-foreground">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -625,15 +630,16 @@ export const Attendance: React.FC = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="p-1.5 border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                aria-label="Previous page"
               >
                 <ChevronLeft className="w-4 h-4 text-foreground" />
               </button>
-              <span className="text-[var(--text-sm)] text-foreground flex items-center gap-1">
+              <span className="text-[var(--text-sm)] text-foreground flex items-center gap-1 whitespace-nowrap shrink-0">
                 Page
                 <input
                   type="text"
@@ -641,14 +647,16 @@ export const Attendance: React.FC = () => {
                   onChange={(e) => setPageInput(e.target.value)}
                   onBlur={() => handlePageChange(Number(pageInput) || 1)}
                   onKeyDown={(e) => e.key === 'Enter' && handlePageChange(Number(pageInput) || 1)}
-                  className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none"
+                  className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]"
+                  aria-label="Page number input"
                 />
                 of {totalPages}
               </span>
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="p-1.5 border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                aria-label="Next page"
               >
                 <ChevronRight className="w-4 h-4 text-foreground" />
               </button>
@@ -657,12 +665,13 @@ export const Attendance: React.FC = () => {
         </div>
       </section>
 
-      {/* ── Legend for status colors ── */}
-      <div className="flex flex-wrap items-center gap-4 pt-2">
-        <span className="text-[var(--text-xs)] text-muted-foreground font-[var(--font-weight-medium)] uppercase tracking-wide">Status Legend:</span>
-        {Object.entries(statusVariantMap).map(([key, { variant, label }]) => (
-          <StatusBadge key={key} variant={variant} className="text-[10px]">{label}</StatusBadge>
-        ))}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-2">
+        <span className="text-[var(--text-xs)] text-muted-foreground font-[var(--font-weight-medium)] uppercase tracking-wide block sm:inline">Status Legend:</span>
+        <div className="flex flex-wrap items-center gap-2">
+          {Object.entries(statusVariantMap).map(([key, { variant, label }]) => (
+            <StatusBadge key={key} variant={variant} className="text-[10px]">{label}</StatusBadge>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import React from 'react';
-import { User, Search, Keyboard } from 'lucide-react';
+import { User, Search, Keyboard, Menu, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose } from './ui/sheet';
+import { cn } from '@/lib/utils';
+import type { AppTab } from '../App';
 
 interface HeaderProps {
   currentUser: {
@@ -12,6 +15,9 @@ interface HeaderProps {
   accessibility: AccessibilitySettings;
   onOpenCommandPalette?: () => void;
   onOpenShortcuts?: () => void;
+  activeTab: AppTab;
+  setActiveTab: (tab: AppTab) => void;
+  onLogout?: () => void;
 }
 
 // Helper function to get initials from name
@@ -23,10 +29,90 @@ const getInitials = (name: string): string => {
     .join('');
 };
 
-export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts }) => {
+export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
   return (
     <header className="min-h-14 border-b border-border bg-card px-4 py-3 flex items-center justify-between sticky top-0 z-10 sm:h-16 sm:px-6 sm:py-0">
       <div className="flex items-center gap-3">
+        {/* Hamburger Menu on Mobile/Tablet */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <button
+              className="lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-muted/50 rounded-md hover:bg-muted text-foreground transition-colors cursor-pointer"
+              aria-label="Open navigation menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-80 p-5 flex flex-col h-full bg-card">
+            <SheetHeader className="border-b border-border pb-4 mb-4">
+              <SheetTitle style={{ fontFamily: "'Orbitron', sans-serif" }} className="text-primary text-xl font-bold">
+                HR Tool
+              </SheetTitle>
+            </SheetHeader>
+            
+            {/* User Info */}
+            <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-[var(--radius-card)] border border-border/50 mb-4">
+              {currentUser?.image ? (
+                <img src={currentUser.image} alt={currentUser.name} className="w-10 h-10 rounded-full object-cover" />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-border text-primary font-bold">
+                  {currentUser ? getInitials(currentUser.name) : 'U'}
+                </div>
+              )}
+              <div className="min-w-0">
+                <p className="text-[var(--text-sm)] font-semibold text-foreground truncate">{currentUser?.name}</p>
+                <p className="text-[10px] text-muted-foreground truncate">{currentUser?.email}</p>
+              </div>
+            </div>
+
+            {/* Nav Links */}
+            <nav className="flex-1 overflow-y-auto space-y-1">
+              {[
+                { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+                { id: 'attendance', label: 'Attendance', icon: CalendarCheck },
+                { id: 'employees', label: 'Employees', icon: Users },
+                { id: 'leaves', label: 'Leaves Management', icon: FileText },
+                { id: 'missions', label: 'Missions Management', icon: Rocket },
+                { id: 'roles', label: 'Roles Management', icon: ShieldCheck },
+                { id: 'profile', label: 'My Profile', icon: UserCircle },
+              ].map((item) => {
+                const isActive = activeTab === item.id;
+                return (
+                  <SheetClose asChild key={item.id}>
+                    <button
+                      onClick={() => setActiveTab(item.id as AppTab)}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium transition-colors cursor-pointer",
+                        isActive 
+                          ? "bg-primary/10 text-primary" 
+                          : "text-foreground hover:bg-muted"
+                      )}
+                    >
+                      <item.icon className="w-5 h-5 shrink-0" />
+                      <span>{item.label}</span>
+                    </button>
+                  </SheetClose>
+                );
+              })}
+            </nav>
+
+            {/* Logout footer */}
+            {onLogout && (
+              <div className="border-t border-border pt-4 mt-auto">
+                <SheetClose asChild>
+                  <button
+                    onClick={onLogout}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+                  >
+                    <LogOut className="w-5 h-5 shrink-0" />
+                    <span>Log out</span>
+                  </button>
+                </SheetClose>
+              </div>
+            )}
+          </SheetContent>
+        </Sheet>
+
         <h1
           className="text-primary"
           style={{

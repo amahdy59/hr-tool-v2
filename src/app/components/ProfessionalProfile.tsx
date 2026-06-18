@@ -998,7 +998,7 @@ const ProjectItem: React.FC<{
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-2 flex-1">
         <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.title}</p>
-        {data.featured && <Star className="w-4 h-4 text-chart-3 fill-chart-3" title="Featured project" />}
+        {data.featured && <span title="Featured project"><Star className="w-4 h-4 text-chart-3 fill-chart-3" /></span>}
       </div>
       <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)] shrink-0" style={{ fontFamily: "'Inter', sans-serif" }}>{data.category}</span>
     </div>

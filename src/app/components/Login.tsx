@@ -107,8 +107,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
       </div>
 
       {/* Login Card */}
-      <div className="relative z-10 w-full max-w-md mx-4">
-        <div className="bg-card/95 backdrop-blur-sm rounded-[var(--radius-card)] shadow-[var(--elevation-lg)] p-8 border border-border/50">
+      <div className="relative z-10 w-full h-full sm:h-auto sm:max-w-md sm:mx-4 flex flex-col justify-center max-sm:w-full">
+        <div className="bg-card/95 backdrop-blur-sm shadow-[var(--elevation-lg)] border border-border/50 h-full sm:h-auto w-full flex flex-col justify-center p-6 sm:p-8 rounded-none border-0 sm:rounded-[var(--radius-card)] sm:border">
           {/* Logo/Header */}
           <div className="text-center mb-8">
             <div
@@ -363,8 +363,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
       {/* Forgot Password Form */}
       {showForgotPassword && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <div className="bg-card/95 backdrop-blur-sm rounded-[var(--radius-card)] shadow-[var(--elevation-lg)] p-8 border border-border/50 w-full max-w-md mx-4">
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-card/95 backdrop-blur-sm shadow-[var(--elevation-lg)] border border-border/50 w-full h-full sm:h-auto sm:max-w-md sm:mx-4 p-6 sm:p-8 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border flex flex-col justify-center">
             <h2
               style={{
                 fontFamily: "'Inter', sans-serif",

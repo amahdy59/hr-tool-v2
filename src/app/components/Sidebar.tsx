@@ -45,7 +45,7 @@ const footerItems = [
 const sidebarItemTextClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)]';
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, collapsed, onToggle, onLogout }) => {
-  const NavButton = ({ item }: { item: typeof navItems[0] }) => {
+  const NavButton = ({ item }: { item: typeof navItems[number] }) => {
     const isActive = activeTab === item.id;
     const button = (
       <button
@@ -105,12 +105,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
     <TooltipProvider delayDuration={0}>
       <aside
         className={cn(
-          'fixed bottom-0 start-0 end-0 z-30 flex h-auto flex-row border-t border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 sm:relative sm:h-screen sm:flex-col sm:border-e sm:border-t-0',
-          collapsed ? 'sm:w-[72px]' : 'sm:w-64'
+          'hidden lg:flex lg:flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 h-screen shrink-0',
+          collapsed ? 'lg:w-[72px]' : 'lg:w-64'
         )}
       >
         {/* Logo */}
-        <div className={cn('hidden border-b border-sidebar-border items-center shrink-0 sm:flex', collapsed ? 'h-16 justify-center px-2' : 'h-16 px-4')}>
+        <div className={cn('border-b border-sidebar-border flex items-center shrink-0 px-4', collapsed ? 'h-16 justify-center' : 'h-16')}>
           {collapsed ? (
             <div
               style={{
@@ -139,42 +139,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         </div>
 
         {/* Navigation */}
-        <nav aria-label="Main navigation" className={cn('flex flex-1 gap-1 overflow-x-auto p-2 sm:flex-col sm:overflow-y-auto sm:space-y-1', collapsed ? 'sm:p-2' : 'sm:p-3')}>
-          <ul className="flex flex-1 gap-1 overflow-x-auto sm:flex-col sm:overflow-y-auto sm:space-y-1 w-full m-0 p-0 list-none">
+        <nav aria-label="Main navigation" className="flex-1 flex flex-col gap-1 overflow-y-auto p-3">
+          <ul className="flex flex-col gap-1 w-full m-0 p-0 list-none">
             {navItems.map((item) => (
-              <li key={item.id} className="sm:w-full">
+              <li key={item.id} className="w-full">
                 <NavButton item={item} />
               </li>
             ))}
           </ul>
         </nav>
 
-        <div className="flex shrink-0 gap-1 border-s border-sidebar-border p-2 sm:hidden">
-          {footerItems.map((item) => {
-            const handleClick = () => {
-              if (item.id === 'profile') {
-                setActiveTab(item.id);
-              } else if (item.id === 'logout' && onLogout) {
-                onLogout();
-              }
-            };
-
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={handleClick}
-                aria-label={item.label}
-                className="flex min-w-[44px] min-h-[44px] cursor-pointer items-center justify-center rounded-[var(--radius)] px-3 py-2 text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
-              >
-                <item.icon className="h-5 w-5" />
-              </button>
-            );
-          })}
-        </div>
-
         {/* Footer - Fixed at bottom */}
-        <div className={cn('hidden border-t border-sidebar-border space-y-1 bg-sidebar shrink-0 sm:block', collapsed ? 'p-2' : 'p-3')}>
+        <div className="border-t border-sidebar-border space-y-1 bg-sidebar shrink-0 p-3">
           {footerItems.map((item) => {
             const handleClick = () => {
               if (item.id === 'profile') {

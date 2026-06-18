@@ -6,8 +6,9 @@ import {
   Target,
   Type,
   ZoomIn,
+  X,
 } from 'lucide-react';
-import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
+import { Popover, PopoverTrigger, PopoverContent, PopoverClose } from './ui/popover';
 import { Switch } from './ui/switch';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
@@ -181,21 +182,26 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-80 p-5 rounded-[var(--radius-card)] border-border bg-card shadow-[var(--elevation-lg)]"
+        className="w-full sm:w-80 p-5 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border border-border bg-card shadow-[var(--elevation-lg)]"
         align="end"
       >
         <div className="space-y-1">
-          <div className="border-b border-border pb-3 mb-4">
-            <h2
-              className="text-sm font-semibold text-foreground flex items-center gap-2"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              <Accessibility className="w-4 h-4 text-primary" />
-              Accessibility Tools
-            </h2>
-            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Adjust your viewing and interaction preferences.
-            </p>
+          <div className="border-b border-border pb-3 mb-4 flex items-center justify-between">
+            <div>
+              <h2
+                className="text-sm font-semibold text-foreground flex items-center gap-2"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                <Accessibility className="w-4 h-4 text-primary" />
+                Accessibility Tools
+              </h2>
+              <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+                Adjust your preferences.
+              </p>
+            </div>
+            <PopoverClose className="sm:hidden p-1 rounded hover:bg-muted text-muted-foreground flex items-center justify-center min-w-11 min-h-11 border border-border/40 cursor-pointer" aria-label="Close accessibility panel">
+              <X className="w-4 h-4" />
+            </PopoverClose>
           </div>
 
           <div className="space-y-0.5">

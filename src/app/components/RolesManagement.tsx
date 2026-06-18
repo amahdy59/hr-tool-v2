@@ -193,7 +193,7 @@ export const RolesManagement: React.FC = () => {
   };
 
   return (
-    <div className="p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="px-2 py-6 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
       {/* ── Page Title ── */}
       <div>
         <h2
@@ -325,8 +325,8 @@ export const RolesManagement: React.FC = () => {
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-muted/20">
-            <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/20">
+            <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
               Items Per Page
               <Select
                 value={String(itemsPerPage)}
@@ -336,7 +336,7 @@ export const RolesManagement: React.FC = () => {
                   setPageInput('1');
                 }}
               >
-                <SelectTrigger className="h-8 w-20 rounded-[var(--radius-input)]">
+                <SelectTrigger className="h-8 w-20 rounded-[var(--radius-input)] bg-input-background text-foreground">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -347,11 +347,12 @@ export const RolesManagement: React.FC = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="p-1.5 border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                aria-label="Previous page"
               >
                 <ChevronLeft className="w-4 h-4 text-foreground" />
               </button>
@@ -363,14 +364,16 @@ export const RolesManagement: React.FC = () => {
                   onChange={(e) => setPageInput(e.target.value)}
                   onBlur={() => handlePageChange(Number(pageInput) || 1)}
                   onKeyDown={(e) => e.key === 'Enter' && handlePageChange(Number(pageInput) || 1)}
-                  className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none"
+                  className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]"
+                  aria-label="Page number input"
                 />
                 of {totalPages}
               </span>
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="p-1.5 border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                aria-label="Next page"
               >
                 <ChevronRight className="w-4 h-4 text-foreground" />
               </button>
