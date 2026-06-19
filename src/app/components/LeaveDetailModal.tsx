@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,6 @@ import { Button } from './ui/button';
 import {
   FileText,
   Upload,
-  User,
   Check,
   AlertCircle,
 } from 'lucide-react';
@@ -56,8 +55,6 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
   onEditRequest,
   onCancelRequest,
 }) => {
-  const [activeView, setActiveView] = useState<'compact' | 'full'>('full');
-
   if (!leaveData) return null;
 
   const getStepIndex = () => {
@@ -79,9 +76,9 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="px-[0px] py-[1px] px-[0px] py-[2px] px-[0px] py-[3px] px-[0px] py-[4px]">
-          <div className="flex items-center justify-between pt-2">
+      <DialogContent className="sm:max-w-[460px] max-h-[90vh] overflow-y-auto gap-3">
+        <DialogHeader className="pe-8">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 pt-1 text-start">
             <DialogTitle
               style={{
                 fontFamily: "'Inter', sans-serif",
@@ -99,25 +96,15 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
               }}
               className="text-muted-foreground"
             >
-              {leaveData.duration}
+              {leaveData.dateRange} ({leaveData.duration})
             </span>
           </div>
           <DialogDescription className="sr-only">
             Leave request details
           </DialogDescription>
-          <p
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 'var(--text-sm)',
-              fontWeight: 'var(--font-weight-normal)',
-            }}
-            className="text-muted-foreground"
-          >
-            {leaveData.dateRange}
-          </p>
         </DialogHeader>
 
-        <div className="space-y-5">
+        <div className="space-y-4">
           {/* Attachments */}
           <div className="space-y-2">
             <h4
@@ -126,7 +113,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                 fontSize: 'var(--text-sm)',
                 fontWeight: 'var(--font-weight-semibold)',
               }}
-              className="text-destructive"
+              className="text-foreground"
             >
               Attachment(s)
             </h4>
@@ -134,9 +121,9 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
               {leaveData.attachments.map((file, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-3 p-3 border border-border rounded-[var(--radius)] bg-card"
+                  className="flex items-center gap-3 p-2.5 border border-border rounded-[var(--radius)] bg-card"
                 >
-                  <div className="w-8 h-8 bg-muted rounded flex items-center justify-center">
+                  <div className="w-8 h-8 bg-muted rounded flex items-center justify-center shrink-0">
                     <FileText className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -159,11 +146,11 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                       className="text-muted-foreground"
                     >
                       {file.size}
-                      {file.date && ` · ${file.date}`}
+                      {file.date && ` - ${file.date}`}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <button className="text-destructive hover:text-destructive/80">
+                    <button className="text-muted-foreground hover:text-foreground" aria-label={`Review ${file.name}`}>
                       <AlertCircle className="w-4 h-4" />
                     </button>
                   </div>
@@ -189,18 +176,18 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
 
           {/* Notes */}
           {leaveData.notes.length > 0 && (
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               <h4
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',
                   fontWeight: 'var(--font-weight-semibold)',
                 }}
-                className="text-destructive"
+                className="text-foreground"
               >
                 Notes:
               </h4>
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {leaveData.notes.map((note, idx) => (
                   <div key={idx} className="flex gap-3">
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
@@ -219,8 +206,8 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                           .slice(0, 2)}
                       </span>
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
                         <p
                           style={{
                             fontFamily: "'Inter', sans-serif",
@@ -231,7 +218,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                         >
                           {note.author}
                         </p>
-                        <span className="w-1 h-1 rounded-full bg-muted-foreground" />
+                        <span className="w-1 h-1 rounded-full bg-muted-foreground/60" />
                         <p
                           style={{
                             fontFamily: "'Inter', sans-serif",
@@ -261,18 +248,18 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
           )}
 
           {/* Progress Stepper */}
-          <div className="space-y-3">
-            <div className="mx-auto flex w-full max-w-[640px] items-start justify-center px-2">
+          <div className="space-y-2 pt-1">
+            <div className="grid grid-cols-[auto_1fr_auto_1fr_auto] items-start">
               {stepLabels.map((label, idx) => {
                 const isCompleted = idx <= currentStep;
                 const isCurrent = idx === currentStep;
                 const isLastStep = idx === stepLabels.length - 1;
                 return (
-                  <div key={label} className="flex items-start flex-1">
-                    <div className="flex flex-col items-center gap-1.5">
+                  <React.Fragment key={label}>
+                    <div className="flex min-w-[64px] flex-col items-center gap-1.5">
                       <div
                         className={cn(
-                          'w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors',
+                          'w-8 h-8 rounded-full flex items-center justify-center border transition-colors',
                           isCompleted
                             ? 'bg-chart-3 border-chart-3 text-white'
                             : 'border-border bg-card text-muted-foreground'
@@ -309,7 +296,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                       </span>
                     </div>
                     {!isLastStep && (
-                      <div className="flex-1 flex items-center pt-4 px-2">
+                      <div className="flex items-center pt-4 px-1 sm:px-2">
                         <div
                           className={cn(
                             'h-0.5 w-full transition-colors',
@@ -318,17 +305,17 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                         />
                       </div>
                     )}
-                  </div>
+                  </React.Fragment>
                 );
               })}
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-between pt-2">
+          <div className="flex flex-col gap-2 pt-1 sm:flex-row">
             <Button
               variant="outline"
-              className="rounded-[var(--radius-button)] flex-1"
+              className="w-full rounded-[var(--radius-button)]"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontSize: 'var(--text-sm)',
@@ -340,7 +327,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
             </Button>
             <Button
               variant="destructive"
-              className="rounded-[var(--radius-button)] flex items-center gap-2 flex-1 ms-3"
+              className="w-full rounded-[var(--radius-button)] flex items-center gap-2"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontSize: 'var(--text-sm)',
@@ -348,7 +335,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
               }}
               onClick={() => onCancelRequest(leaveData.id)}
             >
-              <span className="text-white">✕</span> Cancel request
+              <span className="text-white">x</span> Cancel request
             </Button>
           </div>
         </div>

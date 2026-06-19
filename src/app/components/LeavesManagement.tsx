@@ -539,14 +539,14 @@ const CreateLeaveModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <FormField label="Employee Name" value={name} onChange={setName} placeholder="Full name" />
           <FormField label="Employee Number" value={employeeNumber} onChange={setEmployeeNumber} placeholder="XXXXX" />
           <SelectField label="Leave Type" value={leaveType} onChange={setLeaveType} options={LEAVE_TYPES.filter(l => l !== 'All')} />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <FormField label="Start Date" value={startDate} onChange={setStartDate} type="date" />
             <FormField label="End Date" value={endDate} onChange={setEndDate} type="date" />
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Leave created successfully'); }}>Create Leave</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Leave created successfully'); }}>Create Leave</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -590,14 +590,12 @@ const ViewLeaveDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean)
     <DialogContent className="sm:max-w-md">
       <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Leave Details</DialogTitle><DialogDescription className="sr-only">Leave request details</DialogDescription></DialogHeader>
       {leave && (
-        <div className="space-y-4">
+        <div className="space-y-3">
           <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
             <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{leave.name}</p><p className="text-[var(--text-xs)] text-muted-foreground uppercase">{leave.employeeNumber || '00000'}</p></div>
           </div>
-          <div className="space-y-3 text-[var(--text-sm)]">
-            <InfoRow label="Leave Type" value={leave.type} />
-            <InfoRow label="Date Range" value={leave.range} />
-            <InfoRow label="Duration" value={leave.duration} />
+          <div className="space-y-2 text-[var(--text-sm)]">
+            <InfoRow label="Leave" value={`${leave.type} - ${leave.range} (${leave.duration})`} />
             <InfoRow label="Notes" value={leave.notes} />
             {leave.status && <InfoRow label="Status" value={leave.status.charAt(0).toUpperCase() + leave.status.slice(1)} />}
           </div>
@@ -627,7 +625,7 @@ const HolidayFormModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
         <div className="space-y-4">
           <FormField label="Name" value={hName} onChange={setHName} placeholder="e.g. Eid Al-Fitr" />
           <SelectField label="Type" value={hType} onChange={setHType} options={['Holiday', 'Bridge']} />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <FormField label="Start Date" value={startD} onChange={setStartD} type="date" />
             <FormField label="End Date" value={endD} onChange={setEndD} type="date" />
           </div>

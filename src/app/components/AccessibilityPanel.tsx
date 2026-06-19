@@ -48,7 +48,7 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
     <label
       htmlFor={id}
       className={cn(
-        'flex items-center justify-between gap-3 rounded-[var(--radius-button)] p-3 cursor-pointer transition-all duration-200 group relative border',
+        'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-[var(--radius-button)] p-3 cursor-pointer transition-all duration-200 group relative border',
         'has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-1',
         checked
           ? 'bg-primary/10 border-primary/30 shadow-sm hover:bg-primary/15'
@@ -91,10 +91,7 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
         checked={checked}
         onCheckedChange={onChange}
         aria-label={ariaLabel}
-        className={cn(
-          'shrink-0 transition-opacity duration-200',
-          !checked && 'opacity-60 group-hover:opacity-100'
-        )}
+        className="shrink-0"
       />
     </label>
   );

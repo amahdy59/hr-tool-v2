@@ -206,6 +206,7 @@ export const Attendance: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('11');
   const [selectedYear, setSelectedYear] = useState('2023');
+  const [selectedPeriodDate, setSelectedPeriodDate] = useState('2023-11-01');
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState('Mohamed Shalaby');
 
@@ -275,6 +276,18 @@ export const Attendance: React.FC = () => {
     });
   };
 
+  const handlePeriodChange = (date: string) => {
+    setSelectedPeriodDate(date);
+    if (!date) {
+      setSelectedMonth('all');
+      return;
+    }
+
+    const [year, month] = date.split('-');
+    setSelectedYear(year);
+    setSelectedMonth(String(Number(month)));
+  };
+
   const handlePageChange = (page: number) => {
     const p = Math.max(1, Math.min(page, totalPages));
     setCurrentPage(p);
@@ -291,9 +304,9 @@ export const Attendance: React.FC = () => {
       </div>
 
       {/* ── Search & Filters Row ── */}
-      <div className="flex flex-wrap items-end gap-4">
+      <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:flex-wrap sm:items-end">
         {/* Search + filter button */}
-        <div className="flex-1 min-w-[280px] space-y-1.5">
+        <div className="w-full flex-1 space-y-1.5 sm:min-w-[280px]">
           <div className="flex items-center gap-2">
             <label className="text-foreground">Search Employees</label>
             <Tooltip>
@@ -365,7 +378,7 @@ export const Attendance: React.FC = () => {
         </div>
 
         {/* Employee */}
-        <div className="w-52 space-y-1.5">
+        <div className="w-full space-y-1.5 sm:w-52">
           <label className="text-foreground">Employee</label>
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
             <SelectTrigger className="h-10 rounded-[var(--radius-input)]">
@@ -379,34 +392,14 @@ export const Attendance: React.FC = () => {
           </Select>
         </div>
 
-        {/* Month */}
-        <div className="w-44 space-y-1.5">
-          <label className="text-foreground">Month</label>
-          <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="h-10 rounded-[var(--radius-input)]">
-              <SelectValue placeholder="Select month" />
-            </SelectTrigger>
-            <SelectContent>
-              {months.map((m) => (
-                <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Year */}
-        <div className="w-36 space-y-1.5">
-          <label className="text-foreground">Year</label>
-          <Select value={selectedYear} onValueChange={setSelectedYear}>
-            <SelectTrigger className="h-10 rounded-[var(--radius-input)]">
-              <SelectValue placeholder="Select year" />
-            </SelectTrigger>
-            <SelectContent>
-              {years.map((y) => (
-                <SelectItem key={y} value={y}>{y}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        {/* Period */}
+        <div className="w-full space-y-1.5 sm:w-56">
+          <label className="text-foreground">Attendance Period</label>
+          <DatePicker
+            value={selectedPeriodDate}
+            onChange={handlePeriodChange}
+            placeholder="Select date"
+          />
         </div>
       </div>
 
@@ -417,23 +410,28 @@ export const Attendance: React.FC = () => {
       </p>
 
       {/* ── Summary View ── */}
-      <section className="bg-card border border-border rounded-[var(--radius-card)] p-6 shadow-[var(--elevation-sm)]">
-        <div className="flex items-center justify-between mb-6">
-          <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Summary View</h3>
+      <section className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] sm:p-6">
+        <div className="mb-5 flex flex-col items-start gap-2 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] uppercase tracking-wide text-muted-foreground">
+              Attendance
+            </p>
+            <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Summary View</h3>
+          </div>
           <span className="text-[var(--text-xs)] text-muted-foreground bg-muted px-3 py-1 rounded-full">
             {monthLabel} {selectedYear}
           </span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="grid grid-cols-1 gap-6 items-start lg:grid-cols-[minmax(430px,1fr)_minmax(360px,0.9fr)] lg:gap-8">
           {/* Left: summary table */}
           <div className="space-y-0 overflow-x-auto w-full">
-            <table className="w-full text-start border-collapse cursor-default table-fixed">
+            <table className="min-w-[430px] w-full text-start border-collapse cursor-default">
               <thead>
                 <tr className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground border-b border-border uppercase tracking-wide">
-                  <th className="text-start pb-3 font-medium w-1/2">Category</th>
-                  <th className="text-end pb-3 font-medium w-1/4">Hours</th>
-                  <th className="text-end pb-3 font-medium w-1/4">Percentage</th>
+                  <th className="text-start pb-3 pe-6 font-medium min-w-[180px]">Category</th>
+                  <th className="text-end pb-3 px-6 font-medium min-w-[110px]">Hours</th>
+                  <th className="text-end pb-3 ps-6 font-medium min-w-[120px]">Percentage</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
@@ -442,7 +440,7 @@ export const Attendance: React.FC = () => {
                     key={item.id}
                     className="text-[var(--text-sm)] hover:bg-muted/30 transition-colors"
                   >
-                    <td className="py-3 text-start">
+                    <td className="py-3 pe-6 text-start">
                       <div className="flex items-center gap-2.5">
                         <div
                           className="w-3 h-3 rounded-sm shrink-0"
@@ -451,22 +449,57 @@ export const Attendance: React.FC = () => {
                         <span className="text-foreground">{item.name}</span>
                       </div>
                     </td>
-                    <td className="py-3 text-end text-foreground font-[var(--font-weight-medium)]">{item.hours}h</td>
-                    <td className="py-3 text-end text-muted-foreground">{item.percentage}%</td>
+                    <td className="py-3 px-6 text-end text-foreground font-[var(--font-weight-medium)]">{item.hours}h</td>
+                    <td className="py-3 ps-6 text-end text-muted-foreground">{item.percentage}%</td>
                   </tr>
                 ))}
                 {/* Total */}
                 <tr className="font-[var(--font-weight-semibold)] text-[var(--text-sm)] text-foreground border-t border-border">
-                  <td className="py-4 text-start font-semibold">Total Hours</td>
-                  <td className="py-4 text-end font-semibold">{totalHours}h</td>
-                  <td className="py-4 text-end font-semibold">100%</td>
+                  <td className="py-4 pe-6 text-start font-semibold">Total Hours</td>
+                  <td className="py-4 px-6 text-end font-semibold">{totalHours}h</td>
+                  <td className="py-4 ps-6 text-end font-semibold">100%</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          {/* Right: bar chart */}
-          <div className="h-[280px]">
+          {/* Mobile: horizontal bar chart */}
+          <div className="h-[280px] sm:hidden">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={summaryData}
+                layout="vertical"
+                margin={{ top: 4, right: 16, left: 14, bottom: 4 }}
+                barCategoryGap="24%"
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
+                <XAxis
+                  type="number"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 11, fontFamily: 'Inter, sans-serif' }}
+                  unit="h"
+                />
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  width={74}
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
+                />
+                <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
+                <Bar dataKey="hours" radius={[0, 4, 4, 0]} maxBarSize={28}>
+                  {summaryData.map((entry) => (
+                    <Cell key={entry.id} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Desktop: vertical bar chart */}
+          <div className="hidden h-[280px] sm:block">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={summaryData}

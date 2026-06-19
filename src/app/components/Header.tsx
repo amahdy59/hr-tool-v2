@@ -152,7 +152,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
 
         <button
           onClick={onOpenShortcuts}
-          className="flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="hidden sm:flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Keyboard Shortcuts (?)"
           title="Keyboard Shortcuts (?)"
         >
