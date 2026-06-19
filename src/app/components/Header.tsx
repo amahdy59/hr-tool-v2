@@ -30,6 +30,7 @@ const getInitials = (name: string): string => {
 };
 
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   return (
     <header className="h-16 border-b border-border bg-card px-4 flex items-center justify-between sticky top-0 z-[60] sm:px-6">
       <h1
@@ -45,14 +46,15 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
       </h1>
       <div className="flex items-center gap-3">
         {/* Hamburger Menu on Mobile/Tablet */}
-        <Sheet>
+        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <button
-              className="group lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
+              className="lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
               aria-label="Toggle navigation menu"
+              aria-expanded={isMenuOpen}
             >
-              <Menu className="w-5 h-5 transition-all duration-300 absolute group-data-[state=open]:rotate-90 group-data-[state=open]:scale-50 group-data-[state=open]:opacity-0" />
-              <X className="w-5 h-5 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0 group-data-[state=open]:rotate-0 group-data-[state=open]:scale-100 group-data-[state=open]:opacity-100" />
+              <Menu className={cn("w-5 h-5 transition-all duration-300 absolute", isMenuOpen && "rotate-90 scale-50 opacity-0")} />
+              <X className={cn("w-5 h-5 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0", isMenuOpen && "!rotate-0 !scale-100 !opacity-100")} />
             </button>
           </SheetTrigger>
           <SheetContent side="left" className="w-80 p-5 flex flex-col h-full bg-card">
@@ -108,11 +110,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
               })}
             </nav>
 
-            {/* Bottom Actions (Settings/Logout) */}
+            {/* Bottom Actions (Logout) */}
             <div className="border-t border-border pt-4 mt-auto space-y-2">
-              <div className="px-3">
-                <AccessibilityPanel settings={accessibility} />
-              </div>
               
               {onLogout && (
                 <SheetClose asChild>
@@ -147,14 +146,14 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
 
         <button
           onClick={onOpenShortcuts}
-          className="flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="hidden lg:flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Keyboard Shortcuts (?)"
           title="Keyboard Shortcuts (?)"
         >
           <Keyboard className="w-4 h-4" />
         </button>
 
-        <div className="hidden sm:block">
+        <div>
           <AccessibilityPanel settings={accessibility} />
         </div>
 
