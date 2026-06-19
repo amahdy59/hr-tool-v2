@@ -1,7 +1,7 @@
 import React from 'react';
 import { User, Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose } from './ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from './ui/sheet';
 import { cn } from '@/lib/utils';
 import type { AppTab } from '../App';
 
@@ -36,17 +36,16 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
       <div className="flex items-center gap-3">
         {/* Hamburger Menu on Mobile/Tablet */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-          <SheetTrigger asChild>
-            <button
-              className="lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
-              aria-label="Toggle navigation menu"
-              title="Toggle navigation menu"
-              aria-expanded={isMenuOpen}
-            >
-              <Menu className={cn("w-5 h-5 transition-all duration-300 absolute", isMenuOpen && "rotate-90 scale-50 opacity-0")} />
-              <X className={cn("w-5 h-5 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0", isMenuOpen && "!rotate-0 !scale-100 !opacity-100")} />
-            </button>
-          </SheetTrigger>
+          <button
+            onClick={() => setIsMenuOpen((open) => !open)}
+            className="lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
+            aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            title={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isMenuOpen}
+          >
+            <Menu className={cn("w-5 h-5 transition-all duration-300 absolute", isMenuOpen && "rotate-90 scale-50 opacity-0")} />
+            <X className={cn("w-5 h-5 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0", isMenuOpen && "!rotate-0 !scale-100 !opacity-100")} />
+          </button>
           <SheetContent side="left" className="w-80 p-5 flex flex-col h-full bg-card">
             <SheetHeader className="border-b border-border pb-4 mb-4">
               <SheetTitle style={{ fontFamily: "'Orbitron', sans-serif" }} className="text-primary text-xl font-bold">
@@ -55,19 +54,26 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             </SheetHeader>
             
             {/* User Info */}
-            <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-[var(--radius-card)] border border-border/50 mb-4">
-              {currentUser?.image ? (
-                <img src={currentUser.image} alt={currentUser.name} className="w-10 h-10 rounded-full object-cover" />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-border text-primary font-bold">
-                  {currentUser ? getInitials(currentUser.name) : 'U'}
+            <SheetClose asChild>
+              <button
+                onClick={() => setActiveTab('profile')}
+                className="flex w-full items-center gap-3 p-3 bg-muted/30 rounded-[var(--radius-card)] border border-border/50 mb-4 text-start hover:bg-muted transition-colors cursor-pointer"
+                aria-label="Go to my profile"
+                title="Go to my profile"
+              >
+                {currentUser?.image ? (
+                  <img src={currentUser.image} alt={currentUser.name} className="w-10 h-10 rounded-full object-cover" />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-border text-primary font-bold shrink-0">
+                    {currentUser ? getInitials(currentUser.name) : 'U'}
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <p className="text-[var(--text-sm)] font-semibold text-foreground truncate">{currentUser?.name}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{currentUser?.email}</p>
                 </div>
-              )}
-              <div className="min-w-0">
-                <p className="text-[var(--text-sm)] font-semibold text-foreground truncate">{currentUser?.name}</p>
-                <p className="text-[10px] text-muted-foreground truncate">{currentUser?.email}</p>
-              </div>
-            </div>
+              </button>
+            </SheetClose>
 
             {/* Nav Links */}
             <nav className="flex-1 overflow-y-auto space-y-1">
@@ -163,7 +169,12 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
           <AccessibilityPanel settings={accessibility} />
         </div>
 
-        <div className="hidden items-center gap-2.5 sm:flex">
+        <button
+          onClick={() => setActiveTab('profile')}
+          className="hidden items-center gap-2.5 sm:flex rounded-[var(--radius)] px-1.5 py-1 hover:bg-muted transition-colors cursor-pointer"
+          aria-label="Go to my profile"
+          title="Go to my profile"
+        >
           {currentUser?.image ? (
             <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-border">
               <img 
@@ -198,7 +209,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
           >
             {currentUser?.name || 'User'}
           </span>
-        </div>
+        </button>
       </div>
     </header>
   );
