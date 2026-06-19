@@ -169,24 +169,25 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         <Button
           variant="outline"
           size="sm"
-          className="relative gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
+          className="relative flex w-9 h-9 sm:w-auto sm:px-3 sm:py-2 items-center justify-center sm:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
           aria-label="Accessibility Settings"
           title="Accessibility Settings"
         >
-          <Accessibility className="w-4 h-4 text-primary" aria-hidden="true" />
+          <Accessibility className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
           <span className="hidden sm:inline" style={{ fontFamily: "'Inter', sans-serif" }}>
             Accessibility
           </span>
           {activeCount > 0 && (
-            <span className="absolute -top-1.5 -end-1.5 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-card shadow-sm">
+            <span className="absolute -top-1.5 -end-1.5 sm:top-auto sm:-translate-y-1/2 sm:start-auto sm:-end-2 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-card shadow-sm">
               {activeCount}
             </span>
           )}
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[calc(100vw-2rem)] max-w-xs sm:w-80 p-5 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border border-border bg-card shadow-[var(--elevation-lg)]"
+        className="max-sm:fixed max-sm:inset-0 max-sm:w-full max-sm:h-[100dvh] max-sm:max-w-none max-sm:max-h-none max-sm:!top-0 max-sm:!rounded-none max-sm:!border-0 max-sm:p-5 max-sm:z-[100] max-sm:shadow-none sm:w-80 p-5 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border border-border bg-card shadow-[var(--elevation-lg)] flex flex-col"
         align="end"
+        sideOffset={8}
       >
         <div className="space-y-1">
           <div className="border-b border-border pb-3 mb-4 flex items-center justify-between">

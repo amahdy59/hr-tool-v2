@@ -70,9 +70,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-[100dvh] flex items-center justify-center relative overflow-hidden bg-background">
       {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1a237e] via-[#283593] to-[#3949ab]">
+      <div className="hidden sm:block absolute inset-0 bg-gradient-to-br from-[#1a237e] via-[#283593] to-[#3949ab]">
         {/* Animated overlay gradients */}
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-0 -start-4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob" />
@@ -95,7 +95,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
       </div>
 
       {/* Floating shapes for visual interest */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="hidden sm:block absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 start-1/4 w-2 h-2 bg-white/20 rounded-full animate-float" />
         <div className="absolute top-1/3 end-1/4 w-3 h-3 bg-white/10 rounded-full animate-float animation-delay-1000" />
         <div className="absolute bottom-1/4 start-1/3 w-2 h-2 bg-white/15 rounded-full animate-float animation-delay-2000" />
@@ -103,8 +103,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
       </div>
 
       {/* Login Card */}
-      <div className="relative z-10 w-full h-full sm:h-auto sm:max-w-md sm:mx-4 flex flex-col justify-center max-sm:w-full">
-        <div className="bg-card/95 backdrop-blur-sm shadow-[var(--elevation-lg)] border border-border/50 h-full sm:h-auto w-full flex flex-col justify-center p-6 sm:p-8 rounded-none border-0 sm:rounded-[var(--radius-card)] sm:border">
+      <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-md sm:mx-4 flex flex-col justify-center max-sm:w-full bg-card sm:bg-transparent">
+        <div className="bg-card sm:bg-card/95 sm:backdrop-blur-sm sm:shadow-[var(--elevation-lg)] h-full sm:h-auto w-full flex flex-col justify-center p-6 sm:p-8 rounded-none border-0 sm:rounded-[var(--radius-card)] sm:border border-border/50">
           {/* Logo/Header */}
           <div className="text-center mb-8">
             <div

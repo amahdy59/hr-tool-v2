@@ -33,17 +33,6 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   return (
     <header className="h-16 border-b border-border bg-card px-4 flex items-center justify-between sticky top-0 z-[60] sm:px-6">
-      <h1
-        className="text-primary absolute left-1/2 -translate-x-1/2"
-        style={{
-          fontFamily: "'Orbitron', sans-serif",
-          fontSize: 'clamp(var(--text-base), 4vw, var(--text-lg))',
-          fontWeight: 'var(--font-weight-bold)',
-          lineHeight: 1.2,
-        }}
-      >
-        HR Tool
-      </h1>
       <div className="flex items-center gap-3">
         {/* Hamburger Menu on Mobile/Tablet */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -51,6 +40,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             <button
               className="lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
               aria-label="Toggle navigation menu"
+              title="Toggle navigation menu"
               aria-expanded={isMenuOpen}
             >
               <Menu className={cn("w-5 h-5 transition-all duration-300 absolute", isMenuOpen && "rotate-90 scale-50 opacity-0")} />
@@ -101,6 +91,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                           ? "bg-primary/10 text-primary" 
                           : "text-foreground hover:bg-muted"
                       )}
+                      aria-label={`Go to ${item.label}`}
+                      title={item.label}
                     >
                       <item.icon className="w-5 h-5 shrink-0" />
                       <span>{item.label}</span>
@@ -118,6 +110,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                   <button
                     onClick={onLogout}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+                    aria-label="Log out"
+                    title="Log out"
                   >
                     <LogOut className="w-5 h-5 shrink-0" />
                     <span>Log out</span>
@@ -127,17 +121,29 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             </div>
           </SheetContent>
         </Sheet>
+        <h1
+          className="text-primary"
+          style={{
+            fontFamily: "'Orbitron', sans-serif",
+            fontSize: 'clamp(var(--text-base), 4vw, var(--text-lg))',
+            fontWeight: 'var(--font-weight-bold)',
+            lineHeight: 1.2,
+          }}
+        >
+          HR Tool
+        </h1>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
         <button
           onClick={onOpenCommandPalette}
-          className="hidden sm:flex items-center justify-between w-48 sm:w-64 h-9 px-3 border border-border rounded-md bg-muted/50 text-sm text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex w-9 h-9 sm:w-64 sm:h-9 sm:px-3 items-center justify-center sm:justify-between rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Search or command palette (Ctrl+K)"
+          title="Search or command palette (Ctrl+K)"
         >
           <span className="flex items-center gap-2">
             <Search className="w-4 h-4" />
-            <span>Search...</span>
+            <span className="hidden sm:inline">Search...</span>
           </span>
           <kbd className="hidden sm:inline-flex h-5 items-center justify-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
             Ctrl K
@@ -146,7 +152,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
 
         <button
           onClick={onOpenShortcuts}
-          className="hidden lg:flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Keyboard Shortcuts (?)"
           title="Keyboard Shortcuts (?)"
         >
