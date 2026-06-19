@@ -185,7 +185,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-full sm:w-80 p-5 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border border-border bg-card shadow-[var(--elevation-lg)]"
+        className="w-[calc(100vw-2rem)] max-w-xs sm:w-80 p-5 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border border-border bg-card shadow-[var(--elevation-lg)]"
         align="end"
       >
         <div className="space-y-1">

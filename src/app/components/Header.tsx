@@ -30,7 +30,6 @@ const getInitials = (name: string): string => {
 };
 
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   return (
     <header className="h-16 border-b border-border bg-card px-4 flex items-center justify-between sticky top-0 z-[60] sm:px-6">
       <h1
