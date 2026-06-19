@@ -115,7 +115,6 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
   const tabs = [
     { id: 'basic', label: 'Basic Information' },
     { id: 'professional', label: 'Professional Profile' },
-    { id: 'bulletin', label: 'Employee Bulletin' },
     { id: 'documents', label: 'Download Center' },
   ];
 
@@ -153,46 +152,9 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
       <div className="min-h-[560px]">
         {activeTab === 'basic' && <BasicInfo currentUser={currentUser} onUpdateImage={onUpdateImage} />}
         {activeTab === 'professional' && <ProfessionalProfile currentUser={currentUser} />}
-        {activeTab === 'bulletin' && <EmployeeBulletin searchQuery={searchQuery} />}
         {activeTab === 'documents' && <DownloadCenter searchQuery={searchQuery} />}
       </div>
     </div>
-  );
-};
-
-// ═══════════════════════════════════
-// ── Employee Bulletin Tab ──
-// ═══════════════════════════════════
-const EmployeeBulletin: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
-  const bulletins = [
-    { title: 'Annual Health Screening', date: 'February 10, 2026', content: 'All employees are required to complete their annual health screening by March 15, 2026. Please book your appointment through the HR portal.' },
-    { title: 'New Parking Policy', date: 'January 28, 2026', content: 'Starting February 1st, parking spots will be assigned on a first-come-first-served basis. Please register your vehicle through the facilities portal.' },
-    { title: 'Ramadan Working Hours', date: 'January 15, 2026', content: 'During the month of Ramadan, working hours will be reduced to 6 hours per day (9:00 AM - 3:00 PM). This applies to all offices in the MEA region.' },
-    { title: 'Q1 Town Hall Meeting', date: 'January 5, 2026', content: 'The Q1 Town Hall meeting will be held on February 20, 2026 at 10:00 AM in the main auditorium. All employees are encouraged to attend.' },
-  ].filter((bulletin) => {
-    const normalized = searchQuery.trim().toLowerCase();
-    if (!normalized) return true;
-    return [bulletin.title, bulletin.date, bulletin.content].some((value) => value.toLowerCase().includes(normalized));
-  });
-
-  return (
-  <div className="space-y-6">
-    <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Employee Bulletin</h3>
-    {bulletins.map((bulletin, i) => (
-      <div key={i} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-2">
-        <div className="flex items-center justify-between">
-          <h4 className="text-foreground text-[var(--text-base)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>{bulletin.title}</h4>
-          <span className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{bulletin.date}</span>
-        </div>
-        <p className="text-[var(--text-sm)] text-muted-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{bulletin.content}</p>
-      </div>
-    ))}
-    {bulletins.length === 0 && (
-      <div className="bg-card border border-border rounded-[var(--radius-card)] p-6 text-center text-muted-foreground">
-        No bulletin posts match your search.
-      </div>
-    )}
-  </div>
   );
 };
 

@@ -228,12 +228,12 @@ export const RolesManagement: React.FC = () => {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 ms-auto">
-          <Button variant="outline" className="gap-2" onClick={handleUploadData}>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 ms-auto w-full sm:w-auto mt-4 sm:mt-0">
+          <Button variant="outline" className="hidden sm:flex gap-2" onClick={handleUploadData}>
             <Upload className="w-4 h-4" /> Upload Data
           </Button>
           <Button
-            className="bg-chart-3 hover:bg-chart-3/90 text-white gap-2 rounded-[var(--radius-button)]"
+            className="w-full sm:w-auto bg-chart-3 hover:bg-chart-3/90 text-white gap-2 rounded-[var(--radius-button)]"
             onClick={() => setAddRoleOpen(true)}
           >
             <Plus className="w-4 h-4" /> Add New Role
