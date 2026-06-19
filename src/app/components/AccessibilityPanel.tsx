@@ -9,6 +9,7 @@ import {
   X,
 } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent, PopoverClose } from './ui/popover';
+import { Sheet, SheetTrigger, SheetContent, SheetTitle } from './ui/sheet';
 import { Switch } from './ui/switch';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
@@ -163,79 +164,105 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
 
   const activeCount = options.filter((o) => o.checked).length;
 
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="relative flex w-9 h-9 sm:w-auto sm:px-3 sm:py-2 items-center justify-center sm:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
-          aria-label="Accessibility Settings"
-          title="Accessibility Settings"
-        >
-          <Accessibility className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
-          <span className="hidden sm:inline" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Accessibility
-          </span>
-          {activeCount > 0 && (
-            <span className="absolute -top-1.5 -end-1.5 sm:top-auto sm:-translate-y-1/2 sm:start-auto sm:-end-2 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-card shadow-sm">
-              {activeCount}
-            </span>
-          )}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className="max-sm:fixed max-sm:w-[100vw] max-sm:h-[100dvh] max-sm:max-w-none max-sm:max-h-none max-sm:!transform-none max-sm:!top-0 max-sm:!left-0 max-sm:!rounded-none max-sm:!border-0 max-sm:p-5 max-sm:z-[100] max-sm:shadow-none sm:w-80 p-5 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border border-border bg-card shadow-[var(--elevation-lg)] flex flex-col"
-        align="end"
-        sideOffset={8}
-        collisionPadding={16}
-      >
-        <div className="space-y-1">
-          <div className="border-b border-border pb-3 mb-4 flex items-center justify-between">
-            <div>
-              <h2
-                className="text-sm font-semibold text-foreground flex items-center gap-2"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                <Accessibility className="w-4 h-4 text-primary" />
-                Accessibility Tools
-              </h2>
-              <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>
-                Adjust your preferences.
-              </p>
-            </div>
-            <PopoverClose className="sm:hidden p-1 rounded hover:bg-muted text-muted-foreground flex items-center justify-center min-w-11 min-h-11 border border-border/40 cursor-pointer" aria-label="Close accessibility panel">
-              <X className="w-4 h-4" />
-            </PopoverClose>
-          </div>
+  const triggerButton = (
+    <Button
+      variant="outline"
+      size="sm"
+      className="relative flex w-9 h-9 sm:w-auto sm:px-3 sm:py-2 items-center justify-center sm:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
+      aria-label="Accessibility Settings"
+      title="Accessibility Settings"
+    >
+      <Accessibility className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
+      <span className="hidden sm:inline" style={{ fontFamily: "'Inter', sans-serif" }}>
+        Accessibility
+      </span>
+      {activeCount > 0 && (
+        <span className="absolute -top-1.5 -end-1.5 sm:top-auto sm:-translate-y-1/2 sm:start-auto sm:-end-2 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-card shadow-sm">
+          {activeCount}
+        </span>
+      )}
+    </Button>
+  );
 
-          <div className="space-y-0.5">
-            {options.map((option) => (
-              <AccessibilityOption key={option.id} option={option} />
-            ))}
-          </div>
-
-          {activeCount > 0 && (
-            <div className="border-t border-border pt-2.5 mt-3 flex justify-end">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-[10px] h-7 px-2 hover:bg-destructive/10 hover:text-destructive text-muted-foreground cursor-pointer rounded-[var(--radius-sm)]"
-                onClick={() => {
-                  setHighContrast(false);
-                  setLargeTargets(false);
-                  setLargeText(false);
-                  setDyslexic(false);
-                  setFocusHeavy(false);
-                }}
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Reset all
-              </Button>
-            </div>
-          )}
+  const panelContent = (
+    <div className="space-y-1 h-full flex flex-col">
+      <div className="border-b border-border pb-3 mb-4 flex items-center justify-between">
+        <div>
+          <h2
+            className="text-sm font-semibold text-foreground flex items-center gap-2"
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            <Accessibility className="w-4 h-4 text-primary" />
+            Accessibility Tools
+          </h2>
+          <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Adjust your preferences.
+          </p>
         </div>
-      </PopoverContent>
-    </Popover>
+        <PopoverClose className="hidden sm:flex p-1 rounded hover:bg-muted text-muted-foreground items-center justify-center min-w-8 min-h-8 border border-border/40 cursor-pointer" aria-label="Close accessibility panel">
+          <X className="w-4 h-4" />
+        </PopoverClose>
+      </div>
+
+      <div className="space-y-0.5 overflow-y-auto flex-1">
+        {options.map((option) => (
+          <AccessibilityOption key={option.id} option={option} />
+        ))}
+      </div>
+
+      {activeCount > 0 && (
+        <div className="border-t border-border pt-2.5 mt-3 flex justify-end">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-[10px] h-7 px-2 hover:bg-destructive/10 hover:text-destructive text-muted-foreground cursor-pointer rounded-[var(--radius-sm)]"
+            onClick={() => {
+              setHighContrast(false);
+              setLargeTargets(false);
+              setLargeText(false);
+              setDyslexic(false);
+              setFocusHeavy(false);
+            }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            Reset all
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <>
+      <div className="sm:hidden">
+        <Sheet>
+          <SheetTrigger asChild>
+            {triggerButton}
+          </SheetTrigger>
+          <SheetContent side="bottom" className="h-[100dvh] w-full p-5 border-0 rounded-none bg-card z-[100]">
+            <SheetTitle className="sr-only">Accessibility Settings</SheetTitle>
+            {panelContent}
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      <div className="hidden sm:block">
+        <Popover>
+          <PopoverTrigger asChild>
+            {triggerButton}
+          </PopoverTrigger>
+          <PopoverContent
+            className="w-80 p-5 rounded-[var(--radius-card)] border border-border bg-card shadow-[var(--elevation-lg)] flex flex-col z-[100]"
+            align="end"
+            sideOffset={8}
+            collisionPadding={16}
+          >
+            {panelContent}
+          </PopoverContent>
+        </Popover>
+      </div>
+    </>
   );
 };
+
+export default AccessibilityPanel;
