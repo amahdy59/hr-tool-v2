@@ -100,7 +100,7 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
   );
 };
 
-const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings }) => {
+export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings }) => {
   const {
     highContrast,
     setHighContrast,
