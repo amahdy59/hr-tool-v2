@@ -100,7 +100,7 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
   );
 };
 
-export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings }) => {
+const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings }) => {
   const {
     highContrast,
     setHighContrast,
@@ -184,7 +184,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     </Button>
   );
 
-  const panelContent = (
+  const renderPanelContent = (closeButton: React.ReactNode) => (
     <div className="space-y-1 h-full flex flex-col">
       <div className="border-b border-border pb-3 mb-4 flex items-center justify-between">
         <div>
@@ -199,19 +199,17 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             Adjust your preferences.
           </p>
         </div>
-        <PopoverClose className="hidden sm:flex p-1 rounded hover:bg-muted text-muted-foreground items-center justify-center min-w-8 min-h-8 border border-border/40 cursor-pointer" aria-label="Close accessibility panel">
-          <X className="w-4 h-4" />
-        </PopoverClose>
+        {closeButton}
       </div>
 
-      <div className="space-y-0.5 overflow-y-auto flex-1">
+      <div className="space-y-0.5 overflow-y-auto flex-1 pr-1">
         {options.map((option) => (
           <AccessibilityOption key={option.id} option={option} />
         ))}
       </div>
 
       {activeCount > 0 && (
-        <div className="border-t border-border pt-2.5 mt-3 flex justify-end">
+        <div className="border-t border-border pt-2.5 mt-3 flex justify-end shrink-0">
           <Button
             variant="ghost"
             size="sm"
@@ -241,7 +239,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
           </SheetTrigger>
           <SheetContent side="bottom" className="h-[100dvh] w-full p-5 border-0 rounded-none bg-card z-[100]">
             <SheetTitle className="sr-only">Accessibility Settings</SheetTitle>
-            {panelContent}
+            {renderPanelContent(null)}
           </SheetContent>
         </Sheet>
       </div>
@@ -252,12 +250,16 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             {triggerButton}
           </PopoverTrigger>
           <PopoverContent
-            className="w-80 p-5 rounded-[var(--radius-card)] border border-border bg-card shadow-[var(--elevation-lg)] flex flex-col z-[100]"
+            className="w-80 p-5 rounded-[var(--radius-card)] border border-border bg-card shadow-[var(--elevation-lg)] flex flex-col z-[100] max-h-[85vh]"
             align="end"
             sideOffset={8}
             collisionPadding={16}
           >
-            {panelContent}
+            {renderPanelContent(
+              <PopoverClose className="p-1 rounded hover:bg-muted text-muted-foreground flex items-center justify-center min-w-8 min-h-8 border border-border/40 cursor-pointer" aria-label="Close accessibility panel">
+                <X className="w-4 h-4" />
+              </PopoverClose>
+            )}
           </PopoverContent>
         </Popover>
       </div>
