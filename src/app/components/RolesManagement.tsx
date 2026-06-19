@@ -193,7 +193,7 @@ export const RolesManagement: React.FC = () => {
   };
 
   return (
-    <div className="px-2 py-6 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="px-3 py-6 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
       {/* ── Page Title ── */}
       <div>
         <h2

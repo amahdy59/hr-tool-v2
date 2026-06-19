@@ -141,7 +141,7 @@ export const LeavesManagement: React.FC = () => {
   };
 
   return (
-    <div className="px-2 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-10">
+    <div className="px-3 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-10">
       {/* ══ Pending Approval ══ */}
       <section className="space-y-4">
         <div>
@@ -158,11 +158,11 @@ export const LeavesManagement: React.FC = () => {
               <input type="text" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] border-border cursor-pointer justify-center" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
               Approve
             </Button>
-            <Button size="sm" className="gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setCreateLeaveOpen(true)}>
+            <Button size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
               <Plus className="w-4 h-4" /> Create Leave
             </Button>
           </div>
@@ -179,7 +179,7 @@ export const LeavesManagement: React.FC = () => {
               />
             ) : (
               <table className="w-full text-[var(--text-sm)] text-start">
-                <thead>
+                <thead className="hidden md:table-header-group">
                   <tr className="bg-muted border-b border-border">
                     <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === PENDING_LEAVES.length && PENDING_LEAVES.length > 0} onCheckedChange={toggleAllPending} /></th>
                     <th className={thClass}>Employee Name</th>
@@ -228,31 +228,43 @@ export const LeavesManagement: React.FC = () => {
       {/* ══ Holidays & Bridges ══ */}
       <section className="space-y-4">
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Holidays and Bridges</h2>
-        <div className="flex flex-wrap items-end gap-4">
-          <div className="w-44 space-y-1.5">
-            <label className={labelClass}>Select Month</label>
-            <Select value={holidayMonth} onValueChange={setHolidayMonth}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
-              <SelectContent>{['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}</SelectContent>
-            </Select>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
+          <div className="flex items-center gap-2">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm" className="h-10 w-10 p-0 rounded-[var(--radius-button)] border-border cursor-pointer flex items-center justify-center" aria-label="Filter Dates" title="Filter Dates">
+                  <Filter className="w-4 h-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="p-4 space-y-4 w-56">
+                <div className="space-y-1.5">
+                  <label className={labelClass}>Month</label>
+                  <Select value={holidayMonth} onValueChange={setHolidayMonth}>
+                    <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border bg-card"><SelectValue /></SelectTrigger>
+                    <SelectContent>{['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}</SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className={labelClass}>Year</label>
+                  <Select value={holidayYear} onValueChange={setHolidayYear}>
+                    <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border bg-card"><SelectValue /></SelectTrigger>
+                    <SelectContent>{['2024', '2025', '2026'].map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}</SelectContent>
+                  </Select>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <span className="text-[var(--text-xs)] text-muted-foreground font-[var(--font-weight-medium)]">
+              Filter: {holidayMonth} {holidayYear}
+            </span>
           </div>
-          <div className="w-32 space-y-1.5">
-            <label className={labelClass}>Select Year</label>
-            <Select value={holidayYear} onValueChange={setHolidayYear}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
-              <SelectContent>{['2024', '2025', '2026'].map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}</SelectContent>
-            </Select>
-          </div>
-          <div className="ms-auto">
-            <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => setAddHolidayOpen(true)}>
-              Assign Holiday / Bridge
-            </Button>
-          </div>
+          <Button variant="outline" size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] border-border cursor-pointer justify-center" onClick={() => setAddHolidayOpen(true)}>
+            Assign Holiday / Bridge
+          </Button>
         </div>
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-start">
+            <table className="w-full min-w-[600px] text-[var(--text-sm)] text-start">
               <thead>
                 <tr className="bg-muted border-b border-border">
                   <th className={thClass}>Leave Type</th>
@@ -442,7 +454,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
         Items Per Page
         <select className="h-8 px-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none cursor-pointer" defaultValue="15"><option>10</option><option>15</option><option>30</option></select>
       </div>
-      <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
+      <div className="flex flex-row flex-nowrap items-center gap-2 w-full sm:w-auto justify-center sm:justify-end shrink-0">
         <button onClick={() => go(page - 1)} disabled={page <= 1} className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Previous page"><ChevronLeft className="w-4 h-4 text-foreground" /></button>
         <span className="text-[var(--text-sm)] text-foreground flex items-center gap-1 whitespace-nowrap shrink-0">Page <input type="text" value={pi} onChange={e => setPi(e.target.value)} onBlur={() => go(Number(pi) || 1)} onKeyDown={e => e.key === 'Enter' && go(Number(pi) || 1)} className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]" aria-label="Page number input" /> of {totalPages}</span>
         <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Next page"><ChevronRight className="w-4 h-4 text-foreground" /></button>
@@ -555,8 +567,8 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
         </table>
       </div>
       <DialogFooter className="pt-4 gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-        <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
+        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
+        <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>
@@ -581,7 +593,7 @@ const ViewLeaveDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean)
           </div>
         </div>
       )}
-      <DialogFooter className="pt-2"><Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Close</Button></DialogFooter>
+      <DialogFooter className="pt-2"><Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Close</Button></DialogFooter>
     </DialogContent>
   </Dialog>
 );
@@ -612,8 +624,8 @@ const HolidayFormModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <div className="space-y-1.5"><label className={labelClass}>Notes</label><textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Optional notes..." /></div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onSave}>{holiday ? 'Save' : 'Add'}</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onSave}>{holiday ? 'Save' : 'Add'}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -630,8 +642,8 @@ const ConfirmDialog: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
         <p className="text-[var(--text-sm)] text-foreground">{message}</p>
       </div>
       <DialogFooter className="pt-2 gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">{cancelLabel}</Button>
-        <Button variant={variant === 'destructive' ? 'destructive' : 'default'} className={cn('rounded-[var(--radius-button)]', variant !== 'destructive' && 'bg-chart-3 hover:bg-chart-3/90 text-white')} onClick={onConfirm}>{confirmLabel}</Button>
+        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">{cancelLabel}</Button>
+        <Button variant={variant === 'destructive' ? 'destructive' : 'default'} className={cn('w-full sm:w-auto rounded-[var(--radius-button)]', variant !== 'destructive' && 'bg-chart-3 hover:bg-chart-3/90 text-white')} onClick={onConfirm}>{confirmLabel}</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

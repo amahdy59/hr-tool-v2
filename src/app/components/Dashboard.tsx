@@ -6,6 +6,8 @@ import { RequestMissionModal } from './RequestMissionModal';
 import { LeaveDetailModal, type LeaveDetail } from './LeaveDetailModal';
 import { ConfirmDialog } from './ConfirmDialog';
 import { Button } from './ui/button';
+import { DatePicker } from './ui/date-picker';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,6 +33,7 @@ import {
   Eye,
   XCircle,
   Pencil,
+  Filter,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -162,6 +165,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   const [currentWeekend, setCurrentWeekend] = useState('Friday and Saturday');
   const [pendingWeekend, setPendingWeekend] = useState('');
 
+  // History filter states
+  const [historyLeaveType, setHistoryLeaveType] = useState('vacation');
+  const [historyStartDate, setHistoryStartDate] = useState('2023-11-03');
+  const [historyEndDate, setHistoryEndDate] = useState('2023-11-03');
+
   // --- Handlers ---
 
   const handleViewRequest = (item: HistoryItem) => {
@@ -219,7 +227,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   };
 
   return (
-    <div className="space-y-6 px-2 py-4 sm:p-8 sm:space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-6 px-3 py-4 sm:p-8 sm:space-y-8 max-w-7xl mx-auto">
 
       {/* Top Controls */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -234,7 +242,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           >
             Good Morning Mohamed
           </h2>
-          <div className="flex items-center gap-2 mt-1">
+          <div className="hidden sm:flex items-center gap-2 mt-1">
             <span
               style={{
                 fontFamily: "'Inter', sans-serif",
@@ -247,7 +255,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             </span>
             <HelpCircle className="w-4 h-4 text-primary" />
           </div>
-          <div className="mt-2 w-full sm:w-64">
+          <div className="hidden sm:block mt-2 w-full sm:w-64">
             <Select value={currentWeekend} onValueChange={handleWeekendChange}>
               <SelectTrigger className="w-full rounded-[var(--radius-input)] bg-card border-border">
                 <SelectValue />
@@ -342,81 +350,72 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           Leaves and Mission History
         </h3>
 
-        <div className="grid gap-4 bg-muted/30 p-4 rounded-[var(--radius)] lg:grid-cols-[minmax(180px,auto)_1fr] lg:items-end">
-          <Button variant="outline" className="w-full gap-2 sm:w-fit lg:justify-self-start">
+        <div className="flex flex-col gap-3 p-4 bg-muted/30 rounded-[var(--radius)] sm:flex-row sm:items-center sm:justify-between">
+          <Button variant="outline" className="w-full sm:w-auto gap-2 cursor-pointer justify-center">
             <Download className="w-4 h-4" /> Download Data
           </Button>
 
-          <div className="grid w-full gap-3 sm:grid-cols-2 xl:grid-cols-3 xl:justify-self-end">
-            <div className="min-w-0 space-y-1.5">
-              <label
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: 'var(--font-weight-normal)',
-                }}
-                className="text-muted-foreground"
-              >
-                Leave Type
-              </label>
-              <Select defaultValue="vacation">
-                <SelectTrigger className="h-10 w-full rounded-[var(--radius-input)] bg-card border-border">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="vacation">Vacation</SelectItem>
-                  <SelectItem value="sick">Sick</SelectItem>
-                  <SelectItem value="annual">Annual Leave</SelectItem>
-                  <SelectItem value="maternity">Maternity</SelectItem>
-                  <SelectItem value="paternity">Paternity</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="min-w-0 space-y-1.5">
-              <label
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: 'var(--font-weight-normal)',
-                }}
-                className="text-muted-foreground"
-              >
-                Start Date
-              </label>
-              <input
-                type="text"
-                value="3 November 2023"
-                readOnly
-                className="h-10 w-full min-w-0 px-3 border border-border rounded-[var(--radius-input)] bg-card"
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-sm)',
-                  fontWeight: 'var(--font-weight-normal)',
-                }}
-              />
-            </div>
-            <div className="min-w-0 space-y-1.5 sm:col-span-2 xl:col-span-1">
-              <label
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: 'var(--font-weight-normal)',
-                }}
-                className="text-muted-foreground"
-              >
-                End Date
-              </label>
-              <input
-                type="text"
-                value="3 November 2023"
-                readOnly
-                className="h-10 w-full min-w-0 px-3 border border-border rounded-[var(--radius-input)] bg-card"
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-sm)',
-                  fontWeight: 'var(--font-weight-normal)',
-                }}
-              />
+          {/* Filters for mobile/tablet (Popover) and desktop (inline) */}
+          <div className="flex w-full items-center justify-end gap-3 sm:w-auto">
+            {/* Mobile/Tablet Popover Filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="lg:hidden w-full sm:w-auto gap-2 cursor-pointer justify-center">
+                  <Filter className="w-4 h-4" /> Filter History
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="p-4 space-y-4 w-72">
+                <div className="space-y-1.5">
+                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
+                  <Select value={historyLeaveType} onValueChange={setHistoryLeaveType}>
+                    <SelectTrigger className="h-10 w-full rounded-[var(--radius-input)] bg-card border-border">
+                      <SelectValue placeholder="Select leave type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="vacation">Vacation</SelectItem>
+                      <SelectItem value="sick">Sick</SelectItem>
+                      <SelectItem value="annual">Annual Leave</SelectItem>
+                      <SelectItem value="maternity">Maternity</SelectItem>
+                      <SelectItem value="paternity">Paternity</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
+                  <DatePicker value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">End Date</label>
+                  <DatePicker value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" />
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            {/* Desktop Inline Filters */}
+            <div className="hidden lg:flex items-center gap-3">
+              <div className="space-y-1">
+                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
+                <Select value={historyLeaveType} onValueChange={setHistoryLeaveType}>
+                  <SelectTrigger className="h-10 w-44 rounded-[var(--radius-input)] bg-card border-border">
+                    <SelectValue placeholder="Select leave type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="vacation">Vacation</SelectItem>
+                    <SelectItem value="sick">Sick</SelectItem>
+                    <SelectItem value="annual">Annual Leave</SelectItem>
+                    <SelectItem value="maternity">Maternity</SelectItem>
+                    <SelectItem value="paternity">Paternity</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
+                <DatePicker value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" />
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">End Date</label>
+                <DatePicker value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" />
+              </div>
             </div>
           </div>
         </div>

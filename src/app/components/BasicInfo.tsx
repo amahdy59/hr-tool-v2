@@ -425,8 +425,8 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="pt-4 gap-2">
-            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-            <Button className="rounded-[var(--radius-button)] bg-destructive hover:bg-destructive/90 text-white" onClick={confirmDelete} style={{ fontFamily: "'Inter', sans-serif" }}>Delete</Button>
+            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+            <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-destructive hover:bg-destructive/90 text-white" onClick={confirmDelete} style={{ fontFamily: "'Inter', sans-serif" }}>Delete</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -569,8 +569,8 @@ const EditPersonalInfoModal: React.FC<{
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save Changes</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save Changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -630,8 +630,8 @@ const EditEmergencyModal: React.FC<{
           <FormField label="Phone Number *" value={phone} onChange={setPhone} placeholder="01XXXXXXXXX" />
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -718,7 +718,7 @@ const ChangeImageModal: React.FC<{
           {uploading && <p className="text-[var(--text-sm)] text-primary text-center" style={{ fontFamily: "'Inter', sans-serif" }}>Uploading...</p>}
         </div>
         <DialogFooter className="pt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -785,8 +785,8 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>
             {uploading ? 'Submitting...' : 'Submit Request'}
           </Button>
         </DialogFooter>
@@ -848,8 +848,8 @@ const EmploymentUpdateModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>
             {submitting ? 'Submitting...' : 'Request Update'}
           </Button>
         </DialogFooter>

@@ -284,7 +284,7 @@ export const Attendance: React.FC = () => {
   const monthLabel = months.find((m) => m.value === selectedMonth)?.label ?? 'All';
 
   return (
-    <div className="space-y-6 px-2 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+    <div className="space-y-6 px-3 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       {/* ── Page Title ── */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Employee Attendance</h2>

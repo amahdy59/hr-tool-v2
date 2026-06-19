@@ -259,7 +259,7 @@ export const EmployeeManagement: React.FC = () => {
   );
 
   return (
-    <div className="px-2 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="px-3 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Manage Employees</h2>
@@ -676,7 +676,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
           <option>10</option><option>15</option><option>30</option>
         </select>
       </div>
-      <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
+      <div className="flex flex-row flex-nowrap items-center gap-2 w-full sm:w-auto justify-center sm:justify-end shrink-0">
         <button onClick={() => go(page - 1)} disabled={page <= 1} className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Previous page">
           <ChevronLeft className="w-4 h-4 text-foreground" />
         </button>
@@ -854,8 +854,8 @@ const EmployeeFormModal: React.FC<{
         </div>
 
         <DialogFooter className="pt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)]">Cancel</Button>
-          <Button onClick={onSave} className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
+          <Button onClick={onSave} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
             {employee ? 'Save' : 'Add'}
           </Button>
         </DialogFooter>
@@ -925,7 +925,7 @@ const FormerEmployeeModal: React.FC<{
         </div>
 
         <DialogFooter className="pt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)]">Close</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -1045,7 +1045,7 @@ const AccessCardsModal: React.FC<{
         )}
 
         <DialogFooter className="pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)]">Close</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -1091,8 +1091,8 @@ const TerminateModal: React.FC<{
         </div>
 
         <DialogFooter className="pt-2 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)]">Cancel</Button>
-          <Button variant="destructive" onClick={() => { onOpenChange(false); toast.success(`${employee?.name} has been terminated`); }} className="rounded-[var(--radius-button)]">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
+          <Button variant="destructive" onClick={() => { onOpenChange(false); toast.success(`${employee?.name} has been terminated`); }} className="w-full sm:w-auto rounded-[var(--radius-button)]">
             Terminate Employee
           </Button>
         </DialogFooter>
@@ -1153,7 +1153,7 @@ const ActivityLogDetailModal: React.FC<{
         )}
 
         <DialogFooter className="pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)]">Close</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -1193,8 +1193,8 @@ const DepartmentFormModal: React.FC<{
           <FormField label="Lead Count" value={leadCount} onChange={setLeadCount} placeholder="Number of employees" type="number" />
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)]">Cancel</Button>
-          <Button onClick={onSave} className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
+          <Button onClick={onSave} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
             {department ? 'Save Department' : 'Add Department'}
           </Button>
         </DialogFooter>
@@ -1228,8 +1228,8 @@ const JobTitleFormModal: React.FC<{
           <FormField label="Job Title" value={jtName} onChange={setJtName} placeholder="e.g. Software Developer" />
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)]">Cancel</Button>
-          <Button onClick={onSave} className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
+          <Button onClick={onSave} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
             {jt ? 'Save Job Title' : 'Add Job Title'}
           </Button>
         </DialogFooter>
@@ -1259,8 +1259,8 @@ const DeleteConfirmModal: React.FC<{
         </p>
       </div>
       <DialogFooter className="pt-2 gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)]">Cancel</Button>
-        <Button variant="destructive" onClick={onConfirm} className="rounded-[var(--radius-button)]">Confirm</Button>
+        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
+        <Button variant="destructive" onClick={onConfirm} className="w-full sm:w-auto rounded-[var(--radius-button)]">Confirm</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

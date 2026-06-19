@@ -116,7 +116,7 @@ export const MissionsManagement: React.FC = () => {
   };
 
   return (
-    <div className="px-2 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-10">
+    <div className="px-3 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-10">
       {/* ══ Pending Approval ══ */}
       <section className="space-y-4">
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Missions Pending Approval</h2>
@@ -341,7 +341,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
         Items Per Page
         <select className="h-8 px-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none cursor-pointer" defaultValue="15"><option>10</option><option>15</option><option>30</option></select>
       </div>
-      <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
+      <div className="flex flex-row flex-nowrap items-center gap-2 w-full sm:w-auto justify-center sm:justify-end shrink-0">
         <button onClick={() => go(page - 1)} disabled={page <= 1} className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Previous page"><ChevronLeft className="w-4 h-4 text-foreground" /></button>
         <span className="text-[var(--text-sm)] text-foreground flex items-center gap-1 whitespace-nowrap shrink-0">Page <input type="text" value={pi} onChange={e => setPi(e.target.value)} onBlur={() => go(Number(pi) || 1)} onKeyDown={e => e.key === 'Enter' && go(Number(pi) || 1)} className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]" aria-label="Page number input" /> of {totalPages}</span>
         <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Next page"><ChevronRight className="w-4 h-4 text-foreground" /></button>
@@ -421,8 +421,8 @@ const CreateMissionModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
           <div className="space-y-1.5"><label className={labelClass}>Reason</label><textarea value={reason} onChange={e => setReason(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Describe the reason..." /></div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Mission created successfully'); }}>Create Mission</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Mission created successfully'); }}>Create Mission</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -452,8 +452,8 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
         </table>
       </div>
       <DialogFooter className="pt-4 gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-        <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
+        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
+        <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>
@@ -493,7 +493,7 @@ const ViewMissionDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
             )}
           </div>
         )}
-        <DialogFooter className="pt-2"><Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Close</Button></DialogFooter>
+        <DialogFooter className="pt-2"><Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Close</Button></DialogFooter>
       </DialogContent>
     </Dialog>
   );
@@ -508,8 +508,8 @@ const ConfirmDialog: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
         <p className="text-[var(--text-sm)] text-foreground">{message}</p>
       </div>
       <DialogFooter className="pt-2 gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">{cancelLabel}</Button>
-        <Button variant={variant === 'destructive' ? 'destructive' : 'default'} className={cn('rounded-[var(--radius-button)]', variant !== 'destructive' && 'bg-chart-3 hover:bg-chart-3/90 text-white')} onClick={onConfirm}>{confirmLabel}</Button>
+        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">{cancelLabel}</Button>
+        <Button variant={variant === 'destructive' ? 'destructive' : 'default'} className={cn('w-full sm:w-auto rounded-[var(--radius-button)]', variant !== 'destructive' && 'bg-chart-3 hover:bg-chart-3/90 text-white')} onClick={onConfirm}>{confirmLabel}</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

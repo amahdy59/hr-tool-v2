@@ -31,7 +31,7 @@ const getInitials = (name: string): string => {
 
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
   return (
-    <header className="min-h-14 border-b border-border bg-card px-4 py-3 flex items-center justify-between sticky top-0 z-10 sm:h-16 sm:px-6 sm:py-0">
+    <header className="h-16 border-b border-border bg-card px-4 flex items-center justify-between sticky top-0 z-[60] sm:px-6">
       <div className="flex items-center gap-3">
         {/* Hamburger Menu on Mobile/Tablet */}
         <Sheet>
@@ -122,7 +122,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             lineHeight: 1.2,
           }}
         >
-          Human Resources Tool
+          HR Tool
         </h1>
       </div>
 
@@ -142,16 +142,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         </button>
 
         <button
-          onClick={onOpenCommandPalette}
-          className="flex sm:hidden w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors"
-          aria-label="Search"
-        >
-          <Search className="w-4 h-4" />
-        </button>
-
-        <button
           onClick={onOpenShortcuts}
-          className="flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="hidden lg:flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Keyboard Shortcuts (?)"
           title="Keyboard Shortcuts (?)"
         >

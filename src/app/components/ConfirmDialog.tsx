@@ -51,25 +51,26 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             {message}
           </p>
         </div>
-        <DialogFooter className="flex-row justify-end gap-3 pt-2">
-          <Button
-            variant={confirmVariant}
-            onClick={() => {
-              onConfirm();
-              onOpenChange(false);
-            }}
-            className={cn(confirmClassName)}
-          >
-            {confirmLabel}
-          </Button>
+        <DialogFooter className="pt-2 gap-2">
           <Button
             variant="outline"
             onClick={() => {
               onCancel?.();
               onOpenChange(false);
             }}
+            className="w-full sm:w-auto rounded-[var(--radius-button)]"
           >
             {cancelLabel}
+          </Button>
+          <Button
+            variant={confirmVariant}
+            onClick={() => {
+              onConfirm();
+              onOpenChange(false);
+            }}
+            className={cn("w-full sm:w-auto rounded-[var(--radius-button)]", confirmClassName)}
+          >
+            {confirmLabel}
           </Button>
         </DialogFooter>
       </DialogContent>
