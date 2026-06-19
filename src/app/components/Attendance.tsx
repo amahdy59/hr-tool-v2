@@ -288,9 +288,6 @@ export const Attendance: React.FC = () => {
       {/* ── Page Title ── */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Employee Attendance</h2>
-        <p className="text-[var(--page-subtitle-size)] text-muted-foreground mt-1">
-          Track and manage employee attendance records, hours, and leave balances.
-        </p>
       </div>
 
       {/* ── Search & Filters Row ── */}

@@ -263,9 +263,6 @@ export const EmployeeManagement: React.FC = () => {
       {/* Header */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Manage Employees</h2>
-        <p className="text-[var(--page-subtitle-size)] text-muted-foreground mt-1">
-          Manage your team's employees, departments, job titles, and activity logs.
-        </p>
       </div>
 
       {/* Tabs */}

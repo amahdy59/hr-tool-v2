@@ -206,9 +206,6 @@ export const RolesManagement: React.FC = () => {
         >
           Roles Management
         </h2>
-        <p className="text-[var(--page-subtitle-size)] text-muted-foreground mt-1">
-          Manage user roles and access permissions.
-        </p>
       </div>
 
       {/* ── Filters & Actions Row ── */}

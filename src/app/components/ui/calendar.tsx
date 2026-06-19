@@ -19,11 +19,19 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
+      captionLayout="dropdown-buttons"
+      fromYear={1900}
+      toYear={new Date().getFullYear() + 10}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
         caption: "flex justify-center pt-1 relative items-center",
-        caption_label: "font-[var(--font-weight-medium)]",
+        caption_label: "hidden", // Hide the default caption label when using dropdowns
+        caption_dropdowns: "flex justify-center gap-1", // Container for the dropdowns
+        dropdown: "appearance-none bg-transparent border-none text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring rounded-md px-2 py-1 hover:bg-muted cursor-pointer",
+        dropdown_month: "flex items-center",
+        dropdown_year: "flex items-center",
+        dropdown_icon: "hidden", // Hide default dropdown icon if any
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
@@ -51,6 +59,7 @@ function Calendar({
         day_range_middle:
           "aria-selected:bg-muted aria-selected:text-foreground",
         day_hidden: "invisible",
+        vhidden: "vhidden hidden", // Hide visually hidden elements
         ...classNames,
       }}
       components={{
