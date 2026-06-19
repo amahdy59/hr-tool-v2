@@ -185,9 +185,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="max-sm:fixed max-sm:inset-0 max-sm:w-full max-sm:h-[100dvh] max-sm:max-w-none max-sm:max-h-none max-sm:!top-0 max-sm:!rounded-none max-sm:!border-0 max-sm:p-5 max-sm:z-[100] max-sm:shadow-none sm:w-80 p-5 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border border-border bg-card shadow-[var(--elevation-lg)] flex flex-col"
+        className="max-sm:fixed max-sm:w-[100vw] max-sm:h-[100dvh] max-sm:max-w-none max-sm:max-h-none max-sm:!transform-none max-sm:!top-0 max-sm:!left-0 max-sm:!rounded-none max-sm:!border-0 max-sm:p-5 max-sm:z-[100] max-sm:shadow-none sm:w-80 p-5 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border border-border bg-card shadow-[var(--elevation-lg)] flex flex-col"
         align="end"
         sideOffset={8}
+        collisionPadding={16}
       >
         <div className="space-y-1">
           <div className="border-b border-border pb-3 mb-4 flex items-center justify-between">
