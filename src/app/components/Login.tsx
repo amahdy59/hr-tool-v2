@@ -71,10 +71,6 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Floating Accessibility settings for pre-login accessibility configuration */}
-      <div className="absolute top-4 end-4 z-50">
-        <AccessibilityPanel settings={accessibility} />
-      </div>
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#1a237e] via-[#283593] to-[#3949ab]">
         {/* Animated overlay gradients */}
@@ -132,15 +128,20 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             >
               Workforce management, simplified.
             </p>
-            <button
-              type="button"
-              onClick={() => setShowInfoPage(true)}
-              className="inline-flex items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 py-1.5 text-[var(--text-sm)] font-[var(--font-weight-medium)] text-primary shadow-[var(--elevation-sm)] transition-colors hover:bg-muted"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              <Info className="w-4 h-4" />
-              About this redesign
-            </button>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowInfoPage(true)}
+                className="inline-flex items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 h-9 text-[var(--text-sm)] font-[var(--font-weight-medium)] text-primary shadow-[var(--elevation-sm)] transition-colors hover:bg-muted"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                <Info className="w-4 h-4" />
+                About this redesign
+              </button>
+              <div className="inline-flex h-9 shadow-[var(--elevation-sm)] rounded-[var(--radius-button)] bg-card border border-border/80">
+                <AccessibilityPanel settings={accessibility} />
+              </div>
+            </div>
           </div>
 
           {/* Login Form */}

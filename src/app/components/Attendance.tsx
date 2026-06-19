@@ -665,7 +665,7 @@ export const Attendance: React.FC = () => {
         </div>
       </section>
 
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-2">
+      <div className="hidden sm:flex sm:flex-row sm:items-center gap-3 pt-2">
         <span className="text-[var(--text-xs)] text-muted-foreground font-[var(--font-weight-medium)] uppercase tracking-wide block sm:inline">Status Legend:</span>
         <div className="flex flex-wrap items-center gap-2">
           {Object.entries(statusVariantMap).map(([key, { variant, label }]) => (

@@ -444,6 +444,15 @@
     scrollbar-color: var(--muted-foreground) var(--muted);
   }
   
+  /* Hide scrollbar class */
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
   /* Ensure scrollbars have smooth transitions */
   ::-webkit-scrollbar-thumb:active {
     background: var(--primary);

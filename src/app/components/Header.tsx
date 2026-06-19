@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Search, Keyboard, Menu, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
+import { User, Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose } from './ui/sheet';
 import { cn } from '@/lib/utils';
@@ -32,15 +32,27 @@ const getInitials = (name: string): string => {
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
   return (
     <header className="h-16 border-b border-border bg-card px-4 flex items-center justify-between sticky top-0 z-[60] sm:px-6">
+      <h1
+        className="text-primary absolute left-1/2 -translate-x-1/2"
+        style={{
+          fontFamily: "'Orbitron', sans-serif",
+          fontSize: 'clamp(var(--text-base), 4vw, var(--text-lg))',
+          fontWeight: 'var(--font-weight-bold)',
+          lineHeight: 1.2,
+        }}
+      >
+        HR Tool
+      </h1>
       <div className="flex items-center gap-3">
         {/* Hamburger Menu on Mobile/Tablet */}
         <Sheet>
           <SheetTrigger asChild>
             <button
-              className="lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-muted/50 rounded-md hover:bg-muted text-foreground transition-colors cursor-pointer"
-              aria-label="Open navigation menu"
+              className="group lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
+              aria-label="Toggle navigation menu"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-5 h-5 transition-all duration-300 absolute group-data-[state=open]:rotate-90 group-data-[state=open]:scale-50 group-data-[state=open]:opacity-0" />
+              <X className="w-5 h-5 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0 group-data-[state=open]:rotate-0 group-data-[state=open]:scale-100 group-data-[state=open]:opacity-100" />
             </button>
           </SheetTrigger>
           <SheetContent side="left" className="w-80 p-5 flex flex-col h-full bg-card">
@@ -96,9 +108,13 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
               })}
             </nav>
 
-            {/* Logout footer */}
-            {onLogout && (
-              <div className="border-t border-border pt-4 mt-auto">
+            {/* Bottom Actions (Settings/Logout) */}
+            <div className="border-t border-border pt-4 mt-auto space-y-2">
+              <div className="px-3">
+                <AccessibilityPanel settings={accessibility} />
+              </div>
+              
+              {onLogout && (
                 <SheetClose asChild>
                   <button
                     onClick={onLogout}
@@ -108,22 +124,10 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                     <span>Log out</span>
                   </button>
                 </SheetClose>
-              </div>
-            )}
+              )}
+            </div>
           </SheetContent>
         </Sheet>
-
-        <h1
-          className="text-primary"
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(var(--text-base), 4vw, var(--text-lg))',
-            fontWeight: 'var(--font-weight-semibold)',
-            lineHeight: 1.2,
-          }}
-        >
-          HR Tool
-        </h1>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
@@ -150,7 +154,9 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
           <Keyboard className="w-4 h-4" />
         </button>
 
-        <AccessibilityPanel settings={accessibility} />
+        <div className="hidden sm:block">
+          <AccessibilityPanel settings={accessibility} />
+        </div>
 
         <div className="hidden items-center gap-2.5 sm:flex">
           {currentUser?.image ? (

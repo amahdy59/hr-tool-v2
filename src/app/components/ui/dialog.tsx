@@ -57,10 +57,10 @@ const DialogContent = React.forwardRef<
       data-slot="dialog-content"
       className={cn(
         "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed z-50 flex flex-col overflow-y-auto duration-200 shadow-lg gap-4",
-        // Mobile styles: full screen width, starts below header, fits content height, clean spacing
-        "top-16 start-0 translate-x-0 translate-y-0 w-full h-auto max-h-[calc(100dvh-4rem)] rounded-none border-t-0 border-x-0 border-b border-border p-5 pb-8",
+        // Mobile styles: full screen below header
+        "left-0 right-0 top-16 bottom-0 w-full h-[calc(100dvh-4rem)] max-w-none translate-x-0 translate-y-0 rounded-none border-0 p-5 pb-8",
         // Desktop styles: centered card
-        "sm:top-[50%] sm:start-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:w-full sm:max-w-lg sm:max-h-[calc(100dvh-2rem)] sm:rounded-lg sm:border sm:p-6",
+        "sm:left-[50%] sm:top-[50%] sm:bottom-auto sm:right-auto sm:h-auto sm:w-full sm:max-w-lg sm:max-h-[calc(100dvh-2rem)] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-lg sm:border sm:border-border sm:p-6",
         className,
       )}
       {...props}

@@ -272,7 +272,7 @@ export const RolesManagement: React.FC = () => {
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
             <table className="w-full text-[var(--text-sm)] text-start">
-              <thead>
+              <thead className="hidden md:table-header-group">
                 <tr className="bg-muted border-b border-border">
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
                     Employee Name
@@ -293,27 +293,39 @@ export const RolesManagement: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-border">
                 {paginatedRoles.map((role) => (
-                  <tr key={role.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">
-                      {role.employeeName}
+                  <tr key={role.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
+                    <td className="px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)] flex justify-between md:table-cell">
+                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Name:</span>
+                      <span>{role.employeeName}</span>
                     </td>
-                    <td className="px-4 py-3 text-foreground">{role.dateEnrolled}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{role.dateLeft}</td>
-                    <td className="px-4 py-3 text-foreground">{role.jobTitle}</td>
-                    <td className="px-4 py-3 text-end">
-                      <div className="flex items-center justify-end gap-1">
+                    <td className="px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
+                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Enrolled:</span>
+                      <span>{role.dateEnrolled}</span>
+                    </td>
+                    <td className="px-4 py-1 md:py-3 text-muted-foreground flex justify-between md:table-cell">
+                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Left:</span>
+                      <span>{role.dateLeft}</span>
+                    </td>
+                    <td className="px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
+                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Title:</span>
+                      <span>{role.jobTitle}</span>
+                    </td>
+                    <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                      <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 w-full md:w-auto">
                         <button
                           onClick={() => handleEditRole(role)}
-                          className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"
+                          className="w-full md:w-auto flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer border border-border md:border-none"
                           title="Edit Role"
                         >
+                          <span className="md:hidden">Edit Role</span>
                           <Pencil className="w-4 h-4 text-primary" />
                         </button>
                         <button
                           onClick={() => handleDeleteRole(role)}
-                          className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"
+                          className="w-full md:w-auto flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer border border-destructive text-destructive md:border-none"
                           title="Delete Role"
                         >
+                          <span className="md:hidden">Delete Role</span>
                           <Trash2 className="w-4 h-4 text-destructive" />
                         </button>
                       </div>

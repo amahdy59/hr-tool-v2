@@ -259,7 +259,7 @@ export const EmployeeManagement: React.FC = () => {
   );
 
   return (
-    <div className="px-3 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="px-1 py-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Manage Employees</h2>
@@ -279,25 +279,25 @@ export const EmployeeManagement: React.FC = () => {
           </TabsList>
 
           {activeSubTab === 'directory' && (
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
+            <div className="flex flex-col md:flex-row w-full md:w-auto items-stretch md:items-center gap-2">
+              <Button variant="outline" size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
                 exportToCSV(filteredEmployees, 'Employees_Data');
                 toast.success('Download started', { description: 'Employee data exported to CSV.' });
               }}>
-                <Download className="w-4 h-4" /> <span className="hidden sm:inline">Download Data</span>
+                <Download className="w-4 h-4" /> <span>Download Data</span>
               </Button>
-              <Button size="sm" className="gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
+              <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
                 <Plus className="w-4 h-4" /> Add an Employee
               </Button>
             </div>
           )}
           {activeSubTab === 'departments' && (
-            <Button size="sm" className="gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddDeptOpen(true)}>
+            <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddDeptOpen(true)}>
               <Plus className="w-4 h-4" /> Add Department
             </Button>
           )}
           {activeSubTab === 'jobtitles' && (
-            <Button size="sm" className="gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddJtOpen(true)}>
+            <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddJtOpen(true)}>
               <Plus className="w-4 h-4" /> Add Job Title
             </Button>
           )}
@@ -307,7 +307,7 @@ export const EmployeeManagement: React.FC = () => {
         <TabsContent value="directory" className="space-y-4 mt-4">
           {/* Search row */}
           <div className="flex flex-wrap items-end gap-3">
-            <div className="flex-1 min-w-[280px] space-y-1.5">
+            <div className="flex-1 min-w-[280px] space-y-1.5 hidden md:block">
               <div className="flex items-center gap-2">
                 <label className={labelClass}>Search Employees</label>
                 <Tooltip>
@@ -669,23 +669,23 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
   const go = (p: number) => { const v = Math.max(1, Math.min(p, totalPages)); setPage(v); setPageInput(String(v)); };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/20">
-      <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
-        Items Per Page
-        <select className="h-8 px-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none cursor-pointer" defaultValue="15">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4 border-t border-border bg-muted/20">
+      <div className="flex items-center gap-3 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
+        <span>Items Per Page</span>
+        <select className="h-9 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none cursor-pointer hover:bg-muted/50 transition-colors" defaultValue="15">
           <option>10</option><option>15</option><option>30</option>
         </select>
       </div>
-      <div className="flex flex-row flex-nowrap items-center gap-2 w-full sm:w-auto justify-center sm:justify-end shrink-0">
-        <button onClick={() => go(page - 1)} disabled={page <= 1} className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Previous page">
+      <div className="flex flex-row items-center gap-3 w-full sm:w-auto justify-center sm:justify-end">
+        <button onClick={() => go(page - 1)} disabled={page <= 1} className="w-9 h-9 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm" aria-label="Previous page">
           <ChevronLeft className="w-4 h-4 text-foreground" />
         </button>
-        <span className="text-[var(--text-sm)] text-foreground flex items-center gap-1 whitespace-nowrap shrink-0">
+        <span className="text-[var(--text-sm)] text-foreground flex items-center gap-2 whitespace-nowrap">
           Page
-          <input type="text" value={pageInput} onChange={(e) => setPageInput(e.target.value)} onBlur={() => go(Number(pageInput) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(pageInput) || 1)} className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]" aria-label="Page number input" />
-          of {totalPages}
+          <input type="text" value={typeof pageInput !== 'undefined' ? pageInput : (typeof pi !== 'undefined' ? pi : '')} onChange={(e) => { if(typeof setPageInput !== 'undefined') setPageInput(e.target.value); else if(typeof setPi !== 'undefined') setPi(e.target.value); }} onBlur={() => go(Number(typeof pageInput !== 'undefined' ? pageInput : pi) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(typeof pageInput !== 'undefined' ? pageInput : pi) || 1)} className="w-12 h-9 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] shadow-sm" aria-label="Page number input" />
+          <span className="text-muted-foreground">of {totalPages}</span>
         </span>
-        <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Next page">
+        <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="w-9 h-9 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm" aria-label="Next page">
           <ChevronRight className="w-4 h-4 text-foreground" />
         </button>
       </div>

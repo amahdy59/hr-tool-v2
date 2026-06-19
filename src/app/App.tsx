@@ -436,7 +436,7 @@ const BottomToolbar: React.FC<{
 }
 
 const PayrollUnderDevelopment: React.FC = () => (
-  <div className="px-3 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+  <div className="px-1 py-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
     <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
       <section className="w-full max-w-2xl rounded-[var(--radius-card)] border border-border bg-card p-8 text-center shadow-[var(--elevation-sm)]">
         <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] uppercase tracking-[0.08em] text-accent">

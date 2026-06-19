@@ -47,24 +47,27 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
     <label
       htmlFor={id}
       className={cn(
-        'flex items-center justify-between gap-3 rounded-[var(--radius)] px-3 py-2.5 -mx-3 cursor-pointer transition-all duration-200 group',
+        'flex items-center justify-between gap-3 rounded-[var(--radius-button)] p-3 cursor-pointer transition-all duration-200 group relative border',
+        'has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-1',
         checked
-          ? 'bg-primary/8 ring-1 ring-primary/15'
-          : 'hover:bg-muted/60'
+          ? 'bg-primary/10 border-primary/30 shadow-sm hover:bg-primary/15'
+          : 'bg-card border-border hover:border-primary/50 hover:bg-muted/50 active:scale-[0.98]'
       )}
     >
-      <div className="flex gap-2.5 items-center min-w-0">
-        <Icon
-          className={cn(
-            'w-4 h-4 shrink-0 transition-colors duration-200',
-            checked ? 'text-primary' : 'text-muted-foreground/50'
-          )}
-          aria-hidden="true"
-        />
-        <div className="min-w-0">
+      <div className="flex gap-3 items-center min-w-0">
+        <div className={cn("flex items-center justify-center w-8 h-8 rounded-full transition-colors", checked ? "bg-primary/20" : "bg-muted")}>
+          <Icon
+            className={cn(
+              'w-4 h-4 shrink-0 transition-colors duration-200',
+              checked ? 'text-primary' : 'text-muted-foreground'
+            )}
+            aria-hidden="true"
+          />
+        </div>
+        <div className="min-w-0 flex flex-col gap-0.5">
           <span
             className={cn(
-              'text-xs font-medium block transition-colors duration-200',
+              'text-[var(--text-sm)] font-medium block transition-colors duration-200',
               checked ? 'text-foreground' : 'text-muted-foreground'
             )}
             style={{ fontFamily: "'Inter', sans-serif" }}
@@ -73,7 +76,7 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
           </span>
           <span
             className={cn(
-              'text-[10px] block leading-4 transition-colors duration-200',
+              'text-xs block leading-tight transition-colors duration-200',
               checked ? 'text-muted-foreground' : 'text-muted-foreground/60'
             )}
             style={{ fontFamily: "'Inter', sans-serif" }}
@@ -89,7 +92,7 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
         aria-label={ariaLabel}
         className={cn(
           'shrink-0 transition-opacity duration-200',
-          !checked && 'opacity-40'
+          !checked && 'opacity-60 group-hover:opacity-100'
         )}
       />
     </label>
