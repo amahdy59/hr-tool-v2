@@ -30,6 +30,7 @@ const getInitials = (name: string): string => {
 };
 
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   return (
     <header className="h-16 border-b border-border bg-card px-4 flex items-center justify-between sticky top-0 z-[60] sm:px-6">
       <h1
@@ -147,7 +148,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
 
         <button
           onClick={onOpenShortcuts}
-          className="hidden lg:flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Keyboard Shortcuts (?)"
           title="Keyboard Shortcuts (?)"
         >
