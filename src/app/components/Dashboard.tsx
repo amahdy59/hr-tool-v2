@@ -716,10 +716,10 @@ const HistoryRow: React.FC<{
       <td className="px-4 py-3" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
         {item.type}
       </td>
-      <td className="px-4 py-3" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+      <td className="px-4 py-3 whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
         {item.reqDate}
       </td>
-      <td className="px-4 py-3" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+      <td className="px-4 py-3 whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
         {item.range}
       </td>
       <td className="px-4 py-3" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>

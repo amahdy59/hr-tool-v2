@@ -208,7 +208,7 @@
   {
     "Source Index": 105,
     "English Text": "Active leave requests will be automatically denied.",
-    "Arabic Translation": "سيتم رفض طلبات الإجازة النشطة تلقائيًا.",
+    "Arabic Translation": "سيتم رفض طلبات الاجازة النشطة تلقائيًا.",
     "UI Category": "Message / notification"
   },
   {
@@ -274,7 +274,7 @@
   {
     "Source Index": 116,
     "English Text": "Add any notes for your leave request...",
-    "Arabic Translation": "أضف أي ملاحظات لطلب الإجازة...",
+    "Arabic Translation": "أضف أي ملاحظات لطلب الاجازة...",
     "UI Category": "Placeholder / helper text"
   },
   {
@@ -496,19 +496,19 @@
   {
     "Source Index": 153,
     "English Text": "Annual and Sick Leaves",
-    "Arabic Translation": "الإجازات السنوية والمرضية",
+    "Arabic Translation": "الاجازات السنوية والمرضية",
     "UI Category": "Navigation / module"
   },
   {
     "Source Index": 154,
     "English Text": "Annual Leave",
-    "Arabic Translation": "إجازة سنوية",
+    "Arabic Translation": "اجازة سنوية",
     "UI Category": "Label"
   },
   {
     "Source Index": 155,
     "English Text": "Annual leave",
-    "Arabic Translation": "إجازة سنوية",
+    "Arabic Translation": "اجازة سنوية",
     "UI Category": "Label"
   },
   {
@@ -550,13 +550,13 @@
   {
     "Source Index": 162,
     "English Text": "Approve Leave",
-    "Arabic Translation": "الموافقة على الإجازة",
+    "Arabic Translation": "الموافقة على الاجازة",
     "UI Category": "Label"
   },
   {
     "Source Index": 163,
     "English Text": "Approve Leaves",
-    "Arabic Translation": "الموافقة على الإجازات",
+    "Arabic Translation": "الموافقة على الاجازات",
     "UI Category": "Navigation / module"
   },
   {
@@ -815,13 +815,13 @@
   {
     "Source Index": 206,
     "English Text": "Carried over days are deducted automatically before this year's vacation.",
-    "Arabic Translation": "تُخصم الأيام المرحلة تلقائيًا قبل رصيد إجازات هذا العام.",
+    "Arabic Translation": "تُخصم الأيام المرحلة تلقائيًا قبل رصيد اجازات هذا العام.",
     "UI Category": "Body copy"
   },
   {
     "Source Index": 207,
     "English Text": "Casual Leave",
-    "Arabic Translation": "إجازة عارضة",
+    "Arabic Translation": "اجازة عارضة",
     "UI Category": "Label"
   },
   {
@@ -1055,7 +1055,7 @@
   {
     "Source Index": 246,
     "English Text": "Confirm Leave",
-    "Arabic Translation": "تأكيد الإجازة",
+    "Arabic Translation": "تأكيد الاجازة",
     "UI Category": "Label"
   },
   {
@@ -1145,7 +1145,7 @@
   {
     "Source Index": 261,
     "English Text": "Create a new leave request",
-    "Arabic Translation": "إنشاء طلب إجازة جديد",
+    "Arabic Translation": "إنشاء طلب اجازة جديد",
     "UI Category": "Body copy"
   },
   {
@@ -1157,7 +1157,7 @@
   {
     "Source Index": 263,
     "English Text": "Create Leave",
-    "Arabic Translation": "إنشاء طلب إجازة",
+    "Arabic Translation": "إنشاء طلب اجازة",
     "UI Category": "Label"
   },
   {
@@ -1367,7 +1367,7 @@
   {
     "Source Index": 298,
     "English Text": "Decline Leave",
-    "Arabic Translation": "رفض الإجازة",
+    "Arabic Translation": "رفض الاجازة",
     "UI Category": "Date / time"
   },
   {
@@ -2569,7 +2569,7 @@
   {
     "Source Index": 498,
     "English Text": "Go to Leaves Management",
-    "Arabic Translation": "الانتقال إلى إدارة الإجازات",
+    "Arabic Translation": "الانتقال إلى إدارة الاجازات",
     "UI Category": "Navigation / module"
   },
   {
@@ -3015,67 +3015,67 @@
   {
     "Source Index": 572,
     "English Text": "Leave",
-    "Arabic Translation": "إجازة",
+    "Arabic Translation": "اجازة",
     "UI Category": "Label"
   },
   {
     "Source Index": 573,
     "English Text": "Leave Details",
-    "Arabic Translation": "تفاصيل الإجازة",
+    "Arabic Translation": "تفاصيل الاجازة",
     "UI Category": "Label"
   },
   {
     "Source Index": 574,
     "English Text": "Leave request details",
-    "Arabic Translation": "تفاصيل طلب الإجازة",
+    "Arabic Translation": "تفاصيل طلب الاجازة",
     "UI Category": "Label"
   },
   {
     "Source Index": 575,
     "English Text": "Leave Type",
-    "Arabic Translation": "نوع الإجازة",
+    "Arabic Translation": "نوع الاجازة",
     "UI Category": "Label"
   },
   {
     "Source Index": 576,
     "English Text": "Leaves",
-    "Arabic Translation": "الإجازات",
+    "Arabic Translation": "الاجازات",
     "UI Category": "Navigation / module"
   },
   {
     "Source Index": 577,
     "English Text": "Leaves and Mission History",
-    "Arabic Translation": "سجل الإجازات والمأموريات",
+    "Arabic Translation": "سجل الاجازات والمأموريات",
     "UI Category": "Navigation / module"
   },
   {
     "Source Index": 578,
     "English Text": "Leaves History",
-    "Arabic Translation": "سجل الإجازات",
+    "Arabic Translation": "سجل الاجازات",
     "UI Category": "Navigation / module"
   },
   {
     "Source Index": 579,
     "English Text": "Leaves Management",
-    "Arabic Translation": "إدارة الإجازات",
+    "Arabic Translation": "إدارة الاجازات",
     "UI Category": "Navigation / module"
   },
   {
     "Source Index": 580,
     "English Text": "Leaves Pending Approval",
-    "Arabic Translation": "إجازات بانتظار الموافقة",
+    "Arabic Translation": "اجازات بانتظار الموافقة",
     "UI Category": "Navigation / module"
   },
   {
     "Source Index": 581,
     "English Text": "Leaves Request",
-    "Arabic Translation": "طلب إجازات",
+    "Arabic Translation": "طلب اجازات",
     "UI Category": "Navigation / module"
   },
   {
     "Source Index": 582,
     "English Text": "Leaves Requests",
-    "Arabic Translation": "طلبات الإجازات",
+    "Arabic Translation": "طلبات الاجازات",
     "UI Category": "Navigation / module"
   },
   {
@@ -3237,7 +3237,7 @@
   {
     "Source Index": 610,
     "English Text": "Maternity (appears only to females)",
-    "Arabic Translation": "إجازة أمومة (تظهر للإناث فقط)",
+    "Arabic Translation": "اجازة أمومة (تظهر للإناث فقط)",
     "UI Category": "Body copy"
   },
   {
@@ -3749,7 +3749,7 @@
   {
     "Source Index": 696,
     "English Text": "Other Leaves",
-    "Arabic Translation": "إجازات أخرى",
+    "Arabic Translation": "اجازات أخرى",
     "UI Category": "Navigation / module"
   },
   {
@@ -3809,7 +3809,7 @@
   {
     "Source Index": 706,
     "English Text": "Paternity (appears only to males)",
-    "Arabic Translation": "إجازة أبوة (تظهر للذكور فقط)",
+    "Arabic Translation": "اجازة أبوة (تظهر للذكور فقط)",
     "UI Category": "Body copy"
   },
   {
@@ -3923,7 +3923,7 @@
   {
     "Source Index": 725,
     "English Text": "Please ensure all carried-over vacation days from last year are used before 31st this March. Carried over days are deducted automatically before this year\\'s vacation.",
-    "Arabic Translation": "يرجى التأكد من استخدام جميع أيام الإجازة المرحلة من العام الماضي قبل 31 مارس من هذا العام. تُخصم الأيام المرحلة تلقائيًا قبل رصيد إجازات هذا العام.",
+    "Arabic Translation": "يرجى التأكد من استخدام جميع أيام الاجازة المرحلة من العام الماضي قبل 31 مارس من هذا العام. تُخصم الأيام المرحلة تلقائيًا قبل رصيد اجازات هذا العام.",
     "UI Category": "Date / time"
   },
   {
@@ -4218,7 +4218,7 @@
   {
     "Source Index": 774,
     "English Text": "Request Leave",
-    "Arabic Translation": "طلب إجازة",
+    "Arabic Translation": "طلب اجازة",
     "UI Category": "Label"
   },
   {
@@ -4314,7 +4314,7 @@
   {
     "Source Index": 790,
     "English Text": "Review and approve selected leave requests",
-    "Arabic Translation": "مراجعة طلبات الإجازة المحددة والموافقة عليها",
+    "Arabic Translation": "مراجعة طلبات الاجازة المحددة والموافقة عليها",
     "UI Category": "Body copy"
   },
   {
@@ -4662,7 +4662,7 @@
   {
     "Source Index": 848,
     "English Text": "Select leave type",
-    "Arabic Translation": "اختر نوع الإجازة",
+    "Arabic Translation": "اختر نوع الاجازة",
     "UI Category": "Placeholder / helper text"
   },
   {
@@ -4788,7 +4788,7 @@
   {
     "Source Index": 869,
     "English Text": "Sick Leave",
-    "Arabic Translation": "إجازة مرضية",
+    "Arabic Translation": "اجازة مرضية",
     "UI Category": "Label"
   },
   {
@@ -5246,7 +5246,7 @@
   {
     "Source Index": 945,
     "English Text": "Upcoming Leaves",
-    "Arabic Translation": "الإجازات القادمة",
+    "Arabic Translation": "الاجازات القادمة",
     "UI Category": "Navigation / module"
   },
   {
@@ -5378,7 +5378,7 @@
   {
     "Source Index": 967,
     "English Text": "Vacation",
-    "Arabic Translation": "إجازة",
+    "Arabic Translation": "اجازة",
     "UI Category": "Label"
   },
   {
@@ -5402,7 +5402,7 @@
   {
     "Source Index": 971,
     "English Text": "View Leave",
-    "Arabic Translation": "عرض الإجازة",
+    "Arabic Translation": "عرض الاجازة",
     "UI Category": "Label"
   },
   {

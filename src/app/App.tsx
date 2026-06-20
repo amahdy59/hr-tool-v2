@@ -212,14 +212,14 @@ export default function App() {
   // Show login page if not authenticated
   if (!isAuthenticated) {
     return (
-      <>
+      <DirectionProvider dir={isArabic ? 'rtl' : 'ltr'}>
         <Toaster
           position="bottom-right"
           toastOptions={toasterOptions}
           closeButton
         />
         <Login onLogin={handleLogin} accessibility={accessibility} />
-      </>
+      </DirectionProvider>
     );
   }
 
@@ -267,7 +267,8 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen bg-background text-foreground overflow-hidden">
+    <DirectionProvider dir={isArabic ? 'rtl' : 'ltr'}>
+      <div className="flex h-screen bg-background text-foreground overflow-hidden">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2.5 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
@@ -402,6 +403,7 @@ export default function App() {
         onRequestMission={() => setRequestMissionOpen(true)}
       />
     </div>
+    </DirectionProvider>
   );
 }
 
