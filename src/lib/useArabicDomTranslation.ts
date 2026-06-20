@@ -211,7 +211,6 @@ const dictionary: Record<string, string> = {
   'Available': 'متاح',
   'Used': 'مستخدم',
   'Total': 'الإجمالي',
-  'Unfilled': 'غير مسجل',
   'Weekend': 'عطلة نهاية الأسبوع',
   'Mission': 'مأمورية',
   'Holiday': 'عطلة',
@@ -238,16 +237,11 @@ const dictionary: Record<string, string> = {
   'Friday': 'الجمعة',
   'Saturday': 'السبت',
   'Sunday': 'الأحد',
-  'Leave Type': 'نوع الإجازة',
-  'Annual Leave': 'إجازة سنوية',
-  'Sick Leave': 'إجازة مرضية',
-  'Casual Leave': 'إجازة عارضة',
   'From': 'من',
   'To': 'إلى',
   'Submit Request': 'تقديم الطلب',
   'Continue': 'متابعة',
   'Are you sure?': 'هل أنت متأكد؟',
-  'Request Mission': 'طلب مأمورية',
   'Mission Type': 'نوع المأمورية',
   'Work From Home': 'عمل من المنزل',
   'Client Visit': 'زيارة عميل',
@@ -258,13 +252,6 @@ const dictionary: Record<string, string> = {
   'Dates': 'التواريخ',
   'Select a date': 'اختر تاريخاً',
   'Pick a date': 'اختر تاريخاً',
-  'Gender': 'الجنس',
-  'Department': 'القسم',
-  'Job Title': 'المسمى الوظيفي',
-  'Hire Date': 'تاريخ التعيين',
-  'Personal Information': 'المعلومات الشخصية',
-  'Contact Information': 'معلومات التواصل',
-  'Work Information': 'معلومات العمل',
   // Employee Names
   'Aleksander Garcia': 'ألكسندر جارسيا',
   'Tanvi Lumari': 'تانفي لوماري',
@@ -275,7 +262,6 @@ const dictionary: Record<string, string> = {
   'Mohammed Habib': 'محمد حبيب',
   'Lena Mohamed': 'لينا محمد',
   // Departments
-  'Marketing': 'التسويق',
   'Software': 'البرمجيات',
   'Oil & Gas': 'النفط والغاز',
   'Sales': 'المبيعات',
@@ -328,7 +314,6 @@ const dictionary: Record<string, string> = {
   'Approve': 'موافقة',
   'Requester': 'مقدم الطلب',
   // Filters & General UI
-  'Search...': 'بحث...',
   'All Departments': 'كل الأقسام',
   'All Job Titles': 'كل المسميات الوظيفية',
   'Apply': 'تطبيق',
@@ -347,6 +332,164 @@ const dictionary: Record<string, string> = {
   'Card Type': 'نوع البطاقة',
   'Next': 'التالي',
   'Previous': 'السابق',
+  'Manage Employees': 'إدارة الموظفين',
+  'Add an Employee': 'إضافة موظف',
+  'Add Department': 'إضافة قسم',
+  'Download Data': 'تنزيل البيانات',
+  'Search Employees': 'البحث عن الموظفين',
+  'Search by name, Employee number, or email.': 'ابحث بالاسم أو الرقم الوظيفي أو البريد الإلكتروني.',
+  'Enter Employee# or Name...': 'أدخل الرقم الوظيفي أو الاسم...',
+  'Search employees': 'البحث عن الموظفين',
+  'Open employee filters': 'فتح فلاتر الموظفين',
+  'Filter Options': 'خيارات التصفية',
+  'Apply Filter': 'تطبيق الفلتر',
+  'Clear Filter': 'مسح الفلتر',
+  'Search results are based on selected filters.': 'تعتمد نتائج البحث على الفلاتر المحددة.',
+  'Search by': 'البحث حسب',
+  'name': 'الاسم',
+  'email': 'البريد الإلكتروني',
+  'or': 'أو',
+  'Employee#': 'الرقم الوظيفي',
+  'Employee Attendance': 'حضور الموظفين',
+  'Filters applied successfully': 'تم تطبيق الفلاتر بنجاح',
+  'Filters applied': 'تم تطبيق الفلاتر',
+  'Filters cleared': 'تم مسح الفلاتر',
+  'Download started': 'بدأ التنزيل',
+  'Employee data exported to CSV.': 'تم تصدير بيانات الموظفين إلى ملف CSV.',
+  'Go to Dashboard': 'الانتقال إلى لوحة التحكم',
+  'Go to Attendance': 'الانتقال إلى الحضور والانصراف',
+  'Go to Employees': 'الانتقال إلى الموظفين',
+  'Go to Leaves Management': 'الانتقال إلى إدارة الإجازات',
+  'Go to Missions Management': 'الانتقال إلى إدارة المأموريات',
+  'Go to Roles Management': 'الانتقال إلى إدارة الصلاحيات',
+  'Go to Profile': 'الانتقال إلى الملف الشخصي',
+  'Logout': 'تسجيل الخروج',
+  'Type a command or search...': 'اكتب أمراً أو ابحث...',
+  'No results found.': 'لا توجد نتائج.',
+  'Navigation': 'التنقل',
+  'Command Palette': 'لوحة الأوامر',
+  'Shortcut': 'اختصار',
+  'Shortcuts': 'الاختصارات',
+  'Close': 'إغلاق',
+  'Press': 'اضغط',
+  'to open': 'للفتح',
+  'General': 'عام',
+  'Change Profile Picture': 'تغيير صورة الملف الشخصي',
+  'Upload a new profile picture or select an avatar.': 'ارفع صورة ملف شخصي جديدة أو اختر صورة رمزية.',
+  'Uploading...': 'جاري الرفع...',
+  'Upload Bank Statement': 'رفع كشف حساب بنكي',
+  'Required: Upload a bank statement or account verification document': 'مطلوب: ارفع كشف حساب بنكي أو مستند تحقق من الحساب',
+  'Request Bank Update': 'طلب تحديث بيانات البنك',
+  'Role Information': 'معلومات الدور',
+  'Design & Analytics': 'التصميم والتحليلات',
+  'Department budget allocation code': 'كود تخصيص ميزانية القسم',
+  'Profile picture updated successfully': 'تم تحديث صورة الملف الشخصي بنجاح',
+  'Edit Profile': 'تعديل الملف الشخصي',
+  'Add Experience': 'إضافة خبرة',
+  'Edit Experience': 'تعديل الخبرة',
+  'Add Education': 'إضافة تعليم',
+  'Edit Education': 'تعديل التعليم',
+  'Add Project': 'إضافة مشروع',
+  'Edit Project': 'تعديل المشروع',
+  'Add Certification': 'إضافة شهادة',
+  'Edit Certification': 'تعديل الشهادة',
+  'Edit Skill': 'تعديل المهارة',
+  'Skill Name': 'اسم المهارة',
+  'Proficiency Level': 'مستوى الإتقان',
+  'Beginner': 'مبتدئ',
+  'Intermediate': 'متوسط',
+  'Advanced': 'متقدم',
+  'Expert': 'خبير',
+  'Project Title': 'عنوان المشروع',
+  'Project URL': 'رابط المشروع',
+  'Your Role': 'دورك',
+  'Issue Date': 'تاريخ الإصدار',
+  'Feature this project (pin to top)': 'تمييز هذا المشروع (تثبيته في الأعلى)',
+  'Certification Title': 'عنوان الشهادة',
+  'Issuer': 'الجهة المصدرة',
+  'Expiry Date': 'تاريخ الانتهاء',
+  'I currently work here': 'أعمل هنا حالياً',
+  'I currently study here': 'أدرس هنا حالياً',
+  'Grade': 'التقدير',
+  'School': 'المدرسة',
+  'Degree': 'الدرجة العلمية',
+  'Description (Optional)': 'الوصف (اختياري)',
+  'Email is hidden from the public profile and PDF export.': 'البريد الإلكتروني مخفي من الملف العام وتصدير PDF.',
+  'Your profile is complete!': 'ملفك مكتمل!',
+  'Add more details to strengthen your profile': 'أضف المزيد من التفاصيل لتقوية ملفك',
+  'Profile Strength': 'قوة الملف الشخصي',
+  'Resume downloaded successfully!': 'تم تنزيل السيرة الذاتية بنجاح!',
+  'Experience updated successfully': 'تم تحديث الخبرة بنجاح',
+  'Experience added successfully': 'تمت إضافة الخبرة بنجاح',
+  'Education updated successfully': 'تم تحديث التعليم بنجاح',
+  'Education added successfully': 'تمت إضافة التعليم بنجاح',
+  'Project updated successfully': 'تم تحديث المشروع بنجاح',
+  'Project added successfully': 'تمت إضافة المشروع بنجاح',
+  'Certification updated successfully': 'تم تحديث الشهادة بنجاح',
+  'Certification added successfully': 'تمت إضافة الشهادة بنجاح',
+  'Skill updated successfully': 'تم تحديث المهارة بنجاح',
+  'Skill added successfully': 'تمت إضافة المهارة بنجاح',
+  'Order updated': 'تم تحديث الترتيب',
+  'Deleted successfully': 'تم الحذف بنجاح',
+  'Confirm Leave': 'تأكيد طلب الإجازة',
+  'Confirm Mission': 'تأكيد المأمورية',
+  'Ready to submit?': 'هل أنت جاهز للإرسال؟',
+  'You are requesting': 'أنت تطلب',
+  "You're requesting": 'أنت تطلب',
+  "You're requesting a": 'أنت تطلب',
+  'from': 'من',
+  'to': 'إلى',
+  'submitted successfully.': 'تم إرساله بنجاح.',
+  'has been submitted.': 'تم إرساله.',
+  'Take care!': 'نتمنى لك السلامة!',
+  'Enjoy your time off': 'استمتع بإجازتك',
+  'January': 'يناير',
+  'February': 'فبراير',
+  'March': 'مارس',
+  'April': 'أبريل',
+  'May': 'مايو',
+  'June': 'يونيو',
+  'July': 'يوليو',
+  'August': 'أغسطس',
+  'September': 'سبتمبر',
+  'October': 'أكتوبر',
+  'November': 'نوفمبر',
+  'December': 'ديسمبر',
+  'Jan': 'يناير',
+  'Feb': 'فبراير',
+  'Mar': 'مارس',
+  'Apr': 'أبريل',
+  'Jun': 'يونيو',
+  'Jul': 'يوليو',
+  'Aug': 'أغسطس',
+  'Sep': 'سبتمبر',
+  'Oct': 'أكتوبر',
+  'Nov': 'نوفمبر',
+  'Dec': 'ديسمبر',
+  'day': 'يوم',
+  'days': 'أيام',
+  'of': 'من',
+  'Page': 'صفحة',
+  'Rows per page': 'عدد الصفوف لكل صفحة',
+  'No data found': 'لا توجد بيانات',
+  'No employees found': 'لا يوجد موظفون',
+  'Add Role': 'إضافة دور',
+  'Edit Role': 'تعديل الدور',
+  'Role Name': 'اسم الدور',
+  'Permissions': 'الصلاحيات',
+  'Permission': 'الصلاحية',
+  'Users assigned': 'المستخدمون المعينون',
+  'Mission Requests': 'طلبات المأموريات',
+  'Leaves Requests': 'طلبات الإجازات',
+  'Request Date': 'تاريخ الطلب',
+  'Approver': 'الموافق',
+  'Comment': 'تعليق',
+  'Reason': 'السبب',
+  'Attachment': 'مرفق',
+  'Attachment(s)': 'المرفقات',
+  'Show Details': 'عرض التفاصيل',
+  'Hide Details': 'إخفاء التفاصيل',
+  'View request': 'عرض الطلب',
 };
 
 const phraseDictionary: Array<[RegExp, string]> = [
@@ -364,13 +507,23 @@ const phraseDictionary: Array<[RegExp, string]> = [
 const originalText = new WeakMap<Text, string>();
 const originalAttributes = new WeakMap<Element, Map<string, string>>();
 const attributes = ['placeholder', 'title', 'aria-label'];
+const arabicPattern = /[\u0600-\u06FF]/;
+const sortedDictionaryEntries = Object.entries(dictionary).sort((a, b) => b[0].length - a[0].length);
+
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const translateValue = (value: string) => {
   const trimmed = value.trim();
+  if (!trimmed || arabicPattern.test(trimmed)) return value;
+
   let translated = dictionary[trimmed] ?? trimmed;
 
   for (const [pattern, replacement] of phraseDictionary) {
     translated = translated.replace(pattern, replacement);
+  }
+
+  for (const [english, arabic] of sortedDictionaryEntries) {
+    translated = translated.replace(new RegExp(escapeRegExp(english), 'g'), arabic);
   }
 
   if (translated === trimmed) return value;
@@ -378,13 +531,21 @@ const translateValue = (value: string) => {
 };
 
 const translateTextNode = (node: Text, enabled: boolean) => {
-  if (!originalText.has(node)) {
-    originalText.set(node, node.nodeValue ?? '');
+  const current = node.nodeValue ?? '';
+  const cachedSource = originalText.get(node);
+
+  if (!enabled) {
+    if (cachedSource && current !== cachedSource) node.nodeValue = cachedSource;
+    return;
   }
 
-  const source = originalText.get(node) ?? '';
-  if (!enabled && /[\u0600-\u06FF]/.test(source)) return;
-  node.nodeValue = enabled ? translateValue(source) : source;
+  if (!cachedSource || (!arabicPattern.test(current) && current !== translateValue(cachedSource))) {
+    originalText.set(node, current);
+  }
+
+  const source = originalText.get(node) ?? current;
+  const translated = translateValue(source);
+  if (current !== translated) node.nodeValue = translated;
 };
 
 const translateElementAttributes = (element: Element, enabled: boolean) => {
@@ -397,10 +558,19 @@ const translateElementAttributes = (element: Element, enabled: boolean) => {
   attributes.forEach((attribute) => {
     const current = element.getAttribute(attribute);
     if (current == null) return;
-    if (!originals.has(attribute)) originals.set(attribute, current);
+
+    const cachedSource = originals.get(attribute);
+    if (!enabled) {
+      if (cachedSource && current !== cachedSource) element.setAttribute(attribute, cachedSource);
+      return;
+    }
+
+    if (!cachedSource || (!arabicPattern.test(current) && current !== translateValue(cachedSource))) {
+      originals.set(attribute, current);
+    }
+
     const source = originals.get(attribute) ?? current;
-    if (!enabled && /[\u0600-\u06FF]/.test(source)) return;
-    const nextValue = enabled ? translateValue(source) : source;
+    const nextValue = translateValue(source);
     if (current !== nextValue) {
       element.setAttribute(attribute, nextValue);
     }
@@ -449,23 +619,7 @@ export const useArabicDomTranslation = (enabled: boolean) => {
         }
 
         if (mutation.type === 'characterData' && mutation.target.nodeType === Node.TEXT_NODE) {
-          const node = mutation.target as Text;
-          const currentVal = node.nodeValue ?? '';
-          
-          // If the new value is NOT what we translated it to, React must have overwritten it with English.
-          // In that case, update originalText and re-translate.
-          const original = originalText.get(node);
-          if (enabled && original && currentVal !== translateValue(original)) {
-            // React overwrote it. We'll update the original if it changed, and re-apply translation.
-            // But usually React overwrites it with the exact SAME English original.
-            // So we just re-translate.
-            // Be careful to avoid infinite loops: translateTextNode sets nodeValue, which triggers characterData again.
-            // translateTextNode already handles setting originalText if not present.
-            // If we temporarily disconnect or just let translateTextNode run, it's fine.
-            // Because if translateTextNode sets it to Arabic, the next characterData mutation will have currentVal === translateValue(original), which fails this if statement!
-            originalText.set(node, currentVal); // currentVal is the newly injected English text by React
-            translateTextNode(node, enabled);
-          }
+          translateTextNode(mutation.target as Text, enabled);
         }
       });
     });

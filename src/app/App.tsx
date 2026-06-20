@@ -72,17 +72,6 @@ export default function App() {
   const [focusHeavy, setFocusHeavy] = useState(() => localStorage.getItem('accessibility-focus-heavy') === 'true');
   const [announcement, setAnnouncement] = useState('');
 
-  const pageTitles: Record<AppTab, string> = {
-    dashboard: 'Dashboard — HR Tool',
-    attendance: 'Attendance — HR Tool',
-    employees: 'Employees — HR Tool',
-    leaves: 'Leave Management — HR Tool',
-    missions: 'Missions — HR Tool',
-    roles: 'Roles & Permissions — HR Tool',
-    profile: 'My Profile — HR Tool',
-    payrolls: 'Payrolls — HR Tool',
-  };
-
   useEffect(() => {
     const title = `${t(`pages.${activeTab}`)} - ${t('common.appName')}`;
     document.title = title;
