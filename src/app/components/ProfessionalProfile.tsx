@@ -12,8 +12,6 @@ import {
 } from './ui/select';
 import { toast } from 'sonner';
 import { Resume } from './Resume';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -619,52 +617,10 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
   const handleExportResume = async () => {
     if (!resumeRef.current) return;
-
-    toast.success('Generating your resume...');
-
-    try {
-      const canvas = await html2canvas(resumeRef.current, {
-        scale: 4,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-        windowWidth: resumeRef.current.scrollWidth,
-      });
-
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-        compress: true,
-      });
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = pdfWidth / imgWidth;
-      const totalPdfHeight = imgHeight * ratio;
-
-      let heightLeft = totalPdfHeight;
-      let position = 0;
-
-      pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, totalPdfHeight);
-      heightLeft -= pdfHeight;
-
-      while (heightLeft > 0) {
-        position = heightLeft - totalPdfHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, totalPdfHeight);
-        heightLeft -= pdfHeight;
-      }
-
-      pdf.save(`${currentUser?.name || 'Resume'}_Resume.pdf`);
-
-      toast.success('Resume downloaded successfully!');
-    } catch (error) {
-      toast.error('Failed to generate resume');
-    }
+    
+    // Using native browser print to generate ATS-friendly, selectable PDF with working links
+    window.print();
+    toast.success('Print dialog opened. Save as PDF to download your resume.');
   };
 
   // Calculate profile completion
@@ -899,9 +855,43 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       </div>
 
       {/* Hidden Resume for PDF export */}
-      <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+      <div className="print-resume-wrapper">
         <Resume ref={resumeRef} {...resumeData} />
       </div>
+
+      <style>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          .print-resume-wrapper, .print-resume-wrapper * {
+            visibility: visible;
+          }
+          .print-resume-wrapper {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+          }
+          /* Hide the scrollbar in print mode */
+          ::-webkit-scrollbar {
+            display: none;
+          }
+          @page {
+            size: A4 portrait;
+            margin: 0;
+          }
+        }
+        @media screen {
+          .print-resume-wrapper {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+          }
+        }
+      `}</style>
 
       {/* Edit Modals */}
       <EditAboutModal open={editAboutOpen} onOpenChange={setEditAboutOpen} data={about} onSave={setAbout} />

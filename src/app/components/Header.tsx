@@ -35,7 +35,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
   const { t, i18n } = useTranslation();
 
   const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'ar' ? 'en' : 'ar');
+    const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+    i18n.changeLanguage(isArabic ? 'en' : 'ar');
   };
 
   return (
@@ -46,8 +47,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
           <SheetTrigger asChild>
             <button
               className="lg:hidden flex items-center justify-center w-9 h-9 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
-              aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-              title={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-label={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
+              title={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
               aria-expanded={isMenuOpen}
             >
               <Menu className={cn("w-4 h-4 transition-all duration-300 absolute", isMenuOpen && "rotate-90 scale-50 opacity-0")} />
@@ -56,8 +57,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
           </SheetTrigger>
           <SheetContent side="left" className="w-80 p-0 flex flex-col h-full bg-card">
             <SheetHeader className="sr-only">
-              <SheetTitle>Menu</SheetTitle>
-              <SheetDescription>Navigation menu</SheetDescription>
+              <SheetTitle>{t('header.menu')}</SheetTitle>
+              <SheetDescription>{t('header.navigationMenu')}</SheetDescription>
             </SheetHeader>
             
             {/* User Info */}
@@ -66,8 +67,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                 <button
                   onClick={() => setActiveTab('profile')}
                   className="flex w-full items-center gap-3 p-2 rounded-[var(--radius-card)] text-start hover:bg-muted active:scale-[0.98] transition-all cursor-pointer group"
-                  aria-label="Go to my profile"
-                  title="Go to my profile"
+                  aria-label={t('header.goProfile')}
+                  title={t('header.goProfile')}
                 >
                   {currentUser?.image ? (
                     <img src={currentUser.image} alt={currentUser.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary/20 transition-all" />
@@ -86,13 +87,13 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             {/* Nav Links */}
             <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-1">
               {[
-                { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-                { id: 'attendance', label: 'Attendance', icon: CalendarCheck },
-                { id: 'employees', label: 'Employees', icon: Users },
-                { id: 'leaves', label: 'Leaves Management', icon: FileText },
-                { id: 'missions', label: 'Missions Management', icon: Rocket },
-                { id: 'roles', label: 'Roles Management', icon: ShieldCheck },
-                { id: 'profile', label: 'My Profile', icon: UserCircle },
+                { id: 'dashboard', label: t('sidebar.dashboard'), icon: LayoutDashboard },
+                { id: 'attendance', label: t('sidebar.attendance'), icon: CalendarCheck },
+                { id: 'employees', label: t('sidebar.employees'), icon: Users },
+                { id: 'leaves', label: t('sidebar.leaves'), icon: FileText },
+                { id: 'missions', label: t('sidebar.missions'), icon: Rocket },
+                { id: 'roles', label: t('sidebar.roles'), icon: ShieldCheck },
+                { id: 'profile', label: t('sidebar.myProfile'), icon: UserCircle },
               ].map((item) => {
                 const isActive = activeTab === item.id;
                 return (
@@ -105,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                           ? "bg-primary/10 text-primary" 
                           : "text-foreground hover:bg-muted"
                       )}
-                      aria-label={`Go to ${item.label}`}
+                      aria-label={item.label}
                       title={item.label}
                     >
                       <item.icon className="w-5 h-5 shrink-0" />
@@ -124,11 +125,11 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                   <button
                     onClick={onLogout}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
-                    aria-label="Log out"
-                    title="Log out"
+                    aria-label={t('sidebar.logout')}
+                    title={t('sidebar.logout')}
                   >
                     <LogOut className="w-5 h-5 shrink-0" />
-                    <span>Log out</span>
+                    <span>{t('sidebar.logout')}</span>
                   </button>
                 </SheetClose>
               )}
@@ -138,12 +139,12 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         <button
           onClick={onOpenCommandPalette}
           className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-56 md:justify-between md:px-3 xl:w-80"
-          aria-label="Search or command palette. Shortcut Control K."
-          title="Search or command palette (Ctrl+K)"
+          aria-label={t('header.searchCommand')}
+          title={`${t('header.search')} (Ctrl+K)`}
         >
           <span className="flex min-w-0 items-center gap-2">
             <Search className="w-4 h-4 shrink-0" aria-hidden="true" />
-            <span className="hidden truncate md:inline">Search...</span>
+            <span className="hidden truncate md:inline">{t('header.search')}</span>
           </span>
           <kbd className="hidden h-5 items-center justify-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground xl:inline-flex">
             Ctrl K
@@ -155,8 +156,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         <button 
           onClick={() => setActiveTab('dashboard')} 
           className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-md hover:opacity-80 transition-opacity flex items-center px-2"
-          aria-label="Go to Dashboard"
-          title="Go to Dashboard"
+          aria-label={t('header.goDashboard')}
+          title={t('header.goDashboard')}
         >
           <h1
             className="text-primary"
@@ -167,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
               lineHeight: 1.2,
             }}
           >
-            HR Tool
+            {t('common.appName')}
           </h1>
         </button>
       </div>
@@ -176,8 +177,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         <button
           onClick={onOpenShortcuts}
           className="hidden md:flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label="Keyboard Shortcuts (?)"
-          title="Keyboard Shortcuts (?)"
+          aria-label={t('header.shortcutsTitle')}
+          title={t('header.shortcutsTitle')}
         >
           <Keyboard className="w-4 h-4" aria-hidden="true" />
         </button>
@@ -185,8 +186,8 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         <button
           onClick={toggleLanguage}
           className="flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label="Toggle Language"
-          title="Toggle Language"
+          aria-label={t('header.toggleLanguage')}
+          title={t('header.toggleLanguage')}
         >
           <Languages className="w-4 h-4" aria-hidden="true" />
         </button>

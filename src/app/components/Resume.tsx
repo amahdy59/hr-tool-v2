@@ -94,12 +94,12 @@ export const Resume = React.forwardRef<HTMLDivElement, ResumeProps>(
       <div
         ref={ref}
         style={{
-          width: '794px',
-          minHeight: '1123px',
+          width: '100%',
+          maxWidth: '210mm',
+          margin: '0 auto',
           backgroundColor: '#FFFFFF',
           fontFamily: "'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif",
           padding: '38px 40px',
-          margin: 0,
           color: '#1E293B',
           boxSizing: 'border-box',
         }}

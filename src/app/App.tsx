@@ -19,6 +19,7 @@ import { KeyboardShortcutsPanel } from './components/KeyboardShortcutsPanel';
 import { RequestLeaveModal } from './components/RequestLeaveModal';
 import { RequestMissionModal } from './components/RequestMissionModal';
 import { ConfirmDialog } from './components/ConfirmDialog';
+import { useArabicDomTranslation } from '@/lib/useArabicDomTranslation';
 
 export type AppTab =
   | 'dashboard'
@@ -40,12 +41,14 @@ export interface CurrentUser {
 import { useTranslation } from 'react-i18next';
 
 export default function App() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+  useArabicDomTranslation(isArabic);
 
   useEffect(() => {
-    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = i18n.language;
-  }, [i18n.language]);
+    document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+    document.documentElement.lang = isArabic ? 'ar' : 'en';
+  }, [isArabic]);
 
   const [requestLeaveOpen, setRequestLeaveOpen] = useState(false);
   const [requestMissionOpen, setRequestMissionOpen] = useState(false);
@@ -81,10 +84,10 @@ export default function App() {
   };
 
   useEffect(() => {
-    const title = pageTitles[activeTab];
+    const title = `${t(`pages.${activeTab}`)} - ${t('common.appName')}`;
     document.title = title;
     setAnnouncement(`Navigated to ${title}`);
-  }, [activeTab]);
+  }, [activeTab, t]);
 
   useEffect(() => {
     const el = document.documentElement;
@@ -201,7 +204,7 @@ export default function App() {
 
   const handleConfirmMission = () => {
     if (pendingMissionData) {
-      const mType = pendingMissionData.missionType || 'Work From Home';
+      const mType = pendingMissionData.missionType || t('mission.workFromHome');
       const fromStr = pendingMissionData.fromDate ? format(parseISO(pendingMissionData.fromDate), 'dd MMMM yyyy') : '—';
       const toStr = pendingMissionData.toDate ? format(parseISO(pendingMissionData.toDate), 'dd MMMM yyyy') : '—';
       const days = pendingMissionData.daysRequested || 0;
@@ -336,7 +339,7 @@ export default function App() {
       <ConfirmDialog
         open={confirmLeaveOpen}
         onOpenChange={setConfirmLeaveOpen}
-        title="Confirm Leave"
+        title={t('leave.confirmTitle')}
         message={
           <>
             You're requesting{' '}
@@ -359,8 +362,8 @@ export default function App() {
             Ready to submit?
           </>
         }
-        confirmLabel="Submit"
-        cancelLabel="Cancel"
+        confirmLabel={t('common.submit')}
+        cancelLabel={t('common.cancel')}
         confirmVariant="default"
         confirmClassName="bg-chart-3 hover:bg-chart-3/90 text-white"
         onConfirm={handleConfirmLeave}
@@ -368,12 +371,12 @@ export default function App() {
       <ConfirmDialog
         open={confirmMissionOpen}
         onOpenChange={setConfirmMissionOpen}
-        title="Confirm Mission"
+        title={t('mission.confirmTitle')}
         message={
           <>
             You're requesting a{' '}
             <strong style={{ fontWeight: 'var(--font-weight-semibold)' }}>
-              {pendingMissionData?.missionType || 'Work From Home'}
+              {pendingMissionData?.missionType || t('mission.workFromHome')}
             </strong>{' '}
             {pendingMissionData?.fromDate && pendingMissionData?.toDate ? (
               <>
@@ -391,8 +394,8 @@ export default function App() {
             Ready to submit?
           </>
         }
-        confirmLabel="Submit"
-        cancelLabel="Cancel"
+        confirmLabel={t('common.submit')}
+        cancelLabel={t('common.cancel')}
         confirmVariant="default"
         confirmClassName="bg-chart-3 hover:bg-chart-3/90 text-white"
         onConfirm={handleConfirmMission}
@@ -416,6 +419,8 @@ const BottomToolbar: React.FC<{
   onRequestLeave: () => void;
   onRequestMission: () => void;
 }> = ({ activeTab, setActiveTab, onRequestLeave, onRequestMission }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="lg:hidden fixed bottom-0 start-0 end-0 z-30 h-16 border-t border-border bg-card flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)]">
       <button
@@ -426,7 +431,7 @@ const BottomToolbar: React.FC<{
         )}
       >
         <LayoutDashboard className="w-5 h-5" />
-        <span>Home</span>
+        <span>{t('dashboard.home')}</span>
       </button>
       
       <button
@@ -434,7 +439,7 @@ const BottomToolbar: React.FC<{
         className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-2 rounded-[var(--radius)] text-muted-foreground transition-colors cursor-pointer hover:text-primary"
       >
         <CalendarPlus className="w-5 h-5 text-chart-2" />
-        <span>Request Leave</span>
+        <span>{t('dashboard.requestLeave')}</span>
       </button>
 
       <button
@@ -442,33 +447,37 @@ const BottomToolbar: React.FC<{
         className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-2 rounded-[var(--radius)] text-muted-foreground transition-colors cursor-pointer hover:text-primary"
       >
         <Rocket className="w-5 h-5 text-chart-3" />
-        <span>Request Mission</span>
+        <span>{t('dashboard.requestMission')}</span>
       </button>
     </div>
   );
 }
 
-const PayrollUnderDevelopment: React.FC = () => (
-  <div className="px-1 py-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
-      <section className="w-full max-w-2xl rounded-[var(--radius-card)] border border-border bg-card p-8 text-center shadow-[var(--elevation-sm)]">
-        <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] uppercase tracking-[0.08em] text-accent">
-          Under development
-        </p>
-        <h2
-          className="mt-3 text-foreground"
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'var(--page-title-size)',
-            fontWeight: 'var(--page-title-weight)',
-          }}
-        >
-          Payrolls are coming soon
-        </h2>
-        <p className="mt-2 text-[var(--text-sm)] text-muted-foreground">
-          This section is intentionally paused while payroll workflows, permissions, and audit controls are finalized.
-        </p>
-      </section>
+const PayrollUnderDevelopment: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="px-1 py-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+      <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
+        <section className="w-full max-w-2xl rounded-[var(--radius-card)] border border-border bg-card p-8 text-center shadow-[var(--elevation-sm)]">
+          <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] uppercase tracking-[0.08em] text-accent">
+            {t('common.underDevelopment')}
+          </p>
+          <h2
+            className="mt-3 text-foreground"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 'var(--page-title-size)',
+              fontWeight: 'var(--page-title-weight)',
+            }}
+          >
+            {t('payrolls.title')}
+          </h2>
+          <p className="mt-2 text-[var(--text-sm)] text-muted-foreground">
+            {t('payrolls.description')}
+          </p>
+        </section>
+      </div>
     </div>
-  </div>
-);
+  );
+};

@@ -423,7 +423,7 @@ export const Attendance: React.FC = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 items-start lg:grid-cols-[minmax(430px,1fr)_minmax(360px,0.9fr)] lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 items-start xl:grid-cols-[minmax(430px,1fr)_minmax(340px,0.9fr)] xl:gap-8">
           {/* Left: summary table */}
           <div className="space-y-0 overflow-x-auto w-full">
             <table className="min-w-[430px] w-full text-start border-collapse cursor-default">
@@ -464,7 +464,7 @@ export const Attendance: React.FC = () => {
           </div>
 
           {/* Mobile: horizontal bar chart */}
-          <div className="h-[280px] sm:hidden">
+          <div className="h-[280px] xl:hidden">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={summaryData}
@@ -499,19 +499,20 @@ export const Attendance: React.FC = () => {
           </div>
 
           {/* Desktop: vertical bar chart */}
-          <div className="hidden h-[280px] sm:block">
+          <div className="hidden h-[280px] min-w-0 overflow-hidden xl:block">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={summaryData}
-                margin={{ top: 8, right: 8, left: -8, bottom: 8 }}
-                barCategoryGap="20%"
+                margin={{ top: 8, right: 8, left: -8, bottom: 18 }}
+                barCategoryGap="18%"
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
                 <XAxis
                   dataKey="name"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
+                  interval={0}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 11, fontFamily: 'Inter, sans-serif' }}
                 />
                 <YAxis
                   axisLine={false}
