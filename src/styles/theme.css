@@ -348,6 +348,15 @@
   button,
   [role="button"] {
     min-width: 0;
+    line-height: normal; /* Fixes vertical alignment issues globally */
+  }
+
+  /* Ensure robust vertical centering for buttons globally */
+  button:not(.link-btn),
+  [role="button"]:not(.sidebar-link) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   :where(
@@ -563,14 +572,21 @@
       font-family: 'Inter', sans-serif;
       font-size: var(--text-base);
       font-weight: var(--font-weight-medium);
-      line-height: 1.5;
+      line-height: normal;
     }
 
     input {
       font-family: 'Inter', sans-serif;
       font-size: var(--text-base);
       font-weight: var(--font-weight-normal);
-      line-height: 1.5;
+      line-height: normal;
+    }
+    
+    select {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: normal;
     }
     
     /* Date input styling */
