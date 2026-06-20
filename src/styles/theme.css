@@ -238,11 +238,17 @@
 }
 
 /* 2. AAA Touch/Click Targets (WCAG 2.5.5 - 44px) */
-.accessibility-aaa-targets button:not(.link-btn),
-.accessibility-aaa-targets [role="button"]:not(.sidebar-link),
+.accessibility-aaa-targets button:not(.link-btn):not([role="checkbox"]):not([role="switch"]),
+.accessibility-aaa-targets [role="button"]:not(.sidebar-link):not([role="checkbox"]):not([role="switch"]),
 .accessibility-aaa-targets select,
 .accessibility-aaa-targets input:not([type="checkbox"]):not([type="radio"]) {
   min-height: 44px !important;
+  min-width: 44px !important;
+}
+.accessibility-aaa-targets [role="checkbox"],
+.accessibility-aaa-targets [role="switch"] {
+  min-height: 44px !important;
+  min-width: 44px !important;
 }
 .accessibility-aaa-targets a:not(.skip-link):not(.sidebar-link) {
   min-height: 44px;

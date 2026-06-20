@@ -7,6 +7,7 @@ import { CaptionProps, DayPicker, useNavigation } from "react-day-picker";
 
 import { cn } from "./utils";
 import { buttonVariants } from "./button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -40,32 +41,36 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
       </button>
 
       <div className="flex flex-1 gap-2 items-center justify-center">
-        <div className="relative w-full max-w-[100px]">
-          <select
-            value={currentMonth}
-            onChange={(e) => goToMonth(new Date(currentYear, Number(e.target.value), 1))}
-            className="w-full h-8 appearance-none rounded-[var(--radius-input)] border border-border bg-input-background pl-2 pr-6 py-0 text-xs font-[var(--font-weight-medium)] text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
-            aria-label="Select month"
+        <div className="w-full max-w-[100px]">
+          <Select
+            value={currentMonth.toString()}
+            onValueChange={(val) => goToMonth(new Date(currentYear, Number(val), 1))}
           >
-            {months.map((m, i) => (
-              <option key={m} value={i}>{m}</option>
-            ))}
-          </select>
-          <ChevronRight className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 opacity-50 pointer-events-none rotate-90" />
+            <SelectTrigger className="h-8 text-xs bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0">
+              <SelectValue placeholder="Month" />
+            </SelectTrigger>
+            <SelectContent>
+              {months.map((m, i) => (
+                <SelectItem key={m} value={i.toString()}>{m}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         
-        <div className="relative w-full max-w-[80px]">
-          <select
-            value={currentYear}
-            onChange={(e) => goToMonth(new Date(Number(e.target.value), currentMonth, 1))}
-            className="w-full h-8 appearance-none rounded-[var(--radius-input)] border border-border bg-input-background pl-2 pr-6 py-0 text-xs font-[var(--font-weight-medium)] text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
-            aria-label="Select year"
+        <div className="w-full max-w-[80px]">
+          <Select
+            value={currentYear.toString()}
+            onValueChange={(val) => goToMonth(new Date(Number(val), currentMonth, 1))}
           >
-            {years.map((y) => (
-              <option key={y} value={y}>{y}</option>
-            ))}
-          </select>
-          <ChevronRight className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 opacity-50 pointer-events-none rotate-90" />
+            <SelectTrigger className="h-8 text-xs bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0">
+              <SelectValue placeholder="Year" />
+            </SelectTrigger>
+            <SelectContent>
+              {years.map((y) => (
+                <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
