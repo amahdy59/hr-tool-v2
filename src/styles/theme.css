@@ -140,22 +140,22 @@
   --card-foreground: #e6edf3;
   --popover: #161b22;
   --popover-foreground: #e6edf3;
-  --primary: #2f81f7;
-  --primary-foreground: #ffffff;
+  --primary: #58a6ff;
+  --primary-foreground: #0d1117;
   --secondary: #21262d;
   --secondary-foreground: #c9d1d9;
   --muted: #21262d;
   --muted-foreground: #8b949e;
   --accent: #21262d;
-  --accent-foreground: #2f81f7;
+  --accent-foreground: #58a6ff;
   --destructive: #f85149;
   --destructive-foreground: #ffffff;
   --border: #30363d;
   --input: #0d1117;
   --input-background: #0d1117;
-  --ring: #2f81f7;
+  --ring: #58a6ff;
   --elevation-sm: 0px 1px 3px rgba(0, 0, 0, 0.4);
-  --chart-1: #2f81f7;
+  --chart-1: #58a6ff;
   --chart-2: #d29922;
   --chart-3: #238636;
   --chart-4: #f85149;
@@ -167,7 +167,7 @@
   --sidebar-accent: #21262d;
   --sidebar-accent-foreground: #e6edf3;
   --sidebar-border: #30363d;
-  --sidebar-ring: #2f81f7;
+  --sidebar-ring: #58a6ff;
 }
 
 /* ==========================================================================
@@ -410,10 +410,11 @@
     cursor: text;
   }
   
-  /* Global focus-visible ring for accessibility */
+  /* Global high-contrast focus-visible ring for accessibility */
   :focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 3px solid var(--ring);
     outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 5px var(--ring);
     border-radius: var(--radius-sm, 4px);
   }
   
@@ -707,4 +708,41 @@ html {
   left: auto !important;
   right: -0.5rem !important; /* Position to the right, outside/partially outside */
   transform: translate(0, -50%) !important;
+}
+
+/* ==========================================================================
+   MOBILE-SPECIFIC ACCESSIBILITY OVERRIDES (WCAG 2.2 AAA Base)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* 1. Mobile AAA Touch/Click Targets (WCAG 2.5.5 - 44px) */
+  button:not(.link-btn):not([role="checkbox"]):not([role="switch"]),
+  [role="button"]:not(.sidebar-link):not([role="checkbox"]):not([role="switch"]),
+  select,
+  input:not([type="checkbox"]):not([type="radio"]) {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  [role="checkbox"],
+  [role="switch"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  a:not(.skip-link):not(.sidebar-link) {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  input[type="checkbox"],
+  input[type="radio"] {
+    transform: scale(1.3) !important;
+    margin: 6px !important;
+  }
+
+  /* 2. Mobile Text Formatting (Line Height 1.5x) */
+  p, span, div, li, td, th {
+    line-height: 1.5 !important;
+  }
 }
