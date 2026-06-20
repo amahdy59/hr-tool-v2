@@ -297,7 +297,7 @@ export const Attendance: React.FC = () => {
   const monthLabel = months.find((m) => m.value === selectedMonth)?.label ?? 'All';
 
   return (
-    <div className="space-y-6 px-3 py-6 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+    <div className="space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto">
       {/* ── Page Title ── */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Employee Attendance</h2>
@@ -540,35 +540,35 @@ export const Attendance: React.FC = () => {
               <thead>
                 <tr className="bg-muted border-b border-border">
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Leave Type</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-center">Total Balance</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-center">Bridge</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-center">From Last Year</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-center">Used Balance</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-center">Remaining Balance</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Total Balance</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Bridge</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">From Last Year</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Used Balance</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Remaining Balance</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 <tr className="hover:bg-muted/30 transition-colors">
                   <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">Annual Leave</td>
-                  <td className="px-4 py-3 text-foreground text-center">21 days</td>
-                  <td className="px-4 py-3 text-foreground text-center">5</td>
-                  <td className="px-4 py-3 text-foreground text-center">4</td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-4 py-3 text-foreground text-start">21 days</td>
+                  <td className="px-4 py-3 text-foreground text-start">5</td>
+                  <td className="px-4 py-3 text-foreground text-start">4</td>
+                  <td className="px-4 py-3 text-start">
                     <span className="text-[var(--chart-4)] font-[var(--font-weight-medium)]">6</span>
                   </td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-4 py-3 text-start">
                     <span className="text-[var(--chart-3)] font-[var(--font-weight-semibold)]">14</span>
                   </td>
                 </tr>
                 <tr className="hover:bg-muted/30 transition-colors">
                   <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">Sick Leave</td>
-                  <td className="px-4 py-3 text-foreground text-center">14 days</td>
-                  <td className="px-4 py-3 text-foreground text-center">0</td>
-                  <td className="px-4 py-3 text-foreground text-center">2</td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-4 py-3 text-foreground text-start">14 days</td>
+                  <td className="px-4 py-3 text-foreground text-start">0</td>
+                  <td className="px-4 py-3 text-foreground text-start">2</td>
+                  <td className="px-4 py-3 text-start">
                     <span className="text-[var(--chart-4)] font-[var(--font-weight-medium)]">3</span>
                   </td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-4 py-3 text-start">
                     <span className="text-[var(--chart-3)] font-[var(--font-weight-semibold)]">13</span>
                   </td>
                 </tr>

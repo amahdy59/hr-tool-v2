@@ -259,7 +259,7 @@ export const EmployeeManagement: React.FC = () => {
   );
 
   return (
-    <div className="px-1 py-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="px-1 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Manage Employees</h2>
@@ -796,7 +796,7 @@ const EmployeeFormModal: React.FC<{
           <DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">{title}</DialogTitle>
           <DialogDescription className="sr-only">{title}</DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           <div className="space-y-4">
             <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Personal Information</p>
             <FormField label="Name" value={name} onChange={setName} placeholder="First and last name" />

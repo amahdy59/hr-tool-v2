@@ -610,9 +610,9 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
   const handleExportResume = async () => {
     if (!resumeRef.current) return;
-    
+
     toast.success('Generating your resume...');
-    
+
     try {
       const canvas = await html2canvas(resumeRef.current, {
         scale: 2,
@@ -648,7 +648,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       }
 
       pdf.save(`${currentUser?.name || 'Resume'}_Resume.pdf`);
-      
+
       toast.success('Resume downloaded successfully!');
     } catch (error) {
       toast.error('Failed to generate resume');
@@ -771,12 +771,12 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
           <ProfileCard title="Certifications" showAdd onAdd={handleAddCertification}>
             <div className="space-y-4">
               {certifications.sort((a, b) => a.orderIndex - b.orderIndex).map((cert, index) => (
-                <CertificationItem 
-                  key={cert.id} 
-                  data={cert} 
+                <CertificationItem
+                  key={cert.id}
+                  data={cert}
                   isFirst={index === 0}
                   isLast={index === certifications.length - 1}
-                  onEdit={() => handleEditCertification(cert)} 
+                  onEdit={() => handleEditCertification(cert)}
                   onDelete={() => handleDeleteCertification(cert.id)}
                   onMove={(dir) => handleMoveCertification(cert.id, dir)}
                 />
@@ -817,12 +817,12 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
                 if (!a.featured && b.featured) return 1;
                 return a.orderIndex - b.orderIndex;
               }).map((proj, index) => (
-                <ProjectItem 
-                  key={proj.id} 
-                  data={proj} 
+                <ProjectItem
+                  key={proj.id}
+                  data={proj}
                   isFirst={index === 0}
                   isLast={index === projects.length - 1}
-                  onEdit={() => handleEditProject(proj)} 
+                  onEdit={() => handleEditProject(proj)}
                   onDelete={() => handleDeleteProject(proj.id)}
                   onMove={(dir) => handleMoveProject(proj.id, dir)}
                 />
@@ -832,11 +832,11 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
           {/* Experience */}
           <ProfileCard title="Employment" showAdd onAdd={handleAddExperience}>
-            <div className="space-y-8 relative ps-6 before:content-[''] before:absolute before:start-[9px] before:top-2 before:bottom-2 before:w-[2px] before:bg-border">
+            <div className="space-y-2">
               {experiences.sort((a, b) => a.orderIndex - b.orderIndex).map((exp, index) => (
-                <ExperienceItem 
-                  key={exp.id} 
-                  data={exp} 
+                <ExperienceItem
+                  key={exp.id}
+                  data={exp}
                   isFirst={index === 0}
                   isLast={index === experiences.length - 1}
                   expanded={expandedExperiences.has(exp.id)}
@@ -849,7 +849,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
                     }
                     setExpandedExperiences(newExpanded);
                   }}
-                  onEdit={() => handleEditExperience(exp)} 
+                  onEdit={() => handleEditExperience(exp)}
                   onDelete={() => handleDeleteExperience(exp.id)}
                   onMove={(dir) => handleMoveExperience(exp.id, dir)}
                 />
@@ -859,14 +859,14 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
           {/* Education */}
           <ProfileCard title="Education" showAdd onAdd={handleAddEducation}>
-            <div className="space-y-6 relative ps-4 before:content-[''] before:absolute before:start-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
+            <div className="space-y-2">
               {educations.sort((a, b) => a.orderIndex - b.orderIndex).map((edu, index) => (
-                <EducationItem 
-                  key={edu.id} 
-                  data={edu} 
+                <EducationItem
+                  key={edu.id}
+                  data={edu}
                   isFirst={index === 0}
                   isLast={index === educations.length - 1}
-                  onEdit={() => handleEditEducation(edu)} 
+                  onEdit={() => handleEditEducation(edu)}
                   onDelete={() => handleDeleteEducation(edu.id)}
                   onMove={(dir) => handleMoveEducation(edu.id, dir)}
                 />
@@ -933,185 +933,216 @@ const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?:
   </div>
 );
 
-const ExperienceItem: React.FC<{ 
-  data: ExperienceData; 
+const ExperienceItem: React.FC<{
+  data: ExperienceData;
   isFirst: boolean;
   isLast: boolean;
   expanded: boolean;
   onToggleExpand: () => void;
-  onEdit: () => void; 
-  onDelete: () => void; 
+  onEdit: () => void;
+  onDelete: () => void;
   onMove: (dir: 'up' | 'down') => void;
 }> = ({ data, isFirst, isLast, expanded, onToggleExpand, onEdit, onDelete, onMove }) => {
-  const isExpired = false; // Would check expiry date
   const descPreview = data.desc.length > 150 ? data.desc.substring(0, 150) + '...' : data.desc;
 
+  // Split description by newlines or bullets if applicable
+  const bullets = expanded
+    ? data.desc.split('\n').filter(b => b.trim() !== '')
+    : [descPreview];
+
   return (
-    <div className="relative group">
-      <div className="absolute -start-[20px] top-[6px] w-3 h-3 bg-primary border-[2.5px] border-background rotate-45 z-10" />
-      <div className="space-y-1.5 pe-20">
-        <div className="flex flex-col gap-0.5">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-[var(--text-base)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.company}</h3>
-            {data.currentlyWorking && (
-              <span className="px-2.5 py-0.5 bg-[#E6F4EA] text-[#137333] rounded-full text-[var(--text-xs)] font-[var(--font-weight-semibold)] shrink-0" style={{ fontFamily: "'Inter', sans-serif" }}>Current</span>
-            )}
-          </div>
-          <p className="text-[var(--text-sm)] text-primary font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>{data.role}</p>
+    <div className="relative group space-y-3 pb-6">
+      {/* Company Header with Logo */}
+      <div className="flex items-center gap-3 relative z-10">
+        <div className="w-10 h-10 rounded-md border border-border bg-card shadow-sm flex flex-shrink-0 items-center justify-center font-bold text-muted-foreground text-lg uppercase">
+          {data.company.charAt(0)}
         </div>
-        <div className="flex items-center gap-2 text-[var(--text-xs)] text-muted-foreground flex-wrap" style={{ fontFamily: "'Inter', sans-serif" }}>
-          <div className="flex items-center gap-1">
-            <Briefcase className="w-3 h-3" />
+        <h3 className="text-base font-bold text-foreground">{data.company}</h3>
+      </div>
+
+      {/* Timeline and Job Details */}
+      <div className="relative ps-5 ms-4 border-s border-border">
+        {/* Timeline Dot */}
+        <div className="absolute -start-[5px] top-[6px] w-2.5 h-2.5 bg-muted-foreground rounded-full" />
+
+        <div className="space-y-2">
+          <p className="text-sm font-bold text-foreground pt-0.5">{data.role}</p>
+
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border bg-card text-xs text-muted-foreground">
+            <span>{data.currentlyWorking ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}</span>
+            {data.location && (
+              <>
+                <span className="w-1 h-1 bg-muted-foreground rounded-full mx-0.5" />
+                <span>{data.location}</span>
+              </>
+            )}
+            <span className="w-1 h-1 bg-muted-foreground rounded-full mx-0.5" />
             <span>{data.employmentType}</span>
           </div>
-          <span>•</span>
-          <div className="flex items-center gap-1">
-            <Calendar className="w-3 h-3" />
-            <span>{data.currentlyWorking ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}</span>
-          </div>
-          {data.location && (
-            <>
-              <span>•</span>
-              <div className="flex items-center gap-1">
-                <MapPin className="w-3 h-3" />
-                <span>{data.location}</span>
-              </div>
-            </>
+
+          {data.desc && (
+            <ul className="space-y-2 pt-2 list-disc ps-4 text-sm text-foreground/90 marker:text-primary">
+              {bullets.map((bullet, idx) => (
+                <li key={idx} className="leading-relaxed">
+                  {bullet.replace(/^[-•]\s*/, '')}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {data.desc.length > 150 && (
+            <button
+              onClick={onToggleExpand}
+              className="text-xs text-primary hover:underline mt-2 font-medium"
+            >
+              {expanded ? 'Show less' : 'Show more'}
+            </button>
           )}
         </div>
-        {data.desc && (
-          <div className="pt-1">
-            <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-              {expanded ? data.desc : descPreview}
-            </p>
-            {data.desc.length > 150 && (
-              <button 
-                onClick={onToggleExpand}
-                className="text-[var(--text-xs)] text-primary hover:underline mt-1 font-[var(--font-weight-medium)]"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                {expanded ? 'Show less' : 'Show more'}
-              </button>
-            )}
-          </div>
-        )}
       </div>
-      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-        {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
-        {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
-        <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
-        <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
+
+      <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+        {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
+        {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
+        <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
+        <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-sm text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
       </div>
     </div>
   );
 };
 
-const EducationItem: React.FC<{ 
-  data: EducationData; 
+const EducationItem: React.FC<{
+  data: EducationData;
   isFirst: boolean;
   isLast: boolean;
-  onEdit: () => void; 
-  onDelete: () => void; 
+  onEdit: () => void;
+  onDelete: () => void;
   onMove: (dir: 'up' | 'down') => void;
 }> = ({ data, isFirst, isLast, onEdit, onDelete, onMove }) => (
-  <div className="relative group">
-    <div className="absolute -start-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
-    <div className="space-y-0.5 pe-20">
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex-1">
-          <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.school}</p>
-          <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.degree}{data.fieldOfStudy && `, ${data.fieldOfStudy}`}</p>
-        </div>
-        {data.currentlyStudying && (
-          <span className="px-2 py-0.5 bg-chart-3/10 text-chart-3 rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)] shrink-0" style={{ fontFamily: "'Inter', sans-serif" }}>Current</span>
-        )}
+  <div className="relative group space-y-3 pb-6">
+    {/* School Header with Logo */}
+    <div className="flex items-center gap-3 relative z-10">
+      <div className="w-10 h-10 rounded-md border border-border bg-card shadow-sm flex flex-shrink-0 items-center justify-center font-bold text-muted-foreground text-lg uppercase">
+        {data.school.charAt(0)}
       </div>
-      <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-        {data.currentlyStudying ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}
-        {data.grade && ` • ${data.grade}`}
-      </p>
+      <h3 className="text-base font-bold text-foreground">{data.school}</h3>
     </div>
-    <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-      {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
-      {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
-      <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
-      <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
+
+    {/* Timeline and Details */}
+    <div className="relative ps-5 ms-4 border-s border-border">
+      {/* Timeline Dot */}
+      <div className="absolute -start-[5px] top-[6px] w-2.5 h-2.5 bg-muted-foreground rounded-full" />
+
+      <div className="space-y-2">
+        <p className="text-sm font-bold text-foreground pt-0.5">{data.degree}{data.fieldOfStudy && `, ${data.fieldOfStudy}`}</p>
+
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border bg-card text-xs text-muted-foreground">
+          <span>{data.currentlyStudying ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}</span>
+          {data.grade && (
+            <>
+              <span className="w-1 h-1 bg-muted-foreground rounded-full mx-0.5" />
+              <span>{data.grade}</span>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+      {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
+      {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
+      <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
+      <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-sm text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
     </div>
   </div>
 );
 
-const ProjectItem: React.FC<{ 
-  data: ProjectData; 
+const ProjectItem: React.FC<{
+  data: ProjectData;
   isFirst: boolean;
   isLast: boolean;
-  onEdit: () => void; 
-  onDelete: () => void; 
+  onEdit: () => void;
+  onDelete: () => void;
   onMove: (dir: 'up' | 'down') => void;
 }> = ({ data, isFirst, isLast, onEdit, onDelete, onMove }) => (
-  <div className="relative group space-y-1 pe-12 sm:pe-20">
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
+  <div className="relative group space-y-2 pb-6 border-b border-border last:border-b-0 last:pb-0">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
       <div className="flex items-center gap-2 flex-1">
-        <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.title}</p>
-        {data.featured && <span title="Featured project"><Star className="w-4 h-4 text-chart-3 fill-chart-3" /></span>}
+        <h3 className="text-base font-bold text-foreground">{data.title}</h3>
+        {data.featured && <span title="Featured project"><Star className="w-4 h-4 text-[#0F766E] fill-[#0F766E] dark:text-[#2DD4BF] dark:fill-[#2DD4BF]" /></span>}
       </div>
-      <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)] shrink-0 w-fit max-w-full truncate" style={{ fontFamily: "'Inter', sans-serif" }} title={data.category}>{data.category}</span>
+      <span className="px-3 py-1 bg-muted/50 text-muted-foreground rounded-full text-xs font-medium shrink-0 w-fit">
+        {data.category}
+      </span>
     </div>
-    <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <p className="text-sm text-muted-foreground">
       {data.role} • {data.issueDate}
     </p>
-    <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.desc}</p>
+    <p className="text-sm text-foreground/90 leading-relaxed pt-1">
+      {data.desc}
+    </p>
     {data.toolsUsed.length > 0 && (
-      <div className="flex flex-wrap gap-1.5 pt-1">
+      <div className="flex flex-wrap gap-2 pt-2">
         {data.toolsUsed.map((tool, idx) => (
-          <span key={idx} className="px-2 py-0.5 bg-primary/5 text-primary rounded text-[var(--text-xs)] font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>{tool}</span>
+          <span key={idx} className="px-2.5 py-1 bg-[#EFF6FF] text-[#1D4ED8] dark:bg-[#1E3A8A]/30 dark:text-[#93C5FD] rounded text-xs font-medium">
+            {tool}
+          </span>
         ))}
       </div>
     )}
     {data.url && (
-      <Button variant="outline" size="sm" className="gap-1.5 mt-1 text-[var(--text-xs)]" onClick={() => window.open(data.url, '_blank')} style={{ fontFamily: "'Inter', sans-serif" }}>
-        View Project <ExternalLink className="w-3 h-3" />
-      </Button>
+      <div className="pt-3">
+        <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted">
+          <a href={data.url} target="_blank" rel="noopener noreferrer">
+            View Project <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </Button>
+      </div>
     )}
-    <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-      {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
-      {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
-      <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
-      <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
+    <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+      {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
+      {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
+      <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
+      <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-sm text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
     </div>
   </div>
 );
 
-const CertificationItem: React.FC<{ 
-  data: CertificationData; 
+const CertificationItem: React.FC<{
+  data: CertificationData;
   isFirst: boolean;
   isLast: boolean;
-  onEdit: () => void; 
-  onDelete: () => void; 
+  onEdit: () => void;
+  onDelete: () => void;
   onMove: (dir: 'up' | 'down') => void;
 }> = ({ data, isFirst, isLast, onEdit, onDelete, onMove }) => {
   const isExpired = data.expiryDate && new Date(data.expiryDate) < new Date();
 
   return (
-    <div className="relative group space-y-1 pe-20">
+    <div className="relative group space-y-1.5 pb-6 border-b border-border last:border-b-0 last:pb-0">
       <div className="flex items-center gap-2">
-        <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.title}</p>
-        {isExpired && <span className="px-2 py-0.5 bg-[#FDECEC] text-[#7F1D1D] border border-[#B91C1C] rounded-full text-[var(--text-xs)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>Expired</span>}
+        <h3 className="text-base font-bold text-foreground">{data.title}</h3>
+        {isExpired && <span className="px-2 py-0.5 bg-[#FDECEC] text-[#7F1D1D] border border-[#B91C1C] rounded-full text-xs font-semibold">Expired</span>}
       </div>
-      <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.issuer}</p>
-      <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <p className="text-sm text-muted-foreground">{data.issuer}</p>
+      <p className="text-sm text-muted-foreground pt-1">
         Issued {data.issueDate}{data.expiryDate && ` • Expires ${data.expiryDate}`}
         {data.credentialId && ` • ID: ${data.credentialId}`}
       </p>
       {data.credentialUrl && (
-        <Button variant="outline" size="sm" className="gap-1.5 mt-1 text-[var(--text-xs)]" onClick={() => window.open(data.credentialUrl, '_blank')} style={{ fontFamily: "'Inter', sans-serif" }}>
-          Show Credential <ExternalLink className="w-3 h-3" />
-        </Button>
+        <div className="pt-3">
+          <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted">
+            <a href={data.credentialUrl} target="_blank" rel="noopener noreferrer">
+              Show Credential <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </Button>
+        </div>
       )}
-      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-        {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
-        {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
-        <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
-        <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
+      <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+        {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
+        {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
+        <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
+        <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-sm text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
       </div>
     </div>
   );
@@ -1129,17 +1160,17 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
   };
 
   return (
-    <span 
-      tabIndex={0} 
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }} 
-      className={cn("group relative px-3 py-1.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))} 
-      onClick={onEdit} 
+    <span
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }}
+      className={cn("group relative px-3 py-1.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
+      onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
       {data.name}
-      <button 
+      <button
         type="button"
-        onClick={(e) => { e.stopPropagation(); onDelete(); }} 
+        onClick={(e) => { e.stopPropagation(); onDelete(); }}
         aria-label={`Delete ${data.name} skill`}
         className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1 rounded-full"
       >
@@ -1156,7 +1187,7 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
 const EditAboutModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; data: string; onSave: (v: string) => void }> = ({ open, onOpenChange, data, onSave }) => {
   const [text, setText] = useState(data);
   const maxChars = 1000;
-  
+
   const handleSave = () => {
     onSave(text);
     onOpenChange(false);
@@ -1254,16 +1285,16 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
       toast.error('Company, role, and start date are required');
       return;
     }
-    onSave({ 
-      ...data, 
-      company, 
-      role, 
-      employmentType, 
-      location, 
-      startDate, 
-      endDate: currentlyWorking ? '' : endDate, 
-      currentlyWorking, 
-      desc 
+    onSave({
+      ...data,
+      company,
+      role,
+      employmentType,
+      location,
+      startDate,
+      endDate: currentlyWorking ? '' : endDate,
+      currentlyWorking,
+      desc
     });
     onOpenChange(false);
   };
@@ -1338,16 +1369,16 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
       toast.error('School, degree, and start date are required');
       return;
     }
-    onSave({ 
-      ...data, 
-      school, 
-      degree, 
-      fieldOfStudy, 
-      startDate, 
-      endDate: currentlyStudying ? '' : endDate, 
-      currentlyStudying, 
-      grade, 
-      desc 
+    onSave({
+      ...data,
+      school,
+      degree,
+      fieldOfStudy,
+      startDate,
+      endDate: currentlyStudying ? '' : endDate,
+      currentlyStudying,
+      grade,
+      desc
     });
     onOpenChange(false);
   };
@@ -1398,16 +1429,16 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
       toast.error('Title and category are required');
       return;
     }
-    onSave({ 
-      ...data, 
-      title, 
-      category, 
-      role, 
-      issueDate, 
-      desc, 
-      toolsUsed: toolsUsed.split(',').map(t => t.trim()).filter(t => t), 
-      url, 
-      featured 
+    onSave({
+      ...data,
+      title,
+      category,
+      role,
+      issueDate,
+      desc,
+      toolsUsed: toolsUsed.split(',').map(t => t.trim()).filter(t => t),
+      url,
+      featured
     });
     onOpenChange(false);
   };

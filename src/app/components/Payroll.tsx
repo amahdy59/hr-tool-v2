@@ -242,7 +242,7 @@ export const Payroll: React.FC = () => {
   );
 
   return (
-    <div className="px-1 py-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="px-1 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
       {/* Tabs */}
       <div className="flex border-b border-border gap-6 overflow-x-auto">
         {tabs.map(tab => (

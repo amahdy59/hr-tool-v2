@@ -116,7 +116,7 @@ export const MissionsManagement: React.FC = () => {
   };
 
   return (
-    <div className="px-1 py-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-10">
+    <div className="px-1 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-10">
       {/* ══ Pending Approval ══ */}
       <section className="space-y-4">
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Missions Pending Approval</h2>

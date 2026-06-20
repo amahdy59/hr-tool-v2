@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
+import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from './ui/sheet';
 import { cn } from '@/lib/utils';
@@ -32,8 +32,8 @@ const getInitials = (name: string): string => {
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   return (
-    <header className="h-16 border-b border-border bg-card px-4 flex items-center justify-between sticky top-0 z-[60] sm:px-6">
-      <div className="flex items-center gap-3">
+    <header className="grid h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 border-b border-border bg-card px-3 sticky top-0 z-[60] sm:px-6">
+      <div className="flex min-w-0 items-center justify-start gap-2">
         {/* Hamburger Menu on Mobile/Tablet */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen} modal={false}>
           <SheetTrigger asChild>
@@ -128,13 +128,26 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             </div>
           </SheetContent>
         </Sheet>
+        <button
+          onClick={onOpenCommandPalette}
+          className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-56 md:justify-between md:px-3 xl:w-80"
+          aria-label="Search or command palette. Shortcut Control K."
+          title="Search or command palette (Ctrl+K)"
+        >
+          <span className="flex min-w-0 items-center gap-2">
+            <Search className="w-4 h-4 shrink-0" aria-hidden="true" />
+            <span className="hidden truncate md:inline">Search...</span>
+          </span>
+          <kbd className="hidden h-5 items-center justify-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground xl:inline-flex">
+            Ctrl K
+          </kbd>
+        </button>
       </div>
 
-      {/* Centered HR Tool Logo */}
-      <div className="absolute left-0 right-0 flex justify-center pointer-events-none">
+      <div className="flex justify-center">
         <button 
           onClick={() => setActiveTab('dashboard')} 
-          className="pointer-events-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-md hover:opacity-80 transition-opacity"
+          className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-md hover:opacity-80 transition-opacity flex items-center px-2"
           aria-label="Go to Dashboard"
           title="Go to Dashboard"
         >
@@ -152,29 +165,14 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         </button>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-4 z-10">
-        <button
-          onClick={onOpenCommandPalette}
-          className="flex w-9 h-9 lg:w-64 lg:h-9 lg:px-3 items-center justify-center lg:justify-between rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label="Search or command palette (Ctrl+K)"
-          title="Search or command palette (Ctrl+K)"
-        >
-          <span className="flex items-center gap-2">
-            <Search className="w-4 h-4" />
-            <span className="hidden lg:inline">Search...</span>
-          </span>
-          <kbd className="hidden lg:inline-flex h-5 items-center justify-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-            Ctrl K
-          </kbd>
-        </button>
-
+      <div className="flex min-w-0 items-center justify-end gap-2 lg:gap-3">
         <button
           onClick={onOpenShortcuts}
-          className="hidden sm:flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="hidden md:flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Keyboard Shortcuts (?)"
           title="Keyboard Shortcuts (?)"
         >
-          <Keyboard className="w-4 h-4" />
+          <Keyboard className="w-4 h-4" aria-hidden="true" />
         </button>
 
         <div>
@@ -183,7 +181,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
 
         <button
           onClick={() => setActiveTab('profile')}
-          className="hidden items-center gap-2.5 sm:flex rounded-[var(--radius)] px-1.5 py-1 hover:bg-muted transition-colors cursor-pointer"
+          className="hidden min-w-0 items-center gap-2.5 sm:flex rounded-[var(--radius)] px-1.5 py-1 hover:bg-muted transition-colors cursor-pointer"
           aria-label="Go to my profile"
           title="Go to my profile"
         >
@@ -212,7 +210,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             </div>
           )}
           <span
-            className="text-foreground"
+            className="hidden max-w-[9rem] truncate text-foreground xl:inline"
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: 'var(--text-sm)',

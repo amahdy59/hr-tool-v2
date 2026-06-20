@@ -165,12 +165,12 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     <Button
       variant="outline"
       size="sm"
-      className="relative flex w-9 h-9 sm:w-auto sm:px-3 sm:py-2 items-center justify-center sm:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
+      className="relative flex w-9 h-9 lg:w-auto lg:px-3 lg:py-2 items-center justify-center lg:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
       aria-label="Accessibility Settings"
       title="Accessibility Settings"
     >
       <Accessibility className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
-      <span className="hidden sm:inline" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <span className="hidden lg:inline" style={{ fontFamily: "'Inter', sans-serif" }}>
         Accessibility
       </span>
       {activeCount > 0 && (

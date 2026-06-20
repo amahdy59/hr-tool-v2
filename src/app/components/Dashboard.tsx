@@ -227,7 +227,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   };
 
   return (
-    <div className="space-y-6 px-3 py-4 sm:p-8 sm:space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 sm:space-y-8 max-w-7xl mx-auto">
 
       {/* Top Controls */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">

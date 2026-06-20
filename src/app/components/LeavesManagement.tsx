@@ -149,7 +149,7 @@ export const LeavesManagement: React.FC = () => {
   };
 
   return (
-    <div className="px-1 py-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-10">
+    <div className="px-1 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-10">
       {/* ══ Pending Approval ══ */}
       <section className="space-y-4">
         <div>
@@ -390,7 +390,7 @@ export const LeavesManagement: React.FC = () => {
                           <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)]">
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Leave</DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => toast.success('Details sent to employee')}><Download className="w-4 h-4" /> Download Letter</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer gap-2 whitespace-nowrap" onClick={() => toast.success('Details sent to employee')}><Download className="w-4 h-4" /> Download Letter</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </td>
