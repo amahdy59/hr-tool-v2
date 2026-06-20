@@ -38,7 +38,7 @@ const DialogOverlay = React.forwardRef<
     ref={ref}
     data-slot="dialog-overlay"
     className={cn(
-      "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/20 backdrop-blur-sm mt-16 sm:mt-0",
+      "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/40 backdrop-blur-md mt-16 sm:mt-0",
       className,
     )}
     {...props}
@@ -56,7 +56,7 @@ const DialogContent = React.forwardRef<
       ref={ref}
       data-slot="dialog-content"
       className={cn(
-        "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed z-50 flex flex-col overflow-y-auto duration-200 shadow-lg gap-4",
+        "bg-background/80 backdrop-blur-xl border border-white/20 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed z-50 flex flex-col overflow-y-auto duration-200 shadow-lg gap-4",
         // Mobile styles: full screen below header
         "left-0 right-0 top-16 bottom-0 w-full h-[calc(100dvh-4rem)] max-w-none translate-x-0 translate-y-0 rounded-none border-0 p-5 pb-8",
         // Desktop styles: centered card

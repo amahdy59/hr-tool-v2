@@ -120,6 +120,11 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
 
   return (
     <div className="px-3 py-4 sm:p-6 lg:p-8 max-w-3xl mx-auto space-y-6">
+      {/* Header */}
+      <div>
+        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: "var(--page-title-size)", fontWeight: "var(--page-title-weight)" }} className="text-foreground">Profile</h2>
+      </div>
+
       {/* Tabs */}
       <div className="flex flex-col sm:flex-row border-b border-border gap-1 sm:gap-6 sm:overflow-x-auto">
         {tabs.map(tab => (

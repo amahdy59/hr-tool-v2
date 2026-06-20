@@ -131,12 +131,12 @@ export const MissionsManagement: React.FC = () => {
               <input type="text" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
-              Approve
-            </Button>
-            <Button size="sm" className="gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setCreateMissionOpen(true)}>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Button size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateMissionOpen(true)}>
               <Plus className="w-4 h-4" /> Create Mission
+            </Button>
+            <Button variant={selectedPending.length > 0 ? "default" : "outline"} size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
+              Approve
             </Button>
           </div>
         </div>

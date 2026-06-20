@@ -295,7 +295,7 @@ export default function App() {
           setActiveTab={setActiveTab}
           onLogout={handleLogout}
         />
-        <main ref={mainRef} id="main-content" className="flex-1 overflow-y-auto bg-muted cursor-default px-2 sm:px-6 pb-24 lg:pb-6 pt-2 sm:pt-6">
+        <main ref={mainRef} id="main-content" className="flex-1 overflow-y-auto bg-muted cursor-default px-2 sm:px-6 pb-24 lg:pb-6 pt-0 sm:pt-4">
           {renderContent()}
         </main>
       </div>

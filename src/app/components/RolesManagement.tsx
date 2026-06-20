@@ -209,9 +209,9 @@ export const RolesManagement: React.FC = () => {
       </div>
 
       {/* ── Filters & Actions Row ── */}
-      <div className="flex flex-wrap items-end gap-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         {/* Department Filter */}
-        <div className="w-52 space-y-1.5">
+        <div className="flex-1 max-w-md space-y-1.5">
           <label className={labelClass}>Department</label>
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
             <SelectTrigger className="h-10 rounded-[var(--radius-input)]">
@@ -228,15 +228,12 @@ export const RolesManagement: React.FC = () => {
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 ms-auto w-full sm:w-auto mt-4 sm:mt-0">
-          <Button variant="outline" className="hidden sm:flex gap-2" onClick={handleUploadData}>
-            <Upload className="w-4 h-4" /> Upload Data
-          </Button>
-          <Button
-            className="w-full sm:w-auto bg-chart-3 hover:bg-chart-3/90 text-white gap-2 rounded-[var(--radius-button)]"
-            onClick={() => setAddRoleOpen(true)}
-          >
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <Button className="w-full sm:w-auto bg-chart-3 hover:bg-chart-3/90 text-white gap-2 rounded-[var(--radius-button)]" onClick={() => setAddRoleOpen(true)}>
             <Plus className="w-4 h-4" /> Add New Role
+          </Button>
+          <Button variant="outline" className="hidden sm:flex w-full sm:w-auto gap-2 rounded-[var(--radius-button)]" onClick={handleUploadData}>
+            <Upload className="w-4 h-4" /> Upload Data
           </Button>
         </div>
       </div>
