@@ -699,3 +699,12 @@ html {
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   TOAST NOTIFICATIONS
+   ========================================================================== */
+[data-sonner-toast] [data-close-button] {
+  left: auto !important;
+  right: -0.5rem !important; /* Position to the right, outside/partially outside */
+  transform: translate(0, -50%) !important;
+}
