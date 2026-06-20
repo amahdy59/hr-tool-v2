@@ -901,7 +901,7 @@ const EmploymentInfoItem: React.FC<{
   clickable?: boolean; 
   onClick?: () => void;
 }> = ({ label, value, badge, clickable, onClick }) => (
-  <div className="grid grid-cols-[35%_1fr] gap-3 items-start">
+  <div className="flex flex-col sm:grid sm:grid-cols-[35%_1fr] gap-1 sm:gap-3 sm:items-start">
     <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
       {label}
     </span>

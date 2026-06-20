@@ -321,7 +321,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               }}
               className="text-foreground"
             >
-              Mahmoud Abbas
+              Tariq Mansour
             </p>
           </div>
 

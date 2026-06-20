@@ -149,9 +149,9 @@ export const LeavesManagement: React.FC = () => {
   };
 
   return (
-    <div className="px-1 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-10">
+    <div className="px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6 sm:space-y-8">
       {/* ══ Pending Approval ══ */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <div>
           <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Leaves Pending Approval</h2>
         </div>
@@ -240,7 +240,7 @@ export const LeavesManagement: React.FC = () => {
       </section>
 
       {/* ══ Holidays & Bridges ══ */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Holidays and Bridges</h2>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
           <div className="flex items-center gap-2">
@@ -315,7 +315,7 @@ export const LeavesManagement: React.FC = () => {
       </section>
 
       {/* ══ Leaves History ══ */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Leaves History</h2>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex-1 max-w-md space-y-1.5">

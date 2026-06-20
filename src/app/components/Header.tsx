@@ -38,13 +38,13 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen} modal={false}>
           <SheetTrigger asChild>
             <button
-              className="lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
+              className="lg:hidden flex items-center justify-center w-9 h-9 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
               aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               title={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isMenuOpen}
             >
-              <Menu className={cn("w-5 h-5 transition-all duration-300 absolute", isMenuOpen && "rotate-90 scale-50 opacity-0")} />
-              <X className={cn("w-5 h-5 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0", isMenuOpen && "!rotate-0 !scale-100 !opacity-100")} />
+              <Menu className={cn("w-4 h-4 transition-all duration-300 absolute", isMenuOpen && "rotate-90 scale-50 opacity-0")} />
+              <X className={cn("w-4 h-4 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0", isMenuOpen && "!rotate-0 !scale-100 !opacity-100")} />
             </button>
           </SheetTrigger>
           <SheetContent side="left" className="w-80 p-0 flex flex-col h-full bg-card">

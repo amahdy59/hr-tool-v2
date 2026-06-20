@@ -149,9 +149,10 @@ const weekendOptions = [
 interface DashboardProps {
   onRequestLeave: () => void;
   onRequestMission: () => void;
+  currentUser?: { name: string; email: string; image?: string };
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestMission }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestMission, currentUser }) => {
   // Modal states
   const [leaveDetailOpen, setLeaveDetailOpen] = useState(false);
   const [selectedLeave, setSelectedLeave] = useState<LeaveDetail | null>(null);
@@ -240,35 +241,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             }}
             className="text-foreground"
           >
-            Good Morning Mohamed
+            Welcome {currentUser?.name ? currentUser.name.split(' ')[0] : 'Ahmed'}
           </h2>
-          <div className="hidden sm:flex items-center gap-2 mt-1">
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--text-sm)',
-                fontWeight: 'var(--font-weight-normal)',
-              }}
-              className="text-muted-foreground"
-            >
-              Select your weekends
-            </span>
-            <HelpCircle className="w-4 h-4 text-primary" />
-          </div>
-          <div className="hidden sm:block mt-2 w-full sm:w-64">
-            <Select value={currentWeekend} onValueChange={handleWeekendChange}>
-              <SelectTrigger className="w-full rounded-[var(--radius-input)] bg-card border-border">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {weekendOptions.map((opt) => (
-                  <SelectItem key={opt} value={opt}>
-                    {opt}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
         </div>
         <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
           <Button

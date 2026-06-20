@@ -159,12 +159,10 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
             </div>
 
             {/* Upload Button */}
-            <button type="button" className="inline-flex items-center justify-center gap-2 w-full h-[var(--button-height-default)] px-[var(--button-padding-x-default)] border border-dashed border-border rounded-[var(--radius-button)] bg-card hover:bg-muted transition-colors cursor-pointer text-[length:var(--button-font-size-default)] font-[var(--button-font-weight)]">
-              <Upload className="w-4 h-4 text-muted-foreground shrink-0" />
-              <span className="text-muted-foreground">
-                Upload File
-              </span>
-            </button>
+            <Button variant="outline" type="button" className="w-full border-dashed gap-2 rounded-[var(--radius-button)] text-muted-foreground h-[var(--button-height-default)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <Upload className="w-4 h-4 shrink-0" />
+              Upload File
+            </Button>
           </div>
 
           {/* Notes */}

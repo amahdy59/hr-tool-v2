@@ -230,6 +230,7 @@ export default function App() {
           <Dashboard
             onRequestLeave={() => setRequestLeaveOpen(true)}
             onRequestMission={() => setRequestMissionOpen(true)}
+            currentUser={currentUser}
           />
         );
         break;

@@ -44,7 +44,7 @@ const comparisons = [
       caption: 'Scattered across multiple screens',
     },
     after: {
-      src: asset('new-system/leave-request.png'),
+      src: asset('images/transform-leave.png'),
       caption: 'One-screen submission with status',
     },
   },
@@ -56,7 +56,7 @@ const comparisons = [
       caption: 'Cluttered form, disconnected approval',
     },
     after: {
-      src: asset('new-system/mission-approval.png'),
+      src: asset('images/transform-mission.png'),
       caption: 'Card-based flow, inline approve/reject',
     },
   },

@@ -976,23 +976,27 @@ const ExperienceItem: React.FC<{
       </div>
 
       {/* Timeline and Job Details */}
-      <div className="relative ps-5 ms-4 border-s border-border">
+      <div className="relative ps-5 ms-4 pb-1">
+        {/* Timeline Line */}
+        <div className="absolute start-0 top-[11px] bottom-0 w-px bg-border" />
         {/* Timeline Dot */}
-        <div className="absolute -start-[5px] top-[6px] w-2.5 h-2.5 bg-muted-foreground rounded-full" />
+        <div className="absolute -start-[5px] top-[6px] w-2.5 h-2.5 bg-muted-foreground rounded-full z-10" />
 
         <div className="space-y-2">
           <p className="text-sm font-bold text-foreground pt-0.5">{data.role}</p>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border bg-card text-xs text-muted-foreground">
-            <span>{data.currentlyWorking ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+              {data.currentlyWorking ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}
+            </span>
             {data.location && (
-              <>
-                <span className="w-1 h-1 bg-muted-foreground rounded-full mx-0.5" />
-                <span>{data.location}</span>
-              </>
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+                {data.location}
+              </span>
             )}
-            <span className="w-1 h-1 bg-muted-foreground rounded-full mx-0.5" />
-            <span>{data.employmentType}</span>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+              {data.employmentType}
+            </span>
           </div>
 
           {data.desc && (
@@ -1044,20 +1048,23 @@ const EducationItem: React.FC<{
     </div>
 
     {/* Timeline and Details */}
-    <div className="relative ps-5 ms-4 border-s border-border">
+    <div className="relative ps-5 ms-4 pb-1">
+      {/* Timeline Line */}
+      <div className="absolute start-0 top-[11px] bottom-0 w-px bg-border" />
       {/* Timeline Dot */}
-      <div className="absolute -start-[5px] top-[6px] w-2.5 h-2.5 bg-muted-foreground rounded-full" />
+      <div className="absolute -start-[5px] top-[6px] w-2.5 h-2.5 bg-muted-foreground rounded-full z-10" />
 
       <div className="space-y-2">
         <p className="text-sm font-bold text-foreground pt-0.5">{data.degree}{data.fieldOfStudy && `, ${data.fieldOfStudy}`}</p>
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border bg-card text-xs text-muted-foreground">
-          <span>{data.currentlyStudying ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}</span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+            {data.currentlyStudying ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}
+          </span>
           {data.grade && (
-            <>
-              <span className="w-1 h-1 bg-muted-foreground rounded-full mx-0.5" />
-              <span>{data.grade}</span>
-            </>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+              Grade: {data.grade}
+            </span>
           )}
         </div>
       </div>
@@ -1107,8 +1114,10 @@ const ProjectItem: React.FC<{
     )}
     {data.url && (
       <div className="pt-3">
-        <Button variant="outline" size="sm" type="button" onClick={() => openExternalLink(data.url)} className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
-          View Project <ExternalLink className="w-3.5 h-3.5" />
+        <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
+          <a href={/^https?:\/\//i.test(data.url) ? data.url : `https://${data.url}`} target="_blank" rel="noopener noreferrer">
+            View Project <ExternalLink className="w-3.5 h-3.5" />
+          </a>
         </Button>
       </div>
     )}
@@ -1144,8 +1153,10 @@ const CertificationItem: React.FC<{
       </p>
       {data.credentialUrl && (
         <div className="pt-3">
-          <Button variant="outline" size="sm" type="button" onClick={() => openExternalLink(data.credentialUrl)} className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
-            Show Credential <ExternalLink className="w-3.5 h-3.5" />
+          <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
+            <a href={/^https?:\/\//i.test(data.credentialUrl) ? data.credentialUrl : `https://${data.credentialUrl}`} target="_blank" rel="noopener noreferrer">
+              Show Credential <ExternalLink className="w-3.5 h-3.5" />
+            </a>
           </Button>
         </div>
       )}
@@ -1539,9 +1550,11 @@ const EditCertificationModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
 };
 
 const EditSkillModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; data: SkillData; onSave: (v: SkillData) => void }> = ({ open, onOpenChange, data, onSave }) => {
+  const predefinedCategories = ['Core UX & Design', 'Data Analysis & Visualization'];
   const [name, setName] = useState(data.name);
   const [category, setCategory] = useState(data.category);
   const [level, setLevel] = useState(data.level);
+  const [isCustomCategory, setIsCustomCategory] = useState(!predefinedCategories.includes(data.category) && data.category !== '');
 
   const handleSave = () => {
     if (!name || !category) {
@@ -1560,13 +1573,29 @@ const EditSkillModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
           <FormField label="Skill Name *" value={name} onChange={setName} placeholder="e.g., Figma" />
           <div className="space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
-              <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
-                <SelectItem value="Core UX & Design">Core UX & Design</SelectItem>
-                <SelectItem value="Data Analysis & Visualization">Data Analysis & Visualization</SelectItem>
-              </SelectContent>
-            </Select>
+            {isCustomCategory ? (
+              <div className="flex gap-2">
+                <input type="text" value={category} onChange={e => setCategory(e.target.value)} className={inputClass} placeholder="e.g., Programming" style={{ fontFamily: "'Inter', sans-serif" }} />
+                <Button variant="ghost" type="button" onClick={() => { setIsCustomCategory(false); setCategory(predefinedCategories[0]); }} className="rounded-[var(--radius-button)]">Cancel</Button>
+              </div>
+            ) : (
+              <Select value={category} onValueChange={(val) => {
+                if (val === 'custom') {
+                  setIsCustomCategory(true);
+                  setCategory('');
+                } else {
+                  setCategory(val);
+                }
+              }}>
+                <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+                <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
+                  {predefinedCategories.map(cat => (
+                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                  ))}
+                  <SelectItem value="custom" className="text-primary font-medium">Add new category...</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           </div>
           <div className="space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Proficiency Level</label>
