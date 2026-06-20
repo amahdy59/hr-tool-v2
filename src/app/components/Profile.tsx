@@ -482,7 +482,7 @@ const EditPersonalInfoModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Personal Information</DialogTitle><DialogDescription className="sr-only">Edit your personal information</DialogDescription></DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           <div className="space-y-4">
             <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Personal Information</p>
             <FormField label="Name" value={name} onChange={setName} />

@@ -313,7 +313,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Quick Payslip Generator</span>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
           <label className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             Month
@@ -391,7 +391,7 @@ const EmployeesTab = ({ filteredEmployees, handleGeneratePayslip }: any) => (
 
     <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
       <div className="overflow-x-auto">
-        <table className="min-w-max w-full">
+        <table className="w-full md:min-w-max">
           <thead className="bg-muted border-b border-border">
             <tr>
               <TableHeader>SESA ID</TableHeader>
@@ -565,7 +565,7 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
       {/* Content */}
       <div className="p-6 space-y-6">
         {/* Employee Info */}
-        <div className="grid grid-cols-2 gap-4 p-4 bg-muted/30 rounded-[var(--radius)] border border-border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-[var(--radius)] border border-border">
           <InfoRow label="SESA ID" value={employee.sesaId} />
           <InfoRow label="Position" value={employee.position} />
           <InfoRow label="Department" value={employee.department} />

@@ -535,7 +535,7 @@ const EditPersonalInfoModal: React.FC<{
           <Shield className="w-3 h-3 text-primary shrink-0 mt-0.5" />
           <span className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>This information is encrypted and protected. All changes are logged for security.</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <FormField label="Date of Birth *" value={dateOfBirth} onChange={setDateOfBirth} type="date" />
           <FormField label="National ID * (14 digits)" value={nationalId} onChange={setNationalId} maxLength={14} inputMode="numeric" />
           <FormField label="Email" value={email} onChange={setEmail} type="email" inputMode="email" autoComplete="email" />

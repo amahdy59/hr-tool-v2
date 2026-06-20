@@ -94,6 +94,7 @@ interface ContactData {
   email: string;
   phone: string;
   linkedin: string;
+  dribbble: string;
 }
 
 export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUser }) => {
@@ -109,6 +110,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
     email: 'amahdy59@gmail.com',
     phone: '+20 150 *** 0111',
     linkedin: 'linkedin.com/in/creativemahdy',
+    dribbble: 'dribbble.com/creativemahdy',
   });
 
   const [experiences, setExperiences] = useState<ExperienceData[]>([
@@ -629,11 +631,22 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 0;
+      const ratio = pdfWidth / imgWidth;
+      const totalPdfHeight = imgHeight * ratio;
 
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      let heightLeft = totalPdfHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, totalPdfHeight);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - totalPdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, totalPdfHeight);
+        heightLeft -= pdfHeight;
+      }
+
       pdf.save(`${currentUser?.name || 'Resume'}_Resume.pdf`);
       
       toast.success('Resume downloaded successfully!');
@@ -661,6 +674,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
     email: contact.email,
     phone: maskPhoneNumber(contact.phone),
     linkedin: contact.linkedin,
+    dribbble: contact.dribbble,
     about,
     employment: experiences
       .sort((a, b) => a.orderIndex - b.orderIndex)
@@ -716,8 +730,8 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-6 items-start">
-        {/* Left Column */}
+      <div className="grid grid-cols-1 gap-6 items-start">
+        {/* Top/First Column content */}
         <div className="space-y-6">
           {/* Profile Strength */}
           <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
@@ -749,6 +763,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
                 </span>
               </div>
               <div className="flex items-center gap-2.5 text-primary"><Globe className="w-4 h-4" /> <a href={`https://${contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{contact.linkedin}</a></div>
+              <div className="flex items-center gap-2.5 text-primary"><Globe className="w-4 h-4" /> <a href={`https://${contact.dribbble}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{contact.dribbble}</a></div>
             </div>
           </ProfileCard>
 
@@ -817,7 +832,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
           {/* Experience */}
           <ProfileCard title="Employment" showAdd onAdd={handleAddExperience}>
-            <div className="space-y-6 relative ps-4 before:content-[''] before:absolute before:start-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
+            <div className="space-y-8 relative ps-6 before:content-[''] before:absolute before:start-[9px] before:top-2 before:bottom-2 before:w-[2px] before:bg-border">
               {experiences.sort((a, b) => a.orderIndex - b.orderIndex).map((exp, index) => (
                 <ExperienceItem 
                   key={exp.id} 
@@ -933,16 +948,16 @@ const ExperienceItem: React.FC<{
 
   return (
     <div className="relative group">
-      <div className="absolute -start-[19px] top-[6px] w-3 h-3 bg-primary border-2 border-card rotate-45" />
-      <div className="space-y-1 pe-20">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex-1">
-            <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.company}</p>
-            <p className="text-[var(--text-sm)] text-primary font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>{data.role}</p>
+      <div className="absolute -start-[20px] top-[6px] w-3 h-3 bg-primary border-[2.5px] border-background rotate-45 z-10" />
+      <div className="space-y-1.5 pe-20">
+        <div className="flex flex-col gap-0.5">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="text-[var(--text-base)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.company}</h3>
+            {data.currentlyWorking && (
+              <span className="px-2.5 py-0.5 bg-[#E6F4EA] text-[#137333] rounded-full text-[var(--text-xs)] font-[var(--font-weight-semibold)] shrink-0" style={{ fontFamily: "'Inter', sans-serif" }}>Current</span>
+            )}
           </div>
-          {data.currentlyWorking && (
-            <span className="px-2 py-0.5 bg-chart-3/10 text-chart-3 rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)] shrink-0" style={{ fontFamily: "'Inter', sans-serif" }}>Current</span>
-          )}
+          <p className="text-[var(--text-sm)] text-primary font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>{data.role}</p>
         </div>
         <div className="flex items-center gap-2 text-[var(--text-xs)] text-muted-foreground flex-wrap" style={{ fontFamily: "'Inter', sans-serif" }}>
           <div className="flex items-center gap-1">
@@ -981,7 +996,7 @@ const ExperienceItem: React.FC<{
           </div>
         )}
       </div>
-      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
         {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
         {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
         <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -1033,13 +1048,13 @@ const ProjectItem: React.FC<{
   onDelete: () => void; 
   onMove: (dir: 'up' | 'down') => void;
 }> = ({ data, isFirst, isLast, onEdit, onDelete, onMove }) => (
-  <div className="relative group space-y-1 pe-20">
-    <div className="flex items-center justify-between gap-2">
+  <div className="relative group space-y-1 pe-12 sm:pe-20">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
       <div className="flex items-center gap-2 flex-1">
         <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{data.title}</p>
         {data.featured && <span title="Featured project"><Star className="w-4 h-4 text-chart-3 fill-chart-3" /></span>}
       </div>
-      <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)] shrink-0" style={{ fontFamily: "'Inter', sans-serif" }}>{data.category}</span>
+      <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[var(--text-xs)] font-[var(--font-weight-medium)] shrink-0 w-fit max-w-full truncate" style={{ fontFamily: "'Inter', sans-serif" }} title={data.category}>{data.category}</span>
     </div>
     <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
       {data.role} • {data.issueDate}
@@ -1172,13 +1187,23 @@ const EditContactModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
   const [email, setEmail] = useState(data.email);
   const [phone, setPhone] = useState(data.phone);
   const [linkedin, setLinkedin] = useState(data.linkedin);
+  const [dribbble, setDribbble] = useState(data.dribbble || '');
+
+  useEffect(() => {
+    if (open) {
+      setEmail(data.email);
+      setPhone(data.phone);
+      setLinkedin(data.linkedin);
+      setDribbble(data.dribbble || '');
+    }
+  }, [open, data]);
 
   const handleSave = () => {
     if (!email || !phone) {
       toast.error('Email and phone are required');
       return;
     }
-    onSave({ email, phone, linkedin });
+    onSave({ email, phone, linkedin, dribbble });
     onOpenChange(false);
     toast.success('Contact information updated successfully');
   };
@@ -1191,6 +1216,7 @@ const EditContactModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <FormField label="Email *" value={email} onChange={setEmail} type="email" />
           <FormField label="Phone *" value={phone} onChange={setPhone} />
           <FormField label="LinkedIn Profile" value={linkedin} onChange={setLinkedin} />
+          <FormField label="Dribbble Profile" value={dribbble} onChange={setDribbble} />
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
@@ -1246,7 +1272,7 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>{data.company ? 'Edit' : 'Add'} Experience</DialogTitle><DialogDescription className="sr-only">Edit experience</DialogDescription></DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div className="md:col-span-2"><FormField label="Company *" value={company} onChange={setCompany} /></div>
           <div className="md:col-span-2"><FormField label="Job Title *" value={role} onChange={setRole} /></div>
           <div className="space-y-1.5">
@@ -1330,7 +1356,7 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>{data.school ? 'Edit' : 'Add'} Education</DialogTitle><DialogDescription className="sr-only">Edit education</DialogDescription></DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div className="md:col-span-2"><FormField label="School *" value={school} onChange={setSchool} /></div>
           <FormField label="Degree *" value={degree} onChange={setDegree} placeholder="e.g., Bachelor's" />
           <FormField label="Field of Study" value={fieldOfStudy} onChange={setFieldOfStudy} placeholder="e.g., Computer Science" />
@@ -1390,7 +1416,7 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>{data.title ? 'Edit' : 'Add'} Project</DialogTitle><DialogDescription className="sr-only">Edit project</DialogDescription></DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div className="md:col-span-2"><FormField label="Project Title *" value={title} onChange={setTitle} /></div>
           <div className="space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
@@ -1453,7 +1479,7 @@ const EditCertificationModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>{data.title ? 'Edit' : 'Add'} Certification</DialogTitle><DialogDescription className="sr-only">Edit certification</DialogDescription></DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div className="md:col-span-2"><FormField label="Certification Title *" value={title} onChange={setTitle} /></div>
           <FormField label="Issuer *" value={issuer} onChange={setIssuer} placeholder="e.g., Google" />
           <FormField label="Issue Date *" value={issueDate} onChange={setIssueDate} placeholder="e.g., Mar 2023" />

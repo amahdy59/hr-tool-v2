@@ -356,7 +356,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </Button>
 
           {/* Filters for mobile/tablet (Popover) and desktop (inline) */}
-          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 w-full [&>button]:w-full sm:[&>button]:w-auto">
+          <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
             {/* Mobile/Tablet Popover Filter */}
             <Popover>
               <PopoverTrigger asChild>
@@ -464,59 +464,24 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </table>
         </div>
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--text-sm)',
-                fontWeight: 'var(--font-weight-normal)',
-              }}
-            >
-              Items Per Page
-            </span>
-            <select
-              className="h-8 px-2 border border-border rounded-[var(--radius-input)] bg-card"
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--text-sm)',
-                fontWeight: 'var(--font-weight-normal)',
-              }}
-            >
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4 px-4 py-4 border-t border-border bg-muted/20">
+          <div className="flex items-center gap-3 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
+            <span>Items Per Page</span>
+            <select className="h-11 px-3 border border-border rounded-[var(--radius-input)] bg-card text-foreground outline-none cursor-pointer">
               <option>15</option>
               <option>25</option>
               <option>50</option>
             </select>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              className="p-1 border border-border rounded-[var(--radius-button)] hover:bg-muted disabled:opacity-50"
-              disabled
-            >
-              <ChevronLeft className="w-4 h-4" />
+          <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
+            <button className="w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-sm" disabled>
+              <ChevronLeft className="w-4 h-4 text-foreground" />
             </button>
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--text-sm)',
-                fontWeight: 'var(--font-weight-normal)',
-              }}
-            >
-              Page{' '}
-              <input
-                type="text"
-                value="1"
-                readOnly
-                className="w-8 h-8 text-center border border-border rounded-[var(--radius-input)] mx-1"
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-sm)',
-                }}
-              />{' '}
-              150
+            <span className="text-[var(--text-sm)] text-foreground flex items-center gap-2 whitespace-nowrap">
+              Page <input type="text" value="1" readOnly className="w-12 h-11 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground shadow-sm" /> of 150
             </span>
-            <button className="p-1 border border-border rounded-[var(--radius-button)] hover:bg-muted">
-              <ChevronRight className="w-4 h-4" />
+            <button className="w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted transition-colors shadow-sm">
+              <ChevronRight className="w-4 h-4 text-foreground" />
             </button>
           </div>
         </div>
@@ -535,8 +500,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           >
             Annual and Sick Leaves
           </h3>
-          <div className="border border-border rounded-[var(--radius)] overflow-hidden">
-            <table className="min-w-max w-full text-start">
+          <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
+            <table className="w-full md:min-w-max text-start">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {[
@@ -607,8 +572,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           >
             Other Leaves
           </h3>
-          <div className="border border-border rounded-[var(--radius)] overflow-hidden">
-            <table className="min-w-max w-full text-start">
+          <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
+            <table className="w-full md:min-w-max text-start">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {['Leave Type', 'Balance'].map((h) => (

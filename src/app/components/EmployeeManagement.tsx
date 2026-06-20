@@ -353,7 +353,7 @@ export const EmployeeManagement: React.FC = () => {
                   className="py-16"
                 />
               ) : (
-                <table className="min-w-max w-full text-[var(--text-sm)] text-start">
+                <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
                       <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground w-8"><Checkbox aria-label="Select all employees" /></th>
@@ -430,7 +430,7 @@ export const EmployeeManagement: React.FC = () => {
                   className="py-16"
                 />
               ) : (
-                <table className="min-w-max w-full text-[var(--text-sm)] text-start">
+                <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
                       <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Admin</th>
@@ -480,7 +480,7 @@ export const EmployeeManagement: React.FC = () => {
                   className="py-16"
                 />
               ) : (
-                <table className="min-w-max w-full text-[var(--text-sm)] text-start">
+                <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
                       <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
@@ -496,7 +496,7 @@ export const EmployeeManagement: React.FC = () => {
                         <td className="px-4 py-1 md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">ID:</span>{dept.deptId}</td>
                         <td className="px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Total:</span>{dept.totalNumber}</td>
                         <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
-                          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 w-full [&>button]:w-full sm:[&>button]:w-auto">
+                          <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
                             <Button variant="outline" size="sm" aria-label={`Edit ${dept.name}`} onClick={() => { setEditDeptData(dept); setEditDeptOpen(true); }} className="w-full md:w-auto justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted">
                               <span className="md:hidden">Edit</span>
                               <PenLine className="hidden md:block w-4 h-4 text-muted-foreground" />
@@ -523,7 +523,7 @@ export const EmployeeManagement: React.FC = () => {
           </div>
           <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
             <div className="overflow-x-auto">
-              <table className="min-w-max w-full text-[var(--text-sm)] text-start">
+              <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                 <thead>
                   <tr className="bg-muted border-b border-border">
                     <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
@@ -537,7 +537,7 @@ export const EmployeeManagement: React.FC = () => {
                       <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{jt.title}</td>
                       <td className="px-4 py-3 text-foreground tabular-nums">{jt.count}</td>
                       <td className="px-4 py-3 text-end">
-                        <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 w-full [&>button]:w-full sm:[&>button]:w-auto">
+                        <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
                           <button type="button" aria-label={`Edit ${jt.title}`} onClick={() => { setEditJtData(jt); setEditJtOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
                             <Edit className="w-4 h-4 text-muted-foreground" />
                           </button>
@@ -671,7 +671,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
           <option>10</option><option>15</option><option>30</option>
         </select>
       </div>
-      <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 w-full [&>button]:w-full sm:[&>button]:w-auto">
+      <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
         <button onClick={() => go(page - 1)} disabled={page <= 1} className="w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm" aria-label="Previous page">
           <ChevronLeft className="w-4 h-4 text-foreground" />
         </button>
@@ -890,7 +890,7 @@ const FormerEmployeeModal: React.FC<{
 
           <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Former Employees</p>
           <div className="border border-border rounded-[var(--radius-card)] overflow-hidden">
-            <table className="min-w-max w-full text-[var(--text-sm)]">
+            <table className="w-full md:min-w-max text-[var(--text-sm)]">
               <thead>
                 <tr className="bg-muted border-b border-border">
                   <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
@@ -963,7 +963,7 @@ const AccessCardsModal: React.FC<{
             {/* Employee info */}
             <div className="p-4 bg-muted rounded-[var(--radius-card)] space-y-2">
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Employee Info</p>
-              <div className="grid grid-cols-2 gap-2 text-[var(--text-sm)]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[var(--text-sm)]">
                 <div><span className="text-muted-foreground">Name:</span> <span className="text-foreground ms-1">{employee.name}</span></div>
                 <div><span className="text-muted-foreground">Employee#:</span> <span className="text-foreground ms-1 uppercase">{employee.employeeNumber}</span></div>
                 <div><span className="text-muted-foreground">Department:</span> <span className="text-foreground ms-1">{employee.department}</span></div>
@@ -973,7 +973,7 @@ const AccessCardsModal: React.FC<{
             {/* Add Card */}
             <div className="space-y-3">
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Add Card</p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                 <div className="space-y-1.5">
                   <label className={labelClass}>Card Number</label>
                   <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} placeholder="CDXXXXXXXX" className={inputClass} />
@@ -1004,8 +1004,8 @@ const AccessCardsModal: React.FC<{
             {/* Assigned Cards Table */}
             <div className="space-y-3">
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Assigned Cards</p>
-              <div className="border border-border rounded-[var(--radius-card)] overflow-hidden">
-                <table className="min-w-max w-full text-[var(--text-sm)]">
+              <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
+                <table className="w-full md:min-w-max text-[var(--text-sm)]">
                   <thead>
                     <tr className="bg-muted border-b border-border">
                       <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Number</th>

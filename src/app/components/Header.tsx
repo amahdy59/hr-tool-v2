@@ -155,15 +155,15 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
       <div className="flex items-center gap-2 sm:gap-4 z-10">
         <button
           onClick={onOpenCommandPalette}
-          className="flex w-9 h-9 sm:w-64 sm:h-9 sm:px-3 items-center justify-center sm:justify-between rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex w-9 h-9 lg:w-64 lg:h-9 lg:px-3 items-center justify-center lg:justify-between rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Search or command palette (Ctrl+K)"
           title="Search or command palette (Ctrl+K)"
         >
           <span className="flex items-center gap-2">
             <Search className="w-4 h-4" />
-            <span className="hidden sm:inline">Search...</span>
+            <span className="hidden lg:inline">Search...</span>
           </span>
-          <kbd className="hidden sm:inline-flex h-5 items-center justify-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+          <kbd className="hidden lg:inline-flex h-5 items-center justify-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
             Ctrl K
           </kbd>
         </button>

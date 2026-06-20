@@ -151,7 +151,7 @@ export const MissionsManagement: React.FC = () => {
                 className="py-16"
               />
               ) : (
-                <table className="min-w-max w-full text-[var(--text-sm)] text-start">
+                <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
                       <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === PENDING_MISSIONS.length && PENDING_MISSIONS.length > 0} onCheckedChange={toggleAll} /></th>
@@ -247,7 +247,7 @@ export const MissionsManagement: React.FC = () => {
                 className="py-16"
               />
             ) : (
-              <table className="min-w-max w-full text-[var(--text-sm)] text-start">
+              <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-muted border-b border-border">
                     <th className={thClass}>Employee Name</th>
@@ -343,7 +343,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
           <option>10</option><option>15</option><option>30</option>
         </select>
       </div>
-      <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 w-full [&>button]:w-full sm:[&>button]:w-auto">
+      <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
         <button onClick={() => go(page - 1)} disabled={page <= 1} className="w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm" aria-label="Previous page">
           <ChevronLeft className="w-4 h-4 text-foreground" />
         </button>
@@ -424,7 +424,7 @@ const CreateMissionModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
           <FormField label="Employee Name" value={name} onChange={setName} placeholder="Full name" />
           <FormField label="Employee Number" value={employeeNumber} onChange={setEmployeeNumber} placeholder="123456" />
           <SelectField label="Mission Type" value={missionType} onChange={setMissionType} options={MISSION_TYPES} />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <FormField label="Start Date" value={startDate} onChange={setStartDate} type="date" />
             <FormField label="End Date" value={endDate} onChange={setEndDate} type="date" />
           </div>
@@ -443,8 +443,8 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent className="sm:max-w-2xl">
       <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Review Selected Requests</DialogTitle><DialogDescription className="sr-only">Review and approve selected mission requests</DialogDescription></DialogHeader>
-      <div className="border border-border rounded-[var(--radius-card)] overflow-hidden">
-        <table className="min-w-max w-full text-[var(--text-sm)]">
+        <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
+          <table className="w-full md:min-w-max text-[var(--text-sm)]">
           <thead><tr className="bg-muted border-b border-border">
             <th className={thClass}>Employee Name</th><th className={thClass}>Mission Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
           </tr></thead>
