@@ -413,7 +413,7 @@ export const Attendance: React.FC = () => {
       <section className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] sm:p-6">
         <div className="mb-5 flex flex-col items-start gap-2 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] uppercase tracking-wide text-muted-foreground">
+            <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-muted-foreground">
               Attendance
             </p>
             <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Summary View</h3>
@@ -428,7 +428,7 @@ export const Attendance: React.FC = () => {
           <div className="space-y-0 overflow-x-auto w-full">
             <table className="min-w-[430px] w-full text-start border-collapse cursor-default">
               <thead>
-                <tr className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground border-b border-border uppercase tracking-wide">
+                <tr className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground border-b border-border">
                   <th className="text-start pb-3 pe-6 font-medium min-w-[180px]">Category</th>
                   <th className="text-end pb-3 px-6 font-medium min-w-[110px]">Hours</th>
                   <th className="text-end pb-3 ps-6 font-medium min-w-[120px]">Percentage</th>
