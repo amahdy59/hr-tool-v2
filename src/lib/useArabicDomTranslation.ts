@@ -1062,9 +1062,17 @@ export const useArabicDomTranslation = (enabled: boolean) => {
       characterData: true,
     };
 
+    let mutationCount = 0;
+
     const observer = new MutationObserver((mutations) => {
       // Disconnect to avoid infinite loops when we modify the DOM
       observer.disconnect();
+
+      mutationCount += mutations.length;
+      if (mutationCount > 10000) {
+        console.error('useArabicDomTranslation circuit breaker triggered! Too many mutations.');
+        return; // Do not reconnect!
+      }
 
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
