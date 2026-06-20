@@ -22,6 +22,8 @@ interface RequestLeaveModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: LeaveFormData) => void;
+  initialData?: Partial<LeaveFormData>;
+  mode?: 'add' | 'edit';
 }
 
 export interface LeaveFormData {
@@ -61,11 +63,22 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   open,
   onOpenChange,
   onSubmit,
+  initialData,
+  mode = 'add',
 }) => {
   const [leaveType, setLeaveType] = useState('Annual Leave');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [notes, setNotes] = useState('');
+
+  React.useEffect(() => {
+    if (open) {
+      setLeaveType(initialData?.leaveType || 'Annual Leave');
+      setFromDate(initialData?.fromDate || '');
+      setToDate(initialData?.toDate || '');
+      setNotes(initialData?.notes || '');
+    }
+  }, [open, initialData]);
 
   // Compute days between selected dates (business days, inclusive)
   const daysRequested = useMemo(() => {
@@ -109,10 +122,10 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               fontWeight: 'var(--section-heading-weight)',
             }}
           >
-            Request Leave
+            {mode === 'edit' ? 'Edit Request' : 'Request Leave'}
           </DialogTitle>
           <DialogDescription className="sr-only">
-            Request a leave
+            {mode === 'edit' ? 'Edit your leave request' : 'Request a leave'}
           </DialogDescription>
         </DialogHeader>
 
@@ -331,8 +344,8 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             onClick={handleSubmit}
             disabled={daysRequested === 0 || daysRequested > currentBalance}
           >
-            ✈ Book time off
-            {daysRequested > 0 && (
+            {mode === 'edit' ? 'Save Changes' : '✈ Book time off'}
+            {daysRequested > 0 && mode === 'add' && (
               <span className="ms-1 opacity-80">
                 ({daysRequested} day{daysRequested !== 1 ? 's' : ''})
               </span>

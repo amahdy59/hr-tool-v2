@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CalendarGrid } from './CalendarGrid';
 import { StatusBadge } from './StatusBadge';
-import { RequestLeaveModal } from './RequestLeaveModal';
+import { RequestLeaveModal, type LeaveFormData } from './RequestLeaveModal';
 import { RequestMissionModal } from './RequestMissionModal';
 import { LeaveDetailModal, type LeaveDetail } from './LeaveDetailModal';
 import { ConfirmDialog } from './ConfirmDialog';
@@ -162,6 +162,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   const [confirmCancelId, setConfirmCancelId] = useState<string>('');
   const [changeWeekendOpen, setChangeWeekendOpen] = useState(false);
 
+  // Edit leave states
+  const [editLeaveOpen, setEditLeaveOpen] = useState(false);
+  const [editLeaveData, setEditLeaveData] = useState<Partial<LeaveFormData>>({});
+
   // Weekend state
   const [currentWeekend, setCurrentWeekend] = useState('Friday and Saturday');
   const [pendingWeekend, setPendingWeekend] = useState('');
@@ -200,8 +204,35 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
 
   const handleEditRequest = (id: string) => {
     setLeaveDetailOpen(false);
+    
+    // Parse the date range to pre-fill the edit form.
+    // Assuming format "13 January 2023 to 19 January 2023" from selectedLeave.
+    let fromDate = '';
+    let toDate = '';
+    if (selectedLeave?.dateRange) {
+      const parts = selectedLeave.dateRange.split(' to ');
+      if (parts.length === 2) {
+        // Convert to YYYY-MM-DD
+        const from = new Date(parts[0]);
+        const to = new Date(parts[1]);
+        if (!isNaN(from.getTime())) fromDate = from.toISOString().split('T')[0];
+        if (!isNaN(to.getTime())) toDate = to.toISOString().split('T')[0];
+      }
+    }
+
+    setEditLeaveData({
+      leaveType: selectedLeave?.type || 'Annual Leave',
+      fromDate,
+      toDate,
+      notes: '',
+    });
+    setEditLeaveOpen(true);
+  };
+
+  const handleEditSubmit = (data: LeaveFormData) => {
+    setEditLeaveOpen(false);
     toast.success(
-      'Sick leave from 13 January 2023 to 19 January 2023 resubmitted successfully.',
+      `${data.leaveType} resubmitted successfully.`,
       { duration: 5000 }
     );
   };
@@ -606,6 +637,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         leaveData={selectedLeave}
         onEditRequest={handleEditRequest}
         onCancelRequest={handleCancelRequest}
+      />
+
+      {/* Edit Leave Modal */}
+      <RequestLeaveModal
+        open={editLeaveOpen}
+        onOpenChange={setEditLeaveOpen}
+        onSubmit={handleEditSubmit}
+        initialData={editLeaveData}
+        mode="edit"
       />
 
       {/* Confirm Cancellation Dialog */}

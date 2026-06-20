@@ -303,7 +303,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col gap-2 pt-1 sm:flex-row">
+          <div className="flex flex-col gap-3 pt-2">
             <Button
               variant="outline"
               className="w-full rounded-[var(--radius-button)]"
