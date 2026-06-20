@@ -21,6 +21,7 @@ import { RequestMissionModal } from './components/RequestMissionModal';
 import { ConfirmDialog } from './components/ConfirmDialog';
 import { useArabicDomTranslation } from '@/lib/useArabicDomTranslation';
 import { useTheme } from '@/lib/useTheme';
+import { DirectionProvider } from '@radix-ui/react-direction';
 
 export type AppTab =
   | 'dashboard'
