@@ -51,6 +51,13 @@ const dictionary: Record<string, string> = {
   'Annual Leave': 'إجازة سنوية',
   'Sick Leave': 'إجازة مرضية',
   'Casual Leave': 'إجازة عارضة',
+  'Maternity': 'أمومة',
+  'Paternity': 'أبوة',
+  'Family Care': 'رعاية أسرة',
+  'Hajj': 'حج',
+  'Marriage': 'زواج',
+  'Bereavement': 'وفاة',
+  'Unpaid': 'غير مدفوعة',
   Approved: 'تمت الموافقة',
   Pending: 'قيد الانتظار',
   Rejected: 'مرفوض',
@@ -185,7 +192,9 @@ const dictionary: Record<string, string> = {
   'Issue Month': 'شهر الإصدار',
   'Issue Year': 'سنة الإصدار',
   'Optional': 'اختياري',
+  'optional': 'اختياري',
   'Optional...': 'اختياري...',
+  'optional...': 'اختياري...',
   'Other': 'أخرى',
   'Divorced': 'مطلق',
   'Widowed': 'أرمل',
@@ -523,7 +532,9 @@ const translateValue = (value: string) => {
   }
 
   for (const [english, arabic] of sortedDictionaryEntries) {
-    translated = translated.replace(new RegExp(escapeRegExp(english), 'g'), arabic);
+    if (english.length < 4 && !['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].includes(english)) continue; // Avoid replacing very short partial words blindly unless they are specific short abbreviations
+    const regex = new RegExp('(?<=\\b|\\s|^)' + escapeRegExp(english) + '(?=\\b|\\s|$)', 'g');
+    translated = translated.replace(regex, arabic);
   }
 
   if (translated === trimmed) return value;
