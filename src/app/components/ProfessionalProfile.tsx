@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
-  Pencil, Mail, Phone, Globe, Plus, ExternalLink, Download, X, Trash2, ChevronUp, ChevronDown, Star, Calendar, MapPin, Briefcase, GripVertical, ChevronRight,
+  Pencil, Phone, Globe, Plus, ExternalLink, Download, X, Trash2, ChevronUp, ChevronDown, Star, Calendar, MapPin, Briefcase, GripVertical, ChevronRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -21,6 +21,15 @@ const labelClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)] text-
 const maskPhoneNumber = (phone: string): string => {
   if (!phone || phone.includes('*')) return phone;
   return phone.replace(/(\+?\d{2,3}\s?\d{2,3}|0\d{2,3})([\s-]?\d+)(\d{3})$/, '$1 *** $3');
+};
+const normalizeExternalUrl = (url: string): string => {
+  if (!url) return '';
+  return /^https?:\/\//i.test(url) ? url : `https://${url}`;
+};
+const openExternalLink = (url: string): void => {
+  const normalizedUrl = normalizeExternalUrl(url);
+  if (!normalizedUrl) return;
+  window.open(normalizedUrl, '_blank', 'noopener,noreferrer');
 };
 
 // ── Data Types ──
@@ -422,7 +431,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
   // Handlers - Project
   const handleEditProject = (proj: ProjectData) => {
-    setSelectedProject(proj);
+    setSelectedProject({ ...proj });
     setEditProjectOpen(true);
   };
 
@@ -431,7 +440,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
     setSelectedProject({
       id: Date.now().toString(),
       title: '',
-      category: 'Data Analysis',
+      category: 'UX Projects',
       role: '',
       issueDate: '',
       desc: '',
@@ -615,16 +624,19 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
     try {
       const canvas = await html2canvas(resumeRef.current, {
-        scale: 2,
+        scale: 1.15,
         useCORS: true,
         logging: false,
+        backgroundColor: '#ffffff',
+        windowWidth: resumeRef.current.scrollWidth,
       });
 
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/jpeg', 0.82);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4',
+        compress: true,
       });
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -637,13 +649,13 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       let heightLeft = totalPdfHeight;
       let position = 0;
 
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, totalPdfHeight);
+      pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, totalPdfHeight);
       heightLeft -= pdfHeight;
 
       while (heightLeft > 0) {
         position = heightLeft - totalPdfHeight;
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, totalPdfHeight);
+        pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, totalPdfHeight);
         heightLeft -= pdfHeight;
       }
 
@@ -671,7 +683,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
   const resumeData = {
     name: currentUser?.name || 'Ahmed Mahdy',
     title: currentUser?.position || 'UX Designer & Data Analyst',
-    email: contact.email,
+    email: '',
     phone: maskPhoneNumber(contact.phone),
     linkedin: contact.linkedin,
     dribbble: contact.dribbble,
@@ -698,7 +710,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
         link: cert.credentialUrl || '#',
       })),
     dataProjects: projects
-      .filter(p => p.category === 'Data Analysis')
+      .filter(p => p.category.toLowerCase().includes('data'))
       .sort((a, b) => a.orderIndex - b.orderIndex)
       .map(p => ({
         name: p.title,
@@ -706,7 +718,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
         link: p.url || '#',
       })),
     uxProjects: projects
-      .filter(p => p.category === 'UX Design')
+      .filter(p => p.category.toLowerCase().includes('ux'))
       .sort((a, b) => a.orderIndex - b.orderIndex)
       .map(p => ({
         name: p.title,
@@ -715,7 +727,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       })),
     skills: {
       coreUX: skills.filter(s => s.category === 'Core UX & Design').map(s => s.name),
-      dataAnalysis: skills.filter(s => s.category === 'Data Analysis').map(s => s.name),
+      dataAnalysis: skills.filter(s => s.category.toLowerCase().includes('data')).map(s => s.name),
     },
   };
 
@@ -730,11 +742,11 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 items-start">
+      <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.25fr)] gap-4 lg:gap-5 items-start">
         {/* Top/First Column content */}
-        <div className="space-y-6">
+        <div className="space-y-4 lg:space-y-5">
           {/* Profile Strength */}
-          <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
+          <div className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)]">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Profile Strength</span>
               <span className="text-[var(--text-sm)] font-[var(--font-weight-bold)] text-chart-3" style={{ fontFamily: "'Inter', sans-serif" }}>{completionScore}%</span>
@@ -755,7 +767,6 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
           {/* Contact Information */}
           <ProfileCard title="Contact Information" onEdit={() => setEditContactOpen(true)}>
             <div className="space-y-2.5 text-[var(--text-sm)]" style={{ fontFamily: "'Inter', sans-serif" }}>
-              <div className="flex items-center gap-2.5 text-primary"><Mail className="w-4 h-4" /> <span>{contact.email}</span></div>
               <div className="flex items-center gap-2.5 text-foreground">
                 <Phone className="w-4 h-4 text-muted-foreground" />
                 <span className="inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide">
@@ -764,6 +775,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
               </div>
               <div className="flex items-center gap-2.5 text-primary"><Globe className="w-4 h-4" /> <a href={`https://${contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{contact.linkedin}</a></div>
               <div className="flex items-center gap-2.5 text-primary"><Globe className="w-4 h-4" /> <a href={`https://${contact.dribbble}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{contact.dribbble}</a></div>
+              <p className="text-[var(--text-xs)] text-muted-foreground">Email is hidden from the public profile and PDF export.</p>
             </div>
           </ProfileCard>
 
@@ -808,7 +820,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
         </div>
 
         {/* Right Column */}
-        <div className="space-y-6">
+        <div className="space-y-4 lg:space-y-5">
           {/* Projects */}
           <ProfileCard title="Projects" showAdd onAdd={handleAddProject}>
             <div className="space-y-4">
@@ -875,8 +887,8 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
           </ProfileCard>
 
           {/* Export Resume Button */}
-          <div className="flex justify-end pt-4">
-            <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
+          <div className="flex justify-end pt-1">
+            <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2 whitespace-nowrap" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
               <Download className="w-4 h-4" /> Download PDF Resume
             </Button>
           </div>
@@ -893,9 +905,9 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       <EditContactModal open={editContactOpen} onOpenChange={setEditContactOpen} data={contact} onSave={setContact} />
       {selectedExperience && <EditExperienceModal key={selectedExperience.id} open={editExpOpen} onOpenChange={setEditExpOpen} data={selectedExperience} onSave={handleSaveExperience} />}
       {selectedEducation && <EditEducationModal key={selectedEducation.id} open={editEduOpen} onOpenChange={setEditEduOpen} data={selectedEducation} onSave={handleSaveEducation} />}
-      {selectedProject && <EditProjectModal open={editProjectOpen} onOpenChange={setEditProjectOpen} data={selectedProject} onSave={handleSaveProject} />}
-      {selectedCertification && <EditCertificationModal open={editCertOpen} onOpenChange={setEditCertOpen} data={selectedCertification} onSave={handleSaveCertification} />}
-      {selectedSkill && <EditSkillModal open={editSkillOpen} onOpenChange={setEditSkillOpen} data={selectedSkill} onSave={handleSaveSkill} />}
+      {selectedProject && <EditProjectModal key={selectedProject.id} open={editProjectOpen} onOpenChange={setEditProjectOpen} data={selectedProject} onSave={handleSaveProject} />}
+      {selectedCertification && <EditCertificationModal key={selectedCertification.id} open={editCertOpen} onOpenChange={setEditCertOpen} data={selectedCertification} onSave={handleSaveCertification} />}
+      {selectedSkill && <EditSkillModal key={selectedSkill.id} open={editSkillOpen} onOpenChange={setEditSkillOpen} data={selectedSkill} onSave={handleSaveSkill} />}
 
       {/* Delete Confirmation Modal */}
       <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
@@ -921,12 +933,12 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 // ════════════════════════════════════
 
 const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?: () => void; showAdd?: boolean; onAdd?: () => void }> = ({ title, children, onEdit, showAdd, onAdd }) => (
-  <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
-    <div className="flex items-center justify-between border-b border-border pb-2.5">
+  <div className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] space-y-3">
+    <div className="flex items-center justify-between border-b border-border pb-2">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
       <div className="flex gap-1">
-        {showAdd && <button onClick={onAdd} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Plus className="w-4 h-4" /></button>}
-        {onEdit && <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Pencil className="w-4 h-4" /></button>}
+        {showAdd && <button onClick={onAdd} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" aria-label={`Add ${title}`}><Plus className="w-4 h-4" /></button>}
+        {onEdit && <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" aria-label={`Edit ${title}`}><Pencil className="w-4 h-4" /></button>}
       </div>
     </div>
     {children}
@@ -1076,7 +1088,7 @@ const ProjectItem: React.FC<{
       </span>
     </div>
     <p className="text-sm text-muted-foreground">
-      {data.role} • {data.issueDate}
+      {data.role} - {data.issueDate}
     </p>
     <p className="text-sm text-foreground/90 leading-relaxed pt-1">
       {data.desc}
@@ -1092,10 +1104,8 @@ const ProjectItem: React.FC<{
     )}
     {data.url && (
       <div className="pt-3">
-        <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted">
-          <a href={data.url} target="_blank" rel="noopener noreferrer">
-            View Project <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+        <Button variant="outline" size="sm" type="button" onClick={() => openExternalLink(data.url)} className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
+          View Project <ExternalLink className="w-3.5 h-3.5" />
         </Button>
       </div>
     )}
@@ -1126,15 +1136,13 @@ const CertificationItem: React.FC<{
       </div>
       <p className="text-sm text-muted-foreground">{data.issuer}</p>
       <p className="text-sm text-muted-foreground pt-1">
-        Issued {data.issueDate}{data.expiryDate && ` • Expires ${data.expiryDate}`}
-        {data.credentialId && ` • ID: ${data.credentialId}`}
+        Issued {data.issueDate}{data.expiryDate && ` - Expires ${data.expiryDate}`}
+        {data.credentialId && ` - ID: ${data.credentialId}`}
       </p>
       {data.credentialUrl && (
         <div className="pt-3">
-          <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted">
-            <a href={data.credentialUrl} target="_blank" rel="noopener noreferrer">
-              Show Credential <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+          <Button variant="outline" size="sm" type="button" onClick={() => openExternalLink(data.credentialUrl)} className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
+            Show Credential <ExternalLink className="w-3.5 h-3.5" />
           </Button>
         </div>
       )}
@@ -1454,9 +1462,9 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
             <Select value={category} onValueChange={setCategory}>
               <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
-                <SelectItem value="Data Analysis">Data Analysis</SelectItem>
-                <SelectItem value="UX Design">UX Design</SelectItem>
-                <SelectItem value="Research">Research</SelectItem>
+                <SelectItem value="UX Projects">UX Projects</SelectItem>
+                <SelectItem value="Data Analysis & Visualization Projects">Data Analysis & Visualization Projects</SelectItem>
+                <SelectItem value="Research Projects">Research Projects</SelectItem>
                 <SelectItem value="Other">Other</SelectItem>
               </SelectContent>
             </Select>
@@ -1553,7 +1561,7 @@ const EditSkillModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
               <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Core UX & Design">Core UX & Design</SelectItem>
-                <SelectItem value="Data Analysis">Data Analysis</SelectItem>
+                <SelectItem value="Data Analysis & Visualization">Data Analysis & Visualization</SelectItem>
               </SelectContent>
             </Select>
           </div>
