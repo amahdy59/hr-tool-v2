@@ -270,9 +270,9 @@ export const EmployeeManagement: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <TabsList>
             <TabsTrigger value="directory" className="text-[var(--text-sm)]">Directory</TabsTrigger>
-            <TabsTrigger value="activity" className="text-[var(--text-sm)]">Activity Log</TabsTrigger>
             <TabsTrigger value="departments" className="text-[var(--text-sm)]">Departments</TabsTrigger>
             <TabsTrigger value="jobtitles" className="text-[var(--text-sm)]">Job Titles</TabsTrigger>
+            <TabsTrigger value="activity" className="text-[var(--text-sm)]">Activity Log</TabsTrigger>
           </TabsList>
 
           {activeSubTab === 'directory' && (

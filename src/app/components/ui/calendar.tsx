@@ -13,29 +13,24 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 const fromYear = 1900;
 const toYear = new Date().getFullYear() + 10;
 
-const monthOptions = Array.from({ length: (toYear - fromYear + 1) * 12 }, (_, index) => {
-  const year = fromYear + Math.floor(index / 12);
-  const month = index % 12;
-  const date = new Date(year, month, 1);
-
-  return {
-    value: `${year}-${String(month + 1).padStart(2, "0")}`,
-    label: format(date, "MMMM yyyy"),
-    date,
-  };
-});
-
-function CalendarCaption({ displayMonth, id }: CaptionProps) {
+function CalendarCaption({ displayMonth }: CaptionProps) {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
-  const value = format(displayMonth, "yyyy-MM");
+  const currentYear = displayMonth.getFullYear();
+  const currentMonth = displayMonth.getMonth();
+
+  const years = Array.from({ length: toYear - fromYear + 1 }, (_, i) => fromYear + i);
+  const months = [
+    "January", "February", "March", "April", "May", "June", 
+    "July", "August", "September", "October", "November", "December"
+  ];
 
   return (
-    <div className="flex items-center gap-2 px-1 pt-1">
+    <div className="flex items-center justify-between w-full gap-1 px-1 pt-1 pb-2">
       <button
         type="button"
         className={cn(
           buttonVariants({ variant: "outline" }),
-          "h-8 w-8 bg-transparent p-0 opacity-70 hover:opacity-100"
+          "h-8 w-8 bg-transparent p-0 opacity-70 hover:opacity-100 shrink-0"
         )}
         onClick={() => previousMonth && goToMonth(previousMonth)}
         disabled={!previousMonth}
@@ -44,28 +39,41 @@ function CalendarCaption({ displayMonth, id }: CaptionProps) {
         <ChevronLeft className="h-4 w-4" />
       </button>
 
-      <select
-        id={id}
-        value={value}
-        onChange={(event) => {
-          const [year, month] = event.target.value.split("-").map(Number);
-          goToMonth(startOfMonth(new Date(year, month - 1, 1)));
-        }}
-        className="h-9 min-w-0 flex-1 rounded-[var(--radius-input)] border border-border bg-input-background px-3 text-center text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        aria-label="Select month and year"
-      >
-        {monthOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div className="flex flex-1 gap-2 items-center justify-center">
+        <div className="relative w-full max-w-[100px]">
+          <select
+            value={currentMonth}
+            onChange={(e) => goToMonth(new Date(currentYear, Number(e.target.value), 1))}
+            className="w-full h-8 appearance-none rounded-[var(--radius-input)] border border-border bg-input-background pl-2 pr-6 py-0 text-xs font-[var(--font-weight-medium)] text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            aria-label="Select month"
+          >
+            {months.map((m, i) => (
+              <option key={m} value={i}>{m}</option>
+            ))}
+          </select>
+          <ChevronRight className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 opacity-50 pointer-events-none rotate-90" />
+        </div>
+        
+        <div className="relative w-full max-w-[80px]">
+          <select
+            value={currentYear}
+            onChange={(e) => goToMonth(new Date(Number(e.target.value), currentMonth, 1))}
+            className="w-full h-8 appearance-none rounded-[var(--radius-input)] border border-border bg-input-background pl-2 pr-6 py-0 text-xs font-[var(--font-weight-medium)] text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            aria-label="Select year"
+          >
+            {years.map((y) => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
+          <ChevronRight className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 opacity-50 pointer-events-none rotate-90" />
+        </div>
+      </div>
 
       <button
         type="button"
         className={cn(
           buttonVariants({ variant: "outline" }),
-          "h-8 w-8 bg-transparent p-0 opacity-70 hover:opacity-100"
+          "h-8 w-8 bg-transparent p-0 opacity-70 hover:opacity-100 shrink-0"
         )}
         onClick={() => nextMonth && goToMonth(nextMonth)}
         disabled={!nextMonth}

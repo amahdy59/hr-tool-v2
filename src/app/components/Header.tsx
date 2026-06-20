@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             </button>
           </SheetTrigger>
           <SheetContent side="left" className="w-80 p-5 flex flex-col h-full bg-card">
-            <SheetHeader className="border-b border-border pb-4 mb-4">
+            <SheetHeader className="mb-2">
               <SheetTitle style={{ fontFamily: "'Orbitron', sans-serif" }} className="text-primary text-xl font-bold">
                 HR Tool
               </SheetTitle>
@@ -58,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             <SheetClose asChild>
               <button
                 onClick={() => setActiveTab('profile')}
-                className="flex w-full items-center gap-3 p-3 bg-muted/30 rounded-[var(--radius-card)] border border-border/50 mb-4 text-start hover:bg-muted transition-colors cursor-pointer"
+                className="flex w-full items-center gap-3 p-3 bg-muted/30 rounded-[var(--radius-card)] border border-border/50 mb-4 text-start hover:bg-muted hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-sm hover:shadow-md"
                 aria-label="Go to my profile"
                 title="Go to my profile"
               >
@@ -71,7 +71,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                 )}
                 <div className="min-w-0">
                   <p className="text-[var(--text-sm)] font-semibold text-foreground truncate">{currentUser?.name}</p>
-                  <p className="text-[10px] text-muted-foreground truncate">{currentUser?.email}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">ahmed.mahdy@companyname.com</p>
                 </div>
               </button>
             </SheetClose>

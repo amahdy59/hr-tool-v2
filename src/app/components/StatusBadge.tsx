@@ -25,7 +25,7 @@ export const StatusBadge: React.FC<BadgeProps> = ({ children, variant = 'muted',
 
   return (
     <span className={cn(
-      'px-2.5 py-0.5 rounded-full text-[var(--text-xs)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center min-w-[72px]',
+      'px-2.5 py-0.5 rounded-full text-[var(--text-xs)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center min-w-[72px] whitespace-nowrap',
       variants[variant] || variants.muted,
       className
     )}>
