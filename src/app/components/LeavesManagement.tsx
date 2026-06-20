@@ -24,9 +24,9 @@ import { EmptyState } from './EmptyState';
 import { exportToCSV } from '../../lib/export';
 
 // ── Shared styles ──
-const inputClass = 'w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
-const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)]';
+const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)] whitespace-nowrap';
 
 // ── Types ──
 interface LeaveRequest {
@@ -171,12 +171,12 @@ export const LeavesManagement: React.FC = () => {
               ref={approveButtonRef}
               variant={selectedPending.length > 0 ? "default" : "outline"} 
               size="sm" 
-              className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center transition-all" 
+              className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center transition-all" 
               onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}
             >
               {selectedPending.length > 1 ? 'Approve Leaves' : 'Approve Leave'}
             </Button>
-            <Button size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
+            <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
               <Plus className="w-4 h-4" /> Create Leave
             </Button>
           </div>
@@ -207,18 +207,18 @@ export const LeavesManagement: React.FC = () => {
                 <tbody className="divide-y divide-border">
                   {PENDING_LEAVES.map(leave => (
                     <tr key={leave.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                      <td className="px-4 py-3 hidden md:table-cell"><Checkbox checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} /></td>
-                      <td className="px-4 py-1 md:py-3 font-semibold md:font-normal">
+                      <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell"><Checkbox checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} /></td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
                         <div className="flex items-center gap-2">
                           <Checkbox className="md:hidden" checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} />
                           <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{leave.name}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
-                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{leave.range}</td>
-                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{leave.duration}</td>
-                      <td className="px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{leave.notes}</td>
-                      <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{leave.range}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{leave.duration}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{leave.notes}</td>
+                      <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)]">
@@ -291,11 +291,11 @@ export const LeavesManagement: React.FC = () => {
               <tbody className="divide-y divide-border">
                 {HOLIDAYS.map(h => (
                   <tr key={h.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{h.type}</td>
-                    <td className="px-4 py-3 text-foreground">{h.range}</td>
-                    <td className="px-4 py-3 text-foreground">{h.duration}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{h.notes}</td>
-                    <td className="px-4 py-3 text-end">
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{h.type}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{h.range}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{h.duration}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{h.notes}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-end">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-44">
@@ -378,14 +378,14 @@ export const LeavesManagement: React.FC = () => {
                 <tbody className="divide-y divide-border">
                   {HISTORY_LEAVES.map(leave => (
                     <tr key={leave.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                      <td className="px-4 py-1 md:py-3 font-semibold md:font-normal">
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
                         <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{leave.name}</span>
                       </td>
-                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
-                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{leave.range}</td>
-                      <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{leave.duration}</td>
-                      <td className="px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">Status:</span><StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
-                      <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{leave.range}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{leave.duration}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">Status:</span><StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
+                      <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)]">
@@ -464,7 +464,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
   const go = (p: number) => { const v = Math.max(1, Math.min(p, totalPages)); setPage(v); setPi(String(v)); };
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4 border-t border-border bg-muted/20">
-      <div className="flex items-center gap-3 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
+      <div className="flex items-center gap-3 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start whitespace-nowrap shrink-0">
         <span>Items Per Page</span>
         <select className="h-11 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none cursor-pointer hover:bg-muted/50 transition-colors" defaultValue="15">
           <option>10</option><option>15</option><option>30</option>
@@ -580,11 +580,11 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
           <tbody className="divide-y divide-border">
             {items.map(l => (
               <tr key={l.id} className="hover:bg-muted/30">
-                <td className="px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{l.name}</span></td>
-                <td className="px-4 py-2.5 text-foreground">{l.type}</td>
-                <td className="px-4 py-2.5 text-foreground">{l.range}</td>
-                <td className="px-4 py-2.5 text-foreground">{l.duration}</td>
-                <td className="px-4 py-2.5 text-muted-foreground">{l.notes}</td>
+                <td className="whitespace-nowrap px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{l.name}</span></td>
+                <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.type}</td>
+                <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.range}</td>
+                <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.duration}</td>
+                <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">{l.notes}</td>
               </tr>
             ))}
           </tbody>

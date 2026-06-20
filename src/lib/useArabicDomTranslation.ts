@@ -13,6 +13,12 @@ const dictionary: Record<string, string> = {
   Home: 'الرئيسية',
   Search: 'بحث',
   'Search...': 'بحث...',
+  'Search by name or Employee#...': 'البحث بالاسم أو الرقم الوظيفي...',
+  'Search by name, email, or Employee#...': 'البحث بالاسم، البريد الإلكتروني، أو الرقم الوظيفي...',
+  'Search by name, Employee number, or email.': 'البحث بالاسم، الرقم الوظيفي، أو البريد الإلكتروني.',
+  'Items Per Page': 'عناصر لكل صفحة',
+  'Page': 'صفحة',
+  'of': 'من',
   Accessibility: 'إمكانية الوصول',
   'Keyboard Shortcuts': 'اختصارات لوحة المفاتيح',
   'Toggle language': 'تغيير اللغة',
@@ -248,6 +254,28 @@ const dictionary: Record<string, string> = {
   'Time In': 'وقت الحضور',
   'Time Out': 'وقت الانصراف',
   'Month': 'الشهر',
+  'IBAN (Optional)': 'رقم الحساب البنكي الدولي (اختياري)',
+  'Optional notes...': 'ملاحظات اختيارية...',
+  'Notes (optional)': 'ملاحظات (اختياري)',
+  'e.g., Mar 2026 (Optional)': 'مثال، مارس 2026 (اختياري)',
+  'Request Update': 'طلب تحديث',
+  'Bank Accounts': 'الحسابات البنكية',
+  'Bank information is encrypted and protected': 'معلومات البنك مشفرة ومحمية',
+  'To update your bank details, you must submit a change request with supporting documents for HR approval.': 'لتحديث تفاصيل البنك الخاص بك، يجب عليك تقديم طلب تغيير مع المستندات الداعمة لموافقة الموارد البشرية.',
+  'Request Bank Update': 'طلب تحديث بيانات البنك',
+  'All changes to personal information are logged for security and compliance purposes.': 'يتم تسجيل جميع التغييرات على المعلومات الشخصية لأغراض الأمان والامتثال.',
+  'Last updated': 'آخر تحديث',
+  'EGP Account': 'حساب جنيه مصري',
+  'Managed by HR': 'مُدار بواسطة الموارد البشرية',
+  'This information is maintained by HR. If something needs correction, you can request an update.': 'يتم الاحتفاظ بهذه المعلومات بواسطة الموارد البشرية. إذا كان هناك شيء يحتاج إلى تصحيح، يمكنك طلب تحديث.',
+  'Search by name, email, or employee#...': 'البحث حسب الاسم، البريد الإلكتروني، أو الرقم الوظيفي...',
+  'Create Leave': 'إضافة إجازة',
+  'Approve Leave': 'الموافقة على الإجازة',
+  'Approve Leaves': 'الموافقة على الإجازات',
+  'Create Mission': 'إضافة مأمورية',
+  'Approve Mission': 'الموافقة على المأمورية',
+  'Approve Missions': 'الموافقة على المأموريات',
+  'Search by name or Employee#...': 'البحث حسب الاسم أو الرقم الوظيفي...',
   'Monday': 'الإثنين',
   'Tuesday': 'الثلاثاء',
   'Wednesday': 'الأربعاء',
@@ -559,7 +587,11 @@ const translateTextNode = (node: Text, enabled: boolean) => {
     return;
   }
 
-  if (!cachedSource || (!arabicPattern.test(current) && current !== translateValue(cachedSource))) {
+  const shouldCache = !cachedSource 
+    ? !arabicPattern.test(current)
+    : (!arabicPattern.test(current) && current !== translateValue(cachedSource));
+
+  if (shouldCache) {
     originalText.set(node, current);
   }
 
@@ -585,7 +617,11 @@ const translateElementAttributes = (element: Element, enabled: boolean) => {
       return;
     }
 
-    if (!cachedSource || (!arabicPattern.test(current) && current !== translateValue(cachedSource))) {
+    const shouldCache = !cachedSource 
+      ? !arabicPattern.test(current)
+      : (!arabicPattern.test(current) && current !== translateValue(cachedSource));
+
+    if (shouldCache) {
       originals.set(attribute, current);
     }
 
@@ -623,6 +659,8 @@ const walkAndTranslate = (root: ParentNode, enabled: boolean) => {
 export const useArabicDomTranslation = (enabled: boolean) => {
   useEffect(() => {
     walkAndTranslate(document.body, enabled);
+
+    if (!enabled) return;
 
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {

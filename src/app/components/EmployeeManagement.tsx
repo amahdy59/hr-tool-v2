@@ -145,7 +145,7 @@ const ACTIVITY_TYPES = ['Direct', 'InDirect'];
 const EMPLOYMENT_TYPES = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
 
 // ── Shared input style ──
-const inputClass = "w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow";
+const inputClass = "w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow";
 const labelClass = "text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground";
 const includesQuery = (values: Array<string | number>, query: string) => {
   const normalized = query.trim().toLowerCase();
@@ -321,7 +321,7 @@ export const EmployeeManagement: React.FC = () => {
                 </div>
                 <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                   <PopoverTrigger asChild>
-                    <button type="button" aria-label="Open employee filters" className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center', activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
+                    <button type="button" aria-label="Open employee filters" className={cn('relative h-[44px] px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center', activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
                       <Filter className="w-4 h-4" />
                       {activeFiltersCount > 0 && <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFiltersCount}</span>}
                     </button>
@@ -356,28 +356,28 @@ export const EmployeeManagement: React.FC = () => {
                 <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground w-8"><Checkbox aria-label="Select all employees" /></th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Employee Number</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground w-8"><Checkbox aria-label="Select all employees" /></th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Employee Number</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
                     {filteredEmployees.map((emp) => (
                       <tr key={emp.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
-                        <td className="px-4 py-3 hidden md:table-cell"><Checkbox aria-label={`Select ${emp.name}`} /></td>
-                        <td className="px-4 py-1 md:py-3">
+                        <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell"><Checkbox aria-label={`Select ${emp.name}`} /></td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3">
                           <div className="flex items-center gap-2">
                             <Checkbox className="md:hidden mt-0.5" aria-label={`Select ${emp.name}`} />
                             <span className="text-primary font-[var(--font-weight-medium)]">{emp.name}</span>
                           </div>
                         </td>
-                        <td className="px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span>{emp.employeeNumber}</td>
-                        <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Department:</span>{emp.department}</td>
-                        <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Title:</span>{emp.jobTitle}</td>
-                        <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span>{emp.employeeNumber}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Department:</span>{emp.department}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Title:</span>{emp.jobTitle}</td>
+                        <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
@@ -433,23 +433,23 @@ export const EmployeeManagement: React.FC = () => {
                 <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Admin</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Action Taken</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Date</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Amount Affected</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Admin</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Action Taken</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Date</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Amount Affected</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
                     {filteredActivityLog.map((log) => (
                       <tr key={log.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                        <td className="px-4 py-1 md:py-3">
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3">
                           <span className="font-[var(--font-weight-medium)] text-foreground">{log.admin}</span>
                         </td>
-                        <td className="px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Action:</span>{log.action}</td>
-                        <td className="px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Date:</span>{log.date}</td>
-                        <td className="px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Affected:</span>{log.affectedCount}</td>
-                        <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Action:</span>{log.action}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Date:</span>{log.date}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Affected:</span>{log.affectedCount}</td>
+                        <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <Button variant="outline" size="sm" onClick={() => { setActivityLogDetail(log); setActivityLogDetailOpen(true); }} className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">View Details</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
                         </td>
                       </tr>
@@ -483,19 +483,19 @@ export const EmployeeManagement: React.FC = () => {
                 <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department ID</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Total Number</th>
-                      <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department ID</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Total Number</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
                     {filteredDepartments.map((dept) => (
                       <tr key={dept.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                        <td className="px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)]">{dept.name}</td>
-                        <td className="px-4 py-1 md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">ID:</span>{dept.deptId}</td>
-                        <td className="px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Total:</span>{dept.totalNumber}</td>
-                        <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)]">{dept.name}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">ID:</span>{dept.deptId}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Total:</span>{dept.totalNumber}</td>
+                        <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
                             <Button variant="outline" size="sm" aria-label={`Edit ${dept.name}`} onClick={() => { setEditDeptData(dept); setEditDeptOpen(true); }} className="w-full md:w-auto justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted">
                               <span className="md:hidden">Edit</span>
@@ -526,17 +526,17 @@ export const EmployeeManagement: React.FC = () => {
               <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                 <thead>
                   <tr className="bg-muted border-b border-border">
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground"># Employees</th>
-                    <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
+                    <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
+                    <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground"># Employees</th>
+                    <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {filteredJobTitles.map((jt) => (
                     <tr key={jt.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{jt.title}</td>
-                      <td className="px-4 py-3 text-foreground tabular-nums">{jt.count}</td>
-                      <td className="px-4 py-3 text-end">
+                      <td className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{jt.title}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums">{jt.count}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-end">
                         <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
                           <button type="button" aria-label={`Edit ${jt.title}`} onClick={() => { setEditJtData(jt); setEditJtOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
                             <Edit className="w-4 h-4 text-muted-foreground" />
@@ -665,7 +665,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4 border-t border-border bg-muted/20">
-      <div className="flex items-center gap-3 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
+      <div className="flex items-center gap-3 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start whitespace-nowrap shrink-0">
         <span>Items Per Page</span>
         <select className="h-11 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none cursor-pointer hover:bg-muted/50 transition-colors" defaultValue="15">
           <option>10</option><option>15</option><option>30</option>
@@ -893,21 +893,21 @@ const FormerEmployeeModal: React.FC<{
             <table className="w-full md:min-w-max text-[var(--text-sm)]">
               <thead>
                 <tr className="bg-muted border-b border-border">
-                  <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
-                  <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Employee#</th>
-                  <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Dept</th>
-                  <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Title</th>
-                  <th className="px-4 py-2.5 text-end font-[var(--font-weight-medium)] text-muted-foreground">Action</th>
+                  <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
+                  <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Employee#</th>
+                  <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Dept</th>
+                  <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Title</th>
+                  <th className="whitespace-nowrap px-4 py-2.5 text-end font-[var(--font-weight-medium)] text-muted-foreground">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {formerEmployees.map((fe, i) => (
                   <tr key={i} className="hover:bg-muted/30">
-                    <td className="px-4 py-2.5 text-foreground">{fe.name}</td>
-                    <td className="px-4 py-2.5 text-muted-foreground uppercase tabular-nums">{fe.employeeNumber}</td>
-                    <td className="px-4 py-2.5 text-foreground">{fe.dept}</td>
-                    <td className="px-4 py-2.5 text-foreground">{fe.title}</td>
-                    <td className="px-4 py-2.5 text-end">
+                    <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{fe.name}</td>
+                    <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground uppercase tabular-nums">{fe.employeeNumber}</td>
+                    <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{fe.dept}</td>
+                    <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{fe.title}</td>
+                    <td className="whitespace-nowrap px-4 py-2.5 text-end">
                       <Button size="sm" variant="outline" className="gap-1.5 rounded-[var(--radius-button)]" onClick={() => { onOpenChange(false); toast.success(`${fe.name} added back as an employee`); }}>
                         <Plus className="w-3 h-3" /> Add
                       </Button>
@@ -1008,21 +1008,21 @@ const AccessCardsModal: React.FC<{
                 <table className="w-full md:min-w-max text-[var(--text-sm)]">
                   <thead>
                     <tr className="bg-muted border-b border-border">
-                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Number</th>
-                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Start Date</th>
-                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">End Date</th>
-                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Type</th>
-                      <th className="px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Status</th>
+                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Number</th>
+                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Start Date</th>
+                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">End Date</th>
+                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Type</th>
+                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
                     {mockCards.map((card) => (
                       <tr key={card.id} className="hover:bg-muted/30">
-                        <td className="px-4 py-2.5 text-foreground tabular-nums">{card.cardNumber}</td>
-                        <td className="px-4 py-2.5 text-foreground">{card.startDate}</td>
-                        <td className="px-4 py-2.5 text-foreground">{card.endDate}</td>
-                        <td className="px-4 py-2.5 text-foreground">{card.cardType}</td>
-                        <td className="px-4 py-2.5">
+                        <td className="whitespace-nowrap px-4 py-2.5 text-foreground tabular-nums">{card.cardNumber}</td>
+                        <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{card.startDate}</td>
+                        <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{card.endDate}</td>
+                        <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{card.cardType}</td>
+                        <td className="whitespace-nowrap px-4 py-2.5">
                           <span className={cn(
                             'px-2.5 py-0.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)]',
                             card.status === 'Active'

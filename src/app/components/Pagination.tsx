@@ -22,9 +22,9 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 py-2">
-      <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
+      <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start whitespace-nowrap shrink-0">
         Items Per Page
-        <select className="h-8 px-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none focus:ring-2 focus:ring-ring/50 cursor-pointer">
+        <select className="h-11 sm:h-8 px-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] outline-none focus:ring-2 focus:ring-ring/50 cursor-pointer">
           <option>{itemsPerPage}</option>
           <option>30</option>
           <option>50</option>
@@ -47,7 +47,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             onChange={(e) => setPageInput(e.target.value)}
             onBlur={() => go(Number(pageInput) || 1)}
             onKeyDown={(e) => e.key === 'Enter' && go(Number(pageInput) || 1)}
-            className="w-10 h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]"
+            className="w-10 h-11 sm:h-8 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)]"
             aria-label="Page number input"
           />
           of {totalPages}

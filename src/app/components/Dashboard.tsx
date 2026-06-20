@@ -355,7 +355,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           Leaves and Mission History
         </h3>
 
-        <div className="flex flex-col gap-3 p-4 bg-muted/30 rounded-[var(--radius)] sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 p-4 bg-muted/30 rounded-[var(--radius)] sm:flex-row sm:items-end sm:justify-between">
           <Button variant="outline" className="w-full sm:w-auto gap-2 cursor-pointer justify-center">
             <Download className="w-4 h-4" /> Download Data
           </Button>
@@ -426,7 +426,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         </div>
 
         <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card shadow-[var(--elevation-sm)]">
-          <table className="w-full min-w-[760px] text-start">
+          <table className="w-full min-w-[760px] text-[var(--text-sm)] text-start">
             <thead className="bg-muted/50 border-b border-border">
               <tr>
                 {[
@@ -470,7 +470,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4 px-4 py-4 border-t border-border bg-muted/20">
-          <div className="flex items-center gap-3 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
+          <div className="flex items-center gap-3 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start whitespace-nowrap shrink-0">
             <span>Items Per Page</span>
             <select className="h-11 px-3 border border-border rounded-[var(--radius-input)] bg-card text-foreground outline-none cursor-pointer">
               <option>15</option>
@@ -506,7 +506,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             Annual and Sick Leaves
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
-            <table className="w-full md:min-w-max text-start">
+            <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {[
@@ -578,7 +578,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             Other Leaves
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
-            <table className="w-full md:min-w-max text-start">
+            <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {['Leave Type', 'Balance'].map((h) => (

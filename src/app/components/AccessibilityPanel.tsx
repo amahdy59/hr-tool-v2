@@ -234,7 +234,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
           <SheetTrigger asChild>
             {triggerButton}
           </SheetTrigger>
-          <SheetContent side="bottom" className="h-[100dvh] w-full p-5 border-0 rounded-none bg-card z-[100]">
+          <SheetContent side="bottom" className="h-[100dvh] flex flex-col w-full p-5 border-0 rounded-none bg-card z-[100] overflow-hidden">
             <SheetTitle className="sr-only">Accessibility Settings</SheetTitle>
             {renderPanelContent(null)}
           </SheetContent>
@@ -247,7 +247,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             {triggerButton}
           </PopoverTrigger>
           <PopoverContent
-            className="w-80 p-5 rounded-[var(--radius-card)] border border-border bg-card shadow-[var(--elevation-lg)] flex flex-col z-[100] max-h-[85vh]"
+            className="w-80 p-5 rounded-[var(--radius-card)] border border-border bg-card shadow-[var(--elevation-lg)] flex flex-col z-[100] max-h-[85vh] overflow-hidden"
             align="end"
             sideOffset={8}
             collisionPadding={16}

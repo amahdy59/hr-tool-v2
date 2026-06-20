@@ -34,7 +34,7 @@ const DEPARTMENTS = ['All', 'IT', 'HR', 'Finance', 'Operations', 'Marketing', 'S
 const JOB_TITLES = ['Admin', 'Super Admin', 'HR Specialist', 'HR Manager', 'Team Leader', 'Financial Specialist', 'Financial Reviewer', 'Accountant'];
 
 // ── CSS Classes ──
-const inputClass = 'h-10 w-full px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'h-[44px] w-full px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 
 // ── Form Field Component ──
@@ -268,19 +268,19 @@ export const RolesManagement: React.FC = () => {
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <thead className="hidden md:table-header-group">
                 <tr className="bg-muted border-b border-border">
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
+                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
                     Employee Name
                   </th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
+                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
                     Date Enrolled
                   </th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
+                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
                     Date Left
                   </th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
+                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
                     Job Title
                   </th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">
+                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">
                     Actions
                   </th>
                 </tr>
@@ -288,23 +288,23 @@ export const RolesManagement: React.FC = () => {
               <tbody className="divide-y divide-border">
                 {paginatedRoles.map((role) => (
                   <tr key={role.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
-                    <td className="px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)] flex justify-between md:table-cell">
+                    <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)] flex justify-between md:table-cell">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Name:</span>
                       <span>{role.employeeName}</span>
                     </td>
-                    <td className="px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
+                    <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Enrolled:</span>
                       <span>{role.dateEnrolled}</span>
                     </td>
-                    <td className="px-4 py-1 md:py-3 text-muted-foreground flex justify-between md:table-cell">
+                    <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground flex justify-between md:table-cell">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Left:</span>
                       <span>{role.dateLeft}</span>
                     </td>
-                    <td className="px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
+                    <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Title:</span>
                       <span>{role.jobTitle}</span>
                     </td>
-                    <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
+                    <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                       <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 w-full md:w-auto">
                         <button
                           onClick={() => handleEditRole(role)}
@@ -332,7 +332,7 @@ export const RolesManagement: React.FC = () => {
 
           {/* Pagination */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/20">
-            <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
+            <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start whitespace-nowrap shrink-0">
               Items Per Page
               <Select
                 value={String(itemsPerPage)}

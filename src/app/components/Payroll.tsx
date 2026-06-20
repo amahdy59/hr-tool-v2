@@ -391,7 +391,7 @@ const EmployeesTab = ({ filteredEmployees, handleGeneratePayslip }: any) => (
 
     <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
       <div className="overflow-x-auto">
-        <table className="w-full md:min-w-max">
+        <table className="w-full md:min-w-max text-[var(--text-sm)]">
           <thead className="bg-muted border-b border-border">
             <tr>
               <TableHeader>SESA ID</TableHeader>

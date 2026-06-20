@@ -146,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             <Search className="w-4 h-4 shrink-0" aria-hidden="true" />
             <span className="hidden truncate md:inline">{t('header.search')}</span>
           </span>
-          <kbd dir="ltr" className="hidden h-5 items-center justify-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground xl:inline-flex">
+          <kbd dir="ltr" data-no-auto-translate="true" className="hidden h-5 items-center justify-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground xl:inline-flex">
             Ctrl K
           </kbd>
         </button>

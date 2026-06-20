@@ -333,7 +333,7 @@ export const Attendance: React.FC = () => {
                 placeholder="Search by name, email, or Employee#..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow text-[var(--text-sm)]"
+                className="w-full h-[44px] ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow text-[var(--text-sm)]"
               />
             </div>
 
@@ -342,7 +342,7 @@ export const Attendance: React.FC = () => {
               <PopoverTrigger asChild>
                 <button
                   className={cn(
-                    'relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center gap-1.5',
+                    'relative h-[44px] px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center gap-1.5',
                     activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground'
                   )}
                 >
