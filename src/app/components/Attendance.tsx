@@ -149,7 +149,7 @@ const mockDays: DayRecord[] = [
 const departments = ['All', 'Oil and Gas', 'IT', 'Finance', 'Human Resources', 'Operations', 'Engineering'];
 const jobTitles = ['All', 'Engineer', 'Lead Engineer', 'Application Consultant', 'Project Manager', 'Senior Engineer', 'Analyst'];
 const activityTypes = ['My team', 'Lead Engineer', 'Application Consultant', 'Project Manager'];
-const employmentTypes = ['Full-time', 'Contractor'];
+const employmentTypes = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
 const months = [
   { value: 'all', label: 'All' },
   { value: '1', label: 'January' },
