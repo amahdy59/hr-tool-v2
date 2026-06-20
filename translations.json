@@ -1,0 +1,5564 @@
+[
+  {
+    "Source Index": 0,
+    "English Text": ", or",
+    "Arabic Translation": "، أو",
+    "UI Category": "Label",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 5,
+    "English Text": "? This action cannot be undone.",
+    "Arabic Translation": "؟ لا يمكن التراجع عن هذا الإجراء.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 6,
+    "English Text": ". This action cannot be undone.",
+    "Arabic Translation": ". لا يمكن التراجع عن هذا الإجراء.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 7,
+    "English Text": ". This action is permanent.",
+    "Arabic Translation": ". هذا الإجراء نهائي.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 8,
+    "English Text": "'s mission from",
+    "Arabic Translation": "مأمورية من",
+    "UI Category": "Label",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 76,
+    "English Text": "+972(0) XXXX-XXXX",
+    "Arabic Translation": "+972(0) XXXX-XXXX",
+    "UI Category": "Demo value / format"
+  },
+  {
+    "Source Index": 77,
+    "English Text": "01XXXXXXXXX",
+    "Arabic Translation": "01XXXXXXXXX",
+    "UI Category": "Demo value / format"
+  },
+  {
+    "Source Index": 78,
+    "English Text": "10 January 2023",
+    "Arabic Translation": "10 يناير 2023",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 79,
+    "English Text": "13 January 2023",
+    "Arabic Translation": "13 يناير 2023",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 80,
+    "English Text": "14 days",
+    "Arabic Translation": "14 يومًا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 81,
+    "English Text": "21 days",
+    "Arabic Translation": "21 يومًا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 82,
+    "English Text": "3 pending approvals required",
+    "Arabic Translation": "يلزم 3 موافقات معلّقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 83,
+    "English Text": "45 days",
+    "Arabic Translation": "45 يومًا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 84,
+    "English Text": "65% • 10 seconds remaining",
+    "Arabic Translation": "65% • متبقٍ 10 ثوانٍ",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 85,
+    "English Text": "A password reset link has been sent to your email.",
+    "Arabic Translation": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 86,
+    "English Text": "A privacy-safe demo of a real HR upgrade. Scattered legacy screens become an accessible, responsive experience for employees, managers, and HR teams.",
+    "Arabic Translation": "عرض تجريبي آمن من حيث الخصوصية لتحديث حقيقي في نظام الموارد البشرية. تتحول الشاشات القديمة المتفرقة إلى تجربة سهلة الوصول ومتجاوبة للموظفين والمديرين وفرق الموارد البشرية.",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 87,
+    "English Text": "AAA High Contrast",
+    "Arabic Translation": "تباين عالٍ بمستوى AAA",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 88,
+    "English Text": "AAA Large Targets",
+    "Arabic Translation": "أهداف تفاعلية كبيرة بمستوى AAA",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 89,
+    "English Text": "AAA Text Scale",
+    "Arabic Translation": "تحجيم النص بمستوى AAA",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 90,
+    "English Text": "About",
+    "Arabic Translation": "نبذة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 91,
+    "English Text": "About Me",
+    "Arabic Translation": "نبذة عني",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 92,
+    "English Text": "About this redesign",
+    "Arabic Translation": "نبذة عن إعادة التصميم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 93,
+    "English Text": "Access Card",
+    "Arabic Translation": "بطاقة دخول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 94,
+    "English Text": "Access Cards",
+    "Arabic Translation": "بطاقات الدخول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 95,
+    "English Text": "Accessibility",
+    "Arabic Translation": "إمكانية الوصول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 96,
+    "English Text": "Accessibility Settings",
+    "Arabic Translation": "إعدادات إمكانية الوصول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 97,
+    "English Text": "Accessibility Tools",
+    "Arabic Translation": "أدوات إمكانية الوصول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 98,
+    "English Text": "Account Number",
+    "Arabic Translation": "رقم الحساب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 99,
+    "English Text": "Account Number *",
+    "Arabic Translation": "رقم الحساب *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 100,
+    "English Text": "Action",
+    "Arabic Translation": "الإجراء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 101,
+    "English Text": "Action Taken",
+    "Arabic Translation": "الإجراء المتخذ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 102,
+    "English Text": "Action:",
+    "Arabic Translation": "الإجراء:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 103,
+    "English Text": "Actions",
+    "Arabic Translation": "الإجراءات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 104,
+    "English Text": "Active",
+    "Arabic Translation": "نشط",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 105,
+    "English Text": "Active leave requests will be automatically denied.",
+    "Arabic Translation": "سيتم رفض طلبات الإجازة النشطة تلقائيًا.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 106,
+    "English Text": "Activity",
+    "Arabic Translation": "النشاط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 107,
+    "English Text": "Activity Log",
+    "Arabic Translation": "سجل النشاط",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 108,
+    "English Text": "Activity Type",
+    "Arabic Translation": "نوع النشاط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 109,
+    "English Text": "Add",
+    "Arabic Translation": "إضافة",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 110,
+    "English Text": "Add a contact so HR can reach someone in case of emergency.",
+    "Arabic Translation": "أضف جهة اتصال حتى تتمكن الموارد البشرية من التواصل مع شخص في حالات الطوارئ.",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 111,
+    "English Text": "Add a former employee back to the system",
+    "Arabic Translation": "إضافة موظف سابق مرة أخرى إلى النظام",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 112,
+    "English Text": "Add a new role assignment",
+    "Arabic Translation": "إضافة تعيين دور جديد",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 113,
+    "English Text": "Add a skill...",
+    "Arabic Translation": "أضف مهارة...",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 114,
+    "English Text": "Add account",
+    "Arabic Translation": "إضافة حساب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 115,
+    "English Text": "Add an Employee",
+    "Arabic Translation": "إضافة موظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 116,
+    "English Text": "Add any notes for your leave request...",
+    "Arabic Translation": "أضف أي ملاحظات لطلب الإجازة...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 117,
+    "English Text": "Add any notes for your mission request...",
+    "Arabic Translation": "أضف أي ملاحظات لطلب المأمورية...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 118,
+    "English Text": "Add Card",
+    "Arabic Translation": "إضافة بطاقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 119,
+    "English Text": "Add Certification",
+    "Arabic Translation": "إضافة شهادة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 120,
+    "English Text": "Add contact",
+    "Arabic Translation": "إضافة جهة اتصال",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 121,
+    "English Text": "Add Contact",
+    "Arabic Translation": "إضافة جهة اتصال",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 122,
+    "English Text": "Add Department",
+    "Arabic Translation": "إضافة قسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 123,
+    "English Text": "Add Education",
+    "Arabic Translation": "إضافة تعليم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 124,
+    "English Text": "Add Employee",
+    "Arabic Translation": "إضافة موظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 125,
+    "English Text": "Add Experience",
+    "Arabic Translation": "إضافة خبرة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 126,
+    "English Text": "Add Former Employee",
+    "Arabic Translation": "إضافة موظف سابق",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 127,
+    "English Text": "Add Holiday / Bridge",
+    "Arabic Translation": "إضافة عطلة / يوم ربط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 128,
+    "English Text": "Add Job Title",
+    "Arabic Translation": "إضافة مسمى وظيفي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 129,
+    "English Text": "Add more details to strengthen your profile",
+    "Arabic Translation": "أضف المزيد من التفاصيل لتعزيز ملفك الشخصي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 130,
+    "English Text": "Add new category...",
+    "Arabic Translation": "أضف فئة جديدة...",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 131,
+    "English Text": "Add New Role",
+    "Arabic Translation": "إضافة دور جديد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 132,
+    "English Text": "Add Project",
+    "Arabic Translation": "إضافة مشروع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 133,
+    "English Text": "Add Role",
+    "Arabic Translation": "إضافة دور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 134,
+    "English Text": "Add Skill",
+    "Arabic Translation": "إضافة مهارة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 135,
+    "English Text": "Address",
+    "Arabic Translation": "العنوان",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 136,
+    "English Text": "Adjust your preferences.",
+    "Arabic Translation": "عدّل تفضيلاتك.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 137,
+    "English Text": "Admin",
+    "Arabic Translation": "المسؤول",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 138,
+    "English Text": "Admin Activity Log",
+    "Arabic Translation": "سجل نشاط المسؤول",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 139,
+    "English Text": "Advanced",
+    "Arabic Translation": "متقدم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 140,
+    "English Text": "Affected Accounts",
+    "Arabic Translation": "الحسابات المتأثرة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 141,
+    "English Text": "Affected Count",
+    "Arabic Translation": "عدد المتأثرين",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 142,
+    "English Text": "Affected:",
+    "Arabic Translation": "المتأثر:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 143,
+    "English Text": "After",
+    "Arabic Translation": "بعد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 144,
+    "English Text": "Aleksander Garcia",
+    "Arabic Translation": "ألكسندر غارسيا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 145,
+    "English Text": "All",
+    "Arabic Translation": "الكل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 146,
+    "English Text": "All access to company resources will be revoked.",
+    "Arabic Translation": "سيتم إلغاء كل صلاحيات الوصول إلى موارد الشركة.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 147,
+    "English Text": "All changes to personal information are logged for security and compliance purposes.",
+    "Arabic Translation": "يتم تسجيل جميع التغييرات على المعلومات الشخصية لأغراض الأمان والامتثال.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 148,
+    "English Text": "All Departments",
+    "Arabic Translation": "كل الأقسام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 149,
+    "English Text": "All Job Titles",
+    "Arabic Translation": "كل المسميات الوظيفية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 150,
+    "English Text": "All rights reserved. Ahmed Mahdy's redesign.",
+    "Arabic Translation": "جميع الحقوق محفوظة. إعادة تصميم أحمد مهدي.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 151,
+    "English Text": "Amount Affected",
+    "Arabic Translation": "المبلغ المتأثر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 152,
+    "English Text": "Analyst",
+    "Arabic Translation": "محلل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 153,
+    "English Text": "Annual and Sick Leaves",
+    "Arabic Translation": "الإجازات السنوية والمرضية",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 154,
+    "English Text": "Annual Leave",
+    "Arabic Translation": "إجازة سنوية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 155,
+    "English Text": "Annual leave",
+    "Arabic Translation": "إجازة سنوية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 156,
+    "English Text": "Application Consultant",
+    "Arabic Translation": "استشاري تطبيقات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 157,
+    "English Text": "Apply",
+    "Arabic Translation": "تطبيق",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 158,
+    "English Text": "Apply Filter",
+    "Arabic Translation": "تطبيق الفلتر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 159,
+    "English Text": "Apply heavy outlines to key elements when tabbed.",
+    "Arabic Translation": "تطبيق حدود بارزة على العناصر الرئيسية عند التنقل بلوحة المفاتيح.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 160,
+    "English Text": "Approvals",
+    "Arabic Translation": "الموافقات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 161,
+    "English Text": "Approve",
+    "Arabic Translation": "موافقة",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 162,
+    "English Text": "Approve Leave",
+    "Arabic Translation": "الموافقة على الإجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 163,
+    "English Text": "Approve Leaves",
+    "Arabic Translation": "الموافقة على الإجازات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 164,
+    "English Text": "Approve Mission",
+    "Arabic Translation": "الموافقة على المأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 165,
+    "English Text": "Approve Missions",
+    "Arabic Translation": "الموافقة على المأموريات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 166,
+    "English Text": "Approved",
+    "Arabic Translation": "تمت الموافقة",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 167,
+    "English Text": "Approver",
+    "Arabic Translation": "المعتمد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 168,
+    "English Text": "Approver:",
+    "Arabic Translation": "المعتمد:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 169,
+    "English Text": "Apr",
+    "Arabic Translation": "أبريل",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 170,
+    "English Text": "April",
+    "Arabic Translation": "أبريل",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 171,
+    "English Text": "Are you sure you want to delete",
+    "Arabic Translation": "هل أنت متأكد أنك تريد حذف",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 172,
+    "English Text": "Are you sure you want to remove this role? This action cannot be undone.",
+    "Arabic Translation": "هل أنت متأكد أنك تريد إزالة هذا الدور؟ لا يمكن التراجع عن هذا الإجراء.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 173,
+    "English Text": "Are you sure?",
+    "Arabic Translation": "هل أنت متأكد؟",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 174,
+    "English Text": "Assign Card",
+    "Arabic Translation": "تعيين بطاقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 175,
+    "English Text": "Assign Holiday / Bridge",
+    "Arabic Translation": "تعيين عطلة / يوم ربط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 176,
+    "English Text": "Assigned Cards",
+    "Arabic Translation": "البطاقات المعيّنة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 177,
+    "English Text": "Attachment",
+    "Arabic Translation": "مرفق",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 178,
+    "English Text": "Attachment(s)",
+    "Arabic Translation": "المرفقات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 179,
+    "English Text": "Attendance",
+    "Arabic Translation": "الحضور",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 180,
+    "English Text": "Attendance Period",
+    "Arabic Translation": "فترة الحضور",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 181,
+    "English Text": "Attendance records will be finalized and archived.",
+    "Arabic Translation": "سيتم اعتماد سجلات الحضور وأرشفتها.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 182,
+    "English Text": "Audience:",
+    "Arabic Translation": "الجمهور:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 183,
+    "English Text": "Aug",
+    "Arabic Translation": "أغسطس",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 184,
+    "English Text": "August",
+    "Arabic Translation": "أغسطس",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 185,
+    "English Text": "Available",
+    "Arabic Translation": "متاح",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 186,
+    "English Text": "Back to Login",
+    "Arabic Translation": "العودة إلى تسجيل الدخول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 187,
+    "English Text": "Back to login",
+    "Arabic Translation": "العودة إلى تسجيل الدخول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 188,
+    "English Text": "Back to top",
+    "Arabic Translation": "العودة إلى الأعلى",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 189,
+    "English Text": "Bank Accounts",
+    "Arabic Translation": "الحسابات البنكية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 190,
+    "English Text": "Bank information is encrypted and protected",
+    "Arabic Translation": "المعلومات البنكية مشفرة ومحمية",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 191,
+    "English Text": "Bank Name",
+    "Arabic Translation": "اسم البنك",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 192,
+    "English Text": "Bank Name *",
+    "Arabic Translation": "اسم البنك *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 193,
+    "English Text": "Basic Information",
+    "Arabic Translation": "المعلومات الأساسية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 194,
+    "English Text": "Before",
+    "Arabic Translation": "قبل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 195,
+    "English Text": "Before &amp; After",
+    "Arabic Translation": "قبل وبعد",
+    "UI Category": "Label",
+    "Localization Note": "HTML entity normalized in Arabic translation."
+  },
+  {
+    "Source Index": 196,
+    "English Text": "Beginner",
+    "Arabic Translation": "مبتدئ",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 197,
+    "English Text": "Bereavement",
+    "Arabic Translation": "وفاة قريب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 198,
+    "English Text": "Bonus",
+    "Arabic Translation": "مكافأة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 199,
+    "English Text": "Bridge",
+    "Arabic Translation": "يوم ربط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 200,
+    "English Text": "Cancel",
+    "Arabic Translation": "إلغاء",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 201,
+    "English Text": "Cancel request",
+    "Arabic Translation": "إلغاء الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 202,
+    "English Text": "Cancel Request",
+    "Arabic Translation": "إلغاء الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 203,
+    "English Text": "Cancelled",
+    "Arabic Translation": "ملغى",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 204,
+    "English Text": "Card Number",
+    "Arabic Translation": "رقم البطاقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 205,
+    "English Text": "Card Type",
+    "Arabic Translation": "نوع البطاقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 206,
+    "English Text": "Carried over days are deducted automatically before this year's vacation.",
+    "Arabic Translation": "تُخصم الأيام المرحلة تلقائيًا قبل رصيد إجازات هذا العام.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 207,
+    "English Text": "Casual Leave",
+    "Arabic Translation": "إجازة عارضة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 208,
+    "English Text": "Category",
+    "Arabic Translation": "الفئة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 209,
+    "English Text": "Category *",
+    "Arabic Translation": "الفئة *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 210,
+    "English Text": "CDXXXXXXXX",
+    "Arabic Translation": "CDXXXXXXXX",
+    "UI Category": "Demo value / format"
+  },
+  {
+    "Source Index": 211,
+    "English Text": "Certification added successfully",
+    "Arabic Translation": "تمت إضافة الشهادة بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 212,
+    "English Text": "Certification Title",
+    "Arabic Translation": "عنوان الشهادة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 213,
+    "English Text": "Certification Title *",
+    "Arabic Translation": "عنوان الشهادة *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 214,
+    "English Text": "Certification updated successfully",
+    "Arabic Translation": "تم تحديث الشهادة بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 215,
+    "English Text": "Certifications",
+    "Arabic Translation": "الشهادات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 216,
+    "English Text": "Change Picture",
+    "Arabic Translation": "تغيير الصورة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 217,
+    "English Text": "Change Profile Picture",
+    "Arabic Translation": "تغيير صورة الملف الشخصي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 218,
+    "English Text": "Change profile picture",
+    "Arabic Translation": "تغيير صورة الملف الشخصي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 219,
+    "English Text": "Change typeface to a more readable font style.",
+    "Arabic Translation": "تغيير الخط إلى نمط أكثر قابلية للقراءة.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 220,
+    "English Text": "Change Weekends",
+    "Arabic Translation": "تغيير أيام عطلة نهاية الأسبوع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 221,
+    "English Text": "Child",
+    "Arabic Translation": "طفل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 222,
+    "English Text": "Clear",
+    "Arabic Translation": "مسح",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 223,
+    "English Text": "clear all filters",
+    "Arabic Translation": "مسح كل الفلاتر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 224,
+    "English Text": "Clear Filter",
+    "Arabic Translation": "مسح الفلتر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 225,
+    "English Text": "Client Visit",
+    "Arabic Translation": "زيارة عميل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 226,
+    "English Text": "Close",
+    "Arabic Translation": "إغلاق",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 227,
+    "English Text": "Close accessibility panel",
+    "Arabic Translation": "إغلاق لوحة إمكانية الوصول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 228,
+    "English Text": "Close filters",
+    "Arabic Translation": "إغلاق الفلاتر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 229,
+    "English Text": "Close navigation menu",
+    "Arabic Translation": "إغلاق قائمة التنقل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 230,
+    "English Text": "COLA Allowance",
+    "Arabic Translation": "بدل غلاء المعيشة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 231,
+    "English Text": "Color Indicators",
+    "Arabic Translation": "مؤشرات الألوان",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 232,
+    "English Text": "Command Palette",
+    "Arabic Translation": "لوحة الأوامر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 233,
+    "English Text": "Comment",
+    "Arabic Translation": "تعليق",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 234,
+    "English Text": "Company",
+    "Arabic Translation": "الشركة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 235,
+    "English Text": "Company *",
+    "Arabic Translation": "الشركة *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 236,
+    "English Text": "Comparison screens",
+    "Arabic Translation": "شاشات المقارنة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 237,
+    "English Text": "Compensation Items",
+    "Arabic Translation": "بنود التعويضات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 238,
+    "English Text": "Compensation Structure",
+    "Arabic Translation": "هيكل التعويضات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 239,
+    "English Text": "Complete",
+    "Arabic Translation": "مكتمل",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 240,
+    "English Text": "Conference",
+    "Arabic Translation": "مؤتمر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 241,
+    "English Text": "Confirm",
+    "Arabic Translation": "تأكيد",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 242,
+    "English Text": "Confirm Approval",
+    "Arabic Translation": "تأكيد الموافقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 243,
+    "English Text": "Confirm Cancellation",
+    "Arabic Translation": "تأكيد الإلغاء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 244,
+    "English Text": "Confirm Delete",
+    "Arabic Translation": "تأكيد الحذف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 245,
+    "English Text": "Confirm employee termination",
+    "Arabic Translation": "تأكيد إنهاء خدمة الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 246,
+    "English Text": "Confirm Leave",
+    "Arabic Translation": "تأكيد الإجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 247,
+    "English Text": "Confirm Mission",
+    "Arabic Translation": "تأكيد المأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 248,
+    "English Text": "Confirm Role Removal",
+    "Arabic Translation": "تأكيد إزالة الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 249,
+    "English Text": "Confirm role removal",
+    "Arabic Translation": "تأكيد إزالة الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 250,
+    "English Text": "Confirm Termination",
+    "Arabic Translation": "تأكيد إنهاء الخدمة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 251,
+    "English Text": "Contact Information",
+    "Arabic Translation": "معلومات الاتصال",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 252,
+    "English Text": "Contact Name",
+    "Arabic Translation": "اسم جهة الاتصال",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 253,
+    "English Text": "Contact Name *",
+    "Arabic Translation": "اسم جهة الاتصال *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 254,
+    "English Text": "Continue",
+    "Arabic Translation": "متابعة",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 255,
+    "English Text": "Continue to demo",
+    "Arabic Translation": "المتابعة إلى العرض التجريبي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 256,
+    "English Text": "Contract",
+    "Arabic Translation": "عقد",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 257,
+    "English Text": "Contract Type",
+    "Arabic Translation": "نوع العقد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 258,
+    "English Text": "Contractor",
+    "Arabic Translation": "متعاقد",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 259,
+    "English Text": "Core UX & Design",
+    "Arabic Translation": "تجربة المستخدم والتصميم الأساسيان",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 260,
+    "English Text": "Cost Center",
+    "Arabic Translation": "مركز التكلفة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 261,
+    "English Text": "Create a new leave request",
+    "Arabic Translation": "إنشاء طلب إجازة جديد",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 262,
+    "English Text": "Create a new mission request",
+    "Arabic Translation": "إنشاء طلب مأمورية جديد",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 263,
+    "English Text": "Create Leave",
+    "Arabic Translation": "إنشاء طلب إجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 264,
+    "English Text": "Create Mission",
+    "Arabic Translation": "إنشاء طلب مأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 265,
+    "English Text": "Credential ID",
+    "Arabic Translation": "معرّف الاعتماد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 266,
+    "English Text": "Credential URL",
+    "Arabic Translation": "رابط الاعتماد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 267,
+    "English Text": "Ctrl K",
+    "Arabic Translation": "Ctrl K",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 268,
+    "English Text": "Currency",
+    "Arabic Translation": "العملة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 269,
+    "English Text": "Currency *",
+    "Arabic Translation": "العملة *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 270,
+    "English Text": "Current Balance",
+    "Arabic Translation": "الرصيد الحالي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 271,
+    "English Text": "Currently working here",
+    "Arabic Translation": "أعمل هنا حاليًا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 272,
+    "English Text": "Cybersecurity Engineer",
+    "Arabic Translation": "مهندس أمن سيبراني",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 273,
+    "English Text": "Cybersecurity Specialist",
+    "Arabic Translation": "أخصائي أمن سيبراني",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 274,
+    "English Text": "Dashboard",
+    "Arabic Translation": "لوحة المعلومات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 275,
+    "English Text": "Dashboard Design",
+    "Arabic Translation": "تصميم لوحة المعلومات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 276,
+    "English Text": "Data Analysis & Visualization",
+    "Arabic Translation": "تحليل البيانات وتصويرها",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 277,
+    "English Text": "Data Analysis & Visualization Projects",
+    "Arabic Translation": "مشروعات تحليل البيانات وتصويرها",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 278,
+    "English Text": "Data Visualization",
+    "Arabic Translation": "تصوير البيانات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 279,
+    "English Text": "Date",
+    "Arabic Translation": "التاريخ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 280,
+    "English Text": "Date Enrolled",
+    "Arabic Translation": "تاريخ الالتحاق",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 281,
+    "English Text": "Date Left",
+    "Arabic Translation": "تاريخ المغادرة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 282,
+    "English Text": "Date of Birth",
+    "Arabic Translation": "تاريخ الميلاد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 283,
+    "English Text": "Date of Birth *",
+    "Arabic Translation": "تاريخ الميلاد *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 284,
+    "English Text": "Date Range",
+    "Arabic Translation": "نطاق التاريخ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 285,
+    "English Text": "Date:",
+    "Arabic Translation": "التاريخ:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 286,
+    "English Text": "Dates",
+    "Arabic Translation": "التواريخ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 287,
+    "English Text": "Dates:",
+    "Arabic Translation": "التواريخ:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 288,
+    "English Text": "Day",
+    "Arabic Translation": "اليوم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 289,
+    "English Text": "day",
+    "Arabic Translation": "يوم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 290,
+    "English Text": "Day Status",
+    "Arabic Translation": "حالة اليوم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 291,
+    "English Text": "days",
+    "Arabic Translation": "أيام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 292,
+    "English Text": "Days View",
+    "Arabic Translation": "عرض الأيام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 293,
+    "English Text": "Dec",
+    "Arabic Translation": "ديسمبر",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 294,
+    "English Text": "December",
+    "Arabic Translation": "ديسمبر",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 295,
+    "English Text": "Decision",
+    "Arabic Translation": "القرار",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 296,
+    "English Text": "Decision Date",
+    "Arabic Translation": "تاريخ القرار",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 297,
+    "English Text": "Decline",
+    "Arabic Translation": "رفض",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 298,
+    "English Text": "Decline Leave",
+    "Arabic Translation": "رفض الإجازة",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 299,
+    "English Text": "Decline Mission",
+    "Arabic Translation": "رفض المأمورية",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 300,
+    "English Text": "Deduction Items",
+    "Arabic Translation": "بنود الاستقطاع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 301,
+    "English Text": "Deductions",
+    "Arabic Translation": "الاستقطاعات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 302,
+    "English Text": "Degree",
+    "Arabic Translation": "الدرجة العلمية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 303,
+    "English Text": "Degree *",
+    "Arabic Translation": "الدرجة العلمية *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 304,
+    "English Text": "Degree/Certificate",
+    "Arabic Translation": "الدرجة العلمية/الشهادة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 305,
+    "English Text": "Delete",
+    "Arabic Translation": "حذف",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 306,
+    "English Text": "Delete Mission",
+    "Arabic Translation": "حذف المأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 307,
+    "English Text": "Delete Role",
+    "Arabic Translation": "حذف الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 308,
+    "English Text": "Deleted successfully",
+    "Arabic Translation": "تم الحذف بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 309,
+    "English Text": "Demo Access",
+    "Arabic Translation": "الدخول إلى العرض التجريبي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 310,
+    "English Text": "Department",
+    "Arabic Translation": "القسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 311,
+    "English Text": "Department budget allocation code",
+    "Arabic Translation": "رمز تخصيص ميزانية القسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 312,
+    "English Text": "Department ID",
+    "Arabic Translation": "معرّف القسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 313,
+    "English Text": "Department name",
+    "Arabic Translation": "اسم القسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 314,
+    "English Text": "Department:",
+    "Arabic Translation": "القسم:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 315,
+    "English Text": "Departments",
+    "Arabic Translation": "الأقسام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 316,
+    "English Text": "Dept",
+    "Arabic Translation": "القسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 317,
+    "English Text": "Describe the issue or correction needed in your employment details.",
+    "Arabic Translation": "اكتب وصف المشكلة أو التصحيح المطلوب في بيانات التوظيف الخاصة بك.",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 318,
+    "English Text": "Describe the reason...",
+    "Arabic Translation": "اكتب السبب...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 319,
+    "English Text": "Description",
+    "Arabic Translation": "الوصف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 320,
+    "English Text": "Description (Optional)",
+    "Arabic Translation": "الوصف (اختياري)",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 321,
+    "English Text": "Design",
+    "Arabic Translation": "تصميم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 322,
+    "English Text": "Design & Analytics",
+    "Arabic Translation": "التصميم والتحليلات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 323,
+    "English Text": "Detailed daily attendance records for the selected period.",
+    "Arabic Translation": "سجلات حضور يومية مفصلة للفترة المحددة.",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 324,
+    "English Text": "Details",
+    "Arabic Translation": "التفاصيل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 325,
+    "English Text": "Details of admin activity",
+    "Arabic Translation": "تفاصيل نشاط المسؤول",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 326,
+    "English Text": "Direct",
+    "Arabic Translation": "مباشر",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 327,
+    "English Text": "Director of Supply Chain Optimization",
+    "Arabic Translation": "مدير تحسين سلسلة الإمداد",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 328,
+    "English Text": "Directory",
+    "Arabic Translation": "الدليل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 329,
+    "English Text": "Discard Changes",
+    "Arabic Translation": "تجاهل التغييرات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 330,
+    "English Text": "Dismiss",
+    "Arabic Translation": "تجاهل",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 331,
+    "English Text": "Divorced",
+    "Arabic Translation": "مطلّق/مطلّقة",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 332,
+    "English Text": "Download",
+    "Arabic Translation": "تنزيل",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 333,
+    "English Text": "Download Center",
+    "Arabic Translation": "مركز التنزيل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 334,
+    "English Text": "Download Data",
+    "Arabic Translation": "تنزيل البيانات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 335,
+    "English Text": "Download Letter",
+    "Arabic Translation": "تنزيل الخطاب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 336,
+    "English Text": "Download Payslip",
+    "Arabic Translation": "تنزيل قسيمة الراتب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 337,
+    "English Text": "Download PDF Resume",
+    "Arabic Translation": "تنزيل السيرة الذاتية بصيغة PDF",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 338,
+    "English Text": "Download started",
+    "Arabic Translation": "بدأ التنزيل",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 339,
+    "English Text": "Dribbble",
+    "Arabic Translation": "Dribbble",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 340,
+    "English Text": "Dribbble Profile",
+    "Arabic Translation": "ملف Dribbble",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 341,
+    "English Text": "Duration",
+    "Arabic Translation": "المدة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 342,
+    "English Text": "Duration:",
+    "Arabic Translation": "المدة:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 343,
+    "English Text": "Dyslexia Font",
+    "Arabic Translation": "خط عسر القراءة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 344,
+    "English Text": "e.g. 2013",
+    "Arabic Translation": "مثال: 2013",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 345,
+    "English Text": "e.g. D1006",
+    "Arabic Translation": "مثال: D1006",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 346,
+    "English Text": "e.g. Eid Al-Fitr",
+    "Arabic Translation": "مثال: عيد الفطر",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 347,
+    "English Text": "e.g. Software Developer",
+    "Arabic Translation": "مثال: مطور برمجيات",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 348,
+    "English Text": "e.g., 2024",
+    "Arabic Translation": "مثال: 2024",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 349,
+    "English Text": "e.g., Bachelor",
+    "Arabic Translation": "مثال: بكالوريوس",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 350,
+    "English Text": "e.g., Cairo, Egypt",
+    "Arabic Translation": "مثال: القاهرة، مصر",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 351,
+    "English Text": "e.g., Computer Science",
+    "Arabic Translation": "مثال: علوم الحاسب",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 352,
+    "English Text": "e.g., Dec 2024",
+    "Arabic Translation": "مثال: ديسمبر 2024",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 353,
+    "English Text": "e.g., Excellent, 3.8 GPA",
+    "Arabic Translation": "مثال: ممتاز، معدل تراكمي 3.8",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 354,
+    "English Text": "e.g., Figma",
+    "Arabic Translation": "مثال: Figma",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 355,
+    "English Text": "e.g., Figma, Adobe XD, User Research",
+    "Arabic Translation": "مثال: Figma، Adobe XD، بحث المستخدمين",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 356,
+    "English Text": "e.g., GDA-2023-001",
+    "Arabic Translation": "مثال: GDA-2023-001",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 357,
+    "English Text": "e.g., Google",
+    "Arabic Translation": "مثال: Google",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 358,
+    "English Text": "e.g., Jan 2023",
+    "Arabic Translation": "مثال: يناير 2023",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 359,
+    "English Text": "e.g., Jun 2020",
+    "Arabic Translation": "مثال: يونيو 2020",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 360,
+    "English Text": "e.g., Mar 2023",
+    "Arabic Translation": "مثال: مارس 2023",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 361,
+    "English Text": "e.g., Mar 2026 (Optional)",
+    "Arabic Translation": "مثال: مارس 2026 (اختياري)",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 362,
+    "English Text": "e.g., Programming",
+    "Arabic Translation": "مثال: البرمجة",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 363,
+    "English Text": "e.g., Sep 2016",
+    "Arabic Translation": "مثال: سبتمبر 2016",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 364,
+    "English Text": "e.g., UX Designer",
+    "Arabic Translation": "مثال: مصمم تجربة المستخدم",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 365,
+    "English Text": "Earnings",
+    "Arabic Translation": "المستحقات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 366,
+    "English Text": "Edit",
+    "Arabic Translation": "تعديل",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 367,
+    "English Text": "Edit About",
+    "Arabic Translation": "تعديل النبذة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 368,
+    "English Text": "Edit about section",
+    "Arabic Translation": "تعديل قسم النبذة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 369,
+    "English Text": "Edit Bank Accounts",
+    "Arabic Translation": "تعديل الحسابات البنكية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 370,
+    "English Text": "Edit Certification",
+    "Arabic Translation": "تعديل الشهادة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 371,
+    "English Text": "Edit certification",
+    "Arabic Translation": "تعديل الشهادة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 372,
+    "English Text": "Edit contact",
+    "Arabic Translation": "تعديل جهة الاتصال",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 373,
+    "English Text": "Edit Contact Information",
+    "Arabic Translation": "تعديل معلومات الاتصال",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 374,
+    "English Text": "Edit Department",
+    "Arabic Translation": "تعديل القسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 375,
+    "English Text": "Edit Education",
+    "Arabic Translation": "تعديل التعليم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 376,
+    "English Text": "Edit education",
+    "Arabic Translation": "تعديل التعليم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 377,
+    "English Text": "Edit Emergency Contacts",
+    "Arabic Translation": "تعديل جهات اتصال الطوارئ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 378,
+    "English Text": "Edit emergency contacts",
+    "Arabic Translation": "تعديل جهات اتصال الطوارئ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 379,
+    "English Text": "Edit Employee",
+    "Arabic Translation": "تعديل الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 380,
+    "English Text": "Edit Experience",
+    "Arabic Translation": "تعديل الخبرة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 381,
+    "English Text": "Edit experience",
+    "Arabic Translation": "تعديل الخبرة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 382,
+    "English Text": "Edit Holiday / Bridge",
+    "Arabic Translation": "تعديل العطلة / يوم الربط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 383,
+    "English Text": "Edit Info",
+    "Arabic Translation": "تعديل المعلومات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 384,
+    "English Text": "Edit Job Title",
+    "Arabic Translation": "تعديل المسمى الوظيفي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 385,
+    "English Text": "Edit Note",
+    "Arabic Translation": "تعديل الملاحظة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 386,
+    "English Text": "Edit Personal Info",
+    "Arabic Translation": "تعديل المعلومات الشخصية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 387,
+    "English Text": "Edit Personal Information",
+    "Arabic Translation": "تعديل المعلومات الشخصية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 388,
+    "English Text": "Edit Profile",
+    "Arabic Translation": "تعديل الملف الشخصي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 389,
+    "English Text": "Edit Project",
+    "Arabic Translation": "تعديل المشروع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 390,
+    "English Text": "Edit project",
+    "Arabic Translation": "تعديل المشروع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 391,
+    "English Text": "Edit Request",
+    "Arabic Translation": "تعديل الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 392,
+    "English Text": "Edit Role",
+    "Arabic Translation": "تعديل الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 393,
+    "English Text": "Edit role assignment",
+    "Arabic Translation": "تعديل تعيين الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 394,
+    "English Text": "Edit Skill",
+    "Arabic Translation": "تعديل المهارة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 395,
+    "English Text": "Edit skill",
+    "Arabic Translation": "تعديل المهارة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 396,
+    "English Text": "Edit Skills",
+    "Arabic Translation": "تعديل المهارات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 397,
+    "English Text": "Edit skills",
+    "Arabic Translation": "تعديل المهارات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 398,
+    "English Text": "Edit your personal information",
+    "Arabic Translation": "عدّل معلوماتك الشخصية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 399,
+    "English Text": "Education",
+    "Arabic Translation": "التعليم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 400,
+    "English Text": "Education added successfully",
+    "Arabic Translation": "تمت إضافة التعليم بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 401,
+    "English Text": "Education updated successfully",
+    "Arabic Translation": "تم تحديث التعليم بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 402,
+    "English Text": "EGP",
+    "Arabic Translation": "جنيه مصري",
+    "UI Category": "Demo value / format"
+  },
+  {
+    "Source Index": 403,
+    "English Text": "EGP Account",
+    "Arabic Translation": "حساب بالجنيه المصري",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 404,
+    "English Text": "Egyptian",
+    "Arabic Translation": "مصري",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 405,
+    "English Text": "Email",
+    "Arabic Translation": "البريد الإلكتروني",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 406,
+    "English Text": "email",
+    "Arabic Translation": "البريد الإلكتروني",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 407,
+    "English Text": "Email *",
+    "Arabic Translation": "البريد الإلكتروني *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 408,
+    "English Text": "Email Address",
+    "Arabic Translation": "عنوان البريد الإلكتروني",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 409,
+    "English Text": "Email is hidden from the public profile and PDF export.",
+    "Arabic Translation": "البريد الإلكتروني مخفي من الملف الشخصي العام ومن تصدير PDF.",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 410,
+    "English Text": "email@acme.com",
+    "Arabic Translation": "email@acme.com",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 411,
+    "English Text": "Emergency Contacts",
+    "Arabic Translation": "جهات اتصال الطوارئ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 412,
+    "English Text": "Emirati",
+    "Arabic Translation": "إماراتي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 413,
+    "English Text": "EMP-0000",
+    "Arabic Translation": "EMP-0000",
+    "UI Category": "Demo value / format"
+  },
+  {
+    "Source Index": 414,
+    "English Text": "Emp#:",
+    "Arabic Translation": "رقم الموظف:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 415,
+    "English Text": "Employee",
+    "Arabic Translation": "الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 416,
+    "English Text": "Employee Attendance",
+    "Arabic Translation": "حضور الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 417,
+    "English Text": "Employee data exported to CSV.",
+    "Arabic Translation": "تم تصدير بيانات الموظف إلى ملف CSV.",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 418,
+    "English Text": "Employee Directory",
+    "Arabic Translation": "دليل الموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 419,
+    "English Text": "Employee ID",
+    "Arabic Translation": "معرّف الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 420,
+    "English Text": "EMPLOYEE IDENTIFICATION",
+    "Arabic Translation": "تعريف الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 421,
+    "English Text": "Employee Info",
+    "Arabic Translation": "معلومات الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 422,
+    "English Text": "Employee Name",
+    "Arabic Translation": "اسم الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 423,
+    "English Text": "Employee Number",
+    "Arabic Translation": "رقم الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 424,
+    "English Text": "Employee Payroll",
+    "Arabic Translation": "رواتب الموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 425,
+    "English Text": "Employee self-service redesign",
+    "Arabic Translation": "إعادة تصميم الخدمة الذاتية للموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 426,
+    "English Text": "Employee#",
+    "Arabic Translation": "رقم الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 427,
+    "English Text": "Employee#:",
+    "Arabic Translation": "رقم الموظف:",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 428,
+    "English Text": "Employees",
+    "Arabic Translation": "الموظفون",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 429,
+    "English Text": "Employees List",
+    "Arabic Translation": "قائمة الموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 430,
+    "English Text": "Employees, managers &amp; HR teams",
+    "Arabic Translation": "الموظفون والمديرون وفرق الموارد البشرية",
+    "UI Category": "Navigation / module",
+    "Localization Note": "HTML entity normalized in Arabic translation."
+  },
+  {
+    "Source Index": 431,
+    "English Text": "Employment",
+    "Arabic Translation": "التوظيف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 432,
+    "English Text": "Employment Details",
+    "Arabic Translation": "بيانات التوظيف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 433,
+    "English Text": "Employment Type",
+    "Arabic Translation": "نوع التوظيف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 434,
+    "English Text": "End Date",
+    "Arabic Translation": "تاريخ الانتهاء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 435,
+    "English Text": "End date",
+    "Arabic Translation": "تاريخ الانتهاء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 436,
+    "English Text": "End Month",
+    "Arabic Translation": "شهر الانتهاء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 437,
+    "English Text": "End Year",
+    "Arabic Translation": "سنة الانتهاء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 438,
+    "English Text": "Engineer",
+    "Arabic Translation": "مهندس",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 439,
+    "English Text": "Engineering",
+    "Arabic Translation": "الهندسة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 440,
+    "English Text": "Enjoy your time off",
+    "Arabic Translation": "استمتع بإجازتك",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 441,
+    "English Text": "Enrolled:",
+    "Arabic Translation": "تاريخ الالتحاق:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 442,
+    "English Text": "Enter",
+    "Arabic Translation": "إدخال",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 443,
+    "English Text": "Enter Employee# or Name...",
+    "Arabic Translation": "أدخل رقم الموظف أو الاسم...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 444,
+    "English Text": "Enter position title",
+    "Arabic Translation": "أدخل المسمى الوظيفي",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 445,
+    "English Text": "Enter your email",
+    "Arabic Translation": "أدخل بريدك الإلكتروني",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 446,
+    "English Text": "Esc",
+    "Arabic Translation": "Esc",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 447,
+    "English Text": "EUR",
+    "Arabic Translation": "يورو",
+    "UI Category": "Demo value / format"
+  },
+  {
+    "Source Index": 448,
+    "English Text": "Example: My job title should be",
+    "Arabic Translation": "مثال: يجب أن يكون مسماي الوظيفي",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 449,
+    "English Text": "Experience added successfully",
+    "Arabic Translation": "تمت إضافة الخبرة بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 450,
+    "English Text": "Experience updated successfully",
+    "Arabic Translation": "تم تحديث الخبرة بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 451,
+    "English Text": "Expert",
+    "Arabic Translation": "خبير",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 452,
+    "English Text": "Expired",
+    "Arabic Translation": "منتهي الصلاحية",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 453,
+    "English Text": "Expiry Date",
+    "Arabic Translation": "تاريخ انتهاء الصلاحية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 454,
+    "English Text": "Export",
+    "Arabic Translation": "تصدير",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 455,
+    "English Text": "Export CSV",
+    "Arabic Translation": "تصدير CSV",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 456,
+    "English Text": "Failed to generate resume",
+    "Arabic Translation": "تعذّر إنشاء السيرة الذاتية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 457,
+    "English Text": "Family Care",
+    "Arabic Translation": "رعاية الأسرة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 458,
+    "English Text": "Family Deductions",
+    "Arabic Translation": "استقطاعات الأسرة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 459,
+    "English Text": "Father",
+    "Arabic Translation": "الأب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 460,
+    "English Text": "Feature this project (pin to top)",
+    "Arabic Translation": "تمييز هذا المشروع (تثبيته في الأعلى)",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 461,
+    "English Text": "Featured project",
+    "Arabic Translation": "مشروع مميز",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 462,
+    "English Text": "Feb",
+    "Arabic Translation": "فبراير",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 463,
+    "English Text": "February",
+    "Arabic Translation": "فبراير",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 464,
+    "English Text": "Female",
+    "Arabic Translation": "أنثى",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 465,
+    "English Text": "Fever and flu",
+    "Arabic Translation": "حمّى وإنفلونزا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 466,
+    "English Text": "Field of Study",
+    "Arabic Translation": "مجال الدراسة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 467,
+    "English Text": "Field of Study (Optional)",
+    "Arabic Translation": "مجال الدراسة (اختياري)",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 468,
+    "English Text": "Filter",
+    "Arabic Translation": "فلتر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 469,
+    "English Text": "Filter Dates",
+    "Arabic Translation": "تصفية التواريخ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 470,
+    "English Text": "Filter History",
+    "Arabic Translation": "تصفية السجل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 471,
+    "English Text": "Filter Options",
+    "Arabic Translation": "خيارات التصفية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 472,
+    "English Text": "Filters applied",
+    "Arabic Translation": "تم تطبيق الفلاتر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 473,
+    "English Text": "Filters applied successfully",
+    "Arabic Translation": "تم تطبيق الفلاتر بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 474,
+    "English Text": "Filters cleared",
+    "Arabic Translation": "تم مسح الفلاتر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 475,
+    "English Text": "Finance",
+    "Arabic Translation": "المالية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 476,
+    "English Text": "First and last name",
+    "Arabic Translation": "الاسم الأول واسم العائلة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 477,
+    "English Text": "First Name",
+    "Arabic Translation": "الاسم الأول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 478,
+    "English Text": "Focus Highlights",
+    "Arabic Translation": "إبرازات التركيز",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 479,
+    "English Text": "Force maximum text-to-background contrast ratio (7:1).",
+    "Arabic Translation": "فرض أعلى نسبة تباين بين النص والخلفية (7:1).",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 480,
+    "English Text": "Forgot password?",
+    "Arabic Translation": "هل نسيت كلمة المرور؟",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 481,
+    "English Text": "Former Employees",
+    "Arabic Translation": "الموظفون السابقون",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 482,
+    "English Text": "Freelance",
+    "Arabic Translation": "عمل حر",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 483,
+    "English Text": "Friday",
+    "Arabic Translation": "الجمعة",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 484,
+    "English Text": "From",
+    "Arabic Translation": "من",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 485,
+    "English Text": "from",
+    "Arabic Translation": "من",
+    "UI Category": "Label",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 486,
+    "English Text": "From Last Year",
+    "Arabic Translation": "من العام الماضي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 487,
+    "English Text": "Full name",
+    "Arabic Translation": "الاسم الكامل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 488,
+    "English Text": "Full-time",
+    "Arabic Translation": "دوام كامل",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 489,
+    "English Text": "Full-Time",
+    "Arabic Translation": "دوام كامل",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 490,
+    "English Text": "Gender",
+    "Arabic Translation": "الجنس",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 491,
+    "English Text": "Gender *",
+    "Arabic Translation": "الجنس *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 492,
+    "English Text": "General",
+    "Arabic Translation": "عام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 493,
+    "English Text": "Generating your resume...",
+    "Arabic Translation": "جارٍ إنشاء سيرتك الذاتية...",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 494,
+    "English Text": "Global Operations Manager",
+    "Arabic Translation": "مدير العمليات العالمية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 495,
+    "English Text": "Go to Attendance",
+    "Arabic Translation": "الانتقال إلى الحضور",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 496,
+    "English Text": "Go to Dashboard",
+    "Arabic Translation": "الانتقال إلى لوحة المعلومات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 497,
+    "English Text": "Go to Employees",
+    "Arabic Translation": "الانتقال إلى الموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 498,
+    "English Text": "Go to Leaves Management",
+    "Arabic Translation": "الانتقال إلى إدارة الإجازات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 499,
+    "English Text": "Go to Missions Management",
+    "Arabic Translation": "الانتقال إلى إدارة المأموريات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 500,
+    "English Text": "Go to my profile",
+    "Arabic Translation": "الانتقال إلى ملفي الشخصي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 501,
+    "English Text": "Go to Profile",
+    "Arabic Translation": "الانتقال إلى الملف الشخصي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 502,
+    "English Text": "Go to Roles Management",
+    "Arabic Translation": "الانتقال إلى إدارة الأدوار",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 503,
+    "English Text": "Grade",
+    "Arabic Translation": "التقدير",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 504,
+    "English Text": "Graduation Year",
+    "Arabic Translation": "سنة التخرج",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 505,
+    "English Text": "Gross Salary",
+    "Arabic Translation": "إجمالي الراتب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 506,
+    "English Text": "Hajj",
+    "Arabic Translation": "الحج",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 507,
+    "English Text": "has been submitted.",
+    "Arabic Translation": "تم إرساله.",
+    "UI Category": "Message / notification",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 508,
+    "English Text": "Hide Details",
+    "Arabic Translation": "إخفاء التفاصيل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 509,
+    "English Text": "Hire Date",
+    "Arabic Translation": "تاريخ التعيين",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 510,
+    "English Text": "Hired After",
+    "Arabic Translation": "تم تعيينه بعد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 511,
+    "English Text": "Hiring Date",
+    "Arabic Translation": "تاريخ التعيين",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 512,
+    "English Text": "History",
+    "Arabic Translation": "السجل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 513,
+    "English Text": "Holiday",
+    "Arabic Translation": "عطلة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 514,
+    "English Text": "Holiday travel",
+    "Arabic Translation": "السفر في العطلة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 515,
+    "English Text": "Holidays and Bridges",
+    "Arabic Translation": "العطلات وأيام الربط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 516,
+    "English Text": "Home",
+    "Arabic Translation": "الرئيسية",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 517,
+    "English Text": "Home Phone",
+    "Arabic Translation": "هاتف المنزل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 518,
+    "English Text": "Hours",
+    "Arabic Translation": "الساعات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 519,
+    "English Text": "HR",
+    "Arabic Translation": "الموارد البشرية",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 520,
+    "English Text": "HR Tool",
+    "Arabic Translation": "أداة الموارد البشرية",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 521,
+    "English Text": "HR Tool Case Study",
+    "Arabic Translation": "دراسة حالة لأداة الموارد البشرية",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 522,
+    "English Text": "HR will review your request and respond via email within 5 business days.",
+    "Arabic Translation": "ستراجع الموارد البشرية طلبك وترد عبر البريد الإلكتروني خلال 5 أيام عمل.",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 523,
+    "English Text": "https://",
+    "Arabic Translation": "https://",
+    "UI Category": "Demo value / format"
+  },
+  {
+    "Source Index": 524,
+    "English Text": "Human Resources",
+    "Arabic Translation": "الموارد البشرية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 525,
+    "English Text": "Hybrid",
+    "Arabic Translation": "هجين",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 526,
+    "English Text": "I am currently working in this role",
+    "Arabic Translation": "أعمل حاليًا في هذا الدور",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 527,
+    "English Text": "I currently study here",
+    "Arabic Translation": "أدرس هنا حاليًا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 528,
+    "English Text": "I currently work here",
+    "Arabic Translation": "أعمل هنا حاليًا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 529,
+    "English Text": "IBAN",
+    "Arabic Translation": "رقم الحساب المصرفي الدولي (IBAN)",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 530,
+    "English Text": "IBAN (Optional)",
+    "Arabic Translation": "رقم الحساب المصرفي الدولي (اختياري)",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 531,
+    "English Text": "ID NUMBER",
+    "Arabic Translation": "رقم الهوية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 532,
+    "English Text": "ID:",
+    "Arabic Translation": "المعرّف:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 533,
+    "English Text": "Identification Card",
+    "Arabic Translation": "بطاقة الهوية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 534,
+    "English Text": "Imani Adimbola",
+    "Arabic Translation": "إيماني أديمبولا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 535,
+    "English Text": "In-office",
+    "Arabic Translation": "من المكتب",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 536,
+    "English Text": "Increase base text sizing by 120% for readability.",
+    "Arabic Translation": "زيادة حجم النص الأساسي بنسبة 120% لتحسين القراءة.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 537,
+    "English Text": "InDirect",
+    "Arabic Translation": "غير مباشر",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 538,
+    "English Text": "Intermediate",
+    "Arabic Translation": "متوسط",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 539,
+    "English Text": "Intern",
+    "Arabic Translation": "متدرب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 540,
+    "English Text": "Internship",
+    "Arabic Translation": "تدريب عملي",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 541,
+    "English Text": "Is a direct line manager",
+    "Arabic Translation": "مدير مباشر",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 542,
+    "English Text": "is about to be terminated.",
+    "Arabic Translation": "على وشك إنهاء خدمته.",
+    "UI Category": "Body copy",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 543,
+    "English Text": "Issue Date",
+    "Arabic Translation": "تاريخ الإصدار",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 544,
+    "English Text": "Issue Date *",
+    "Arabic Translation": "تاريخ الإصدار *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 545,
+    "English Text": "Issue Description *",
+    "Arabic Translation": "وصف المشكلة *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 546,
+    "English Text": "Issue Month",
+    "Arabic Translation": "شهر الإصدار",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 547,
+    "English Text": "Issue Year",
+    "Arabic Translation": "سنة الإصدار",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 548,
+    "English Text": "Issuer",
+    "Arabic Translation": "جهة الإصدار",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 549,
+    "English Text": "Issuer *",
+    "Arabic Translation": "جهة الإصدار *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 550,
+    "English Text": "Issuing Organization",
+    "Arabic Translation": "الجهة المصدرة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 551,
+    "English Text": "IT",
+    "Arabic Translation": "تقنية المعلومات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 552,
+    "English Text": "Items Per Page",
+    "Arabic Translation": "العناصر لكل صفحة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 553,
+    "English Text": "Jack Gray",
+    "Arabic Translation": "جاك غراي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 554,
+    "English Text": "Jan",
+    "Arabic Translation": "يناير",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 555,
+    "English Text": "January",
+    "Arabic Translation": "يناير",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 556,
+    "English Text": "Job Related",
+    "Arabic Translation": "متعلق بالعمل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 557,
+    "English Text": "Job Title",
+    "Arabic Translation": "المسمى الوظيفي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 558,
+    "English Text": "Job Title *",
+    "Arabic Translation": "المسمى الوظيفي *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 559,
+    "English Text": "Job Titles",
+    "Arabic Translation": "المسميات الوظيفية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 560,
+    "English Text": "JPG or PNG. Max size 2MB.",
+    "Arabic Translation": "JPG أو PNG. الحد الأقصى للحجم 2 ميجابايت.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 561,
+    "English Text": "Jul",
+    "Arabic Translation": "يوليو",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 562,
+    "English Text": "July",
+    "Arabic Translation": "يوليو",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 563,
+    "English Text": "Jun",
+    "Arabic Translation": "يونيو",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 564,
+    "English Text": "June",
+    "Arabic Translation": "يونيو",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 565,
+    "English Text": "Key improvements",
+    "Arabic Translation": "أبرز التحسينات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 566,
+    "English Text": "Keyboard Shortcuts",
+    "Arabic Translation": "اختصارات لوحة المفاتيح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 567,
+    "English Text": "Landline",
+    "Arabic Translation": "الهاتف الأرضي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 568,
+    "English Text": "Last Name",
+    "Arabic Translation": "اسم العائلة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 569,
+    "English Text": "Last updated",
+    "Arabic Translation": "آخر تحديث",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 570,
+    "English Text": "Lead Count",
+    "Arabic Translation": "عدد المرؤوسين",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 571,
+    "English Text": "Lead Engineer",
+    "Arabic Translation": "مهندس قائد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 572,
+    "English Text": "Leave",
+    "Arabic Translation": "إجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 573,
+    "English Text": "Leave Details",
+    "Arabic Translation": "تفاصيل الإجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 574,
+    "English Text": "Leave request details",
+    "Arabic Translation": "تفاصيل طلب الإجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 575,
+    "English Text": "Leave Type",
+    "Arabic Translation": "نوع الإجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 576,
+    "English Text": "Leaves",
+    "Arabic Translation": "الإجازات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 577,
+    "English Text": "Leaves and Mission History",
+    "Arabic Translation": "سجل الإجازات والمأموريات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 578,
+    "English Text": "Leaves History",
+    "Arabic Translation": "سجل الإجازات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 579,
+    "English Text": "Leaves Management",
+    "Arabic Translation": "إدارة الإجازات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 580,
+    "English Text": "Leaves Pending Approval",
+    "Arabic Translation": "إجازات بانتظار الموافقة",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 581,
+    "English Text": "Leaves Request",
+    "Arabic Translation": "طلب إجازات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 582,
+    "English Text": "Leaves Requests",
+    "Arabic Translation": "طلبات الإجازات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 583,
+    "English Text": "Left:",
+    "Arabic Translation": "المتبقي:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 584,
+    "English Text": "Lena Mohamed",
+    "Arabic Translation": "لينا محمد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 585,
+    "English Text": "Less navigation, clearer statuses",
+    "Arabic Translation": "تنقل أقل وحالات أوضح",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 586,
+    "English Text": "LinkedIn",
+    "Arabic Translation": "LinkedIn",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 587,
+    "English Text": "LinkedIn Profile",
+    "Arabic Translation": "ملف LinkedIn",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 588,
+    "English Text": "Location",
+    "Arabic Translation": "الموقع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 589,
+    "English Text": "Log out",
+    "Arabic Translation": "تسجيل الخروج",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 590,
+    "English Text": "Logout",
+    "Arabic Translation": "تسجيل الخروج",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 592,
+    "English Text": "Main navigation",
+    "Arabic Translation": "التنقل الرئيسي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 593,
+    "English Text": "Male",
+    "Arabic Translation": "ذكر",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 594,
+    "English Text": "Manage Access Cards",
+    "Arabic Translation": "إدارة بطاقات الدخول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 595,
+    "English Text": "Manage access cards for this employee",
+    "Arabic Translation": "إدارة بطاقات الدخول لهذا الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 596,
+    "English Text": "Manage Employee Access Cards",
+    "Arabic Translation": "إدارة بطاقات دخول الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 597,
+    "English Text": "Manage employee role assignments and permissions",
+    "Arabic Translation": "إدارة تعيينات أدوار الموظفين وصلاحياتهم",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 598,
+    "English Text": "Manage Employees",
+    "Arabic Translation": "إدارة الموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 599,
+    "English Text": "Managed by HR",
+    "Arabic Translation": "تديره الموارد البشرية",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 600,
+    "English Text": "Manager",
+    "Arabic Translation": "المدير",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 601,
+    "English Text": "Manager?",
+    "Arabic Translation": "مدير؟",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 602,
+    "English Text": "Mar",
+    "Arabic Translation": "مارس",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 603,
+    "English Text": "March",
+    "Arabic Translation": "مارس",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 604,
+    "English Text": "March 31st this year",
+    "Arabic Translation": "31 مارس من هذا العام",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 605,
+    "English Text": "Marital Status",
+    "Arabic Translation": "الحالة الاجتماعية",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 606,
+    "English Text": "Marketing",
+    "Arabic Translation": "التسويق",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 607,
+    "English Text": "Marriage",
+    "Arabic Translation": "زواج",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 608,
+    "English Text": "Married",
+    "Arabic Translation": "متزوج/متزوجة",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 609,
+    "English Text": "Maternity",
+    "Arabic Translation": "أمومة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 610,
+    "English Text": "Maternity (appears only to females)",
+    "Arabic Translation": "إجازة أمومة (تظهر للإناث فقط)",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 611,
+    "English Text": "May",
+    "Arabic Translation": "مايو",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 612,
+    "English Text": "Menu",
+    "Arabic Translation": "القائمة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 613,
+    "English Text": "Mission",
+    "Arabic Translation": "مأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 614,
+    "English Text": "Mission Details",
+    "Arabic Translation": "تفاصيل المأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 615,
+    "English Text": "Mission request details",
+    "Arabic Translation": "تفاصيل طلب المأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 616,
+    "English Text": "Mission Requests",
+    "Arabic Translation": "طلبات المأموريات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 617,
+    "English Text": "Mission Type",
+    "Arabic Translation": "نوع المأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 618,
+    "English Text": "Missions",
+    "Arabic Translation": "المأموريات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 619,
+    "English Text": "Missions History",
+    "Arabic Translation": "سجل المأموريات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 620,
+    "English Text": "Missions Management",
+    "Arabic Translation": "إدارة المأموريات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 621,
+    "English Text": "Missions Pending Approval",
+    "Arabic Translation": "مأموريات بانتظار الموافقة",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 622,
+    "English Text": "Mobile",
+    "Arabic Translation": "الهاتف المحمول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 623,
+    "English Text": "Mobile *",
+    "Arabic Translation": "الهاتف المحمول *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 624,
+    "English Text": "Mohammed Habib",
+    "Arabic Translation": "محمد حبيب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 625,
+    "English Text": "Monday",
+    "Arabic Translation": "الإثنين",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 626,
+    "English Text": "Month",
+    "Arabic Translation": "الشهر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 627,
+    "English Text": "Monthly Payroll",
+    "Arabic Translation": "الرواتب الشهرية",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 628,
+    "English Text": "Mother",
+    "Arabic Translation": "الأم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 629,
+    "English Text": "Move down",
+    "Arabic Translation": "نقل إلى أسفل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 630,
+    "English Text": "Move up",
+    "Arabic Translation": "نقل إلى أعلى",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 631,
+    "English Text": "Muhammed Habib",
+    "Arabic Translation": "محمد حبيب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 632,
+    "English Text": "My Documents",
+    "Arabic Translation": "مستنداتي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 633,
+    "English Text": "My Profile",
+    "Arabic Translation": "ملفي الشخصي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 634,
+    "English Text": "My Requests",
+    "Arabic Translation": "طلباتي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 635,
+    "English Text": "My team",
+    "Arabic Translation": "فريقي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 636,
+    "English Text": "Name",
+    "Arabic Translation": "الاسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 637,
+    "English Text": "name",
+    "Arabic Translation": "الاسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 638,
+    "English Text": "NAME",
+    "Arabic Translation": "الاسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 639,
+    "English Text": "Name:",
+    "Arabic Translation": "الاسم:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 640,
+    "English Text": "name@company.com",
+    "Arabic Translation": "name@company.com",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 641,
+    "English Text": "National ID",
+    "Arabic Translation": "الرقم القومي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 642,
+    "English Text": "National ID * (14 digits)",
+    "Arabic Translation": "الرقم القومي * (14 رقمًا)",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 643,
+    "English Text": "National Information",
+    "Arabic Translation": "المعلومات الوطنية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 644,
+    "English Text": "Nationality",
+    "Arabic Translation": "الجنسية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 645,
+    "English Text": "Nationality *",
+    "Arabic Translation": "الجنسية *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 646,
+    "English Text": "Navigate the application quickly with these shortcuts.",
+    "Arabic Translation": "تنقل داخل التطبيق بسرعة باستخدام هذه الاختصارات.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 647,
+    "English Text": "Navigation",
+    "Arabic Translation": "التنقل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 648,
+    "English Text": "Navigation menu",
+    "Arabic Translation": "قائمة التنقل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 649,
+    "English Text": "Need Password?",
+    "Arabic Translation": "هل تحتاج إلى كلمة مرور؟",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 650,
+    "English Text": "Net Pay",
+    "Arabic Translation": "صافي الراتب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 651,
+    "English Text": "Next",
+    "Arabic Translation": "التالي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 652,
+    "English Text": "Next comparison",
+    "Arabic Translation": "المقارنة التالية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 653,
+    "English Text": "Next page",
+    "Arabic Translation": "الصفحة التالية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 654,
+    "English Text": "No",
+    "Arabic Translation": "لا",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 655,
+    "English Text": "No Activity Found",
+    "Arabic Translation": "لم يتم العثور على نشاط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 656,
+    "English Text": "No data found",
+    "Arabic Translation": "لم يتم العثور على بيانات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 657,
+    "English Text": "No Departments Found",
+    "Arabic Translation": "لم يتم العثور على أقسام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 658,
+    "English Text": "No documents match your search.",
+    "Arabic Translation": "لا توجد مستندات تطابق بحثك.",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 659,
+    "English Text": "No emergency contacts added.",
+    "Arabic Translation": "لم تتم إضافة جهات اتصال للطوارئ.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 660,
+    "English Text": "No employees found",
+    "Arabic Translation": "لم يتم العثور على موظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 661,
+    "English Text": "No Employees Found",
+    "Arabic Translation": "لم يتم العثور على موظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 662,
+    "English Text": "No History Found",
+    "Arabic Translation": "لم يتم العثور على سجل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 663,
+    "English Text": "No job titles match your search.",
+    "Arabic Translation": "لا توجد مسميات وظيفية تطابق بحثك.",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 664,
+    "English Text": "No Mission History",
+    "Arabic Translation": "لا يوجد سجل مأموريات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 665,
+    "English Text": "No Pending Missions",
+    "Arabic Translation": "لا توجد مأموريات بانتظار الموافقة",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 666,
+    "English Text": "No Pending Requests",
+    "Arabic Translation": "لا توجد طلبات معلّقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 667,
+    "English Text": "No results found.",
+    "Arabic Translation": "لم يتم العثور على نتائج.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 668,
+    "English Text": "No Show",
+    "Arabic Translation": "غياب دون إشعار",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 669,
+    "English Text": "Notes",
+    "Arabic Translation": "الملاحظات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 670,
+    "English Text": "Notes (optional)",
+    "Arabic Translation": "الملاحظات (اختياري)",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 671,
+    "English Text": "Notes:",
+    "Arabic Translation": "الملاحظات:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 672,
+    "English Text": "Nov",
+    "Arabic Translation": "نوفمبر",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 673,
+    "English Text": "November",
+    "Arabic Translation": "نوفمبر",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 674,
+    "English Text": "November 2023",
+    "Arabic Translation": "نوفمبر 2023",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 675,
+    "English Text": "Number of employees",
+    "Arabic Translation": "عدد الموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 677,
+    "English Text": "Oct",
+    "Arabic Translation": "أكتوبر",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 678,
+    "English Text": "October",
+    "Arabic Translation": "أكتوبر",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 679,
+    "English Text": "of",
+    "Arabic Translation": "من",
+    "UI Category": "Label",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 680,
+    "English Text": "of 150",
+    "Arabic Translation": "من 150",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 681,
+    "English Text": "Oil & Gas",
+    "Arabic Translation": "النفط والغاز",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 682,
+    "English Text": "Oil and Gas",
+    "Arabic Translation": "النفط والغاز",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 683,
+    "English Text": "On-site",
+    "Arabic Translation": "في الموقع",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 684,
+    "English Text": "Oops! Something went wrong.",
+    "Arabic Translation": "عذرًا! حدث خطأ ما.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 685,
+    "English Text": "Open employee filters",
+    "Arabic Translation": "فتح فلاتر الموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 686,
+    "English Text": "Open navigation menu",
+    "Arabic Translation": "فتح قائمة التنقل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 687,
+    "English Text": "Operations",
+    "Arabic Translation": "العمليات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 688,
+    "English Text": "Optional",
+    "Arabic Translation": "اختياري",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 689,
+    "English Text": "optional",
+    "Arabic Translation": "اختياري",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 690,
+    "English Text": "Optional notes...",
+    "Arabic Translation": "ملاحظات اختيارية...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 691,
+    "English Text": "Optional...",
+    "Arabic Translation": "اختياري...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 692,
+    "English Text": "optional...",
+    "Arabic Translation": "اختياري...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 693,
+    "English Text": "or",
+    "Arabic Translation": "أو",
+    "UI Category": "Label",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 694,
+    "English Text": "Order updated",
+    "Arabic Translation": "تم تحديث الترتيب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 695,
+    "English Text": "Other",
+    "Arabic Translation": "أخرى",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 696,
+    "English Text": "Other Leaves",
+    "Arabic Translation": "إجازات أخرى",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 697,
+    "English Text": "Outcomes",
+    "Arabic Translation": "النتائج",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 698,
+    "English Text": "Page",
+    "Arabic Translation": "الصفحة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 699,
+    "English Text": "Page number input",
+    "Arabic Translation": "حقل إدخال رقم الصفحة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 700,
+    "English Text": "Part-time",
+    "Arabic Translation": "دوام جزئي",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 701,
+    "English Text": "Part-Time",
+    "Arabic Translation": "دوام جزئي",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 702,
+    "English Text": "PASSPORT",
+    "Arabic Translation": "جواز السفر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 703,
+    "English Text": "Passport",
+    "Arabic Translation": "جواز السفر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 704,
+    "English Text": "Password",
+    "Arabic Translation": "كلمة المرور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 705,
+    "English Text": "Paternity",
+    "Arabic Translation": "أبوة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 706,
+    "English Text": "Paternity (appears only to males)",
+    "Arabic Translation": "إجازة أبوة (تظهر للذكور فقط)",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 707,
+    "English Text": "Payroll Deductions",
+    "Arabic Translation": "استقطاعات الرواتب",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 708,
+    "English Text": "Payroll Overview",
+    "Arabic Translation": "نظرة عامة على الرواتب",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 709,
+    "English Text": "Payrolls",
+    "Arabic Translation": "الرواتب",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 710,
+    "English Text": "Payrolls are coming soon",
+    "Arabic Translation": "الرواتب ستتوفر قريبًا",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 711,
+    "English Text": "Pending",
+    "Arabic Translation": "قيد الانتظار",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 712,
+    "English Text": "Pending Actions",
+    "Arabic Translation": "الإجراءات المعلّقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 713,
+    "English Text": "Pension (Employee Share)",
+    "Arabic Translation": "المعاش (حصة الموظف)",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 714,
+    "English Text": "Percentage",
+    "Arabic Translation": "النسبة المئوية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 715,
+    "English Text": "Permanent",
+    "Arabic Translation": "دائم",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 716,
+    "English Text": "Permission",
+    "Arabic Translation": "صلاحية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 717,
+    "English Text": "Permissions",
+    "Arabic Translation": "الصلاحيات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 718,
+    "English Text": "Personal ID",
+    "Arabic Translation": "الهوية الشخصية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 719,
+    "English Text": "Personal Information",
+    "Arabic Translation": "المعلومات الشخصية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 720,
+    "English Text": "Phone",
+    "Arabic Translation": "الهاتف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 721,
+    "English Text": "Phone *",
+    "Arabic Translation": "الهاتف *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 722,
+    "English Text": "Phone Number",
+    "Arabic Translation": "رقم الهاتف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 723,
+    "English Text": "Phone Number *",
+    "Arabic Translation": "رقم الهاتف *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 724,
+    "English Text": "Pick a date",
+    "Arabic Translation": "اختر تاريخًا",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 725,
+    "English Text": "Please ensure all carried-over vacation days from last year are used before 31st this March. Carried over days are deducted automatically before this year\\'s vacation.",
+    "Arabic Translation": "يرجى التأكد من استخدام جميع أيام الإجازة المرحلة من العام الماضي قبل 31 مارس من هذا العام. تُخصم الأيام المرحلة تلقائيًا قبل رصيد إجازات هذا العام.",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 726,
+    "English Text": "Portfolio",
+    "Arabic Translation": "معرض الأعمال",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 727,
+    "English Text": "Position",
+    "Arabic Translation": "المنصب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 728,
+    "English Text": "Press",
+    "Arabic Translation": "اضغط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 729,
+    "English Text": "Previous",
+    "Arabic Translation": "السابق",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 730,
+    "English Text": "Previous comparison",
+    "Arabic Translation": "المقارنة السابقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 731,
+    "English Text": "Previous page",
+    "Arabic Translation": "الصفحة السابقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 732,
+    "English Text": "Print dialog opened. Save as PDF to download your resume.",
+    "Arabic Translation": "تم فتح نافذة الطباعة. احفظ بصيغة PDF لتنزيل سيرتك الذاتية.",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 733,
+    "English Text": "Product",
+    "Arabic Translation": "المنتج",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 734,
+    "English Text": "Professional Profile",
+    "Arabic Translation": "الملف المهني",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 735,
+    "English Text": "Proficiency Level",
+    "Arabic Translation": "مستوى الإتقان",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 736,
+    "English Text": "Profile",
+    "Arabic Translation": "الملف الشخصي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 737,
+    "English Text": "Profile picture updated successfully",
+    "Arabic Translation": "تم تحديث صورة الملف الشخصي بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 738,
+    "English Text": "Profile Strength",
+    "Arabic Translation": "قوة الملف الشخصي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 739,
+    "English Text": "Project added successfully",
+    "Arabic Translation": "تمت إضافة المشروع بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 740,
+    "English Text": "Project Link",
+    "Arabic Translation": "رابط المشروع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 741,
+    "English Text": "Project Manager",
+    "Arabic Translation": "مدير المشروع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 742,
+    "English Text": "Project Name",
+    "Arabic Translation": "اسم المشروع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 743,
+    "English Text": "Project Title",
+    "Arabic Translation": "عنوان المشروع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 744,
+    "English Text": "Project Title *",
+    "Arabic Translation": "عنوان المشروع *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 745,
+    "English Text": "Project updated successfully",
+    "Arabic Translation": "تم تحديث المشروع بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 746,
+    "English Text": "Project URL",
+    "Arabic Translation": "رابط المشروع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 747,
+    "English Text": "Projects",
+    "Arabic Translation": "المشروعات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 748,
+    "English Text": "Provide contact details for someone to reach in case of emergency.",
+    "Arabic Translation": "قدّم بيانات اتصال لشخص يمكن التواصل معه في حالة الطوارئ.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 749,
+    "English Text": "Quick Actions",
+    "Arabic Translation": "إجراءات سريعة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 750,
+    "English Text": "Quick Login",
+    "Arabic Translation": "تسجيل دخول سريع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 751,
+    "English Text": "Quick Payslip Generator",
+    "Arabic Translation": "مولّد قسيمة راتب سريع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 752,
+    "English Text": "Range",
+    "Arabic Translation": "النطاق",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 753,
+    "English Text": "Ready to explore the demo?",
+    "Arabic Translation": "هل أنت جاهز لاستكشاف العرض التجريبي؟",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 754,
+    "English Text": "Ready to submit?",
+    "Arabic Translation": "هل أنت جاهز للإرسال؟",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 755,
+    "English Text": "Reason",
+    "Arabic Translation": "السبب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 756,
+    "English Text": "Recent Activity",
+    "Arabic Translation": "النشاط الأخير",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 757,
+    "English Text": "Redesign Notes",
+    "Arabic Translation": "ملاحظات إعادة التصميم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 758,
+    "English Text": "redesigned for clarity.",
+    "Arabic Translation": "أُعيد تصميمه لمزيد من الوضوح.",
+    "UI Category": "Label",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 759,
+    "English Text": "Reject",
+    "Arabic Translation": "رفض",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 760,
+    "English Text": "Rejected",
+    "Arabic Translation": "مرفوض",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 761,
+    "English Text": "Relationship",
+    "Arabic Translation": "صلة القرابة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 762,
+    "English Text": "Relationship *",
+    "Arabic Translation": "صلة القرابة *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 763,
+    "English Text": "Reload Page",
+    "Arabic Translation": "إعادة تحميل الصفحة",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 764,
+    "English Text": "Remaining Balance",
+    "Arabic Translation": "الرصيد المتبقي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 765,
+    "English Text": "Remaining when approved",
+    "Arabic Translation": "المتبقي بعد الموافقة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 766,
+    "English Text": "Remember me",
+    "Arabic Translation": "تذكرني",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 767,
+    "English Text": "Remote",
+    "Arabic Translation": "عن بُعد",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 768,
+    "English Text": "Remove",
+    "Arabic Translation": "إزالة",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 769,
+    "English Text": "Req Date",
+    "Arabic Translation": "تاريخ الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 770,
+    "English Text": "Request a mission",
+    "Arabic Translation": "طلب مأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 771,
+    "English Text": "Request Bank Update",
+    "Arabic Translation": "طلب تحديث البيانات البنكية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 772,
+    "English Text": "Request Date",
+    "Arabic Translation": "تاريخ الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 773,
+    "English Text": "Request Employment Update",
+    "Arabic Translation": "طلب تحديث بيانات التوظيف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 774,
+    "English Text": "Request Leave",
+    "Arabic Translation": "طلب إجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 775,
+    "English Text": "Request Mission",
+    "Arabic Translation": "طلب مأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 776,
+    "English Text": "Request Update",
+    "Arabic Translation": "طلب تحديث",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 777,
+    "English Text": "Requested",
+    "Arabic Translation": "تم الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 778,
+    "English Text": "Requester",
+    "Arabic Translation": "مقدم الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 779,
+    "English Text": "Requesting",
+    "Arabic Translation": "جارٍ طلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 780,
+    "English Text": "Required: Upload a bank statement or account verification document",
+    "Arabic Translation": "مطلوب: رفع كشف حساب بنكي أو مستند تحقق من الحساب",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 781,
+    "English Text": "Research Projects",
+    "Arabic Translation": "مشروعات بحثية",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 782,
+    "English Text": "Reset",
+    "Arabic Translation": "إعادة ضبط",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 783,
+    "English Text": "Reset all",
+    "Arabic Translation": "إعادة ضبط الكل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 784,
+    "English Text": "Reset Password",
+    "Arabic Translation": "إعادة تعيين كلمة المرور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 785,
+    "English Text": "Reset password to shareable format?",
+    "Arabic Translation": "إعادة تعيين كلمة المرور إلى صيغة قابلة للمشاركة؟",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 786,
+    "English Text": "Resize interactive buttons/inputs to minimum 44px.",
+    "Arabic Translation": "تغيير حجم الأزرار وحقول الإدخال التفاعلية إلى 44 بكسل كحد أدنى.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 787,
+    "English Text": "Resubmit Request",
+    "Arabic Translation": "إعادة إرسال الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 788,
+    "English Text": "Result:",
+    "Arabic Translation": "النتيجة:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 789,
+    "English Text": "Resume downloaded successfully!",
+    "Arabic Translation": "تم تنزيل السيرة الذاتية بنجاح!",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 790,
+    "English Text": "Review and approve selected leave requests",
+    "Arabic Translation": "مراجعة طلبات الإجازة المحددة والموافقة عليها",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 791,
+    "English Text": "Review and approve selected mission requests",
+    "Arabic Translation": "مراجعة طلبات المأموريات المحددة والموافقة عليها",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 792,
+    "English Text": "Review Selected Requests",
+    "Arabic Translation": "مراجعة الطلبات المحددة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 793,
+    "English Text": "Review Timeline",
+    "Arabic Translation": "مراجعة المخطط الزمني",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 794,
+    "English Text": "Reviewed by",
+    "Arabic Translation": "تمت المراجعة بواسطة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 795,
+    "English Text": "Role",
+    "Arabic Translation": "الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 796,
+    "English Text": "ROLE",
+    "Arabic Translation": "الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 797,
+    "English Text": "Role Information",
+    "Arabic Translation": "معلومات الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 798,
+    "English Text": "Role Name",
+    "Arabic Translation": "اسم الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 799,
+    "English Text": "Roles & Permissions",
+    "Arabic Translation": "الأدوار والصلاحيات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 800,
+    "English Text": "Roles List",
+    "Arabic Translation": "قائمة الأدوار",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 801,
+    "English Text": "Roles Management",
+    "Arabic Translation": "إدارة الأدوار",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 802,
+    "English Text": "Rows per page",
+    "Arabic Translation": "الصفوف لكل صفحة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 803,
+    "English Text": "Saad Jawahir",
+    "Arabic Translation": "سعد جواهر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 804,
+    "English Text": "Sales",
+    "Arabic Translation": "المبيعات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 805,
+    "English Text": "SAMPLE DOCUMENT",
+    "Arabic Translation": "مستند نموذجي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 806,
+    "English Text": "Sample Employee",
+    "Arabic Translation": "موظف نموذجي",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 807,
+    "English Text": "SAP Number",
+    "Arabic Translation": "رقم SAP",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 808,
+    "English Text": "Saturday",
+    "Arabic Translation": "السبت",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 809,
+    "English Text": "Saudi",
+    "Arabic Translation": "سعودي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 810,
+    "English Text": "Save",
+    "Arabic Translation": "حفظ",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 811,
+    "English Text": "Save changes",
+    "Arabic Translation": "حفظ التغييرات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 812,
+    "English Text": "Save Changes",
+    "Arabic Translation": "حفظ التغييرات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 813,
+    "English Text": "Save Role",
+    "Arabic Translation": "حفظ الدور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 814,
+    "English Text": "SCADA",
+    "Arabic Translation": "SCADA",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 815,
+    "English Text": "School",
+    "Arabic Translation": "المدرسة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 816,
+    "English Text": "School *",
+    "Arabic Translation": "المدرسة *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 817,
+    "English Text": "School/University",
+    "Arabic Translation": "المدرسة/الجامعة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 818,
+    "English Text": "Screenshot unavailable",
+    "Arabic Translation": "لقطة الشاشة غير متاحة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 819,
+    "English Text": "Scroll to top",
+    "Arabic Translation": "التمرير إلى الأعلى",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 820,
+    "English Text": "Search",
+    "Arabic Translation": "بحث",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 821,
+    "English Text": "Search activity log...",
+    "Arabic Translation": "البحث في سجل النشاط...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 822,
+    "English Text": "Search by",
+    "Arabic Translation": "البحث حسب",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 823,
+    "English Text": "Search by name or Employee number",
+    "Arabic Translation": "البحث بالاسم أو رقم الموظف",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 824,
+    "English Text": "Search by name or Employee#...",
+    "Arabic Translation": "البحث بالاسم أو رقم الموظف...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 825,
+    "English Text": "Search by name, email, or Employee#...",
+    "Arabic Translation": "البحث بالاسم أو البريد الإلكتروني أو رقم الموظف...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 826,
+    "English Text": "Search by name, email, or employee#...",
+    "Arabic Translation": "البحث بالاسم أو البريد الإلكتروني أو رقم الموظف...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 827,
+    "English Text": "Search by name, Employee number, or email.",
+    "Arabic Translation": "البحث بالاسم أو رقم الموظف أو البريد الإلكتروني.",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 828,
+    "English Text": "Search departments...",
+    "Arabic Translation": "البحث في الأقسام...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 829,
+    "English Text": "Search Employee",
+    "Arabic Translation": "البحث عن موظف",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 830,
+    "English Text": "Search Employees",
+    "Arabic Translation": "البحث عن موظفين",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 831,
+    "English Text": "Search employees",
+    "Arabic Translation": "البحث عن موظفين",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 832,
+    "English Text": "Search employees, payroll records...",
+    "Arabic Translation": "البحث في الموظفين وسجلات الرواتب...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 833,
+    "English Text": "Search Former Employees",
+    "Arabic Translation": "البحث عن موظفين سابقين",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 834,
+    "English Text": "Search help",
+    "Arabic Translation": "البحث في المساعدة",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 835,
+    "English Text": "Search job titles...",
+    "Arabic Translation": "البحث في المسميات الوظيفية...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 836,
+    "English Text": "Search Options",
+    "Arabic Translation": "خيارات البحث",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 837,
+    "English Text": "Search results are based on selected filters.",
+    "Arabic Translation": "تعتمد نتائج البحث على الفلاتر المحددة.",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 838,
+    "English Text": "Search skills...",
+    "Arabic Translation": "البحث في المهارات...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 839,
+    "English Text": "Search this profile area...",
+    "Arabic Translation": "البحث في هذا الجزء من الملف الشخصي...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 840,
+    "English Text": "Search...",
+    "Arabic Translation": "بحث...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 841,
+    "English Text": "See the transformation",
+    "Arabic Translation": "شاهد التحول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 842,
+    "English Text": "Select a date",
+    "Arabic Translation": "اختر تاريخًا",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 843,
+    "English Text": "Select all employees",
+    "Arabic Translation": "تحديد كل الموظفين",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 844,
+    "English Text": "Select date",
+    "Arabic Translation": "اختر التاريخ",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 845,
+    "English Text": "Select employee",
+    "Arabic Translation": "اختر الموظف",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 846,
+    "English Text": "Select end date",
+    "Arabic Translation": "اختر تاريخ الانتهاء",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 847,
+    "English Text": "Select from date",
+    "Arabic Translation": "اختر تاريخ البداية",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 848,
+    "English Text": "Select leave type",
+    "Arabic Translation": "اختر نوع الإجازة",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 849,
+    "English Text": "Select manager",
+    "Arabic Translation": "اختر المدير",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 850,
+    "English Text": "Select mission type",
+    "Arabic Translation": "اختر نوع المأمورية",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 851,
+    "English Text": "Select start date",
+    "Arabic Translation": "اختر تاريخ البدء",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 852,
+    "English Text": "Select to date",
+    "Arabic Translation": "اختر تاريخ النهاية",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 853,
+    "English Text": "Selected Projects",
+    "Arabic Translation": "المشروعات المحددة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 854,
+    "English Text": "Senior Engineer",
+    "Arabic Translation": "مهندس أول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 855,
+    "English Text": "Senior Product Manager",
+    "Arabic Translation": "مدير منتج أول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 856,
+    "English Text": "Senior Project Manager",
+    "Arabic Translation": "مدير مشروع أول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 857,
+    "English Text": "Senior Solutions Architect",
+    "Arabic Translation": "مهندس حلول أول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 858,
+    "English Text": "Sep",
+    "Arabic Translation": "سبتمبر",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 859,
+    "English Text": "Separate with commas",
+    "Arabic Translation": "افصل بفواصل",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 860,
+    "English Text": "September",
+    "Arabic Translation": "سبتمبر",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 861,
+    "English Text": "SESA ID",
+    "Arabic Translation": "معرّف SESA",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 862,
+    "English Text": "Shortcut",
+    "Arabic Translation": "اختصار",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 863,
+    "English Text": "Shortcuts",
+    "Arabic Translation": "الاختصارات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 864,
+    "English Text": "Show Credential",
+    "Arabic Translation": "عرض الاعتماد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 865,
+    "English Text": "Show Details",
+    "Arabic Translation": "عرض التفاصيل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 866,
+    "English Text": "Showing attendance for",
+    "Arabic Translation": "عرض الحضور لـ",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 867,
+    "English Text": "Sibling",
+    "Arabic Translation": "أخ/أخت",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 868,
+    "English Text": "Sick",
+    "Arabic Translation": "مرضي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 869,
+    "English Text": "Sick Leave",
+    "Arabic Translation": "إجازة مرضية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 870,
+    "English Text": "Single",
+    "Arabic Translation": "أعزب/عزباء",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 871,
+    "English Text": "Skill added successfully",
+    "Arabic Translation": "تمت إضافة المهارة بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 872,
+    "English Text": "Skill Name",
+    "Arabic Translation": "اسم المهارة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 873,
+    "English Text": "Skill Name *",
+    "Arabic Translation": "اسم المهارة *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 874,
+    "English Text": "Skill updated successfully",
+    "Arabic Translation": "تم تحديث المهارة بنجاح",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 875,
+    "English Text": "Skills",
+    "Arabic Translation": "المهارات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 876,
+    "English Text": "Social Insurance",
+    "Arabic Translation": "التأمين الاجتماعي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 877,
+    "English Text": "Software",
+    "Arabic Translation": "البرمجيات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 878,
+    "English Text": "Software Developer",
+    "Arabic Translation": "مطور برمجيات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 879,
+    "English Text": "Solutions Architect",
+    "Arabic Translation": "مهندس حلول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 880,
+    "English Text": "Something went wrong.",
+    "Arabic Translation": "حدث خطأ ما.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 881,
+    "English Text": "Spouse",
+    "Arabic Translation": "الزوج/الزوجة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 882,
+    "English Text": "Spring",
+    "Arabic Translation": "الربيع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 883,
+    "English Text": "Start Date",
+    "Arabic Translation": "تاريخ البدء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 884,
+    "English Text": "Start date",
+    "Arabic Translation": "تاريخ البدء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 885,
+    "English Text": "Start Date *",
+    "Arabic Translation": "تاريخ البدء *",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 886,
+    "English Text": "Start Month",
+    "Arabic Translation": "شهر البدء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 887,
+    "English Text": "Start Year",
+    "Arabic Translation": "سنة البدء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 888,
+    "English Text": "Status",
+    "Arabic Translation": "الحالة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 889,
+    "English Text": "Status Legend:",
+    "Arabic Translation": "دليل الحالات:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 890,
+    "English Text": "Status:",
+    "Arabic Translation": "الحالة:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 891,
+    "English Text": "Stomachache",
+    "Arabic Translation": "ألم في المعدة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 892,
+    "English Text": "Submit",
+    "Arabic Translation": "إرسال",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 893,
+    "English Text": "Submit Request",
+    "Arabic Translation": "إرسال الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 894,
+    "English Text": "Submitted",
+    "Arabic Translation": "تم الإرسال",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 895,
+    "English Text": "submitted successfully.",
+    "Arabic Translation": "تم الإرسال بنجاح.",
+    "UI Category": "Message / notification",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 896,
+    "English Text": "Summary View",
+    "Arabic Translation": "عرض الملخص",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 897,
+    "English Text": "Sunday",
+    "Arabic Translation": "الأحد",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 898,
+    "English Text": "Suspended",
+    "Arabic Translation": "معلّق",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 899,
+    "English Text": "System Identifiers",
+    "Arabic Translation": "معرّفات النظام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 900,
+    "English Text": "Take care!",
+    "Arabic Translation": "اعتنِ بنفسك!",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 901,
+    "English Text": "Tanvi Lumari",
+    "Arabic Translation": "تانفي لوماري",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 902,
+    "English Text": "Tariq Mansour",
+    "Arabic Translation": "طارق منصور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 903,
+    "English Text": "Tax Deducted",
+    "Arabic Translation": "الضريبة المستقطعة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 904,
+    "English Text": "Tax regulations updated",
+    "Arabic Translation": "تم تحديث اللوائح الضريبية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 905,
+    "English Text": "Temporary",
+    "Arabic Translation": "مؤقت",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 906,
+    "English Text": "Terminate Employee",
+    "Arabic Translation": "إنهاء خدمة الموظف",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 907,
+    "English Text": "This action cannot be undone.",
+    "Arabic Translation": "لا يمكن التراجع عن هذا الإجراء.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 908,
+    "English Text": "This action is permanent. The employee's account will be deactivated immediately.",
+    "Arabic Translation": "هذا الإجراء نهائي. سيتم إلغاء تنشيط حساب الموظف فورًا.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 909,
+    "English Text": "This information is encrypted and protected. All changes are logged for security.",
+    "Arabic Translation": "هذه المعلومات مشفرة ومحمية. يتم تسجيل جميع التغييرات لأغراض الأمان.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 910,
+    "English Text": "This information is maintained by HR. If something needs correction, you can request an update.",
+    "Arabic Translation": "تتولى الموارد البشرية إدارة هذه المعلومات. إذا كان هناك ما يحتاج إلى تصحيح، يمكنك طلب تحديث.",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 911,
+    "English Text": "This request will be reviewed and approved by HR before the changes take effect.",
+    "Arabic Translation": "ستراجع الموارد البشرية هذا الطلب وتوافق عليه قبل أن تدخل التغييرات حيز التنفيذ.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 912,
+    "English Text": "Thursday",
+    "Arabic Translation": "الخميس",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 913,
+    "English Text": "Time In",
+    "Arabic Translation": "وقت الحضور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 914,
+    "English Text": "Time Out",
+    "Arabic Translation": "وقت الانصراف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 915,
+    "English Text": "Time Zone",
+    "Arabic Translation": "المنطقة الزمنية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 916,
+    "English Text": "Timesheet",
+    "Arabic Translation": "سجل الدوام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 917,
+    "English Text": "Title",
+    "Arabic Translation": "العنوان",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 918,
+    "English Text": "Title:",
+    "Arabic Translation": "العنوان:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 919,
+    "English Text": "To",
+    "Arabic Translation": "إلى",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 920,
+    "English Text": "to",
+    "Arabic Translation": "إلى",
+    "UI Category": "Label",
+    "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
+  },
+  {
+    "Source Index": 921,
+    "English Text": "to close",
+    "Arabic Translation": "للإغلاق",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 922,
+    "English Text": "to navigate",
+    "Arabic Translation": "للتنقل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 923,
+    "English Text": "to open",
+    "Arabic Translation": "للفتح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 924,
+    "English Text": "To search all employees,",
+    "Arabic Translation": "للبحث في جميع الموظفين،",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 925,
+    "English Text": "to select",
+    "Arabic Translation": "للتحديد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 926,
+    "English Text": "To update your bank details, you must submit a change request with supporting documents for HR approval.",
+    "Arabic Translation": "لتحديث بياناتك البنكية، يجب إرسال طلب تغيير مع المستندات الداعمة لموافقة الموارد البشرية.",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 927,
+    "English Text": "Toggle language",
+    "Arabic Translation": "تبديل اللغة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 928,
+    "English Text": "Tools Used",
+    "Arabic Translation": "الأدوات المستخدمة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 929,
+    "English Text": "Total",
+    "Arabic Translation": "الإجمالي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 930,
+    "English Text": "Total Allowances",
+    "Arabic Translation": "إجمالي البدلات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 931,
+    "English Text": "Total Balance",
+    "Arabic Translation": "إجمالي الرصيد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 932,
+    "English Text": "Total Days",
+    "Arabic Translation": "إجمالي الأيام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 933,
+    "English Text": "Total Deductions",
+    "Arabic Translation": "إجمالي الاستقطاعات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 934,
+    "English Text": "Total Employees",
+    "Arabic Translation": "إجمالي الموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 935,
+    "English Text": "Total Hours",
+    "Arabic Translation": "إجمالي الساعات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 936,
+    "English Text": "Total Number",
+    "Arabic Translation": "إجمالي العدد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 937,
+    "English Text": "Total:",
+    "Arabic Translation": "الإجمالي:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 938,
+    "English Text": "Tuesday",
+    "Arabic Translation": "الثلاثاء",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 939,
+    "English Text": "Type",
+    "Arabic Translation": "النوع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 940,
+    "English Text": "Type a command or search...",
+    "Arabic Translation": "اكتب أمرًا أو ابحث...",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 941,
+    "English Text": "Type:",
+    "Arabic Translation": "النوع:",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 942,
+    "English Text": "Under development",
+    "Arabic Translation": "قيد التطوير",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 943,
+    "English Text": "Unfilled",
+    "Arabic Translation": "غير مكتمل",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 944,
+    "English Text": "Unpaid",
+    "Arabic Translation": "غير مدفوعة",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 945,
+    "English Text": "Upcoming Leaves",
+    "Arabic Translation": "الإجازات القادمة",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 946,
+    "English Text": "Update",
+    "Arabic Translation": "تحديث",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 947,
+    "English Text": "Upload",
+    "Arabic Translation": "رفع",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 948,
+    "English Text": "Upload a new profile picture",
+    "Arabic Translation": "رفع صورة ملف شخصي جديدة",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 949,
+    "English Text": "Upload a new profile picture or select an avatar.",
+    "Arabic Translation": "ارفع صورة ملف شخصي جديدة أو اختر صورة رمزية.",
+    "UI Category": "Placeholder / helper text"
+  },
+  {
+    "Source Index": 950,
+    "English Text": "Upload Bank Statement",
+    "Arabic Translation": "رفع كشف حساب بنكي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 951,
+    "English Text": "Upload Data",
+    "Arabic Translation": "رفع البيانات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 952,
+    "English Text": "Upload Document",
+    "Arabic Translation": "رفع مستند",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 953,
+    "English Text": "Upload File",
+    "Arabic Translation": "رفع ملف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 954,
+    "English Text": "Upload Image",
+    "Arabic Translation": "رفع صورة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 955,
+    "English Text": "Upload image",
+    "Arabic Translation": "رفع صورة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 956,
+    "English Text": "Uploading...",
+    "Arabic Translation": "جارٍ الرفع...",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 957,
+    "English Text": "USD",
+    "Arabic Translation": "دولار أمريكي",
+    "UI Category": "Demo value / format"
+  },
+  {
+    "Source Index": 958,
+    "English Text": "Use",
+    "Arabic Translation": "استخدام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 959,
+    "English Text": "Use the demo access on the login screen to walk through all the redesigned flows — no credentials needed.",
+    "Arabic Translation": "استخدم الدخول التجريبي في شاشة تسجيل الدخول لتجربة جميع المسارات المُعاد تصميمها — دون الحاجة إلى بيانات اعتماد.",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 960,
+    "English Text": "Used",
+    "Arabic Translation": "المستخدم",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 961,
+    "English Text": "Used Balance",
+    "Arabic Translation": "الرصيد المستخدم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 962,
+    "English Text": "Username",
+    "Arabic Translation": "اسم المستخدم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 963,
+    "English Text": "Users assigned",
+    "Arabic Translation": "المستخدمون المعيّنون",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 964,
+    "English Text": "UX Design",
+    "Arabic Translation": "تصميم تجربة المستخدم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 965,
+    "English Text": "UX Designer",
+    "Arabic Translation": "مصمم تجربة المستخدم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 966,
+    "English Text": "UX Projects",
+    "Arabic Translation": "مشروعات تجربة المستخدم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 967,
+    "English Text": "Vacation",
+    "Arabic Translation": "إجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 968,
+    "English Text": "View",
+    "Arabic Translation": "عرض",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 969,
+    "English Text": "View Activity Log",
+    "Arabic Translation": "عرض سجل النشاط",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 970,
+    "English Text": "View Details",
+    "Arabic Translation": "عرض التفاصيل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 971,
+    "English Text": "View Leave",
+    "Arabic Translation": "عرض الإجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 972,
+    "English Text": "View manager profile",
+    "Arabic Translation": "عرض ملف المدير",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 973,
+    "English Text": "View payslip",
+    "Arabic Translation": "عرض قسيمة الراتب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 974,
+    "English Text": "View Project",
+    "Arabic Translation": "عرض المشروع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 975,
+    "English Text": "View Request",
+    "Arabic Translation": "عرض الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 976,
+    "English Text": "View request",
+    "Arabic Translation": "عرض الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 979,
+    "English Text": "We're sorry, but an unexpected error occurred while loading this page. Our team has been notified.",
+    "Arabic Translation": "نأسف، حدث خطأ غير متوقع أثناء تحميل هذه الصفحة. تم إخطار فريقنا.",
+    "UI Category": "Message / notification"
+  },
+  {
+    "Source Index": 980,
+    "English Text": "Wednesday",
+    "Arabic Translation": "الأربعاء",
+    "UI Category": "Date / time"
+  },
+  {
+    "Source Index": 981,
+    "English Text": "Weekend",
+    "Arabic Translation": "عطلة نهاية الأسبوع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 982,
+    "English Text": "Welcome",
+    "Arabic Translation": "مرحبًا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 983,
+    "English Text": "What changed for users",
+    "Arabic Translation": "ما الذي تغيّر للمستخدمين",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 984,
+    "English Text": "Widowed",
+    "Arabic Translation": "أرمل/أرملة",
+    "UI Category": "Status / option"
+  },
+  {
+    "Source Index": 985,
+    "English Text": "Work From Home",
+    "Arabic Translation": "العمل من المنزل",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 986,
+    "English Text": "Work Information",
+    "Arabic Translation": "معلومات العمل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 987,
+    "English Text": "Work Location",
+    "Arabic Translation": "موقع العمل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 988,
+    "English Text": "Workforce management, simplified.",
+    "Arabic Translation": "إدارة القوى العاملة ببساطة.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 989,
+    "English Text": "Working Hours",
+    "Arabic Translation": "ساعات العمل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 990,
+    "English Text": "XXXXX",
+    "Arabic Translation": "XXXXX",
+    "UI Category": "Demo value / format"
+  },
+  {
+    "Source Index": 991,
+    "English Text": "Year",
+    "Arabic Translation": "السنة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 992,
+    "English Text": "Yes",
+    "Arabic Translation": "نعم",
+    "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 993,
+    "English Text": "You are declining",
+    "Arabic Translation": "أنت ترفض",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 994,
+    "English Text": "You are deleting",
+    "Arabic Translation": "أنت تحذف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 995,
+    "English Text": "You are requesting",
+    "Arabic Translation": "أنت تطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 996,
+    "English Text": "You're requesting",
+    "Arabic Translation": "أنت تطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 997,
+    "English Text": "You're requesting a",
+    "Arabic Translation": "أنت تطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 998,
+    "English Text": "Your profile is complete!",
+    "Arabic Translation": "ملفك الشخصي مكتمل!",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 999,
+    "English Text": "Your Role",
+    "Arabic Translation": "دورك",
+    "UI Category": "Label"
+  }
+]

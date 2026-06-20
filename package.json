@@ -69,6 +69,7 @@
     "puppeteer": "^25.1.0",
     "tailwindcss": "4.1.12",
     "typescript": "5.6.3",
-    "vite": "6.3.5"
+    "vite": "6.3.5",
+    "xlsx": "^0.18.5"
   }
 }

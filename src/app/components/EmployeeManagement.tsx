@@ -275,27 +275,31 @@ export const EmployeeManagement: React.FC = () => {
             <TabsTrigger value="activity" className="text-[var(--text-sm)]">Activity Log</TabsTrigger>
           </TabsList>
 
-          <div className={cn("flex flex-col md:flex-row w-full md:w-auto items-stretch md:items-center gap-2 min-h-[44px]", activeSubTab !== "directory" ? "hidden md:flex opacity-0 pointer-events-none" : "flex")}>
-              <Button variant="outline" size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
-                exportToCSV(filteredEmployees, 'Employees_Data');
-                toast.success('Download started', { description: 'Employee data exported to CSV.' });
-              }}>
-                <Download className="w-4 h-4" /> <span>Download Data</span>
+          <div className="flex flex-col md:flex-row w-full md:w-auto items-stretch md:items-center gap-2 min-h-[44px]">
+            {activeSubTab === 'directory' && (
+              <>
+                <Button variant="outline" size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
+                  exportToCSV(filteredEmployees, 'Employees_Data');
+                  toast.success('Download started', { description: 'Employee data exported to CSV.' });
+                }}>
+                  <Download className="w-4 h-4" /> <span>Download Data</span>
+                </Button>
+                <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
+                  <Plus className="w-4 h-4" /> Add an Employee
+                </Button>
+              </>
+            )}
+            {activeSubTab === 'departments' && (
+              <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddDeptOpen(true)}>
+                <Plus className="w-4 h-4" /> Add Department
               </Button>
-              <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
-                <Plus className="w-4 h-4" /> Add an Employee
+            )}
+            {activeSubTab === 'jobtitles' && (
+              <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddJtOpen(true)}>
+                <Plus className="w-4 h-4" /> Add Job Title
               </Button>
-            </div>
-          {activeSubTab === 'departments' && (
-            <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddDeptOpen(true)}>
-              <Plus className="w-4 h-4" /> Add Department
-            </Button>
-          )}
-          {activeSubTab === 'jobtitles' && (
-            <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddJtOpen(true)}>
-              <Plus className="w-4 h-4" /> Add Job Title
-            </Button>
-          )}
+            )}
+          </div>
         </div>
 
         {/* ── Directory Tab ── */}
