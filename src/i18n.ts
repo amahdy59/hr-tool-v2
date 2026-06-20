@@ -83,7 +83,7 @@ const en = {
 const ar = {
   translation: {
     common: {
-      appName: 'أداة الموارد البشرية',
+      appName: 'HR Tool',
       submit: 'إرسال',
       cancel: 'إلغاء',
       collapse: 'طي القائمة',

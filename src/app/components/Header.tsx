@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
               <X className={cn("w-4 h-4 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0", isMenuOpen && "!rotate-0 !scale-100 !opacity-100")} />
             </button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-80 p-0 flex flex-col h-full bg-card">
+          <SheetContent side={i18n.language === 'ar' ? 'right' : 'left'} className="w-80 p-0 flex flex-col h-full bg-card">
             <SheetHeader className="sr-only">
               <SheetTitle>{t('header.menu')}</SheetTitle>
               <SheetDescription>{t('header.navigationMenu')}</SheetDescription>
