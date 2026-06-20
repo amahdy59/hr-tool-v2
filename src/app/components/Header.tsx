@@ -128,20 +128,31 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             </div>
           </SheetContent>
         </Sheet>
-        <h1
-          className="text-primary"
-          style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: 'clamp(var(--text-base), 4vw, var(--text-lg))',
-            fontWeight: 'var(--font-weight-bold)',
-            lineHeight: 1.2,
-          }}
-        >
-          HR Tool
-        </h1>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-4">
+      {/* Centered HR Tool Logo */}
+      <div className="absolute left-0 right-0 flex justify-center pointer-events-none">
+        <button 
+          onClick={() => setActiveTab('dashboard')} 
+          className="pointer-events-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-md hover:opacity-80 transition-opacity"
+          aria-label="Go to Dashboard"
+          title="Go to Dashboard"
+        >
+          <h1
+            className="text-primary"
+            style={{
+              fontFamily: "'Orbitron', sans-serif",
+              fontSize: 'clamp(var(--text-base), 4vw, var(--text-lg))',
+              fontWeight: 'var(--font-weight-bold)',
+              lineHeight: 1.2,
+            }}
+          >
+            HR Tool
+          </h1>
+        </button>
+      </div>
+
+      <div className="flex items-center gap-2 sm:gap-4 z-10">
         <button
           onClick={onOpenCommandPalette}
           className="flex w-9 h-9 sm:w-64 sm:h-9 sm:px-3 items-center justify-center sm:justify-between rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"

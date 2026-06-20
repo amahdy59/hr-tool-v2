@@ -78,7 +78,7 @@ const HOLIDAYS: Holiday[] = [
 const DEPARTMENTS = ['All', 'Marketing', 'Software', 'Oil & Gas', 'Sales', 'SCADA', 'IT', 'Finance', 'HR'];
 const LEAVE_TYPES = ['All', 'Sick', 'Vacation', 'Maternity', 'Paternity', 'Family Care', 'Hajj', 'Marriage', 'Bereavement', 'Unpaid'];
 const ACTIVITY_TYPES = ['My team', 'Lead Engineer', 'Application Consultant', 'Project Manager'];
-const EMPLOYMENT_TYPES = ['Direct (SE)', 'InDirect (non SE)'];
+const EMPLOYMENT_TYPES = ['Full-time', 'Contractor'];
 
 export const LeavesManagement: React.FC = () => {
   // Pending
@@ -159,11 +159,11 @@ export const LeavesManagement: React.FC = () => {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <Button variant="outline" size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] border-border cursor-pointer justify-center" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
-              Approve
-            </Button>
             <Button size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
               <Plus className="w-4 h-4" /> Create Leave
+            </Button>
+            <Button variant={selectedPending.length > 0 ? "default" : "outline"} size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
+              {selectedPending.length > 1 ? 'Approve Leaves' : 'Approve Leave'}
             </Button>
           </div>
         </div>
@@ -207,11 +207,11 @@ export const LeavesManagement: React.FC = () => {
                       <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Profile</DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve</DropdownMenuItem>
+                          <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-[12rem]">
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Leave</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve Leave</DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(leave); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline</DropdownMenuItem>
+                            <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(leave); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline Leave</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </td>
@@ -374,8 +374,8 @@ export const LeavesManagement: React.FC = () => {
                       <td className="px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Profile</DropdownMenuItem>
+                          <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-[12rem]">
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Leave</DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => toast.success('Details sent to employee')}><Download className="w-4 h-4" /> Download Letter</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

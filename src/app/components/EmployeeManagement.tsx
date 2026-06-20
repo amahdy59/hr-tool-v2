@@ -384,7 +384,7 @@ export const EmployeeManagement: React.FC = () => {
                             <DropdownMenuTrigger asChild>
                               <Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-52">
+                            <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-[12rem]">
                               <DropdownMenuItem onClick={() => { setEditEmpData(emp); setEditEmpOpen(true); }} className="cursor-pointer gap-2">
                                 <Edit className="w-4 h-4" /> Edit Info
                               </DropdownMenuItem>

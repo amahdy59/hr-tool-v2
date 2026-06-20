@@ -211,6 +211,7 @@ export default function App() {
         <Toaster
           position="bottom-right"
           toastOptions={toasterOptions}
+          closeButton
         />
         <Login onLogin={handleLogin} accessibility={accessibility} />
       </>
@@ -275,6 +276,7 @@ export default function App() {
       <Toaster
         position="bottom-right"
         toastOptions={toasterOptions}
+        closeButton
       />
       <Sidebar
         activeTab={activeTab}
