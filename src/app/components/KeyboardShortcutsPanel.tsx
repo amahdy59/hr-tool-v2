@@ -60,7 +60,7 @@ export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({ 
               <span className="text-[var(--text-sm)] text-foreground font-[var(--font-weight-medium)]">
                 {shortcut.description}
               </span>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1" dir="ltr">
                 {shortcut.keys.map((key, kIndex) => (
                   <React.Fragment key={kIndex}>
                     <kbd className="inline-flex h-6 min-w-6 items-center justify-center rounded border border-border bg-muted px-1.5 font-mono text-[11px] font-medium text-muted-foreground">
