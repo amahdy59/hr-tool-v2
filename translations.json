@@ -5560,5 +5560,11 @@
     "English Text": "Your Role",
     "Arabic Translation": "دورك",
     "UI Category": "Label"
+  },
+  {
+    "English Text": "No dates selected",
+    "Arabic Translation": "لم يتم تحديد تواريخ",
+    "Scope/Context": "Date picker",
+    "Localization Note": ""
   }
 ]

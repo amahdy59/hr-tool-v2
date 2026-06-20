@@ -583,6 +583,7 @@ const dictionary: Record<string, string> = {
   "Next": "التالي",
   "Next comparison": "المقارنة التالية",
   "Next page": "الصفحة التالية",
+  "No dates selected": "لم يتم تحديد تواريخ",
   "No": "لا",
   "No Activity Found": "لم يتم العثور على نشاط",
   "No data found": "لم يتم العثور على بيانات",
@@ -1028,7 +1029,8 @@ const walkAndTranslate = (root: ParentNode, enabled: boolean) => {
     acceptNode(node) {
       const parent = node.nodeType === Node.TEXT_NODE ? node.parentElement : node as Element;
       if (!parent) return NodeFilter.FILTER_REJECT;
-      if (['SCRIPT', 'STYLE', 'TEXTAREA'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+      if (['SCRIPT', 'STYLE'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+      if (parent.tagName === 'TEXTAREA' && node.nodeType === Node.TEXT_NODE) return NodeFilter.FILTER_REJECT;
       if (parent.closest('[data-no-auto-translate]')) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     },
