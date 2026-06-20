@@ -101,7 +101,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
   // State management
   const [about, setAbout] = useState(
-    'UX Designer & Data Analyst with 4+ years of experience turning user and business needs into decision-ready dashboards and user-centered digital experiences. Skilled in user research, information architecture, data storytelling, visualization, and accessible interface design with Excel, Power BI, Tableau, SQL, and Python.'
+    'UX Designer & Data Visualizer with 8+ years of experience turning user and business needs into decision-ready dashboards and user-centered digital experiences. Skilled in user research, information architecture, data storytelling, visualization, and accessible interface design with Excel, Power BI, Tableau, SQL, and Python.'
   );
   const [lastUpdated, setLastUpdated] = useState(new Date().toISOString());
 
@@ -121,7 +121,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       startDate: 'Jan 2023',
       endDate: '',
       currentlyWorking: true,
-      desc: 'Analyze user needs and goals. Create wireframes and prototypes. Focus on clarity, usability, and aesthetics. Collaborate closely with teams.',
+      desc: 'Led UX/UI design for complex B2B and enterprise SaaS platforms, driving user-centric solutions. Established scalable design systems utilizing Figma, Adobe Creative Suite, and modern methodologies. Leveraged AI-powered design tools to accelerate rapid prototyping and UX research synthesis.',
       orderIndex: 0,
       createdAt: '2023-01-15T00:00:00Z',
       updatedAt: new Date().toISOString(),
@@ -131,11 +131,11 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       company: 'Schneider Electric',
       role: 'Instructional Designer',
       employmentType: 'Full-time',
-      location: 'Cairo, Egypt',
+      location: 'Cairo Governorate, Egypt',
       startDate: 'Jul 2018',
       endDate: 'Jan 2023',
       currentlyWorking: false,
-      desc: 'Design engaging e-learning activities. Collaborate with subject matter experts. Adapt content for online delivery. Develop multimedia assets for interactive learning. Enhance learner engagement through visual and instructional design.',
+      desc: 'Redesigned enterprise learning platforms and interfaces, increasing user engagement and training completion rates by 30%. Translated complex technical requirements into accessible, intuitive B2B e-learning experiences.',
       orderIndex: 1,
       createdAt: '2018-07-01T00:00:00Z',
       updatedAt: new Date().toISOString(),
@@ -146,7 +146,7 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
     {
       id: '1',
       school: 'Information Technology Institute (ITI)',
-      degree: 'Diploma',
+      degree: 'Diploma of Education',
       fieldOfStudy: 'Instructional Technology',
       startDate: 'Sep 2016',
       endDate: 'Jun 2017',
@@ -176,13 +176,13 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
   const [projects, setProjects] = useState<ProjectData[]>([
     {
       id: '1',
-      title: 'A Data-Driven LEGO Explorer',
-      category: 'Data Analysis',
-      role: 'Data Analyst',
+      title: 'Haj Arafa App',
+      category: 'UX Projects',
+      role: 'UX Designer',
       issueDate: '2024',
-      desc: 'A visualization experience that helps users explore LEGO sets by theme, age, price, and set count.',
-      toolsUsed: ['Tableau', 'Excel', 'Python'],
-      url: 'https://mavenshowcase.com/project/24967',
+      desc: 'An intuitive, accessible e-commerce experience designed with responsive layouts and seamless navigation to maximize user conversion and engagement.',
+      toolsUsed: ['Figma', 'UI/UX Design'],
+      url: 'https://amahdy59.github.io/Hajarafaapp/',
       featured: true,
       orderIndex: 0,
       createdAt: '2024-01-01T00:00:00Z',
@@ -190,30 +190,58 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
     },
     {
       id: '2',
-      title: 'Sales Performance Dashboard',
-      category: 'Data Analysis',
-      role: 'Data Analyst',
+      title: 'Cairo International Airport - Command Hub',
+      category: 'UX Projects',
+      role: 'UX Designer',
       issueDate: '2023',
-      desc: 'CRM sales dashboard in Google Sheets for quarterly team performance, data preparation, pivot exploration, and chart-based visualization.',
-      toolsUsed: ['Google Sheets', 'Power BI'],
-      url: 'https://mavenshowcase.com/project/26891',
-      featured: false,
+      desc: 'A high-fidelity operational command dashboard focusing on real-time data visualization, clear information hierarchy, and responsive performance.',
+      toolsUsed: ['Figma', 'Dashboard Design'],
+      url: 'https://amahdy59.github.io/Cairo-International-Airpot-CIA-Dashboard/',
+      featured: true,
       orderIndex: 1,
-      createdAt: '2023-06-01T00:00:00Z',
+      createdAt: '2023-01-01T00:00:00Z',
       updatedAt: new Date().toISOString(),
     },
     {
       id: '3',
-      title: 'People Tool',
-      category: 'UX Design',
+      title: 'Human Resources Tool',
+      category: 'UX Projects',
       role: 'UX Designer',
       issueDate: '2023',
-      desc: 'Redesigned an internal HR tool into a clearer platform for vacation, sick leave, and mission requests.',
-      toolsUsed: ['Figma', 'Adobe XD', 'User Research'],
-      url: 'https://oculus-paste-25250067.figma.site/',
+      desc: 'A responsive, privacy-centric HR SaaS application optimizing leave requests and role management through modern, user-friendly interfaces.',
+      toolsUsed: ['Figma', 'React', 'Tailwind'],
+      url: 'https://amahdy59.github.io/hr-tool-v2/',
       featured: false,
       orderIndex: 2,
       createdAt: '2023-03-01T00:00:00Z',
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: '4',
+      title: 'A Data-Driven LEGO Explorer',
+      category: 'Data Analysis & Visualization Projects',
+      role: 'Data Analyst',
+      issueDate: '2024',
+      desc: 'An interactive Tableau visualization experience that helps users explore LEGO sets by theme, age, price, and set count.',
+      toolsUsed: ['Tableau', 'Data Analysis'],
+      url: 'https://mavenshowcase.com/project/24967',
+      featured: true,
+      orderIndex: 3,
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: '5',
+      title: 'Sales Performance Dashboard',
+      category: 'Data Analysis & Visualization Projects',
+      role: 'Data Analyst',
+      issueDate: '2023',
+      desc: 'CRM sales dashboard built in Google Sheets for tracking quarterly team performance through chart-based visualization.',
+      toolsUsed: ['Google Sheets', 'Data Visualization'],
+      url: 'https://mavenshowcase.com/project/26891',
+      featured: false,
+      orderIndex: 4,
+      createdAt: '2023-06-01T00:00:00Z',
       updatedAt: new Date().toISOString(),
     },
   ]);
@@ -224,7 +252,6 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
     { id: '3', title: 'Excel Skills for Data Analytics and Visualization', issuer: 'Microsoft', issueDate: 'Nov 2022', expiryDate: '', credentialId: 'MSFT-2022-003', credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/5XR5AHBP79KW', orderIndex: 2, createdAt: '2022-11-01T00:00:00Z', updatedAt: new Date().toISOString() },
     { id: '4', title: 'Excel Skills for Business', issuer: 'Microsoft', issueDate: 'Sep 2022', expiryDate: '', credentialId: 'MSFT-2022-004', credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/DCL8H4YT5UWG', orderIndex: 3, createdAt: '2022-09-01T00:00:00Z', updatedAt: new Date().toISOString() },
     { id: '5', title: 'Google UX Design', issuer: 'Google', issueDate: 'Jul 2022', expiryDate: '', credentialId: 'GUXD-2022-005', credentialUrl: 'https://www.coursera.org/account/accomplishments/professional-cert/49PCMPYYGLJV', orderIndex: 4, createdAt: '2022-07-01T00:00:00Z', updatedAt: new Date().toISOString() },
-    { id: '6', title: 'Robotic Process Automation (RPA)', issuer: 'Certification Provider', issueDate: 'May 2022', expiryDate: 'May 2025', credentialId: 'RPA-2022-006', credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/8MWPVHD9GALR', orderIndex: 5, createdAt: '2022-05-01T00:00:00Z', updatedAt: new Date().toISOString() },
   ]);
 
   const [skills, setSkills] = useState<SkillData[]>([
@@ -234,16 +261,20 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
     { id: '4', name: 'Usability Testing', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
     { id: '5', name: 'Wireframing', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
     { id: '6', name: 'Prototyping', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '7', name: 'Design Systems', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '8', name: 'Accessibility', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '9', name: 'Microsoft Excel (Advanced)', category: 'Data Analysis', level: 'Expert', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '10', name: 'Microsoft Power BI', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '11', name: 'Tableau', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '12', name: 'SQL', category: 'Data Analysis', level: 'Intermediate', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '13', name: 'Python', category: 'Data Analysis', level: 'Intermediate', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '14', name: 'Dashboard Design', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '15', name: 'Data Storytelling', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
-    { id: '16', name: 'KPI Analysis', category: 'Data Analysis', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '7', name: 'Figma', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '8', name: 'Design Systems', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '9', name: 'Accessibility', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '10', name: 'Enterprise & SaaS Design', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '11', name: 'Adobe Creative Suite', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '12', name: 'AI Design Tools', category: 'Core UX & Design', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '13', name: 'Microsoft Excel (Advanced)', category: 'Data Analysis & Visualization', level: 'Expert', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '14', name: 'Power BI', category: 'Data Analysis & Visualization', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '15', name: 'Tableau', category: 'Data Analysis & Visualization', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '16', name: 'Python', category: 'Data Analysis & Visualization', level: 'Intermediate', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '17', name: 'SQL', category: 'Data Analysis & Visualization', level: 'Intermediate', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '18', name: 'Dashboard Design', category: 'Data Analysis & Visualization', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '19', name: 'Data Storytelling', category: 'Data Analysis & Visualization', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
+    { id: '20', name: 'KPI Analysis', category: 'Data Analysis & Visualization', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
   ]);
 
   // Modal states
@@ -685,148 +716,156 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
         </p>
       </div>
 
-      {/* Profile Strength */}
-      <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Profile Strength</span>
-          <span className="text-[var(--text-sm)] font-[var(--font-weight-bold)] text-chart-3" style={{ fontFamily: "'Inter', sans-serif" }}>{completionScore}%</span>
-        </div>
-        <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
-          <div className="bg-chart-3 h-full rounded-full transition-all duration-500" style={{ width: `${completionScore}%` }} />
-        </div>
-        <p className="text-[var(--text-xs)] text-muted-foreground mt-2" style={{ fontFamily: "'Inter', sans-serif" }}>
-          {completionScore === 100 ? 'Your profile is complete!' : 'Add more details to strengthen your profile'}
-        </p>
-      </div>
-
-      {/* About */}
-      <ProfileCard title="About" onEdit={() => setEditAboutOpen(true)}>
-        <p className="text-[var(--text-sm)] text-muted-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{about}</p>
-      </ProfileCard>
-
-      {/* Contact Information */}
-      <ProfileCard title="Contact Information" onEdit={() => setEditContactOpen(true)}>
-        <div className="space-y-2.5 text-[var(--text-sm)]" style={{ fontFamily: "'Inter', sans-serif" }}>
-          <div className="flex items-center gap-2.5 text-primary"><Mail className="w-4 h-4" /> <span>{contact.email}</span></div>
-          <div className="flex items-center gap-2.5 text-foreground">
-            <Phone className="w-4 h-4 text-muted-foreground" />
-            <span className="inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide">
-              {maskPhoneNumber(contact.phone)}
-            </span>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-6 items-start">
+        {/* Left Column */}
+        <div className="space-y-6">
+          {/* Profile Strength */}
+          <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Profile Strength</span>
+              <span className="text-[var(--text-sm)] font-[var(--font-weight-bold)] text-chart-3" style={{ fontFamily: "'Inter', sans-serif" }}>{completionScore}%</span>
+            </div>
+            <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
+              <div className="bg-chart-3 h-full rounded-full transition-all duration-500" style={{ width: `${completionScore}%` }} />
+            </div>
+            <p className="text-[var(--text-xs)] text-muted-foreground mt-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+              {completionScore === 100 ? 'Your profile is complete!' : 'Add more details to strengthen your profile'}
+            </p>
           </div>
-          <div className="flex items-center gap-2.5 text-primary"><Globe className="w-4 h-4" /> <span>{contact.linkedin}</span></div>
-        </div>
-      </ProfileCard>
 
-      {/* Experience */}
-      <ProfileCard title="Experience" showAdd onAdd={handleAddExperience}>
-        <div className="space-y-6 relative ps-4 before:content-[''] before:absolute before:start-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
-          {experiences.sort((a, b) => a.orderIndex - b.orderIndex).map((exp, index) => (
-            <ExperienceItem 
-              key={exp.id} 
-              data={exp} 
-              isFirst={index === 0}
-              isLast={index === experiences.length - 1}
-              expanded={expandedExperiences.has(exp.id)}
-              onToggleExpand={() => {
-                const newExpanded = new Set(expandedExperiences);
-                if (newExpanded.has(exp.id)) {
-                  newExpanded.delete(exp.id);
-                } else {
-                  newExpanded.add(exp.id);
-                }
-                setExpandedExperiences(newExpanded);
-              }}
-              onEdit={() => handleEditExperience(exp)} 
-              onDelete={() => handleDeleteExperience(exp.id)}
-              onMove={(dir) => handleMoveExperience(exp.id, dir)}
-            />
-          ))}
-        </div>
-      </ProfileCard>
+          {/* About */}
+          <ProfileCard title="About Me" onEdit={() => setEditAboutOpen(true)}>
+            <p className="text-[var(--text-sm)] text-muted-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{about}</p>
+          </ProfileCard>
 
-      {/* Education */}
-      <ProfileCard title="Education" showAdd onAdd={handleAddEducation}>
-        <div className="space-y-6 relative ps-4 before:content-[''] before:absolute before:start-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
-          {educations.sort((a, b) => a.orderIndex - b.orderIndex).map((edu, index) => (
-            <EducationItem 
-              key={edu.id} 
-              data={edu} 
-              isFirst={index === 0}
-              isLast={index === educations.length - 1}
-              onEdit={() => handleEditEducation(edu)} 
-              onDelete={() => handleDeleteEducation(edu.id)}
-              onMove={(dir) => handleMoveEducation(edu.id, dir)}
-            />
-          ))}
-        </div>
-      </ProfileCard>
+          {/* Contact Information */}
+          <ProfileCard title="Contact Information" onEdit={() => setEditContactOpen(true)}>
+            <div className="space-y-2.5 text-[var(--text-sm)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <div className="flex items-center gap-2.5 text-primary"><Mail className="w-4 h-4" /> <span>{contact.email}</span></div>
+              <div className="flex items-center gap-2.5 text-foreground">
+                <Phone className="w-4 h-4 text-muted-foreground" />
+                <span className="inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide">
+                  {maskPhoneNumber(contact.phone)}
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5 text-primary"><Globe className="w-4 h-4" /> <a href={`https://${contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{contact.linkedin}</a></div>
+            </div>
+          </ProfileCard>
 
-      {/* Projects */}
-      <ProfileCard title="Projects" showAdd onAdd={handleAddProject}>
-        <div className="space-y-4">
-          {projects.sort((a, b) => {
-            if (a.featured && !b.featured) return -1;
-            if (!a.featured && b.featured) return 1;
-            return a.orderIndex - b.orderIndex;
-          }).map((proj, index) => (
-            <ProjectItem 
-              key={proj.id} 
-              data={proj} 
-              isFirst={index === 0}
-              isLast={index === projects.length - 1}
-              onEdit={() => handleEditProject(proj)} 
-              onDelete={() => handleDeleteProject(proj.id)}
-              onMove={(dir) => handleMoveProject(proj.id, dir)}
-            />
-          ))}
-        </div>
-      </ProfileCard>
-
-      {/* Certifications */}
-      <ProfileCard title="Certifications" showAdd onAdd={handleAddCertification}>
-        <div className="space-y-4">
-          {certifications.sort((a, b) => a.orderIndex - b.orderIndex).map((cert, index) => (
-            <CertificationItem 
-              key={cert.id} 
-              data={cert} 
-              isFirst={index === 0}
-              isLast={index === certifications.length - 1}
-              onEdit={() => handleEditCertification(cert)} 
-              onDelete={() => handleDeleteCertification(cert.id)}
-              onMove={(dir) => handleMoveCertification(cert.id, dir)}
-            />
-          ))}
-        </div>
-      </ProfileCard>
-
-      {/* Skills */}
-      <ProfileCard title="Skills" showAdd onAdd={handleAddSkill}>
-        <div className="space-y-3">
-          <div>
-            <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Core UX & Design Skills</p>
-            <div className="flex flex-wrap gap-2">
-              {skills.filter(s => s.category === 'Core UX & Design').map(s => (
-                <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
+          {/* Certifications */}
+          <ProfileCard title="Certifications" showAdd onAdd={handleAddCertification}>
+            <div className="space-y-4">
+              {certifications.sort((a, b) => a.orderIndex - b.orderIndex).map((cert, index) => (
+                <CertificationItem 
+                  key={cert.id} 
+                  data={cert} 
+                  isFirst={index === 0}
+                  isLast={index === certifications.length - 1}
+                  onEdit={() => handleEditCertification(cert)} 
+                  onDelete={() => handleDeleteCertification(cert.id)}
+                  onMove={(dir) => handleMoveCertification(cert.id, dir)}
+                />
               ))}
             </div>
-          </div>
-          <div>
-            <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Data Analysis & Visualization</p>
-            <div className="flex flex-wrap gap-2">
-              {skills.filter(s => s.category === 'Data Analysis').map(s => (
-                <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
+          </ProfileCard>
+
+          {/* Skills */}
+          <ProfileCard title="Skills" showAdd onAdd={handleAddSkill}>
+            <div className="space-y-3">
+              <div>
+                <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Core UX & Design</p>
+                <div className="flex flex-wrap gap-2">
+                  {skills.filter(s => s.category.includes('UX')).map(s => (
+                    <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground mb-2 mt-4" style={{ fontFamily: "'Inter', sans-serif" }}>Data Analysis & Visualization</p>
+                <div className="flex flex-wrap gap-2">
+                  {skills.filter(s => s.category.includes('Data')).map(s => (
+                    <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </ProfileCard>
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-6">
+          {/* Projects */}
+          <ProfileCard title="Projects" showAdd onAdd={handleAddProject}>
+            <div className="space-y-4">
+              {projects.sort((a, b) => {
+                if (a.featured && !b.featured) return -1;
+                if (!a.featured && b.featured) return 1;
+                return a.orderIndex - b.orderIndex;
+              }).map((proj, index) => (
+                <ProjectItem 
+                  key={proj.id} 
+                  data={proj} 
+                  isFirst={index === 0}
+                  isLast={index === projects.length - 1}
+                  onEdit={() => handleEditProject(proj)} 
+                  onDelete={() => handleDeleteProject(proj.id)}
+                  onMove={(dir) => handleMoveProject(proj.id, dir)}
+                />
               ))}
             </div>
+          </ProfileCard>
+
+          {/* Experience */}
+          <ProfileCard title="Employment" showAdd onAdd={handleAddExperience}>
+            <div className="space-y-6 relative ps-4 before:content-[''] before:absolute before:start-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
+              {experiences.sort((a, b) => a.orderIndex - b.orderIndex).map((exp, index) => (
+                <ExperienceItem 
+                  key={exp.id} 
+                  data={exp} 
+                  isFirst={index === 0}
+                  isLast={index === experiences.length - 1}
+                  expanded={expandedExperiences.has(exp.id)}
+                  onToggleExpand={() => {
+                    const newExpanded = new Set(expandedExperiences);
+                    if (newExpanded.has(exp.id)) {
+                      newExpanded.delete(exp.id);
+                    } else {
+                      newExpanded.add(exp.id);
+                    }
+                    setExpandedExperiences(newExpanded);
+                  }}
+                  onEdit={() => handleEditExperience(exp)} 
+                  onDelete={() => handleDeleteExperience(exp.id)}
+                  onMove={(dir) => handleMoveExperience(exp.id, dir)}
+                />
+              ))}
+            </div>
+          </ProfileCard>
+
+          {/* Education */}
+          <ProfileCard title="Education" showAdd onAdd={handleAddEducation}>
+            <div className="space-y-6 relative ps-4 before:content-[''] before:absolute before:start-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
+              {educations.sort((a, b) => a.orderIndex - b.orderIndex).map((edu, index) => (
+                <EducationItem 
+                  key={edu.id} 
+                  data={edu} 
+                  isFirst={index === 0}
+                  isLast={index === educations.length - 1}
+                  onEdit={() => handleEditEducation(edu)} 
+                  onDelete={() => handleDeleteEducation(edu.id)}
+                  onMove={(dir) => handleMoveEducation(edu.id, dir)}
+                />
+              ))}
+            </div>
+          </ProfileCard>
+
+          {/* Export Resume Button */}
+          <div className="flex justify-end pt-4">
+            <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
+              <Download className="w-4 h-4" /> Download PDF Resume
+            </Button>
           </div>
         </div>
-      </ProfileCard>
-
-      {/* Export Resume Button */}
-      <div className="flex justify-end pt-4">
-        <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
-          <Download className="w-4 h-4" /> Download PDF Resume
-        </Button>
       </div>
 
       {/* Hidden Resume for PDF export */}
@@ -1078,7 +1117,7 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
     <span 
       tabIndex={0} 
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }} 
-      className={cn("group relative px-3 py-1.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary", getLevelColor(data.level))} 
+      className={cn("group relative px-3 py-1.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))} 
       onClick={onEdit} 
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
