@@ -365,6 +365,26 @@ export const useArabicDomTranslation = (enabled: boolean) => {
         if (mutation.type === 'attributes' && mutation.target.nodeType === Node.ELEMENT_NODE) {
           translateElementAttributes(mutation.target as Element, enabled);
         }
+
+        if (mutation.type === 'characterData' && mutation.target.nodeType === Node.TEXT_NODE) {
+          const node = mutation.target as Text;
+          const currentVal = node.nodeValue ?? '';
+          
+          // If the new value is NOT what we translated it to, React must have overwritten it with English.
+          // In that case, update originalText and re-translate.
+          const original = originalText.get(node);
+          if (enabled && original && currentVal !== translateValue(original)) {
+            // React overwrote it. We'll update the original if it changed, and re-apply translation.
+            // But usually React overwrites it with the exact SAME English original.
+            // So we just re-translate.
+            // Be careful to avoid infinite loops: translateTextNode sets nodeValue, which triggers characterData again.
+            // translateTextNode already handles setting originalText if not present.
+            // If we temporarily disconnect or just let translateTextNode run, it's fine.
+            // Because if translateTextNode sets it to Arabic, the next characterData mutation will have currentVal === translateValue(original), which fails this if statement!
+            originalText.set(node, currentVal); // currentVal is the newly injected English text by React
+            translateTextNode(node, enabled);
+          }
+        }
       });
     });
 
@@ -373,6 +393,7 @@ export const useArabicDomTranslation = (enabled: boolean) => {
       subtree: true,
       attributes: true,
       attributeFilter: attributes,
+      characterData: true,
     });
 
     return () => observer.disconnect();

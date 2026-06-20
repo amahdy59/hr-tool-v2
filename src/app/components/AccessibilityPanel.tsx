@@ -182,8 +182,8 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
   );
 
   const renderPanelContent = (closeButton: React.ReactNode) => (
-    <div className="space-y-1 h-full flex flex-col">
-      <div className="border-b border-border pb-3 mb-4 flex items-center justify-between">
+    <div className="space-y-1 h-full flex flex-col overflow-hidden min-h-0">
+      <div className="border-b border-border pb-3 mb-4 flex items-center justify-between shrink-0">
         <div>
           <h2
             className="text-sm font-semibold text-foreground flex items-center gap-2"
@@ -199,7 +199,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         {closeButton}
       </div>
 
-      <div className="space-y-0.5 overflow-y-auto flex-1 pr-1">
+      <div className="space-y-0.5 overflow-y-auto flex-1 pe-1 min-h-0">
         {options.map((option) => (
           <AccessibilityOption key={option.id} option={option} />
         ))}
