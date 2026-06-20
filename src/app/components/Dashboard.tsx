@@ -356,7 +356,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </Button>
 
           {/* Filters for mobile/tablet (Popover) and desktop (inline) */}
-          <div className="flex w-full items-center justify-end gap-3 sm:w-auto">
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 w-full [&>button]:w-full sm:[&>button]:w-auto">
             {/* Mobile/Tablet Popover Filter */}
             <Popover>
               <PopoverTrigger asChild>
@@ -536,7 +536,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             Annual and Sick Leaves
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-hidden">
-            <table className="w-full text-start">
+            <table className="min-w-max w-full text-start">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {[
@@ -608,7 +608,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             Other Leaves
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-hidden">
-            <table className="w-full text-start">
+            <table className="min-w-max w-full text-start">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {['Leave Type', 'Balance'].map((h) => (

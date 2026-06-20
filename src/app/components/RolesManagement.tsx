@@ -265,7 +265,7 @@ export const RolesManagement: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            <table className="w-full text-[var(--text-sm)] text-start">
+            <table className="min-w-max w-full text-[var(--text-sm)] text-start">
               <thead className="hidden md:table-header-group">
                 <tr className="bg-muted border-b border-border">
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
@@ -417,7 +417,7 @@ export const RolesManagement: React.FC = () => {
               options={['Select Manager', 'John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Williams']}
               placeholder="Select manager"
             />
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 w-full [&>button]:w-full sm:[&>button]:w-auto">
               <Button variant="outline" onClick={() => setAddRoleOpen(false)}>
                 Cancel
               </Button>
@@ -461,7 +461,7 @@ export const RolesManagement: React.FC = () => {
               options={['Select Manager', 'John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Williams']}
               placeholder="Select manager"
             />
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 w-full [&>button]:w-full sm:[&>button]:w-auto">
               <Button variant="outline" onClick={() => setEditRoleOpen(false)}>
                 Cancel
               </Button>
@@ -505,7 +505,7 @@ export const RolesManagement: React.FC = () => {
                 Are you sure you want to remove this role? This action cannot be undone.
               </p>
             </div>
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-2 w-full [&>button]:w-full sm:[&>button]:w-auto">
               <Button variant="outline" onClick={() => setDeleteRoleOpen(false)}>
                 Dismiss
               </Button>
