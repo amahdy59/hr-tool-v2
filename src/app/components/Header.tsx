@@ -1,5 +1,6 @@
 import React from 'react';
-import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
+import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle, Languages } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from './ui/sheet';
 import { cn } from '@/lib/utils';
@@ -31,6 +32,12 @@ const getInitials = (name: string): string => {
 
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { t, i18n } = useTranslation();
+
+  const toggleLanguage = () => {
+    i18n.changeLanguage(i18n.language === 'ar' ? 'en' : 'ar');
+  };
+
   return (
     <header className="grid h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 bg-card/80 backdrop-blur-md px-3 sticky top-0 z-[60] sm:px-6">
       <div className="flex min-w-0 items-center justify-start gap-2">
@@ -173,6 +180,15 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
           title="Keyboard Shortcuts (?)"
         >
           <Keyboard className="w-4 h-4" aria-hidden="true" />
+        </button>
+
+        <button
+          onClick={toggleLanguage}
+          className="flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label="Toggle Language"
+          title="Toggle Language"
+        >
+          <Languages className="w-4 h-4" aria-hidden="true" />
         </button>
 
         <div>

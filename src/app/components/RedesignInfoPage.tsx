@@ -106,18 +106,18 @@ const ScreenshotCard: React.FC<{
       </div>
       <div
         className={cn(
-          'relative overflow-hidden rounded-[var(--radius-card)] border',
+          'relative overflow-hidden rounded-[var(--radius-card)] border aspect-[16/10] w-full',
           isAfter ? 'border-[#047857]/30 shadow-md' : 'border-border'
         )}
       >
         {!loaded && !failed && (
           <div
-            className="aspect-[16/10] w-full animate-pulse bg-muted"
+            className="absolute inset-0 z-10 animate-pulse bg-muted"
             aria-hidden="true"
           />
         )}
         {failed ? (
-          <div className="flex aspect-[16/10] w-full flex-col items-center justify-center gap-2 bg-muted/50 p-6 text-center">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-muted/50 p-6 text-center">
             <Layers className="h-8 w-8 text-muted-foreground" aria-hidden="true" />
             <p className="text-xs text-muted-foreground">Screenshot unavailable</p>
           </div>
@@ -129,7 +129,7 @@ const ScreenshotCard: React.FC<{
             onLoad={() => setLoaded(true)}
             onError={() => setFailed(true)}
             className={cn(
-              'aspect-[16/10] w-full object-cover object-top transition-opacity duration-300',
+              'absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-300',
               loaded ? 'opacity-100' : 'opacity-0'
             )}
           />

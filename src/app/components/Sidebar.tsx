@@ -19,6 +19,7 @@ import {
   TooltipProvider,
 } from './ui/tooltip';
 import { type AppTab, type CurrentUser } from '../App';
+import { useTranslation } from 'react-i18next';
 
 const getInitials = (name: string) => {
   return name
@@ -55,6 +56,8 @@ const footerItems = [
 const sidebarItemTextClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)]';
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, collapsed, onToggle, onLogout, currentUser }) => {
+  const { t } = useTranslation();
+  
   const NavButton = ({ item }: { item: typeof navItems[number] }) => {
     const isActive = activeTab === item.id;
     const button = (
@@ -87,7 +90,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             collapsed && "sm:hidden"
           )}
         >
-          {item.label}
+          {t(`sidebar.${item.id}`)}
         </span>
         
         {/* Active indicator */}
@@ -102,7 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         <Tooltip>
           <TooltipTrigger asChild>{button}</TooltipTrigger>
           <TooltipContent side="right" sideOffset={8} className="hidden sm:block text-[var(--text-sm)] font-[var(--font-weight-medium)]">
-            {item.label}
+            {t(`sidebar.${item.id}`)}
           </TooltipContent>
         </Tooltip>
       );
@@ -187,9 +190,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             );
 
             const LabelContent = item.id === 'profile' ? (
-              <span className="truncate">{currentUser?.name || item.label}</span>
+              <span className="truncate">{currentUser?.name || t(`sidebar.${item.id}`)}</span>
             ) : (
-              <span>{item.label}</span>
+              <span>{t(`sidebar.${item.id}`)}</span>
             );
 
             if (collapsed) {
@@ -207,7 +210,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side="right" sideOffset={8} className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
-                    {item.label}
+                    {t(`sidebar.${item.id}`)}
                   </TooltipContent>
                 </Tooltip>
               );
@@ -242,7 +245,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             ) : (
               <>
                 <ChevronsLeft className="w-5 h-5" />
-                <span>Collapse</span>
+                <span>{t('sidebar.collapse', 'Collapse')}</span>
               </>
             )}
           </button>
