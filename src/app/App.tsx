@@ -20,6 +20,7 @@ import { RequestLeaveModal } from './components/RequestLeaveModal';
 import { RequestMissionModal } from './components/RequestMissionModal';
 import { ConfirmDialog } from './components/ConfirmDialog';
 import { useArabicDomTranslation } from '@/lib/useArabicDomTranslation';
+import { useTheme } from '@/lib/useTheme';
 
 export type AppTab =
   | 'dashboard'
@@ -71,6 +72,8 @@ export default function App() {
   const [dyslexic, setDyslexic] = useState(() => localStorage.getItem('accessibility-dyslexic') === 'true');
   const [focusHeavy, setFocusHeavy] = useState(() => localStorage.getItem('accessibility-focus-heavy') === 'true');
   const [announcement, setAnnouncement] = useState('');
+  
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const title = `${t(`pages.${activeTab}`)} - ${t('common.appName')}`;
@@ -124,7 +127,8 @@ export default function App() {
     largeTargets, setLargeTargets,
     largeText, setLargeText,
     dyslexic, setDyslexic,
-    focusHeavy, setFocusHeavy
+    focusHeavy, setFocusHeavy,
+    theme, setTheme
   };
 
   const toasterOptions = useMemo(

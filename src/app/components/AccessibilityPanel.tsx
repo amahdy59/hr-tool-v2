@@ -7,6 +7,9 @@ import {
   Type,
   ZoomIn,
   X,
+  Moon,
+  Sun,
+  Monitor,
 } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent, PopoverClose } from './ui/popover';
 import { Sheet, SheetTrigger, SheetContent, SheetTitle } from './ui/sheet';
@@ -25,6 +28,8 @@ export interface AccessibilitySettings {
   setDyslexic: (v: boolean) => void;
   focusHeavy: boolean;
   setFocusHeavy: (v: boolean) => void;
+  theme: 'light' | 'dark' | 'system';
+  setTheme: (v: 'light' | 'dark' | 'system') => void;
 }
 
 interface AccessibilityPanelProps {
@@ -109,6 +114,8 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     setDyslexic,
     focusHeavy,
     setFocusHeavy,
+    theme,
+    setTheme,
   } = settings;
 
   const options: OptionDef[] = [
@@ -200,6 +207,45 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       </div>
 
       <div className="space-y-0.5 overflow-y-auto flex-1 pe-1 min-h-0">
+        <div className="mb-4">
+          <label className="text-[var(--text-sm)] font-medium text-foreground block mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Theme</label>
+          <div className="grid grid-cols-3 gap-2 p-1 bg-muted/50 rounded-md border border-border">
+            <button
+              onClick={() => setTheme('light')}
+              className={cn(
+                "flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-sm text-xs transition-colors",
+                theme === 'light' ? "bg-background shadow-sm text-foreground font-medium border border-border/50" : "text-muted-foreground hover:bg-muted"
+              )}
+            >
+              <Sun className="w-4 h-4 mb-0.5" />
+              Light
+            </button>
+            <button
+              onClick={() => setTheme('dark')}
+              className={cn(
+                "flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-sm text-xs transition-colors",
+                theme === 'dark' ? "bg-background shadow-sm text-foreground font-medium border border-border/50" : "text-muted-foreground hover:bg-muted"
+              )}
+            >
+              <Moon className="w-4 h-4 mb-0.5" />
+              Dark
+            </button>
+            <button
+              onClick={() => setTheme('system')}
+              className={cn(
+                "flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-sm text-xs transition-colors",
+                theme === 'system' ? "bg-background shadow-sm text-foreground font-medium border border-border/50" : "text-muted-foreground hover:bg-muted"
+              )}
+            >
+              <Monitor className="w-4 h-4 mb-0.5" />
+              System
+            </button>
+          </div>
+        </div>
+
+        <div className="mb-2">
+          <label className="text-[var(--text-sm)] font-medium text-foreground block mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Accessibility Options</label>
+        </div>
         {options.map((option) => (
           <AccessibilityOption key={option.id} option={option} />
         ))}

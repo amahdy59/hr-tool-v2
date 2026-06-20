@@ -120,7 +120,13 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   }
 }
 
-export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUser }) => {
+export const ProfessionalProfile: React.FC<{ currentUser: any }> = (props) => (
+  <ErrorBoundary>
+    <ProfessionalProfileContent {...props} />
+  </ErrorBoundary>
+);
+
+const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUser }) => {
   const resumeRef = useRef<HTMLDivElement>(null);
 
   // State management

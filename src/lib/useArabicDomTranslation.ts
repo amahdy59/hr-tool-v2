@@ -1052,7 +1052,18 @@ export const useArabicDomTranslation = (enabled: boolean) => {
 
     if (!enabled) return;
 
+    const config = {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: attributes,
+      characterData: true,
+    };
+
     const observer = new MutationObserver((mutations) => {
+      // Disconnect to avoid infinite loops when we modify the DOM
+      observer.disconnect();
+
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (node.nodeType === Node.TEXT_NODE) {
@@ -1070,15 +1081,12 @@ export const useArabicDomTranslation = (enabled: boolean) => {
           translateTextNode(mutation.target as Text, enabled);
         }
       });
+
+      // Reconnect after our changes are applied
+      observer.observe(document.body, config);
     });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: attributes,
-      characterData: true,
-    });
+    observer.observe(document.body, config);
 
     return () => observer.disconnect();
   }, [enabled]);
