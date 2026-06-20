@@ -18,7 +18,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from './ui/tooltip';
-import type { AppTab, UserData } from '../App';
+import { type AppTab, type CurrentUser } from '../App';
 
 const getInitials = (name: string) => {
   return name
@@ -35,7 +35,7 @@ interface SidebarProps {
   collapsed: boolean;
   onToggle: () => void;
   onLogout?: () => void;
-  currentUser?: UserData | null;
+  currentUser?: CurrentUser | null;
 }
 
 const navItems = [
@@ -54,7 +54,7 @@ const footerItems = [
 
 const sidebarItemTextClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)]';
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, collapsed, onToggle, onLogout }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, collapsed, onToggle, onLogout, currentUser }) => {
   const NavButton = ({ item }: { item: typeof navItems[number] }) => {
     const isActive = activeTab === item.id;
     const button = (
