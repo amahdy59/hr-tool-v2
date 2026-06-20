@@ -59,6 +59,8 @@ import { Checkbox } from './ui/checkbox';
 import { toast } from 'sonner';
 import { EmptyState } from './EmptyState';
 import { exportToCSV } from '../../lib/export';
+import { useTranslation } from 'react-i18next';
+import { localizePersonName } from '@/lib/localizedNames';
 
 // ── Types ──
 interface Employee {
@@ -155,6 +157,8 @@ const includesQuery = (values: Array<string | number>, query: string) => {
 
 // ── Main Component ──
 export const EmployeeManagement: React.FC = () => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
   const [activeSubTab, setActiveSubTab] = useState('directory');
 
   // Search & filter state
@@ -371,11 +375,11 @@ export const EmployeeManagement: React.FC = () => {
                   <tbody className="divide-y divide-border">
                     {filteredEmployees.map((emp) => (
                       <tr key={emp.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
-                        <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell"><Checkbox aria-label={`Select ${emp.name}`} /></td>
+                        <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell"><Checkbox aria-label={`Select ${localizePersonName(emp.name, language)}`} /></td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3">
                           <div className="flex items-center gap-2">
-                            <Checkbox className="md:hidden mt-0.5" aria-label={`Select ${emp.name}`} />
-                            <span className="text-primary font-[var(--font-weight-medium)]">{emp.name}</span>
+                            <Checkbox className="md:hidden mt-0.5" aria-label={`Select ${localizePersonName(emp.name, language)}`} />
+                            <span className="text-primary font-[var(--font-weight-medium)]">{localizePersonName(emp.name, language)}</span>
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span>{emp.employeeNumber}</td>
@@ -868,6 +872,8 @@ const FormerEmployeeModal: React.FC<{
   open: boolean;
   onOpenChange: (v: boolean) => void;
 }> = ({ open, onOpenChange }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
   const [searchFormer, setSearchFormer] = useState('');
 
   const formerEmployees = [
@@ -907,12 +913,12 @@ const FormerEmployeeModal: React.FC<{
               <tbody className="divide-y divide-border">
                 {formerEmployees.map((fe, i) => (
                   <tr key={i} className="hover:bg-muted/30">
-                    <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{fe.name}</td>
+                    <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{localizePersonName(fe.name, language)}</td>
                     <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground uppercase tabular-nums">{fe.employeeNumber}</td>
                     <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{fe.dept}</td>
                     <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{fe.title}</td>
                     <td className="whitespace-nowrap px-4 py-2.5 text-end">
-                      <Button size="sm" variant="outline" className="gap-1.5 rounded-[var(--radius-button)]" onClick={() => { onOpenChange(false); toast.success(`${fe.name} added back as an employee`); }}>
+                      <Button size="sm" variant="outline" className="gap-1.5 rounded-[var(--radius-button)]" onClick={() => { onOpenChange(false); toast.success(`${localizePersonName(fe.name, language)} added back as an employee`); }}>
                         <Plus className="w-3 h-3" /> Add
                       </Button>
                     </td>
@@ -937,6 +943,8 @@ const AccessCardsModal: React.FC<{
   onOpenChange: (v: boolean) => void;
   employee: Employee | null;
 }> = ({ open, onOpenChange, employee }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
   const [cardNumber, setCardNumber] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -968,7 +976,7 @@ const AccessCardsModal: React.FC<{
             <div className="p-4 bg-muted rounded-[var(--radius-card)] space-y-2">
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Employee Info</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[var(--text-sm)]">
-                <div><span className="text-muted-foreground">Name:</span> <span className="text-foreground ms-1">{employee.name}</span></div>
+                <div><span className="text-muted-foreground">Name:</span> <span className="text-foreground ms-1">{localizePersonName(employee.name, language)}</span></div>
                 <div><span className="text-muted-foreground">Employee#:</span> <span className="text-foreground ms-1 uppercase">{employee.employeeNumber}</span></div>
                 <div><span className="text-muted-foreground">Department:</span> <span className="text-foreground ms-1">{employee.department}</span></div>
               </div>
@@ -1057,6 +1065,8 @@ const TerminateModal: React.FC<{
   onOpenChange: (v: boolean) => void;
   employee: Employee | null;
 }> = ({ open, onOpenChange, employee }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
   const [resetPassword, setResetPassword] = useState(false);
 
   return (
@@ -1070,7 +1080,7 @@ const TerminateModal: React.FC<{
         <div className="space-y-4">
           <div className="p-3 bg-destructive/5 rounded-[var(--radius)] border border-destructive/20">
             <p className="text-[var(--text-sm)] text-foreground">
-              <strong>{employee?.name}</strong> is about to be terminated.
+              <strong>{localizePersonName(employee?.name, language)}</strong> is about to be terminated.
             </p>
             <ul className="mt-2 space-y-1 text-[var(--text-xs)] text-muted-foreground list-disc ps-4">
               <li>All access to company resources will be revoked.</li>
@@ -1091,7 +1101,7 @@ const TerminateModal: React.FC<{
 
         <DialogFooter className="pt-2 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
-          <Button variant="destructive" onClick={() => { onOpenChange(false); toast.success(`${employee?.name} has been terminated`); }} className="w-full sm:w-auto rounded-[var(--radius-button)]">
+          <Button variant="destructive" onClick={() => { onOpenChange(false); toast.success(`${localizePersonName(employee?.name, language)} has been terminated`); }} className="w-full sm:w-auto rounded-[var(--radius-button)]">
             Terminate Employee
           </Button>
         </DialogFooter>

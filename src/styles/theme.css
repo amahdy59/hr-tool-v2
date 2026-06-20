@@ -93,12 +93,12 @@
   /* The border radius for input fields. */
   --radius-input: 8px;
   
-  /* Button styles — 44px meets WCAG 2.5.5 minimum touch target */
-  --button-height-sm: 44px;
-  --button-height-default: 44px;
+  /* Button styles: desktop defaults stay compact; mobile rules below enforce 44px tap targets. */
+  --button-height-sm: 36px;
+  --button-height-default: 40px;
   --button-height-lg: 44px;
-  --button-padding-x-sm: 24px;
-  --button-padding-x-default: 24px;
+  --button-padding-x-sm: 16px;
+  --button-padding-x-default: 20px;
   --button-padding-x-lg: 24px;
   --button-padding-y: 0px;
   --button-font-size-sm: var(--text-sm);
@@ -134,40 +134,41 @@
 }
 
 .dark {
-  --background: #0d1117;
-  --foreground: #e6edf3;
-  --card: #161b22;
-  --card-foreground: #e6edf3;
-  --popover: #161b22;
-  --popover-foreground: #e6edf3;
-  --primary: #58a6ff;
-  --primary-foreground: #0d1117;
-  --secondary: #21262d;
-  --secondary-foreground: #c9d1d9;
-  --muted: #21262d;
-  --muted-foreground: #8b949e;
-  --accent: #21262d;
-  --accent-foreground: #58a6ff;
-  --destructive: #f85149;
-  --destructive-foreground: #ffffff;
-  --border: #30363d;
-  --input: #0d1117;
-  --input-background: #0d1117;
-  --ring: #58a6ff;
-  --elevation-sm: 0px 1px 3px rgba(0, 0, 0, 0.4);
-  --chart-1: #58a6ff;
-  --chart-2: #d29922;
-  --chart-3: #238636;
-  --chart-4: #f85149;
-  --chart-5: #8b949e;
-  --sidebar: #0d1117;
-  --sidebar-foreground: #e6edf3;
-  --sidebar-primary: #161b22;
-  --sidebar-primary-foreground: #e6edf3;
-  --sidebar-accent: #21262d;
-  --sidebar-accent-foreground: #e6edf3;
-  --sidebar-border: #30363d;
-  --sidebar-ring: #58a6ff;
+  --background: #0B1220;
+  --foreground: #F1F5F9;
+  --card: #111827;
+  --card-foreground: #F1F5F9;
+  --popover: #111827;
+  --popover-foreground: #F1F5F9;
+  --primary: #A7D4FF;
+  --primary-foreground: #08111F;
+  --secondary: #F7C948;
+  --secondary-foreground: #111827;
+  --muted: #1F2937;
+  --muted-foreground: #D1D5DB;
+  --accent: #A7F3D0;
+  --accent-foreground: #06281F;
+  --destructive: #FCA5A5;
+  --destructive-foreground: #220606;
+  --border: #64748B;
+  --input: #0B1220;
+  --input-background: #0B1220;
+  --ring: #BFDBFE;
+  --elevation-sm: 0px 1px 0px rgba(255, 255, 255, 0.08);
+  --elevation-lg: 0px 18px 40px rgba(0, 0, 0, 0.45), 0px 0px 0px 1px rgba(255, 255, 255, 0.08);
+  --chart-1: #93C5FD;
+  --chart-2: #FACC15;
+  --chart-3: #166534;
+  --chart-4: #F97316;
+  --chart-5: #CBD5E1;
+  --sidebar: #08111F;
+  --sidebar-foreground: #F1F5F9;
+  --sidebar-primary: #DBEAFE;
+  --sidebar-primary-foreground: #08111F;
+  --sidebar-accent: #1E293B;
+  --sidebar-accent-foreground: #F8FAFC;
+  --sidebar-border: #64748B;
+  --sidebar-ring: #BFDBFE;
 }
 
 /* ==========================================================================
@@ -237,7 +238,7 @@
   --sidebar-ring: #FFFFFF;
 }
 
-/* 2. AAA Touch/Click Targets (WCAG 2.5.5 - 44px) */
+/* 2. Optional AAA Touch/Click Targets (WCAG 2.5.5 - 44px). Mobile gets this automatically below. */
 .accessibility-aaa-targets button:not(.link-btn):not([role="checkbox"]):not([role="switch"]),
 .accessibility-aaa-targets [role="button"]:not(.sidebar-link):not([role="checkbox"]):not([role="switch"]),
 .accessibility-aaa-targets select,
@@ -730,6 +731,15 @@ html {
    MOBILE-SPECIFIC ACCESSIBILITY OVERRIDES (WCAG 2.2 AAA Base)
    ========================================================================== */
 @media (max-width: 768px) {
+  :root {
+    --button-height-sm: 44px;
+    --button-height-default: 44px;
+    --button-height-lg: 48px;
+    --button-padding-x-sm: 20px;
+    --button-padding-x-default: 24px;
+    --button-padding-x-lg: 28px;
+  }
+
   /* 1. Mobile AAA Touch/Click Targets (WCAG 2.5.5 - 44px) */
   button:not(.link-btn):not([role="checkbox"]):not([role="switch"]),
   [role="button"]:not(.sidebar-link):not([role="checkbox"]):not([role="switch"]),

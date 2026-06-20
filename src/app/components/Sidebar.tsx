@@ -20,6 +20,7 @@ import {
 } from './ui/tooltip';
 import { type AppTab, type CurrentUser } from '../App';
 import { useTranslation } from 'react-i18next';
+import { localizePersonName } from '@/lib/localizedNames';
 
 const getInitials = (name: string) => {
   return name
@@ -56,7 +57,8 @@ const footerItems = [
 const sidebarItemTextClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)]';
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, collapsed, onToggle, onLogout, currentUser }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const displayName = localizePersonName(currentUser?.name, i18n.resolvedLanguage || i18n.language);
   
   const NavButton = ({ item }: { item: typeof navItems[number] }) => {
     const isActive = activeTab === item.id;
@@ -190,7 +192,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             );
 
             const LabelContent = item.id === 'profile' ? (
-              <span className="truncate">{currentUser?.name || t(`sidebar.${item.id}`)}</span>
+              <span className="truncate">{displayName || t(`sidebar.${item.id}`)}</span>
             ) : (
               <span>{t(`sidebar.${item.id}`)}</span>
             );

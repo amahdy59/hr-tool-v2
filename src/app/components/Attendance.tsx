@@ -41,6 +41,8 @@ import { Checkbox } from './ui/checkbox';
 import { Button } from './ui/button';
 import { DatePicker } from './ui/date-picker';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
+import { localizePersonName } from '@/lib/localizedNames';
 
 // ── CSS variable colors for charts ──
 const CHART_COLORS = {
@@ -202,6 +204,8 @@ const CustomBarTooltip = ({ active, payload }: any) => {
 
 // ── Main Component ──
 export const Attendance: React.FC = () => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('11');
@@ -386,7 +390,7 @@ export const Attendance: React.FC = () => {
             </SelectTrigger>
             <SelectContent>
               {employeeNames.map((n) => (
-                <SelectItem key={n} value={n}>{n}</SelectItem>
+                <SelectItem key={n} value={n}>{localizePersonName(n, language)}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -405,7 +409,7 @@ export const Attendance: React.FC = () => {
 
       {/* ── Context label ── */}
       <p className="text-[var(--text-sm)] text-foreground">
-        Showing attendance for <span className="font-[var(--font-weight-semibold)] text-primary">{selectedEmployee}</span>
+        Showing attendance for <span className="font-[var(--font-weight-semibold)] text-primary">{localizePersonName(selectedEmployee, language)}</span>
         {selectedMonth !== 'all' && <> &middot; {monthLabel} {selectedYear}</>}
       </p>
 

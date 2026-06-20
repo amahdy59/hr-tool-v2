@@ -11,6 +11,8 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from './ui/select';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
+import { localizePersonName } from '@/lib/localizedNames';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -78,6 +80,9 @@ interface BasicInfoProps {
 }
 
 export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
+  const displayName = localizePersonName(currentUser?.name, language);
   // State
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoData>({
     dateOfBirth: '1990-01-01',
@@ -200,7 +205,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
             <Camera className="w-4 h-4" />
           </button>
         </div>
-        <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">{currentUser?.name || 'User'}</h3>
+        <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">{displayName || 'User'}</h3>
         <p className="text-[var(--text-sm)] text-muted-foreground font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>{currentUser?.position || 'Employee'}</p>
       </div>
 

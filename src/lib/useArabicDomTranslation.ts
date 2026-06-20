@@ -780,6 +780,8 @@ const dictionary: Record<string, string> = {
   "Select leave type": "اختر نوع الإجازة",
   "Select manager": "اختر المدير",
   "Select mission type": "اختر نوع المأمورية",
+  "Sign in": "تسجيل الدخول",
+  "Signing in...": "جارٍ تسجيل الدخول...",
   "Select start date": "اختر تاريخ البدء",
   "Select to date": "اختر تاريخ النهاية",
   "Selected Projects": "المشروعات المحددة",

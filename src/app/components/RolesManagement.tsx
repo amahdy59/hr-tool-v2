@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
+import { localizePersonName } from '@/lib/localizedNames';
 
 // ── Interfaces ──
 interface RoleAssignment {
@@ -83,6 +85,8 @@ const SelectField: React.FC<{
 
 // ── Main Component ──
 export const RolesManagement: React.FC = () => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
   // State
   const [searchQuery, setSearchQuery] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('All');
@@ -167,7 +171,7 @@ export const RolesManagement: React.FC = () => {
       return;
     }
     toast.success('Role updated successfully', {
-      description: `Updated ${selectedRole?.employeeName}'s role`,
+      description: `Updated ${localizePersonName(selectedRole?.employeeName, language)}'s role`,
     });
     setEditRoleOpen(false);
     setSelectedRole(null);
@@ -180,7 +184,7 @@ export const RolesManagement: React.FC = () => {
 
   const handleConfirmDelete = () => {
     toast.success('Role removed successfully', {
-      description: `${selectedRole?.employeeName}'s role has been removed`,
+      description: `${localizePersonName(selectedRole?.employeeName, language)}'s role has been removed`,
     });
     setDeleteRoleOpen(false);
     setSelectedRole(null);
@@ -290,7 +294,7 @@ export const RolesManagement: React.FC = () => {
                   <tr key={role.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
                     <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)] flex justify-between md:table-cell">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Name:</span>
-                      <span>{role.employeeName}</span>
+                      <span>{localizePersonName(role.employeeName, language)}</span>
                     </td>
                     <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Enrolled:</span>
@@ -443,7 +447,7 @@ export const RolesManagement: React.FC = () => {
                 fontWeight: 'var(--font-weight-semibold)',
               }}
             >
-              Edit Role for {selectedRole?.employeeName}
+              Edit Role for {localizePersonName(selectedRole?.employeeName, language)}
             </DialogTitle>
             <DialogDescription className="sr-only">Edit role assignment</DialogDescription>
           </DialogHeader>

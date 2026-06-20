@@ -5,6 +5,7 @@ import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel'
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from './ui/sheet';
 import { cn } from '@/lib/utils';
 import type { AppTab } from '../App';
+import { localizePersonName } from '@/lib/localizedNames';
 
 interface HeaderProps {
   currentUser: {
@@ -33,6 +34,7 @@ const getInitials = (name: string): string => {
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { t, i18n } = useTranslation();
+  const displayName = localizePersonName(currentUser?.name, i18n.resolvedLanguage || i18n.language);
 
   const toggleLanguage = () => {
     const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
@@ -78,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                     </div>
                   )}
                   <div className="min-w-0">
-                    <p className="text-[var(--text-sm)] font-semibold text-foreground truncate group-hover:text-primary transition-colors">{currentUser?.name}</p>
+                    <p className="text-[var(--text-sm)] font-semibold text-foreground truncate group-hover:text-primary transition-colors">{displayName}</p>
                   </div>
                 </button>
               </SheetClose>

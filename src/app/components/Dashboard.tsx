@@ -38,6 +38,8 @@ import {
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { format, parseISO, isValid } from 'date-fns';
+import { useTranslation } from 'react-i18next';
+import { localizeFirstName } from '@/lib/localizedNames';
 
 // --- Types ---
 interface HistoryItem {
@@ -153,6 +155,7 @@ interface DashboardProps {
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestMission, currentUser }) => {
+  const { i18n } = useTranslation();
   // Modal states
   const [leaveDetailOpen, setLeaveDetailOpen] = useState(false);
   const [selectedLeave, setSelectedLeave] = useState<LeaveDetail | null>(null);
@@ -272,7 +275,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             }}
             className="text-foreground"
           >
-            Welcome {currentUser?.name ? currentUser.name.split(' ')[0] : 'Ahmed'}
+            Welcome {localizeFirstName(currentUser?.name || 'Ahmed', i18n.resolvedLanguage || i18n.language)}
           </h2>
         </div>
         <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">

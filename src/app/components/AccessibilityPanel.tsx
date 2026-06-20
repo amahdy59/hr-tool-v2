@@ -132,7 +132,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       id: 'toggle-targets',
       icon: Target,
       label: 'AAA Large Targets',
-      description: 'Resize interactive buttons/inputs to minimum 44px.',
+      description: 'Use 44px targets everywhere; mobile already applies this by default.',
       checked: largeTargets,
       onChange: setLargeTargets,
       ariaLabel: 'Toggle AAA Large Targets',
@@ -172,7 +172,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     <Button
       variant="outline"
       size="sm"
-      className="relative flex w-9 h-9 lg:w-auto lg:px-3 lg:py-2 items-center justify-center lg:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
+      className="relative flex h-11 w-11 lg:h-10 lg:w-auto lg:px-3 lg:py-2 items-center justify-center lg:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
       aria-label="Accessibility Settings"
       title="Accessibility Settings"
     >

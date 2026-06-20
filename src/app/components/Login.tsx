@@ -128,17 +128,17 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             >
               Workforce management, simplified.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="grid grid-cols-[auto_auto] items-stretch justify-center gap-3">
               <button
                 type="button"
                 onClick={() => setShowInfoPage(true)}
-                className="inline-flex items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 h-9 text-[var(--text-sm)] font-[var(--font-weight-medium)] text-primary shadow-[var(--elevation-sm)] transition-colors hover:bg-muted"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-4 text-[var(--text-sm)] font-[var(--font-weight-medium)] text-primary shadow-[var(--elevation-sm)] transition-colors hover:bg-muted"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <Info className="w-4 h-4" />
                 About this redesign
               </button>
-              <div className="inline-flex h-9 shadow-[var(--elevation-sm)] rounded-[var(--radius-button)] bg-card border border-border/80">
+              <div className="inline-flex h-11 items-stretch">
                 <AccessibilityPanel settings={accessibility} />
               </div>
             </div>
@@ -304,20 +304,20 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 fontWeight: 'var(--font-weight-semibold)',
               }}
             >
-              {isLoading ? 'Logging in...' : 'Login'}
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
 
             {showTempLogin && (
               <div
-                className="rounded-[var(--radius-card)] border-2 border-dashed border-[#C2410C]/40 bg-[#FFF8EE] p-4 flex flex-col items-center justify-center gap-3"
+                className="rounded-[var(--radius-card)] border-2 border-dashed border-[#C2410C]/60 bg-[#FFF8EE] p-4 flex flex-col items-center justify-center gap-3 dark:border-[#FACC15] dark:bg-[#2A1B07]"
                 role="region"
                 aria-labelledby="demo-access-heading"
               >
                 <div className="flex items-center gap-2">
-                  <KeyRound className="h-4 w-4 text-[#C2410C]" aria-hidden="true" />
+                  <KeyRound className="h-4 w-4 text-[#C2410C] dark:text-[#FACC15]" aria-hidden="true" />
                   <h2
                     id="demo-access-heading"
-                    className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-[#7C2D12]"
+                    className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-[#7C2D12] dark:text-[#FEF3C7]"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     Demo Access
@@ -329,7 +329,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   onClick={handleQuickLogin}
                   aria-label="Continue to demo"
                   className={cn(
-                    'relative flex h-10 w-full items-center justify-center gap-2 overflow-hidden rounded-[var(--radius-button)] border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-sm transition-all hover:bg-[#FDECC8] group'
+                    'relative flex h-10 w-full items-center justify-center gap-2 overflow-hidden rounded-[var(--radius-button)] border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-sm transition-all hover:bg-[#FDECC8] group dark:border-[#FACC15] dark:bg-[#3A2608] dark:text-[#FEF3C7] dark:hover:bg-[#4A310A]'
                   )}
                   style={{
                     fontFamily: "'Inter', sans-serif",
