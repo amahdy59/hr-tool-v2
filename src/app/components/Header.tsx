@@ -32,7 +32,7 @@ const getInitials = (name: string): string => {
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   return (
-    <header className="grid h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 border-b border-border bg-card px-3 sticky top-0 z-[60] sm:px-6">
+    <header className="grid h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 bg-card/80 backdrop-blur-md px-3 sticky top-0 z-[60] sm:px-6">
       <div className="flex min-w-0 items-center justify-start gap-2">
         {/* Hamburger Menu on Mobile/Tablet */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen} modal={false}>
@@ -179,47 +179,6 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
           <AccessibilityPanel settings={accessibility} />
         </div>
 
-        <button
-          onClick={() => setActiveTab('profile')}
-          className="hidden min-w-0 items-center gap-2.5 sm:flex rounded-[var(--radius)] px-1.5 py-1 hover:bg-muted transition-colors cursor-pointer"
-          aria-label="Go to my profile"
-          title="Go to my profile"
-        >
-          {currentUser?.image ? (
-            <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-border">
-              <img 
-                src={currentUser.image} 
-                alt={currentUser.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ) : (
-            <div 
-              className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border-2 border-border"
-              role="img"
-              aria-label={`Profile: ${currentUser?.name || 'User'}`}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--text-xs)',
-                fontWeight: 'var(--font-weight-semibold)',
-              }}
-            >
-              <span className="text-primary">
-                {currentUser ? getInitials(currentUser.name) : 'U'}
-              </span>
-            </div>
-          )}
-          <span
-            className="hidden max-w-[9rem] truncate text-foreground xl:inline"
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 'var(--text-sm)',
-              fontWeight: 'var(--font-weight-medium)',
-            }}
-          >
-            {currentUser?.name || 'User'}
-          </span>
-        </button>
       </div>
     </header>
   );

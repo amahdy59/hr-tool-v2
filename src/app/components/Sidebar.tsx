@@ -18,7 +18,16 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from './ui/tooltip';
-import type { AppTab } from '../App';
+import type { AppTab, UserData } from '../App';
+
+const getInitials = (name: string) => {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+};
 
 interface SidebarProps {
   activeTab: AppTab;
@@ -26,6 +35,7 @@ interface SidebarProps {
   collapsed: boolean;
   onToggle: () => void;
   onLogout?: () => void;
+  currentUser?: UserData | null;
 }
 
 const navItems = [
@@ -150,7 +160,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         </nav>
 
         {/* Footer - Fixed at bottom */}
-        <div className="border-t border-sidebar-border space-y-1 bg-sidebar shrink-0 p-3">
+        <div className="space-y-1 bg-sidebar shrink-0 p-3">
           {footerItems.map((item) => {
             const handleClick = () => {
               if (item.id === 'profile') {
@@ -159,6 +169,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                 onLogout();
               }
             };
+
+            const IconContent = item.id === 'profile' ? (
+              currentUser?.image ? (
+                <div className="w-6 h-6 shrink-0 rounded-full overflow-hidden border border-border">
+                  <img src={currentUser.image} alt={currentUser.name} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="w-6 h-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center border border-border">
+                  <span className="text-primary text-[10px] font-bold" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    {currentUser ? getInitials(currentUser.name) : 'U'}
+                  </span>
+                </div>
+              )
+            ) : (
+              <item.icon className="w-5 h-5 shrink-0" />
+            );
+
+            const LabelContent = item.id === 'profile' ? (
+              <span className="truncate">{currentUser?.name || item.label}</span>
+            ) : (
+              <span>{item.label}</span>
+            );
 
             if (collapsed) {
               return (
@@ -171,7 +203,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                         sidebarItemTextClass
                       )}
                     >
-                      <item.icon className="w-5 h-5 shrink-0" />
+                      {IconContent}
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side="right" sideOffset={8} className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
@@ -190,8 +222,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                   sidebarItemTextClass
                 )}
               >
-                <item.icon className="w-5 h-5 shrink-0" />
-                <span>{item.label}</span>
+                {IconContent}
+                {LabelContent}
               </button>
             );
           })}

@@ -22,6 +22,9 @@ interface ResumeProps {
   }>;
   certificates: Array<{
     name: string;
+    issuer?: string;
+    date?: string;
+    credentialId?: string;
     link?: string;
   }>;
   dataProjects: Array<{
@@ -220,11 +223,23 @@ export const Resume = React.forwardRef<HTMLDivElement, ResumeProps>(
             {certificates.length > 0 && (
               <section style={{ marginBottom: '18px' }}>
                 <SectionTitle>Certifications</SectionTitle>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
                   {certificates.map((cert, idx) => (
-                    <a key={idx} href={normalizeLink(cert.link)} target="_blank" rel="noopener noreferrer" style={{ color: '#0F172A', textDecoration: 'none', fontSize: '10.5px', lineHeight: 1.35, fontWeight: 700 }}>
-                      {cert.name}
-                    </a>
+                    <div key={idx} style={{ breakInside: 'avoid' }}>
+                      <a href={normalizeLink(cert.link)} target="_blank" rel="noopener noreferrer" style={{ color: '#0F172A', textDecoration: 'none', fontSize: '10.5px', lineHeight: 1.35, fontWeight: 700 }}>
+                        {cert.name}
+                      </a>
+                      {(cert.issuer || cert.date) && (
+                        <p style={{ margin: '2px 0 0', fontSize: '9px', color: '#64748B' }}>
+                          {cert.issuer}{cert.issuer && cert.date ? ' • ' : ''}{cert.date}
+                        </p>
+                      )}
+                      {cert.credentialId && (
+                        <p style={{ margin: '1px 0 0', fontSize: '8px', color: '#94A3B8' }}>
+                          ID: {cert.credentialId}
+                        </p>
+                      )}
+                    </div>
                   ))}
                 </div>
               </section>

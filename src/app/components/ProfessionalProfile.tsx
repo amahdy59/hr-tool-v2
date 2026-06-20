@@ -624,14 +624,14 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
 
     try {
       const canvas = await html2canvas(resumeRef.current, {
-        scale: 1.15,
+        scale: 4,
         useCORS: true,
         logging: false,
         backgroundColor: '#ffffff',
         windowWidth: resumeRef.current.scrollWidth,
       });
 
-      const imgData = canvas.toDataURL('image/jpeg', 0.82);
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -707,6 +707,9 @@ export const ProfessionalProfile: React.FC<{ currentUser: any }> = ({ currentUse
       .sort((a, b) => a.orderIndex - b.orderIndex)
       .map(cert => ({
         name: cert.title,
+        issuer: cert.issuer,
+        date: cert.issueDate + (cert.expiryDate ? ` - ${cert.expiryDate}` : ''),
+        credentialId: cert.credentialId,
         link: cert.credentialUrl || '#',
       })),
     dataProjects: projects
