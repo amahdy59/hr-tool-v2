@@ -47,37 +47,37 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
               <X className={cn("w-5 h-5 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0", isMenuOpen && "!rotate-0 !scale-100 !opacity-100")} />
             </button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-80 p-5 flex flex-col h-full bg-card">
-            <SheetHeader className="mb-2">
-              <SheetTitle style={{ fontFamily: "'Orbitron', sans-serif" }} className="text-primary text-xl font-bold">
-                HR Tool
-              </SheetTitle>
+          <SheetContent side="left" className="w-80 p-0 flex flex-col h-full bg-card">
+            <SheetHeader className="sr-only">
+              <SheetTitle>Menu</SheetTitle>
+              <SheetDescription>Navigation menu</SheetDescription>
             </SheetHeader>
             
             {/* User Info */}
-            <SheetClose asChild>
-              <button
-                onClick={() => setActiveTab('profile')}
-                className="flex w-full items-center gap-3 p-3 bg-muted/30 rounded-[var(--radius-card)] border border-border/50 mb-4 text-start hover:bg-muted hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-sm hover:shadow-md"
-                aria-label="Go to my profile"
-                title="Go to my profile"
-              >
-                {currentUser?.image ? (
-                  <img src={currentUser.image} alt={currentUser.name} className="w-10 h-10 rounded-full object-cover" />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-border text-primary font-bold shrink-0">
-                    {currentUser ? getInitials(currentUser.name) : 'U'}
+            <div className="p-4 border-b border-border/50">
+              <SheetClose asChild>
+                <button
+                  onClick={() => setActiveTab('profile')}
+                  className="flex w-full items-center gap-3 p-2 rounded-[var(--radius-card)] text-start hover:bg-muted active:scale-[0.98] transition-all cursor-pointer group"
+                  aria-label="Go to my profile"
+                  title="Go to my profile"
+                >
+                  {currentUser?.image ? (
+                    <img src={currentUser.image} alt={currentUser.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary/20 transition-all" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 text-primary font-bold shrink-0 group-hover:bg-primary/20 transition-all">
+                      {currentUser ? getInitials(currentUser.name) : 'U'}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-[var(--text-sm)] font-semibold text-foreground truncate group-hover:text-primary transition-colors">{currentUser?.name}</p>
                   </div>
-                )}
-                <div className="min-w-0">
-                  <p className="text-[var(--text-sm)] font-semibold text-foreground truncate">{currentUser?.name}</p>
-                  <p className="text-[10px] text-muted-foreground truncate">ahmed.mahdy@companyname.com</p>
-                </div>
-              </button>
-            </SheetClose>
+                </button>
+              </SheetClose>
+            </div>
 
             {/* Nav Links */}
-            <nav className="flex-1 overflow-y-auto space-y-1">
+            <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-1">
               {[
                 { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
                 { id: 'attendance', label: 'Attendance', icon: CalendarCheck },
@@ -93,7 +93,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                     <button
                       onClick={() => setActiveTab(item.id as AppTab)}
                       className={cn(
-                        "w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium transition-colors cursor-pointer",
+                        "w-full flex items-center gap-3 px-3 py-3 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium transition-colors cursor-pointer",
                         isActive 
                           ? "bg-primary/10 text-primary" 
                           : "text-foreground hover:bg-muted"
