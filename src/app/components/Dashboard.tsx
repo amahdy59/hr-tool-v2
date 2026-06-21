@@ -358,17 +358,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           Leaves and Mission History
         </h3>
 
-        <div className="flex flex-col gap-3 p-4 bg-muted/30 rounded-[var(--radius)] sm:flex-row sm:items-end sm:justify-between">
-          <Button variant="outline" className="w-full sm:w-auto gap-2 cursor-pointer justify-center">
+        <div className="flex flex-col gap-4 p-4 bg-muted/30 rounded-[var(--radius)] xl:flex-row xl:items-end xl:justify-between">
+          <Button variant="outline" className="w-full xl:w-auto gap-2 cursor-pointer justify-center shrink-0">
             <Download className="w-4 h-4" /> Download Data
           </Button>
 
           {/* Filters for mobile/tablet (Popover) and desktop (inline) */}
-          <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
+          <div className="flex flex-wrap items-center justify-center xl:justify-end gap-3 pt-2 w-full">
             {/* Mobile/Tablet Popover Filter */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="lg:hidden w-full sm:w-auto gap-2 cursor-pointer justify-center">
+                <Button variant="outline" className="xl:hidden w-full gap-2 cursor-pointer justify-center">
                   <Filter className="w-4 h-4" /> Filter History
                 </Button>
               </PopoverTrigger>
@@ -400,7 +400,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             </Popover>
 
             {/* Desktop Inline Filters */}
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden xl:flex items-center gap-3 flex-wrap">
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
                 <Select value={historyLeaveType} onValueChange={setHistoryLeaveType}>

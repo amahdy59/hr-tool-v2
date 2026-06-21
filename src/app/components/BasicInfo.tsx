@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { localizePersonName } from '@/lib/localizedNames';
 
 // ── Shared styles ──
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 
 // Helper function to get initials from name
@@ -44,6 +44,8 @@ const maskPhoneNumber = (phone: string): string => {
 };
 
 interface PersonalInfoData {
+  nameEn?: string;
+  nameAr?: string;
   dateOfBirth: string;
   nationalId: string;
   email: string;
@@ -85,6 +87,8 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
   const displayName = localizePersonName(currentUser?.name, language);
   // State
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoData>({
+    nameEn: currentUser?.name || 'Ahmed Mahdy',
+    nameAr: localizePersonName(currentUser?.name || 'Ahmed Mahdy', 'ar'),
     dateOfBirth: '1990-01-01',
     nationalId: '00000000000000',
     email: 'amahdy59@gmail.com',
@@ -494,6 +498,8 @@ const EditPersonalInfoModal: React.FC<{
   data: PersonalInfoData; 
   onSave: (v: PersonalInfoData) => void 
 }> = ({ open, onOpenChange, data, onSave }) => {
+  const [nameEn, setNameEn] = useState(data.nameEn || '');
+  const [nameAr, setNameAr] = useState(data.nameAr || '');
   const [dateOfBirth, setDateOfBirth] = useState(data.dateOfBirth);
   const [nationalId, setNationalId] = useState(data.nationalId);
   const [email, setEmail] = useState(data.email);
@@ -504,7 +510,7 @@ const EditPersonalInfoModal: React.FC<{
   const [address, setAddress] = useState(data.address);
 
   const handleSave = () => {
-    if (!dateOfBirth || !nationalId || !mobile || !gender || !nationality) {
+    if (!nameEn || !nameAr || !dateOfBirth || !nationalId || !mobile || !gender || !nationality) {
       toast.error('Please fill in all required fields');
       return;
     }
@@ -527,7 +533,7 @@ const EditPersonalInfoModal: React.FC<{
       return;
     }
 
-    onSave({ dateOfBirth, nationalId, email, mobile, landline, gender, nationality, address });
+    onSave({ nameEn, nameAr, dateOfBirth, nationalId, email, mobile, landline, gender, nationality, address });
   };
 
   return (
@@ -541,6 +547,8 @@ const EditPersonalInfoModal: React.FC<{
           <span className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>This information is encrypted and protected. All changes are logged for security.</span>
         </div>
         <div className="grid grid-cols-1 gap-4">
+          <FormField label="Full Name (English) *" value={nameEn} onChange={setNameEn} />
+          <FormField label="Full Name (Arabic) *" value={nameAr} onChange={setNameAr} dir="rtl" />
           <FormField label="Date of Birth *" value={dateOfBirth} onChange={setDateOfBirth} type="date" />
           <FormField label="National ID * (14 digits)" value={nationalId} onChange={setNationalId} maxLength={14} inputMode="numeric" />
           <FormField label="Email" value={email} onChange={setEmail} type="email" inputMode="email" autoComplete="email" />

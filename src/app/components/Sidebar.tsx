@@ -1,4 +1,5 @@
 import React from 'react';
+import { Logo } from './Logo';
 import {
   LayoutDashboard,
   CalendarCheck,
@@ -127,29 +128,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         {/* Logo */}
         <div className={cn('border-b border-sidebar-border flex items-center shrink-0 px-4', collapsed ? 'h-16 justify-center' : 'h-16')}>
           {collapsed ? (
-            <div
-              style={{
-                fontFamily: "'Orbitron', sans-serif",
-                fontSize: '14px',
-                fontWeight: 700,
-                letterSpacing: '0.05em',
-              }}
-              className="text-sidebar-foreground"
-            >
-              HR
-            </div>
+            <Logo className="w-8 h-8 text-sidebar-foreground" ariaLabel="HR Logo" />
           ) : (
-            <div
-              style={{
-                fontFamily: "'Orbitron', sans-serif",
-                fontSize: '18px',
-                fontWeight: 700,
-                letterSpacing: '0.04em',
-              }}
-              className="text-sidebar-foreground"
-            >
-              HR Tool
-            </div>
+            <Logo className="w-12 h-12 text-sidebar-foreground" ariaLabel="HR Tool Logo" />
           )}
         </div>
 
@@ -223,7 +204,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                 key={item.id}
                 onClick={handleClick}
                 className={cn(
-                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+                  'w-full flex items-center justify-start gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring text-start',
                   sidebarItemTextClass
                 )}
               >
@@ -239,7 +220,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             className={cn(
               'w-full flex items-center gap-3 px-3 py-2 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
               sidebarItemTextClass,
-              collapsed ? 'justify-center' : ''
+              collapsed ? 'justify-center' : 'justify-start text-start'
             )}
           >
             {collapsed ? (

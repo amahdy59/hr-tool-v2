@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle, Languages } from 'lucide-react';
+import { Logo } from './Logo';
 import { useTranslation } from 'react-i18next';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from './ui/sheet';
@@ -68,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
               <SheetClose asChild>
                 <button
                   onClick={() => setActiveTab('profile')}
-                  className="flex w-full items-center gap-3 p-2 rounded-[var(--radius-card)] text-start hover:bg-muted active:scale-[0.98] transition-all cursor-pointer group"
+                  className="flex w-full items-center justify-start gap-3 p-2 rounded-[var(--radius-card)] text-start hover:bg-muted active:scale-[0.98] transition-all cursor-pointer group"
                   aria-label={t('header.goProfile')}
                   title={t('header.goProfile')}
                 >
@@ -103,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                     <button
                       onClick={() => setActiveTab(item.id as AppTab)}
                       className={cn(
-                        "w-full flex items-center gap-3 px-3 py-3 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium transition-colors cursor-pointer",
+                        "w-full flex items-center justify-start gap-3 px-3 py-3 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium transition-colors cursor-pointer",
                         isActive 
                           ? "bg-primary/10 text-primary" 
                           : "text-foreground hover:bg-muted"
@@ -126,7 +127,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                 <SheetClose asChild>
                   <button
                     onClick={onLogout}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-start gap-3 px-3 py-2.5 rounded-[var(--radius)] text-start text-[var(--text-sm)] font-medium text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
                     aria-label={t('sidebar.logout')}
                     title={t('sidebar.logout')}
                   >
@@ -161,17 +162,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
           aria-label={t('header.goDashboard')}
           title={t('header.goDashboard')}
         >
-          <h1
-            className="text-primary"
-            style={{
-              fontFamily: "'Orbitron', sans-serif",
-              fontSize: 'clamp(var(--text-base), 4vw, var(--text-lg))',
-              fontWeight: 'var(--font-weight-bold)',
-              lineHeight: 1.2,
-            }}
-          >
-            {t('common.appName')}
-          </h1>
+          <Logo className="w-12 h-12 text-primary" ariaLabel={t('common.appName')} />
         </button>
       </div>
 

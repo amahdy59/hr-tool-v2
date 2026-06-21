@@ -24,7 +24,7 @@ import { EmptyState } from './EmptyState';
 import { exportToCSV } from '../../lib/export';
 
 // ── Shared styles ──
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)] whitespace-nowrap';
 
@@ -45,6 +45,8 @@ interface Holiday {
   id: string;
   type: 'Bridge' | 'Holiday';
   name: string;
+  nameEn?: string;
+  nameAr?: string;
   range: string;
   duration: string;
   notes: string;
@@ -620,24 +622,61 @@ const ViewLeaveDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean)
   </Dialog>
 );
 
+const EGYPTIAN_HOLIDAYS = [
+  { nameEn: 'Eid Al-Fitr', nameAr: 'عيد الفطر' },
+  { nameEn: 'Eid Al-Adha', nameAr: 'عيد الأضحى' },
+  { nameEn: 'Revolution Day', nameAr: 'ثورة 23 يوليو' },
+  { nameEn: 'Armed Forces Day', nameAr: 'عيد القوات المسلحة (6 أكتوبر)' },
+  { nameEn: 'Labor Day', nameAr: 'عيد العمال' },
+  { nameEn: 'Sham El-Nessim', nameAr: 'شم النسيم' },
+  { nameEn: 'Coptic Christmas', nameAr: 'عيد الميلاد المجيد' },
+  { nameEn: 'Prophet Muhammad Birthday', nameAr: 'المولد النبوي الشريف' }
+];
+
 // ── Holiday Form Modal ──
 const HolidayFormModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; title: string; holiday?: Holiday | null; onSave: () => void }> = ({ open, onOpenChange, title, holiday, onSave }) => {
-  const [hName, setHName] = useState('');
+  const [hNameEn, setHNameEn] = useState('');
+  const [hNameAr, setHNameAr] = useState('');
   const [hType, setHType] = useState<string>('Holiday');
   const [startD, setStartD] = useState('');
   const [endD, setEndD] = useState('');
   const [notes, setNotes] = useState('');
 
   React.useEffect(() => {
-    if (holiday) { setHName(holiday.name); setHType(holiday.type); setNotes(holiday.notes); } else { setHName(''); setHType('Holiday'); setStartD(''); setEndD(''); setNotes(''); }
+    if (holiday) { setHNameEn(holiday.nameEn || holiday.name); setHNameAr(holiday.nameAr || ''); setHType(holiday.type); setNotes(holiday.notes); } else { setHNameEn(''); setHNameAr(''); setHType('Holiday'); setStartD(''); setEndD(''); setNotes(''); }
   }, [holiday, open]);
+
+  const handleSuggestionSelect = (val: string) => {
+    if (!val) return;
+    const selected = EGYPTIAN_HOLIDAYS.find(h => h.nameEn === val);
+    if (selected) {
+      setHNameEn(selected.nameEn);
+      setHNameAr(selected.nameAr);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[85vh] overflow-y-auto">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">{title}</DialogTitle><DialogDescription className="sr-only">{title}</DialogDescription></DialogHeader>
         <div className="space-y-4">
-          <FormField label="Name" value={hName} onChange={setHName} placeholder="e.g. Eid Al-Fitr" />
+          <div className="space-y-1.5">
+            <label className={labelClass}>Common Egyptian Holidays</label>
+            <Select onValueChange={handleSuggestionSelect}>
+              <SelectTrigger className="w-full bg-muted/50 border-border">
+                <SelectValue placeholder="Select a common holiday..." />
+              </SelectTrigger>
+              <SelectContent>
+                {EGYPTIAN_HOLIDAYS.map(h => (
+                  <SelectItem key={h.nameEn} value={h.nameEn}>
+                    {h.nameEn} - {h.nameAr}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <FormField label="Holiday Name (English)" value={hNameEn} onChange={setHNameEn} placeholder="e.g. Eid Al-Fitr" />
+          <FormField label="Holiday Name (Arabic)" value={hNameAr} onChange={setHNameAr} placeholder="e.g. عيد الفطر" dir="rtl" />
           <SelectField label="Type" value={hType} onChange={setHType} options={['Holiday', 'Bridge']} />
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <FormField label="Start Date" value={startD} onChange={setStartD} type="date" />
