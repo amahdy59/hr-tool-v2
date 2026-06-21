@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { localizePersonName } from '@/lib/localizedNames';
+import { Pagination } from './Pagination';
 
 // ── Interfaces ──
 interface RoleAssignment {
@@ -334,55 +335,13 @@ export const RolesManagement: React.FC = () => {
             </table>
           </div>
 
-          {/* Pagination */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/20">
-            <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start whitespace-nowrap shrink-0">
-              Items Per Page
-              <select
-                value={String(itemsPerPage)}
-                onChange={(e) => { setItemsPerPage(Number(e.target.value)); setCurrentPage(1); setPageInput('1'); }}
-                className="h-11 sm:h-8 px-2 py-0 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-center outline-none focus:ring-2 focus:ring-ring/50 cursor-pointer hover:bg-muted/50 transition-colors"
-                dir="auto"
-              >
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="30">30</option>
-                <option value="50">50</option>
-              </select>
-            </div>
-            <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="w-11 h-11 sm:w-8 sm:h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm"
-                aria-label="Previous page"
-              >
-                <ChevronLeft className="w-4 h-4 text-foreground" />
-              </button>
-              <span className="text-[var(--text-sm)] text-foreground flex items-center gap-1">
-                Page
-                <input
-                  type="text"
-                  value={pageInput}
-                  onChange={(e) => setPageInput(e.target.value)}
-                  onBlur={() => handlePageChange(Number(pageInput) || 1)}
-                  onKeyDown={(e) => e.key === 'Enter' && handlePageChange(Number(pageInput) || 1)}
-                  className="w-10 h-11 sm:h-8 px-1 py-0 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-[42px] sm:leading-[30px] shadow-sm"
-                  aria-label="Page number input"
-                  dir="auto"
-                />
-                of {totalPages}
-              </span>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="w-11 h-11 sm:w-8 sm:h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm"
-                aria-label="Next page"
-              >
-                <ChevronRight className="w-4 h-4 text-foreground" />
-              </button>
-            </div>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={(v) => { setItemsPerPage(v); setCurrentPage(1); setPageInput('1'); }}
+          />
         </div>
       </section>
 
