@@ -138,7 +138,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 fontSize: 'var(--text-sm)',
                 fontWeight: 'var(--font-weight-medium)',
               }}
-              className="text-foreground"
+              className="text-foreground block text-start w-full"
             >
               Leave Type
             </label>
@@ -165,7 +165,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                   fontSize: 'var(--text-sm)',
                   fontWeight: 'var(--font-weight-medium)',
                 }}
-                className="text-foreground"
+                className="text-foreground block text-start w-full"
               >
                 From
               </label>
@@ -188,7 +188,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                   fontSize: 'var(--text-sm)',
                   fontWeight: 'var(--font-weight-medium)',
                 }}
-                className="text-foreground"
+                className="text-foreground block text-start w-full"
               >
                 To
               </label>
@@ -222,7 +222,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 fontSize: 'var(--text-sm)',
                 fontWeight: 'var(--font-weight-medium)',
               }}
-              className="text-foreground"
+              className="text-foreground block text-start w-full"
             >
               Notes (optional)
             </label>
@@ -259,7 +259,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                   fontSize: 'var(--text-lg)',
                   fontWeight: 'var(--font-weight-semibold)',
                 }}
-                className="text-foreground"
+                className="text-foreground block text-start w-full"
               >
                 {currentBalance}
               </p>

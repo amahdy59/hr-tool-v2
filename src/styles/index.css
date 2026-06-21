@@ -2,8 +2,7 @@
 @import './tailwind.css';
 @import './theme.css';
 
-/* Automatically align English text to left and Arabic text to right across the site */
+/* Automatically align text to start according to document direction */
 p, span, h1, h2, h3, h4, h5, h6, input, textarea, th, td, li, label, div {
-  unicode-bidi: plaintext;
   text-align: start;
 }
