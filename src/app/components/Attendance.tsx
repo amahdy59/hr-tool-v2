@@ -473,7 +473,7 @@ export const Attendance: React.FC = () => {
               <BarChart
                 data={summaryData}
                 layout="vertical"
-                margin={i18n.language === 'ar' ? { top: 4, right: 20, left: 10, bottom: 4 } : { top: 4, right: 10, left: 20, bottom: 4 }}
+                margin={i18n.language === 'ar' ? { top: 4, right: 30, left: 10, bottom: 4 } : { top: 4, right: 10, left: 20, bottom: 4 }}
                 barCategoryGap="24%"
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
@@ -492,7 +492,7 @@ export const Attendance: React.FC = () => {
                   orientation={i18n.language === 'ar' ? 'right' : 'left'}
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif', textAnchor: 'end' }}
                   dx={i18n.language === 'ar' ? 8 : -8}
                 />
                 <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
@@ -659,17 +659,17 @@ export const Attendance: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/20">
             <div className="flex items-center gap-2 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
               Items Per Page
-              <Select value={String(itemsPerPage)} onValueChange={(v) => { setItemsPerPage(Number(v)); setCurrentPage(1); setPageInput('1'); }}>
-                <SelectTrigger className="h-8 w-20 rounded-[var(--radius-input)] bg-input-background text-foreground">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="15">15</SelectItem>
-                  <SelectItem value="30">30</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                </SelectContent>
-              </Select>
+              <select
+                value={String(itemsPerPage)}
+                onChange={(e) => { setItemsPerPage(Number(e.target.value)); setCurrentPage(1); setPageInput('1'); }}
+                className="h-11 sm:h-8 px-2 py-0 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-center outline-none focus:ring-2 focus:ring-ring/50 cursor-pointer hover:bg-muted/50 transition-colors"
+                dir="auto"
+              >
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+              </select>
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
               <button
@@ -688,8 +688,9 @@ export const Attendance: React.FC = () => {
                   onChange={(e) => setPageInput(e.target.value)}
                   onBlur={() => handlePageChange(Number(pageInput) || 1)}
                   onKeyDown={(e) => e.key === 'Enter' && handlePageChange(Number(pageInput) || 1)}
-                  className="w-10 h-11 sm:h-8 px-0 py-0 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm"
+                  className="w-10 h-11 sm:h-8 px-1 py-0 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-[42px] sm:leading-[30px] shadow-sm"
                   aria-label="Page number input"
+                  dir="auto"
                 />
                 of {totalPages}
               </span>

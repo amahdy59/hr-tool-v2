@@ -34,7 +34,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         <button
           onClick={() => go(page - 1)}
           disabled={page <= 1}
-          className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          className="w-11 h-11 sm:w-8 sm:h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm"
           aria-label="Previous page"
         >
           <ChevronLeft className="w-4 h-4 text-foreground" />
@@ -47,7 +47,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             onChange={(e) => setPageInput(e.target.value)}
             onBlur={() => go(Number(pageInput) || 1)}
             onKeyDown={(e) => e.key === 'Enter' && go(Number(pageInput) || 1)}
-            className="w-10 h-11 sm:h-8 px-0 py-0 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm"
+            className="w-10 h-11 sm:h-8 px-1 py-0 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-[42px] sm:leading-[30px] shadow-sm"
             aria-label="Page number input"
             dir="auto"
           />
@@ -56,7 +56,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         <button
           onClick={() => go(page + 1)}
           disabled={page >= totalPages}
-          className="min-w-11 min-h-11 sm:min-w-8 sm:min-h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          className="w-11 h-11 sm:w-8 sm:h-8 p-1.5 flex items-center justify-center border border-border rounded-[var(--radius-sm)] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm"
           aria-label="Next page"
         >
           <ChevronRight className="w-4 h-4 text-foreground" />
