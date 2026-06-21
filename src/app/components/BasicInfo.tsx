@@ -570,7 +570,7 @@ const EditPersonalInfoModal: React.FC<{
           </div>
           <div className="md:col-span-2 space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Address</label>
-            <textarea value={address} onChange={e => setAddress(e.target.value)} rows={2} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
+            <textarea dir="auto" value={address} onChange={e => setAddress(e.target.value)} rows={2} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
@@ -831,7 +831,7 @@ const EmploymentUpdateModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Issue Description *</label>
-            <textarea 
+            <textarea dir="auto" 
               value={issue} 
               onChange={e => setIssue(e.target.value)} 
               rows={5} 

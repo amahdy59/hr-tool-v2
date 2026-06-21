@@ -1234,7 +1234,7 @@ const EditAboutModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>Edit About</DialogTitle><DialogDescription className="sr-only">Edit about section</DialogDescription></DialogHeader>
         <div className="space-y-1.5">
           <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>About</label>
-          <textarea value={text} onChange={e => setText(e.target.value.slice(0, maxChars))} rows={5} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
+          <textarea dir="auto" value={text} onChange={e => setText(e.target.value.slice(0, maxChars))} rows={5} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           <p className="text-[var(--text-xs)] text-muted-foreground text-end" style={{ fontFamily: "'Inter', sans-serif" }}>
             {text.length}/{maxChars} characters
           </p>
@@ -1364,7 +1364,7 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
           </div>
           <div className="md:col-span-2 space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
-            <textarea value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
+            <textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
@@ -1436,7 +1436,7 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
           </div>
           <div className="md:col-span-2 space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description (Optional)</label>
-            <textarea value={desc} onChange={e => setDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
+            <textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
@@ -1505,7 +1505,7 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           </div>
           <div className="md:col-span-2 space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
-            <textarea value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
+            <textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
           <div className="md:col-span-2">
             <label className="flex items-center gap-2 cursor-pointer">

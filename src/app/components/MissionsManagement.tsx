@@ -428,7 +428,7 @@ const CreateMissionModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
             <FormField label="Start Date" value={startDate} onChange={setStartDate} type="date" />
             <FormField label="End Date" value={endDate} onChange={setEndDate} type="date" />
           </div>
-          <div className="space-y-1.5"><label className={labelClass}>Reason</label><textarea value={reason} onChange={e => setReason(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Describe the reason..." /></div>
+          <div className="space-y-1.5"><label className={labelClass}>Reason</label><textarea dir="auto" value={reason} onChange={e => setReason(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Describe the reason..." /></div>
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>

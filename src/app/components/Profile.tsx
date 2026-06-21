@@ -507,7 +507,7 @@ const EditPersonalInfoModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
             <FormField label="Home Phone" value={homePhone} onChange={setHomePhone} />
             <div className="space-y-1.5">
               <label className={labelClass}>Address</label>
-              <textarea value={address} onChange={e => setAddress(e.target.value)} rows={2} className={cn(inputClass, 'h-auto py-2')} />
+              <textarea dir="auto" value={address} onChange={e => setAddress(e.target.value)} rows={2} className={cn(inputClass, 'h-auto py-2')} />
             </div>
           </div>
           <div className="space-y-4">
@@ -539,7 +539,7 @@ const EditNoteModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Note</DialogTitle><DialogDescription className="sr-only">Edit about section</DialogDescription></DialogHeader>
-        <div className="space-y-1.5"><label className={labelClass}>About</label><textarea value={note} onChange={e => setNote(e.target.value)} rows={5} className={cn(inputClass, 'h-auto py-2')} /></div>
+        <div className="space-y-1.5"><label className={labelClass}>About</label><textarea dir="auto" value={note} onChange={e => setNote(e.target.value)} rows={5} className={cn(inputClass, 'h-auto py-2')} /></div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
           <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('About section updated'); }}>Save</Button>
@@ -566,7 +566,7 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
         <div className="space-y-4">
           <FormField label="Company" value={company} onChange={setCompany} />
           <FormField label="Job Title" value={role} onChange={setRole} />
-          <div className="space-y-1.5"><label className={labelClass}>Description</label><textarea value={desc} onChange={e => setDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} /></div>
+          <div className="space-y-1.5"><label className={labelClass}>Description</label><textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} /></div>
           <label className="flex items-center gap-2.5 cursor-pointer">
             <input type="checkbox" checked={current} onChange={e => setCurrent(e.target.checked)} className="w-4 h-4 rounded border-border accent-[var(--chart-3)]" />
             <span className="text-[var(--text-sm)] text-foreground font-[var(--font-weight-normal)]">I am currently working in this role</span>
@@ -698,7 +698,7 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Project</DialogTitle><DialogDescription className="sr-only">Edit project</DialogDescription></DialogHeader>
         <div className="space-y-4">
           <FormField label="Project Name" value={pName} onChange={setPName} />
-          <div className="space-y-1.5"><label className={labelClass}>Description</label><textarea value={pDesc} onChange={e => setPDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} /></div>
+          <div className="space-y-1.5"><label className={labelClass}>Description</label><textarea dir="auto" value={pDesc} onChange={e => setPDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} /></div>
           <FormField label="Project URL" value={pUrl} onChange={setPUrl} placeholder="https://" />
           <div className="grid grid-cols-2 gap-3">
             <SelectField label="Month" value={pMonth} onChange={setPMonth} options={MONTHS} />

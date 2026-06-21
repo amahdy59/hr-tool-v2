@@ -226,7 +226,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             >
               Notes (optional)
             </label>
-            <textarea
+            <textarea dir="auto"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}

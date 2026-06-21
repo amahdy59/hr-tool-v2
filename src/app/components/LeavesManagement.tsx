@@ -643,7 +643,7 @@ const HolidayFormModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
             <FormField label="Start Date" value={startD} onChange={setStartD} type="date" />
             <FormField label="End Date" value={endD} onChange={setEndD} type="date" />
           </div>
-          <div className="space-y-1.5"><label className={labelClass}>Notes</label><textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Optional notes..." /></div>
+          <div className="space-y-1.5"><label className={labelClass}>Notes</label><textarea dir="auto" value={notes} onChange={e => setNotes(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Optional notes..." /></div>
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>

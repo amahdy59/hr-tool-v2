@@ -192,7 +192,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
             >
               Notes (optional)
             </label>
-            <textarea
+            <textarea dir="auto"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}

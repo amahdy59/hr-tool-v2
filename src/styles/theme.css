@@ -743,6 +743,7 @@ html {
   /* 1. Mobile AAA Touch/Click Targets (WCAG 2.5.5 - 44px) */
   button:not(.link-btn):not([role="checkbox"]):not([role="switch"]),
   [role="button"]:not(.sidebar-link):not([role="checkbox"]):not([role="switch"]),
+
   select,
   input:not([type="checkbox"]):not([type="radio"]) {
     min-height: 44px !important;
@@ -771,4 +772,34 @@ html {
   p, span, div, li, td, th {
     line-height: 1.5 !important;
   }
+}
+
+/* ==========================================================================
+   RTL & LTR COMPATIBILITY RULES
+   ========================================================================== */
+
+/* 1. Arabic-Specific Typography */
+[lang="ar"] {
+  font-family: "Noto Sans Arabic", "Tahoma", sans-serif;
+  line-height: 1.7;
+  letter-spacing: 0 !important;
+}
+
+/* 2. Force LTR on Specific Input Types */
+input[type="email"],
+input[type="url"],
+input[type="tel"] {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+/* 3. Directional Icon Flipping in RTL
+   These lucide icons visually point in a direction and must flip in RTL layouts */
+[dir="rtl"] .lucide-chevron-right,
+[dir="rtl"] .lucide-chevron-left,
+[dir="rtl"] .lucide-arrow-right,
+[dir="rtl"] .lucide-arrow-left,
+[dir="rtl"] .lucide-chevrons-right,
+[dir="rtl"] .lucide-chevrons-left {
+  transform: scaleX(-1);
 }
