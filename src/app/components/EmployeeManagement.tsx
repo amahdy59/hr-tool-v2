@@ -148,7 +148,7 @@ const EMPLOYMENT_TYPES = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
 
 // ── Shared input style ──
 const inputClass = "w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow";
-const labelClass = "text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground";
+const labelClass = "block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground";
 const includesQuery = (values: Array<string | number>, query: string) => {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return true;

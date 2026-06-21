@@ -487,13 +487,14 @@ export const Attendance: React.FC = () => {
                 <YAxis
                   dataKey="name"
                   type="category"
-                  width={74}
+                  width={100}
+                  orientation={i18n.language === 'ar' ? 'right' : 'left'}
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
                 />
                 <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
-                <Bar dataKey="hours" radius={[0, 4, 4, 0]} maxBarSize={28}>
+                <Bar dataKey="hours" radius={i18n.language === 'ar' ? [4, 0, 0, 4] : [0, 4, 4, 0]} maxBarSize={28}>
                   {summaryData.map((entry) => (
                     <Cell key={entry.id} fill={entry.color} />
                   ))}

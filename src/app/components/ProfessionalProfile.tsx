@@ -15,7 +15,7 @@ import { Resume } from './Resume';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
-const labelClass = 'text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
+const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 const maskPhoneNumber = (phone: string): string => {
   if (!phone || phone.includes('*')) return phone;
   return phone.replace(/(\+?\d{2,3}\s?\d{2,3}|0\d{2,3})([\s-]?\d+)(\d{3})$/, '$1 *** $3');

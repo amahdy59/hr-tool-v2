@@ -94,8 +94,8 @@
   --radius-input: 8px;
   
   /* Button styles: desktop defaults stay compact; mobile rules below enforce 44px tap targets. */
-  --button-height-sm: 36px;
-  --button-height-default: 40px;
+  --button-height-sm: 44px;
+  --button-height-default: 44px;
   --button-height-lg: 44px;
   --button-padding-x-sm: 16px;
   --button-padding-x-default: 20px;
