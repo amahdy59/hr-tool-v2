@@ -75,7 +75,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ onViewRequest }) => 
       {/* Days of Week */}
       <div className="grid grid-cols-7 border-b border-border">
         {days.map((day) => (
-          <div key={day} className="py-2 pe-1 ps-1 text-center text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground bg-muted/50 border-e border-border last:border-e-0">
+          <div key={day} className="py-3 text-center text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground bg-muted/50 border-e border-border last:border-e-0">
             {day}
           </div>
         ))}
