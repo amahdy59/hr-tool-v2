@@ -180,7 +180,7 @@ export const MissionsManagement: React.FC = () => {
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)]">
+                            <DropdownMenuContent align="end" className="w-56">
                               <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
                               <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve Mission</DropdownMenuItem>
                               <DropdownMenuSeparator />

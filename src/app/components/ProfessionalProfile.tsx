@@ -1197,7 +1197,7 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
     <span
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }}
-      className={cn("group relative px-3 py-1.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
+      className={cn("group relative px-3 py-1 w-fit rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
       onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >

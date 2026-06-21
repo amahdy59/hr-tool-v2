@@ -752,7 +752,7 @@ const HistoryRow: React.FC<{
               <MoreVertical className="w-4 h-4" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)]">
+          <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem onClick={onView} className="cursor-pointer">
               <Eye className="w-4 h-4 me-2" />
               <span

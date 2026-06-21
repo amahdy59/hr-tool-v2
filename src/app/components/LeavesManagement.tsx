@@ -223,7 +223,7 @@ export const LeavesManagement: React.FC = () => {
                       <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)]">
+                          <DropdownMenuContent align="end" className="w-56">
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Leave</DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve Leave</DropdownMenuItem>
                             <DropdownMenuSeparator />
@@ -390,7 +390,7 @@ export const LeavesManagement: React.FC = () => {
                       <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)]">
+                          <DropdownMenuContent align="end" className="w-56">
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Leave</DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer gap-2 whitespace-nowrap" onClick={() => toast.success('Details sent to employee')}><Download className="w-4 h-4" /> Download Letter</DropdownMenuItem>
                           </DropdownMenuContent>

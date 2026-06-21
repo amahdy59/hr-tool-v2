@@ -666,7 +666,7 @@ const EditSkillsModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => v
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2">
             {skills.map(s => (
-              <span key={s} className="px-3 py-1 rounded-full border border-[#2563EB] bg-[#EAF2FF] text-[#1E3A8A] text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5">
+              <span key={s} className="px-3 py-1 w-fit rounded-full border border-[#2563EB] bg-[#EAF2FF] text-[#1E3A8A] text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5">
                 {s} <button className="hover:text-destructive cursor-pointer"><X className="w-3 h-3" /></button>
               </span>
             ))}
