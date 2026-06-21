@@ -563,14 +563,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           <div className="flex gap-3 p-4 bg-primary/5 rounded-[var(--radius)] border border-primary/15">
             <Info className="w-5 h-5 text-primary shrink-0" />
             <p className="text-[var(--text-sm)] font-[var(--font-weight-normal)] text-foreground">
-              Please ensure all carried-over vacation days from last year are
-              used before{' '}
+              {"Please ensure all carried-over vacation days from last year are used before "}
               <strong style={{ fontWeight: 'var(--font-weight-semibold)' }}>
-                March 31st this year
+                {"March 31st this year"}
               </strong>
-              .<br />
-              Carried over days are deducted automatically before this year's
-              vacation.
+              {". "}
+              <br />
+              {"Carried over days are deducted automatically before this year's vacation."}
             </p>
           </div>
         </section>
