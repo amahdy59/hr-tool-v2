@@ -2,7 +2,11 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, HelpCircle } from 'lucide-react';
 
-export const CalendarGrid: React.FC = () => {
+interface CalendarGridProps {
+  onViewRequest?: (request: { id: string; type: string; status: 'approved' | 'pending' | 'noshow'; range: string; duration: string }) => void;
+}
+
+export const CalendarGrid: React.FC<CalendarGridProps> = ({ onViewRequest }) => {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   
   // Mock data for August 2022
@@ -15,10 +19,12 @@ export const CalendarGrid: React.FC = () => {
     { day: 4, month: 'curr', events: [] },
     { day: 5, month: 'curr', events: [] },
     { day: 6, month: 'curr', events: [] },
-    { day: 7, month: 'curr', events: [{ type: 'maternity', label: 'Maternity', color: 'bg-chart-3' }] },
-    { day: 8, month: 'curr', events: [{ type: 'sick', label: 'Sick Leave', color: 'bg-chart-3' }] },
-    { day: 8, month: 'curr', events: [{ type: 'vacation', label: 'Vacation', color: 'bg-chart-4' }] },
-    { day: 8, month: 'curr', events: [{ type: 'sick', label: 'Sick Leave', color: 'bg-chart-3' }] },
+    { day: 7, month: 'curr', events: [{ id: '10', type: 'Vacation', label: 'Maternity', color: 'bg-chart-3', status: 'approved', range: 'Aug 7 - Aug 7', duration: '1 day' }] },
+    { day: 8, month: 'curr', events: [
+      { id: '1', type: 'Sick', label: 'Sick Leave', color: 'bg-chart-3', status: 'approved', range: 'Sep 10 - Sep 14', duration: '5 days' },
+      { id: '3', type: 'Sick', label: 'Vacation (Pending)', color: 'bg-chart-4', status: 'pending', range: 'Nov 3 - Nov 6', duration: '4 days' },
+      { id: '12', type: 'Sick', label: 'Sick Leave', color: 'bg-chart-3', status: 'approved', range: 'Aug 8 - Aug 8', duration: '1 day' }
+    ] },
     { day: 11, month: 'curr', events: [] },
     { day: 12, month: 'curr', events: [] },
     { day: 13, month: 'curr', events: [{ type: 'inoffice', label: 'In-Office', color: 'bg-chart-1' }] },
@@ -69,7 +75,7 @@ export const CalendarGrid: React.FC = () => {
       {/* Days of Week */}
       <div className="grid grid-cols-7 border-b border-border">
         {days.map((day) => (
-          <div key={day} className="py-2 text-center text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground bg-muted/50 border-e border-border last:border-e-0">
+          <div key={day} className="py-2 pe-1 ps-1 text-center text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground bg-muted/50 border-e border-border last:border-e-0">
             {day}
           </div>
         ))}
@@ -94,18 +100,35 @@ export const CalendarGrid: React.FC = () => {
             </div>
             
             <div className="w-full space-y-1 overflow-hidden">
-              {item.events.map((event, eIdx) => (
-                <div 
-                  key={eIdx} 
-                  className={cn(
-                    "text-[10px] py-0.5 px-2 rounded-[var(--radius-sm)] truncate font-[var(--font-weight-medium)] w-full text-center",
-                    event.color,
-                    event.textColor || "text-white"
-                  )}
-                >
-                  {event.label}
-                </div>
-              ))}
+              {item.events.map((event, eIdx) => {
+                const isInteractive = !!event.id;
+                return (
+                  <button
+                    key={eIdx}
+                    type="button"
+                    tabIndex={isInteractive ? 0 : -1}
+                    onClick={() => {
+                      if (isInteractive && onViewRequest) {
+                        onViewRequest({
+                          id: event.id,
+                          type: event.type || event.label,
+                          status: event.status as 'approved' | 'pending' | 'noshow' || 'approved',
+                          range: event.range || 'Aug 8 - Aug 8',
+                          duration: event.duration || '1 day',
+                        });
+                      }
+                    }}
+                    className={cn(
+                      "text-[10px] py-0.5 px-2 rounded-[var(--radius-sm)] truncate font-[var(--font-weight-medium)] w-full text-center block transition-all border-none outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                      event.color,
+                      event.textColor || "text-white",
+                      isInteractive ? "cursor-pointer hover:brightness-95 active:scale-[0.98]" : "cursor-default"
+                    )}
+                  >
+                    {event.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         ))}

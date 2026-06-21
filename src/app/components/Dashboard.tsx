@@ -180,13 +180,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
 
   // --- Handlers ---
 
-  const handleViewRequest = (item: HistoryItem) => {
+  const handleViewRequest = (item: { id: string; type: string; status: 'approved' | 'pending' | 'noshow'; range: string; duration: string }) => {
+    let leaveStatus: 'requested' | 'hr' | 'complete' | 'cancelled' = 'hr';
+    if (item.status === 'approved') leaveStatus = 'complete';
+    else if (item.status === 'noshow') leaveStatus = 'cancelled';
+    else if (item.status === 'pending') leaveStatus = 'requested';
+
     setSelectedLeave({
       ...mockLeaveDetail,
       id: item.id,
       type: item.type,
       dateRange: item.range,
       duration: item.duration,
+      status: leaveStatus,
     });
     setLeaveDetailOpen(true);
   };
@@ -307,7 +313,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         >
           Timesheet
         </h3>
-        <CalendarGrid />
+        <CalendarGrid onViewRequest={handleViewRequest} />
 
         {/* Color Indicators Legend */}
         <div className="flex items-center gap-4 flex-wrap">
