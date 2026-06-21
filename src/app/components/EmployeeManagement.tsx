@@ -685,7 +685,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
         </button>
         <span className="text-[var(--text-sm)] text-foreground flex items-center gap-2 whitespace-nowrap">
           Page
-          <input type="text" value={pageInput} onChange={(e) => setPageInput(e.target.value)} onBlur={() => go(Number(pageInput) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(pageInput) || 1)} className="w-12 h-11 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] shadow-sm" aria-label="Page number input" />
+          <input type="text" value={pageInput} onChange={(e) => setPageInput(e.target.value)} onBlur={() => go(Number(pageInput) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(pageInput) || 1)} className="w-12 px-0 py-[14px] text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm" aria-label="Page number input" />
           <span className="text-muted-foreground">of {totalPages}</span>
         </span>
         <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm" aria-label="Next page">

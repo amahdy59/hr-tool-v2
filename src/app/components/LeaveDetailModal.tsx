@@ -76,7 +76,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[460px] max-h-[90vh] overflow-y-auto gap-3">
+      <DialogContent className="sm:max-w-[460px] max-h-[90vh] overflow-y-auto gap-6 p-6">
         <DialogHeader className="pe-8">
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 pt-1 text-start">
             <DialogTitle
@@ -104,9 +104,9 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Attachments */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <h4
               style={{
                 fontFamily: "'Inter', sans-serif",

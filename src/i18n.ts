@@ -120,17 +120,17 @@ const ar = {
     dashboard: {
       welcome: 'مرحباً',
       quickActions: 'إجراءات سريعة',
-      requestLeave: 'طلب إجازة',
+      requestLeave: 'طلب أجازة',
       requestMission: 'طلب مأمورية',
       upcomingLeaves: 'الإجازات القادمة',
       missionsPending: 'مأموريات بانتظار الموافقة',
       home: 'الرئيسية',
     },
     leave: {
-      annualLeave: 'إجازة سنوية',
-      sickLeave: 'إجازة مرضية',
-      casualLeave: 'إجازة عارضة',
-      confirmTitle: 'تأكيد طلب الإجازة',
+      annualLeave: 'أجازة سنوية',
+      sickLeave: 'أجازة مرضية',
+      casualLeave: 'أجازة عارضة',
+      confirmTitle: 'تأكيد طلب الأجازة',
     },
     mission: {
       confirmTitle: 'تأكيد المأمورية',

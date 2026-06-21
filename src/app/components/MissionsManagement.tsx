@@ -136,7 +136,7 @@ export const MissionsManagement: React.FC = () => {
               <Plus className="w-4 h-4" /> Create Mission
             </Button>
             <Button variant={selectedPending.length > 0 ? "default" : "outline"} size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center transition-all" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
-              Approve
+              {selectedPending.length > 1 ? 'Approve Missions' : 'Approve Mission'}
             </Button>
           </div>
         </div>
@@ -182,7 +182,7 @@ export const MissionsManagement: React.FC = () => {
                             <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-[var(--radix-dropdown-menu-trigger-width)]">
                               <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
-                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve</DropdownMenuItem>
+                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve Mission</DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(m); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline</DropdownMenuItem>
                             </DropdownMenuContent>
@@ -349,7 +349,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
         </button>
         <span className="text-[var(--text-sm)] text-foreground flex items-center gap-2 whitespace-nowrap">
           Page
-          <input type="text" value={pi} onChange={(e) => setPi(e.target.value)} onBlur={() => go(Number(pi) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(pi) || 1)} className="w-12 h-11 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] shadow-sm" aria-label="Page number input" />
+          <input type="text" value={pi} onChange={(e) => setPi(e.target.value)} onBlur={() => go(Number(pi) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(pi) || 1)} className="w-12 px-0 py-[14px] text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm" aria-label="Page number input" />
           <span className="text-muted-foreground">of {totalPages}</span>
         </span>
         <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm" aria-label="Next page">

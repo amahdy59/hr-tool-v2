@@ -206,7 +206,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         {closeButton}
       </div>
 
-      <div className="space-y-0.5 overflow-y-auto flex-1 pe-1 min-h-0">
+      <div className="space-y-0.5 overflow-y-auto flex-1 pe-4 min-h-0">
         <div className="mb-4">
           <label className="text-[var(--text-sm)] font-medium text-foreground block mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Theme</label>
           <div className="grid grid-cols-3 gap-2 p-1 bg-muted/50 rounded-md border border-border">
