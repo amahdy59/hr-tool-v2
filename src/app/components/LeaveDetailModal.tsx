@@ -11,7 +11,7 @@ import {
   FileText,
   Upload,
   Check,
-  AlertCircle,
+  Eye,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -151,7 +151,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                   </div>
                   <div className="flex items-center gap-1.5">
                     <button className="text-muted-foreground hover:text-foreground" aria-label={`Review ${file.name}`}>
-                      <AlertCircle className="w-4 h-4" />
+                      <Eye className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -303,32 +303,34 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col gap-3 pt-2">
-            <Button
-              variant="outline"
-              className="w-full rounded-[var(--radius-button)]"
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--text-sm)',
-                fontWeight: 'var(--font-weight-medium)',
-              }}
-              onClick={() => onEditRequest(leaveData.id)}
-            >
-              Edit Request
-            </Button>
-            <Button
-              variant="destructive"
-              className="w-full rounded-[var(--radius-button)] flex items-center gap-2"
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 'var(--text-sm)',
-                fontWeight: 'var(--font-weight-medium)',
-              }}
-              onClick={() => onCancelRequest(leaveData.id)}
-            >
-              <span className="text-white">x</span> Cancel request
-            </Button>
-          </div>
+          {(leaveData.status === 'requested' || leaveData.status === 'hr') && (
+            <div className="flex flex-col gap-3 pt-2">
+              <Button
+                variant="outline"
+                className="w-full rounded-[var(--radius-button)]"
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 'var(--text-sm)',
+                  fontWeight: 'var(--font-weight-medium)',
+                }}
+                onClick={() => onEditRequest(leaveData.id)}
+              >
+                Edit Request
+              </Button>
+              <Button
+                variant="destructive"
+                className="w-full rounded-[var(--radius-button)] flex items-center gap-2"
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 'var(--text-sm)',
+                  fontWeight: 'var(--font-weight-medium)',
+                }}
+                onClick={() => onCancelRequest(leaveData.id)}
+              >
+                <span className="text-white">x</span> Cancel request
+              </Button>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 
 const dictionary: Record<string, string> = {
+  "1 week": "اسبوع واحد",
+  "Balance": "رصيد الأجازة",
+  "In-Office": "العمل من المكتب",
   ", or": "، أو",
   "? This action cannot be undone.": "؟ لا يمكن التراجع عن هذا الإجراء.",
   ". This action cannot be undone.": ". لا يمكن التراجع عن هذا الإجراء.",
@@ -37,7 +40,7 @@ const dictionary: Record<string, string> = {
   "Action:": "الإجراء:",
   "Actions": "الإجراءات",
   "Active": "نشط",
-  "Active leave requests will be automatically denied.": "سيتم رفض طلبات الإجازة النشطة تلقائيًا.",
+  "Active leave requests will be automatically denied.": "سيتم رفض طلبات الأجازة النشطة تلقائيًا.",
   "Activity": "النشاط",
   "Activity Log": "سجل النشاط",
   "Activity Type": "نوع النشاط",
@@ -48,7 +51,7 @@ const dictionary: Record<string, string> = {
   "Add a skill...": "أضف مهارة...",
   "Add account": "إضافة حساب",
   "Add an Employee": "إضافة موظف",
-  "Add any notes for your leave request...": "أضف أي ملاحظات لطلب الإجازة...",
+  "Add any notes for your leave request...": "أضف أي ملاحظات لطلب الأجازة...",
   "Add any notes for your mission request...": "أضف أي ملاحظات لطلب المأمورية...",
   "Add Card": "إضافة بطاقة",
   "Add Certification": "إضافة شهادة",
@@ -85,9 +88,9 @@ const dictionary: Record<string, string> = {
   "All rights reserved. Ahmed Mahdy's redesign.": "جميع الحقوق محفوظة. إعادة تصميم أحمد مهدي.",
   "Amount Affected": "المبلغ المتأثر",
   "Analyst": "محلل",
-  "Annual and Sick Leaves": "الإجازات السنوية والمرضية",
-  "Annual Leave": "إجازة سنوية",
-  "Annual leave": "إجازة سنوية",
+  "Annual and Sick Leaves": "الأجازات السنوية والمرضية",
+  "Annual Leave": "أجازة سنوية",
+  "Annual leave": "أجازة سنوية",
   "Application Consultant": "استشاري تطبيقات",
   "Apply": "تطبيق",
   "Apply Filter": "تطبيق الفلتر",
@@ -138,8 +141,8 @@ const dictionary: Record<string, string> = {
   "Cancelled": "ملغى",
   "Card Number": "رقم البطاقة",
   "Card Type": "نوع البطاقة",
-  "Carried over days are deducted automatically before this year's vacation.": "تُخصم الأيام المرحلة تلقائيًا قبل رصيد إجازات هذا العام.",
-  "Casual Leave": "إجازة عارضة",
+  "Carried over days are deducted automatically before this year's vacation.": "تُخصم أيام الأجازة المرحلة تلقائيًا قبل أجازة هذا العام.",
+  "Casual Leave": "أجازة عارضة",
   "Category": "الفئة",
   "Category *": "الفئة *",
   "CDXXXXXXXX": "CDXXXXXXXX",
@@ -178,7 +181,7 @@ const dictionary: Record<string, string> = {
   "Confirm Cancellation": "تأكيد الإلغاء",
   "Confirm Delete": "تأكيد الحذف",
   "Confirm employee termination": "تأكيد إنهاء خدمة الموظف",
-  "Confirm Leave": "تأكيد الإجازة",
+  "Confirm Leave": "تأكيد الأجازة",
   "Confirm Mission": "تأكيد المأمورية",
   "Confirm Role Removal": "تأكيد إزالة الدور",
   "Confirm role removal": "تأكيد إزالة الدور",
@@ -193,9 +196,9 @@ const dictionary: Record<string, string> = {
   "Contractor": "متعاقد",
   "Core UX & Design": "تجربة المستخدم والتصميم الأساسيان",
   "Cost Center": "مركز التكلفة",
-  "Create a new leave request": "إنشاء طلب إجازة جديد",
+  "Create a new leave request": "إنشاء طلب أجازة جديد",
   "Create a new mission request": "إنشاء طلب مأمورية جديد",
-  "Create Leave": "إنشاء طلب إجازة",
+  "Create Leave": "إنشاء طلب أجازة",
   "Create Mission": "إنشاء طلب مأمورية",
   "Credential ID": "معرّف الاعتماد",
   "Credential URL": "رابط الاعتماد",
@@ -230,7 +233,7 @@ const dictionary: Record<string, string> = {
   "Decision": "القرار",
   "Decision Date": "تاريخ القرار",
   "Decline": "رفض",
-  "Decline Leave": "رفض الإجازة",
+  "Decline Leave": "رفض الأجازة",
   "Decline Mission": "رفض المأمورية",
   "Deduction Items": "بنود الاستقطاع",
   "Deductions": "الاستقطاعات",
@@ -349,7 +352,7 @@ const dictionary: Record<string, string> = {
   "Emp#:": "رقم الموظف:",
   "Employee": "الموظف",
   "Employee Attendance": "حضور الموظف",
-  "Leaves data exported to CSV.": "تم تصدير بيانات الإجازات إلى ملف CSV.",
+  "Leaves data exported to CSV.": "تم تصدير بيانات الأجازات إلى ملف CSV.",
   "Missions data exported to CSV.": "تم تصدير بيانات المأموريات إلى ملف CSV.",
   "Attendance data is being exported to CSV.": "يتم الآن تصدير بيانات الحضور إلى ملف CSV.",
   "Employee data exported to CSV.": "تم تصدير بيانات الموظف إلى ملف CSV.",
@@ -375,7 +378,7 @@ const dictionary: Record<string, string> = {
   "End Year": "سنة الانتهاء",
   "Engineer": "مهندس",
   "Engineering": "الهندسة",
-  "Enjoy your time off": "استمتع بإجازتك",
+  "Enjoy your time off": "استمتع بأجازتك",
   "Enrolled:": "تاريخ الالتحاق:",
   "Enter": "إدخال",
   "Enter Employee# or Name...": "أدخل رقم الموظف أو الاسم...",
@@ -433,7 +436,7 @@ const dictionary: Record<string, string> = {
   "Go to Attendance": "الانتقال إلى الحضور",
   "Go to Dashboard": "الانتقال إلى لوحة المعلومات",
   "Go to Employees": "الانتقال إلى الموظفين",
-  "Go to Leaves Management": "الانتقال إلى إدارة الإجازات",
+  "Go to Leaves Management": "الانتقال إلى إدارة الأجازات",
   "Go to Missions Management": "الانتقال إلى إدارة المأموريات",
   "Go to my profile": "الانتقال إلى ملفي الشخصي",
   "Go to Profile": "الانتقال إلى الملف الشخصي",
@@ -507,17 +510,17 @@ const dictionary: Record<string, string> = {
   "Last updated": "آخر تحديث",
   "Lead Count": "عدد المرؤوسين",
   "Lead Engineer": "مهندس قائد",
-  "Leave": "إجازة",
-  "Leave Details": "تفاصيل الإجازة",
-  "Leave request details": "تفاصيل طلب الإجازة",
-  "Leave Type": "نوع الإجازة",
-  "Leaves": "الإجازات",
-  "Leaves and Mission History": "سجل الإجازات والمأموريات",
-  "Leaves History": "سجل الإجازات",
-  "Leaves Management": "إدارة الإجازات",
-  "Leaves Pending Approval": "إجازات بانتظار الموافقة",
-  "Leaves Request": "طلب إجازات",
-  "Leaves Requests": "طلبات الإجازات",
+  "Leave": "أجازة",
+  "Leave Details": "تفاصيل الأجازة",
+  "Leave request details": "تفاصيل طلب الأجازة",
+  "Leave Type": "نوع الأجازة",
+  "Leaves": "الأجازات",
+  "Leaves and Mission History": "سجل الأجازات والمأموريات",
+  "Leaves History": "سجل الأجازات",
+  "Leaves Management": "إدارة الأجازات",
+  "Leaves Pending Approval": "أجازات بانتظار الموافقة",
+  "Leaves Request": "طلب أجازات",
+  "Leaves Requests": "طلبات الأجازات",
   "Left:": "المتبقي:",
   "Lena Mohamed": "لينا محمد",
   "Less navigation, clearer statuses": "تنقل أقل وحالات أوضح",
@@ -544,7 +547,7 @@ const dictionary: Record<string, string> = {
   "Marriage": "زواج",
   "Married": "متزوج/متزوجة",
   "Maternity": "أمومة",
-  "Maternity (appears only to females)": "إجازة أمومة (تظهر للإناث فقط)",
+  "Maternity (appears only to females)": "أجازة أمومة (تظهر للإناث فقط)",
   "May": "مايو",
   "Menu": "القائمة",
   "Mission": "مأمورية",
@@ -630,7 +633,7 @@ const dictionary: Record<string, string> = {
   "or": "أو",
   "Order updated": "تم تحديث الترتيب",
   "Other": "أخرى",
-  "Other Leaves": "إجازات أخرى",
+  "Other Leaves": "أجازات أخرى",
   "Outcomes": "النتائج",
   "Page": "الصفحة",
   "Page number input": "حقل إدخال رقم الصفحة",
@@ -640,7 +643,7 @@ const dictionary: Record<string, string> = {
   "Passport": "جواز السفر",
   "Password": "كلمة المرور",
   "Paternity": "أبوة",
-  "Paternity (appears only to males)": "إجازة أبوة (تظهر للذكور فقط)",
+  "Paternity (appears only to males)": "أجازة أبوة (تظهر للذكور فقط)",
   "Payroll Deductions": "استقطاعات الرواتب",
   "Payroll Overview": "نظرة عامة على الرواتب",
   "Payrolls": "الرواتب",
@@ -659,7 +662,7 @@ const dictionary: Record<string, string> = {
   "Phone Number": "رقم الهاتف",
   "Phone Number *": "رقم الهاتف *",
   "Pick a date": "اختر تاريخًا",
-  "Please ensure all carried-over vacation days from last year are used before ": "يرجى التأكد من استخدام جميع أيام الإجازة المرحلة من العام الماضي قبل ",
+  "Please ensure all carried-over vacation days from last year are used before ": "يرجى التأكد من استخدام جميع أيام الأجازة المرحلة من العام الماضي قبل ",
   "Portfolio": "معرض الأعمال",
   "Position": "المنصب",
   "Press": "اضغط",
@@ -708,7 +711,7 @@ const dictionary: Record<string, string> = {
   "Request Bank Update": "طلب تحديث البيانات البنكية",
   "Request Date": "تاريخ الطلب",
   "Request Employment Update": "طلب تحديث بيانات التوظيف",
-  "Request Leave": "طلب إجازة",
+  "Request Leave": "طلب أجازة",
   "Request Mission": "طلب مأمورية",
   "Request Update": "طلب تحديث",
   "Requested": "تم الطلب",
@@ -724,7 +727,7 @@ const dictionary: Record<string, string> = {
   "Resubmit Request": "إعادة إرسال الطلب",
   "Result:": "النتيجة:",
   "Resume downloaded successfully!": "تم تنزيل السيرة الذاتية بنجاح!",
-  "Review and approve selected leave requests": "مراجعة طلبات الإجازة المحددة والموافقة عليها",
+  "Review and approve selected leave requests": "مراجعة طلبات الأجازة المحددة والموافقة عليها",
   "Review and approve selected mission requests": "مراجعة طلبات المأموريات المحددة والموافقة عليها",
   "Review Selected Requests": "مراجعة الطلبات المحددة",
   "Review Timeline": "مراجعة المخطط الزمني",
@@ -782,7 +785,7 @@ const dictionary: Record<string, string> = {
   "Select employee": "اختر الموظف",
   "Select end date": "اختر تاريخ الانتهاء",
   "Select from date": "اختر تاريخ البداية",
-  "Select leave type": "اختر نوع الإجازة",
+  "Select leave type": "اختر نوع الأجازة",
   "Select manager": "اختر المدير",
   "Select mission type": "اختر نوع المأمورية",
   "Sign in": "تسجيل الدخول",
@@ -805,7 +808,7 @@ const dictionary: Record<string, string> = {
   "Showing attendance for": "عرض الحضور لـ",
   "Sibling": "أخ/أخت",
   "Sick": "مرضي",
-  "Sick Leave": "إجازة مرضية",
+  "Sick Leave": "أجازة مرضية",
   "Single": "أعزب/عزباء",
   "Skill added successfully": "تمت إضافة المهارة بنجاح",
   "Skill Name": "اسم المهارة",
@@ -881,7 +884,7 @@ const dictionary: Record<string, string> = {
   "Under development": "قيد التطوير",
   "Unfilled": "غير مكتمل",
   "Unpaid": "غير مدفوعة",
-  "Upcoming Leaves": "الإجازات القادمة",
+  "Upcoming Leaves": "الأجازات القادمة",
   "Update": "تحديث",
   "Upload": "رفع",
   "Upload a new profile picture": "رفع صورة ملف شخصي جديدة",
@@ -903,11 +906,11 @@ const dictionary: Record<string, string> = {
   "UX Design": "تصميم تجربة المستخدم",
   "UX Designer": "مصمم تجربة المستخدم",
   "UX Projects": "مشروعات تجربة المستخدم",
-  "Vacation": "إجازة",
+  "Vacation": "أجازة",
   "View": "عرض",
   "View Activity Log": "عرض سجل النشاط",
   "View Details": "عرض التفاصيل",
-  "View Leave": "عرض الإجازة",
+  "View Leave": "عرض الأجازة",
   "View manager profile": "عرض ملف المدير",
   "View payslip": "عرض قسيمة الراتب",
   "View Project": "عرض المشروع",
@@ -1084,18 +1087,30 @@ export const useArabicDomTranslation = (enabled: boolean) => {
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (node.nodeType === Node.TEXT_NODE) {
-            translateTextNode(node as Text, enabled);
+            const parent = node.parentElement;
+            if (parent && !parent.closest('[data-no-auto-translate]')) {
+              translateTextNode(node as Text, enabled);
+            }
           } else if (node.nodeType === Node.ELEMENT_NODE) {
-            walkAndTranslate(node as Element, enabled);
+            const el = node as Element;
+            if (!el.closest('[data-no-auto-translate]')) {
+              walkAndTranslate(el, enabled);
+            }
           }
         });
 
         if (mutation.type === 'attributes' && mutation.target.nodeType === Node.ELEMENT_NODE) {
-          translateElementAttributes(mutation.target as Element, enabled);
+          const el = mutation.target as Element;
+          if (!el.closest('[data-no-auto-translate]')) {
+            translateElementAttributes(el, enabled);
+          }
         }
 
         if (mutation.type === 'characterData' && mutation.target.nodeType === Node.TEXT_NODE) {
-          translateTextNode(mutation.target as Text, enabled);
+          const parent = mutation.target.parentElement;
+          if (parent && !parent.closest('[data-no-auto-translate]')) {
+            translateTextNode(mutation.target as Text, enabled);
+          }
         }
       });
 

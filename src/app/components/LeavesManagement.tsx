@@ -478,7 +478,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
         </button>
         <span className="text-[var(--text-sm)] text-foreground flex items-center gap-2 whitespace-nowrap">
           Page
-          <input type="text" value={pi} onChange={(e) => setPi(e.target.value)} onBlur={() => go(Number(pi) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(pi) || 1)} className="w-12 px-0 py-[14px] text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm" aria-label="Page number input" />
+          <input type="text" value={pi} onChange={(e) => setPi(e.target.value)} onBlur={() => go(Number(pi) || 1)} onKeyDown={(e) => e.key === 'Enter' && go(Number(pi) || 1)} className="w-12 h-11 sm:h-8 px-0 py-0 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm" aria-label="Page number input" />
           <span className="text-muted-foreground">of {totalPages}</span>
         </span>
         <button onClick={() => go(page + 1)} disabled={page >= totalPages} className="w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-sm" aria-label="Next page">
@@ -676,7 +676,7 @@ const HolidayFormModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
             </Select>
           </div>
           <FormField label="Holiday Name (English)" value={hNameEn} onChange={setHNameEn} placeholder="e.g. Eid Al-Fitr" />
-          <FormField label="Holiday Name (Arabic)" value={hNameAr} onChange={setHNameAr} placeholder="e.g. عيد الفطر" dir="rtl" />
+          <FormField label="Holiday Name (Arabic)" value={hNameAr} onChange={setHNameAr} placeholder="e.g. عيد الفطر" />
           <SelectField label="Type" value={hType} onChange={setHType} options={['Holiday', 'Bridge']} />
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <FormField label="Start Date" value={startD} onChange={setStartD} type="date" />

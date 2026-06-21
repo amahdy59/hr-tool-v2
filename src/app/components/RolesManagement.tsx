@@ -374,7 +374,7 @@ export const RolesManagement: React.FC = () => {
                   onChange={(e) => setPageInput(e.target.value)}
                   onBlur={() => handlePageChange(Number(pageInput) || 1)}
                   onKeyDown={(e) => e.key === 'Enter' && handlePageChange(Number(pageInput) || 1)}
-                  className="w-10 px-0 py-[8px] text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm"
+                  className="w-10 h-11 sm:h-8 px-0 py-0 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm"
                   aria-label="Page number input"
                 />
                 of {totalPages}

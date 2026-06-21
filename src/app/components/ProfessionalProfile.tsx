@@ -1105,7 +1105,7 @@ const ProjectItem: React.FC<{
         <h3 className="text-base font-bold text-foreground">{data.title}</h3>
         {data.featured && <span title="Featured project"><Star className="w-4 h-4 text-[#0F766E] fill-[#0F766E] dark:text-[#2DD4BF] dark:fill-[#2DD4BF]" /></span>}
       </div>
-      <span className="px-3 py-1 bg-muted/50 text-muted-foreground rounded-full text-xs font-medium shrink-0 w-fit">
+      <span className="px-2 py-1 bg-muted/50 text-muted-foreground rounded-full text-xs font-medium shrink-0 w-fit">
         {data.category}
       </span>
     </div>
@@ -1118,7 +1118,7 @@ const ProjectItem: React.FC<{
     {data.toolsUsed.length > 0 && (
       <div className="flex flex-wrap gap-2 pt-2">
         {data.toolsUsed.map((tool, idx) => (
-          <span key={idx} className="px-2.5 py-1 bg-[#EFF6FF] text-[#1D4ED8] dark:bg-[#1E3A8A]/30 dark:text-[#93C5FD] rounded text-xs font-medium">
+          <span key={idx} className="px-2 py-1 bg-[#EFF6FF] text-[#1D4ED8] dark:bg-[#1E3A8A]/30 dark:text-[#93C5FD] rounded text-xs font-medium">
             {tool}
           </span>
         ))}
@@ -1197,7 +1197,7 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
     <span
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }}
-      className={cn("group relative px-3 py-1 w-fit rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
+      className={cn("group relative px-2 py-1 w-fit rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
       onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >

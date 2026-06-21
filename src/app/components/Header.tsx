@@ -35,6 +35,7 @@ const getInitials = (name: string): string => {
 export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { t, i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const displayName = localizePersonName(currentUser?.name, i18n.resolvedLanguage || i18n.language);
 
   const toggleLanguage = () => {
@@ -58,7 +59,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
               <X className={cn("w-4 h-4 transition-all duration-300 absolute -rotate-90 scale-50 opacity-0", isMenuOpen && "!rotate-0 !scale-100 !opacity-100")} />
             </button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-80 p-0 flex flex-col h-full bg-card">
+          <SheetContent side={isArabic ? "right" : "left"} dir={isArabic ? "rtl" : "ltr"} className="w-80 p-0 flex flex-col h-full bg-card">
             <SheetHeader className="sr-only">
               <SheetTitle>{t('header.menu')}</SheetTitle>
               <SheetDescription>{t('header.navigationMenu')}</SheetDescription>

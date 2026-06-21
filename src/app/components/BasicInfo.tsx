@@ -216,6 +216,8 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
       {/* Personal Information */}
       <ProfileCard title="Personal Information" onEdit={() => setEditPersonalOpen(true)} icon={<Shield className="w-4 h-4 text-muted-foreground" />}>
         <div className="grid grid-cols-1 gap-y-3">
+          <InfoItem label="Full Name (English)" value={personalInfo.nameEn} />
+          <InfoItem label="Full Name (Arabic)" value={personalInfo.nameAr} />
           <InfoItem label="Date of Birth" value={new Date(personalInfo.dateOfBirth).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} />
           <InfoItem label="Gender" value={personalInfo.gender} />
           <InfoItem label="Email" value={personalInfo.email} />
@@ -548,7 +550,7 @@ const EditPersonalInfoModal: React.FC<{
         </div>
         <div className="grid grid-cols-1 gap-4">
           <FormField label="Full Name (English) *" value={nameEn} onChange={setNameEn} />
-          <FormField label="Full Name (Arabic) *" value={nameAr} onChange={setNameAr} dir="rtl" />
+          <FormField label="Full Name (Arabic) *" value={nameAr} onChange={setNameAr} />
           <FormField label="Date of Birth *" value={dateOfBirth} onChange={setDateOfBirth} type="date" />
           <FormField label="National ID * (14 digits)" value={nationalId} onChange={setNationalId} maxLength={14} inputMode="numeric" />
           <FormField label="Email" value={email} onChange={setEmail} type="email" inputMode="email" autoComplete="email" />

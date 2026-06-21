@@ -59,6 +59,7 @@ const sidebarItemTextClass = 'text-[var(--text-sm)] font-[var(--font-weight-medi
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, collapsed, onToggle, onLogout, currentUser }) => {
   const { t, i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const displayName = localizePersonName(currentUser?.name, i18n.resolvedLanguage || i18n.language);
   
   const NavButton = ({ item }: { item: typeof navItems[number] }) => {
@@ -120,6 +121,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
   return (
     <TooltipProvider delayDuration={0}>
       <aside
+        dir={isArabic ? 'rtl' : 'ltr'}
         className={cn(
           'hidden lg:flex lg:flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 h-screen shrink-0',
           collapsed ? 'lg:w-[72px]' : 'lg:w-64'

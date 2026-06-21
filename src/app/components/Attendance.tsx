@@ -473,7 +473,7 @@ export const Attendance: React.FC = () => {
               <BarChart
                 data={summaryData}
                 layout="vertical"
-                margin={{ top: 4, right: 16, left: 14, bottom: 4 }}
+                margin={i18n.language === 'ar' ? { top: 4, right: 20, left: 10, bottom: 4 } : { top: 4, right: 10, left: 20, bottom: 4 }}
                 barCategoryGap="24%"
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
@@ -488,11 +488,12 @@ export const Attendance: React.FC = () => {
                 <YAxis
                   dataKey="name"
                   type="category"
-                  width={100}
+                  width={110}
                   orientation={i18n.language === 'ar' ? 'right' : 'left'}
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
+                  dx={i18n.language === 'ar' ? 8 : -8}
                 />
                 <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
                 <Bar dataKey="hours" radius={i18n.language === 'ar' ? [4, 0, 0, 4] : [0, 4, 4, 0]} maxBarSize={28}>
@@ -509,7 +510,7 @@ export const Attendance: React.FC = () => {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={summaryData}
-                margin={{ top: 8, right: 8, left: -8, bottom: 18 }}
+                margin={i18n.language === 'ar' ? { top: 8, right: 16, left: 8, bottom: 18 } : { top: 8, right: 8, left: 16, bottom: 18 }}
                 barCategoryGap="18%"
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
@@ -519,6 +520,7 @@ export const Attendance: React.FC = () => {
                   tickLine={false}
                   interval={0}
                   tick={{ fill: 'var(--muted-foreground)', fontSize: 11, fontFamily: 'Inter, sans-serif' }}
+                  dy={4}
                   reversed={i18n.language === 'ar'}
                 />
                 <YAxis
@@ -526,6 +528,7 @@ export const Attendance: React.FC = () => {
                   tickLine={false}
                   tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
                   unit="h"
+                  dx={i18n.language === 'ar' ? 4 : -4}
                 />
                 <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
                 <Bar dataKey="hours" radius={[4, 4, 0, 0]} maxBarSize={52}>
@@ -685,7 +688,7 @@ export const Attendance: React.FC = () => {
                   onChange={(e) => setPageInput(e.target.value)}
                   onBlur={() => handlePageChange(Number(pageInput) || 1)}
                   onKeyDown={(e) => e.key === 'Enter' && handlePageChange(Number(pageInput) || 1)}
-                  className="w-10 px-0 py-[8px] text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm"
+                  className="w-10 h-11 sm:h-8 px-0 py-0 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 outline-none text-[var(--text-sm)] leading-none shadow-sm"
                   aria-label="Page number input"
                 />
                 of {totalPages}

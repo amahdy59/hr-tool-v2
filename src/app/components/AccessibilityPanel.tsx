@@ -171,8 +171,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
   const triggerButton = (
     <Button
       variant="outline"
-      size="sm"
-      className="relative flex h-11 w-11 lg:h-11 lg:w-auto lg:px-4 lg:py-2 items-center justify-center lg:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
+      className="relative flex h-11 w-11 lg:h-11 lg:w-auto lg:px-4 items-center justify-center lg:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
       aria-label="Accessibility Settings"
       title="Accessibility Settings"
     >
@@ -206,7 +205,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         {closeButton}
       </div>
 
-      <div className="space-y-0.5 overflow-y-auto flex-1 pe-4 min-h-0">
+      <div className="space-y-2 overflow-y-auto flex-1 px-4 min-h-0">
         <div className="mb-4">
           <label className="text-[var(--text-sm)] font-medium text-foreground block mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Theme</label>
           <div className="grid grid-cols-3 gap-2 p-1 bg-muted/50 rounded-md border border-border">
@@ -275,7 +274,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
 
   return (
     <>
-      <div className="sm:hidden">
+      <div className="sm:hidden h-full flex items-stretch">
         <Sheet>
           <SheetTrigger asChild>
             {triggerButton}
@@ -287,7 +286,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         </Sheet>
       </div>
 
-      <div className="hidden sm:block">
+      <div className="hidden sm:block h-full flex items-stretch">
         <Popover>
           <PopoverTrigger asChild>
             {triggerButton}

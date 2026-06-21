@@ -9,6 +9,7 @@ export const Logo: React.FC<{ className?: string; ariaLabel?: string }> = ({ cla
       className={className}
       aria-label={ariaLabel}
       role="img"
+      data-no-auto-translate="true"
     >
       <text 
         x="50%" 

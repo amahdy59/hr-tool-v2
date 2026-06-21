@@ -803,3 +803,37 @@ input[type="tel"] {
 [dir="rtl"] .lucide-chevrons-left {
   transform: scaleX(-1);
 }
+
+/* 4. Global RTL Alignment Overrides */
+[dir="rtl"] {
+  text-align: right;
+}
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+[dir="rtl"] .text-start {
+  text-align: right;
+}
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+[dir="rtl"] input:not([type="email"]):not([type="url"]):not([type="tel"]),
+[dir="rtl"] select,
+[dir="rtl"] textarea {
+  text-align: right;
+  direction: rtl;
+}
+[dir="rtl"] label {
+  text-align: right;
+  justify-content: flex-start;
+}
+
+/* 5. Dark Mode Input Visibility Overrides
+   Ensures all input elements in dark mode have the same visible border as the select trigger */
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark textarea,
+.dark select,
+.dark [data-slot="input"],
+.dark .border-input {
+  border-color: var(--border) !important;
+}
