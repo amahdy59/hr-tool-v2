@@ -662,7 +662,7 @@ const dictionary: Record<string, string> = {
   "Phone Number": "رقم الهاتف",
   "Phone Number *": "رقم الهاتف *",
   "Pick a date": "اختر تاريخًا",
-  "Please ensure all carried-over vacation days from last year are used before": "يرجى التأكد من استخدام جميع أيام الإجازة المٌرحلة من العام الماضي قبل ",
+  "Please ensure all carried-over vacation days from last year are used before": "يرجى التأكد من استخدام جميع أيام الإجازة المٌرحلة من العام الماضي قبل",
   "Portfolio": "معرض الأعمال",
   "Position": "المنصب",
   "Press": "اضغط",
