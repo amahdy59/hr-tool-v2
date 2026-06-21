@@ -4194,7 +4194,7 @@
   {
     "Source Index": 770,
     "English Text": "Request a mission",
-    "Arabic Translation": "طلب مأمورية",
+    "Arabic Translation": "حجز المأمورية",
     "UI Category": "Label"
   },
   {
@@ -4224,7 +4224,7 @@
   {
     "Source Index": 775,
     "English Text": "Request Mission",
-    "Arabic Translation": "طلب مأمورية",
+    "Arabic Translation": "حجز المأمورية",
     "UI Category": "Label"
   },
   {
@@ -5566,5 +5566,15 @@
     "Arabic Translation": "لم يتم تحديد تواريخ",
     "Scope/Context": "Date picker",
     "Localization Note": ""
+  },
+  {
+    "English Text": "Book mission",
+    "Arabic Translation": "حجز المأمورية",
+    "UI Category": "Action / button"
+  },
+  {
+    "English Text": "✈ Book mission",
+    "Arabic Translation": "✈ حجز المأمورية",
+    "UI Category": "Action / button"
   }
 ]

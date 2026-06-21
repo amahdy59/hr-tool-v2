@@ -121,7 +121,7 @@ const ar = {
       welcome: 'مرحباً',
       quickActions: 'إجراءات سريعة',
       requestLeave: 'طلب أجازة',
-      requestMission: 'طلب مأمورية',
+      requestMission: 'حجز المأمورية',
       upcomingLeaves: 'الأجازات القادمة',
       missionsPending: 'مأموريات بانتظار الموافقة',
       home: 'الرئيسية',

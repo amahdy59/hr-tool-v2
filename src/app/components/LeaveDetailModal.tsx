@@ -133,24 +133,6 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Metadata Cards */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="flex items-center gap-3 p-3 rounded-[var(--radius)] border border-border/80 bg-muted/20">
-              <Calendar className="w-5 h-5 text-muted-foreground shrink-0" />
-              <div className="min-w-0">
-                <span className="block text-[10px] text-muted-foreground uppercase tracking-wider">Date Range</span>
-                <span className="block text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground truncate">{leaveData.dateRange}</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 rounded-[var(--radius)] border border-border/80 bg-muted/20">
-              <Clock className="w-5 h-5 text-muted-foreground shrink-0" />
-              <div className="min-w-0">
-                <span className="block text-[10px] text-muted-foreground uppercase tracking-wider">Duration</span>
-                <span className="block text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground truncate">{leaveData.duration}</span>
-              </div>
-            </div>
-          </div>
-
           {/* Stepper (Only show if not cancelled) */}
           {leaveData.status !== 'cancelled' && (
             <div className="p-4 rounded-[var(--radius)] border border-border bg-card shadow-[var(--elevation-sm)] space-y-3">
@@ -217,6 +199,24 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
               </div>
             </div>
           )}
+
+          {/* Metadata Cards */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center gap-3 p-3 rounded-[var(--radius)] border border-border/80 bg-muted/20">
+              <Calendar className="w-5 h-5 text-muted-foreground shrink-0" />
+              <div className="min-w-0">
+                <span className="block text-[10px] text-muted-foreground uppercase tracking-wider">Date Range</span>
+                <span className="block text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground truncate">{leaveData.dateRange}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-[var(--radius)] border border-border/80 bg-muted/20">
+              <Clock className="w-5 h-5 text-muted-foreground shrink-0" />
+              <div className="min-w-0">
+                <span className="block text-[10px] text-muted-foreground uppercase tracking-wider">Duration</span>
+                <span className="block text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground truncate">{leaveData.duration}</span>
+              </div>
+            </div>
+          </div>
 
           {/* Attachments Section */}
           <div className="space-y-3">
@@ -345,7 +345,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                           {note.role}
                         </p>
                       </div>
-                      <p
+                      <p dir="auto"
                         style={{
                           fontFamily: "'Inter', sans-serif",
                           fontSize: 'var(--text-sm)',

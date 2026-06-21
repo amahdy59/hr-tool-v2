@@ -26,27 +26,27 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
   ];
 
   return (
-    <div className="flex items-center justify-between w-full gap-1 px-1 pt-1 pb-2">
+    <div className="flex items-center justify-between w-full gap-2 px-1 pt-1 pb-2">
       <button
         type="button"
         className={cn(
           buttonVariants({ variant: "outline" }),
-          "h-8 w-8 bg-transparent p-0 opacity-70 hover:opacity-100 shrink-0"
+          "h-11 w-11 bg-transparent p-0 opacity-70 hover:opacity-100 shrink-0"
         )}
         onClick={() => previousMonth && goToMonth(previousMonth)}
         disabled={!previousMonth}
         aria-label="Previous month"
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="h-5 w-5" />
       </button>
 
       <div className="flex flex-1 gap-2 items-center justify-center">
-        <div className="w-full max-w-[100px]">
+        <div className="w-full max-w-[120px]">
           <Select
             value={currentMonth.toString()}
             onValueChange={(val) => goToMonth(new Date(currentYear, Number(val), 1))}
           >
-            <SelectTrigger className="h-8 text-xs bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0">
+            <SelectTrigger className="h-11 text-sm bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0">
               <SelectValue placeholder="Month" />
             </SelectTrigger>
             <SelectContent>
@@ -57,12 +57,12 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
           </Select>
         </div>
         
-        <div className="w-full max-w-[80px]">
+        <div className="w-full max-w-[90px]">
           <Select
             value={currentYear.toString()}
             onValueChange={(val) => goToMonth(new Date(Number(val), currentMonth, 1))}
           >
-            <SelectTrigger className="h-8 text-xs bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0">
+            <SelectTrigger className="h-11 text-sm bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
@@ -78,13 +78,13 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
         type="button"
         className={cn(
           buttonVariants({ variant: "outline" }),
-          "h-8 w-8 bg-transparent p-0 opacity-70 hover:opacity-100 shrink-0"
+          "h-11 w-11 bg-transparent p-0 opacity-70 hover:opacity-100 shrink-0"
         )}
         onClick={() => nextMonth && goToMonth(nextMonth)}
         disabled={!nextMonth}
         aria-label="Next month"
       >
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-5 w-5" />
       </button>
     </div>
   );
