@@ -4194,7 +4194,7 @@
   {
     "Source Index": 770,
     "English Text": "Request a mission",
-    "Arabic Translation": "حجز المأمورية",
+    "Arabic Translation": "حجز المامورية",
     "UI Category": "Label"
   },
   {
@@ -4224,7 +4224,7 @@
   {
     "Source Index": 775,
     "English Text": "Request Mission",
-    "Arabic Translation": "حجز المأمورية",
+    "Arabic Translation": "حجز المامورية",
     "UI Category": "Label"
   },
   {
@@ -5569,12 +5569,12 @@
   },
   {
     "English Text": "Book mission",
-    "Arabic Translation": "حجز المأمورية",
+    "Arabic Translation": "حجز المامورية",
     "UI Category": "Action / button"
   },
   {
     "English Text": "✈ Book mission",
-    "Arabic Translation": "✈ حجز المأمورية",
+    "Arabic Translation": "✈ حجز المامورية",
     "UI Category": "Action / button"
   }
 ]

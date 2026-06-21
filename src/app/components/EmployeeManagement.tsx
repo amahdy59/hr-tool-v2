@@ -149,7 +149,7 @@ const EMPLOYMENT_TYPES = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
 
 // ── Shared input style ──
 const inputClass = "w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow";
-const labelClass = "block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground";
+const labelClass = "block text-start text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground";
 const includesQuery = (values: Array<string | number>, query: string) => {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return true;
@@ -283,14 +283,14 @@ export const EmployeeManagement: React.FC = () => {
           <div className="flex flex-col md:flex-row w-full md:w-auto items-stretch md:items-center gap-2 min-h-[44px]">
             {activeSubTab === 'directory' && (
               <>
+                <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
+                  <Plus className="w-4 h-4" /> Add an Employee
+                </Button>
                 <Button variant="outline" size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
                   exportToCSV(filteredEmployees, 'Employees_Data');
                   toast.success('Download started', { description: 'Employee data exported to CSV.' });
                 }}>
                   <Download className="w-4 h-4" /> <span>Download Data</span>
-                </Button>
-                <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
-                  <Plus className="w-4 h-4" /> Add an Employee
                 </Button>
               </>
             )}
@@ -365,7 +365,6 @@ export const EmployeeManagement: React.FC = () => {
                 <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground w-8"><Checkbox aria-label="Select all employees" /></th>
                       <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
                       <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Employee Number</th>
                       <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
@@ -376,10 +375,8 @@ export const EmployeeManagement: React.FC = () => {
                   <tbody className="divide-y divide-border">
                     {filteredEmployees.map((emp) => (
                       <tr key={emp.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
-                        <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell"><Checkbox aria-label={`Select ${localizePersonName(emp.name, language)}`} /></td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3">
                           <div className="flex items-center gap-2">
-                            <Checkbox className="md:hidden mt-0.5" aria-label={`Select ${localizePersonName(emp.name, language)}`} />
                             <span className="text-primary font-[var(--font-weight-medium)]">{localizePersonName(emp.name, language)}</span>
                           </div>
                         </td>

@@ -170,6 +170,9 @@ export const LeavesManagement: React.FC = () => {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
+              <Plus className="w-4 h-4" /> Create Leave
+            </Button>
             <Button 
               ref={approveButtonRef}
               variant={selectedPending.length > 0 ? "default" : "outline"} 
@@ -178,9 +181,6 @@ export const LeavesManagement: React.FC = () => {
               onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}
             >
               {selectedPending.length > 1 ? 'Approve Leaves' : 'Approve Leave'}
-            </Button>
-            <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
-              <Plus className="w-4 h-4" /> Create Leave
             </Button>
           </div>
         </div>

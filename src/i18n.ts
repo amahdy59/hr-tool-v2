@@ -120,8 +120,8 @@ const ar = {
     dashboard: {
       welcome: 'مرحباً',
       quickActions: 'إجراءات سريعة',
-      requestLeave: 'طلب أجازة',
-      requestMission: 'حجز المأمورية',
+      requestLeave: 'طلب اجازة',
+      requestMission: 'حجز المامورية',
       upcomingLeaves: 'الأجازات القادمة',
       missionsPending: 'مأموريات بانتظار الموافقة',
       home: 'الرئيسية',

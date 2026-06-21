@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, FileText, Users, LayoutDashboard, CalendarCheck, ShieldCheck, Rocket, UserCircle, LogOut } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { AppTab } from '../App';
 
@@ -22,6 +23,9 @@ const commands = [
 ] as const;
 
 export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onOpenChange, onSelectTab, onLogout }) => {
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -84,7 +88,8 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onOpenChan
         role="dialog"
         aria-label="Command Palette"
         aria-modal="true"
-        className="relative z-10 w-full max-w-xl overflow-hidden rounded-xl border border-border bg-card shadow-2xl animate-in fade-in zoom-in-95 duration-200 mx-4"
+        dir={isArabic ? 'rtl' : 'ltr'}
+        className="relative z-10 w-full max-w-xl overflow-hidden rounded-xl border border-border bg-card shadow-2xl animate-in fade-in zoom-in-95 duration-200 mx-4 focus:outline-none"
       >
         <div className="flex items-center border-b border-border px-3">
           <Search className="me-2 h-5 w-5 shrink-0 text-muted-foreground" />
