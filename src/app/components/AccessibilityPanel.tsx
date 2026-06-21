@@ -172,7 +172,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     <Button
       variant="outline"
       size="sm"
-      className="relative flex h-11 w-11 lg:h-10 lg:w-auto lg:px-3 lg:py-2 items-center justify-center lg:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
+      className="relative flex h-11 w-11 lg:h-11 lg:w-auto lg:px-4 lg:py-2 items-center justify-center lg:gap-2 border-border/80 hover:border-primary/50 text-foreground transition-all duration-200"
       aria-label="Accessibility Settings"
       title="Accessibility Settings"
     >

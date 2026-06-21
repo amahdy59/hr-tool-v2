@@ -21,7 +21,7 @@ export const Logo: React.FC<{ className?: string; ariaLabel?: string }> = ({ cla
         fill="currentColor" 
         letterSpacing="-0.05em"
       >
-        HR
+        H<tspan>R</tspan>
       </text>
     </svg>
   );

@@ -470,7 +470,7 @@ const dictionary: Record<string, string> = {
   "ID:": "المعرّف:",
   "Identification Card": "بطاقة الهوية",
   "Imani Adimbola": "إيماني أديمبولا",
-  "In-office": "من المكتب",
+  "In-office": "العمل من المكتب",
   "Increase base text sizing by 120% for readability.": "زيادة حجم النص الأساسي بنسبة 120% لتحسين القراءة.",
   "InDirect": "غير مباشر",
   "Intermediate": "متوسط",
