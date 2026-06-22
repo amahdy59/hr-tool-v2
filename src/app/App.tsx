@@ -294,7 +294,7 @@ export default function App() {
         onLogout={handleLogout}
         currentUser={currentUser}
       />
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
         <Header 
           currentUser={currentUser} 
           accessibility={accessibility} 
@@ -304,7 +304,7 @@ export default function App() {
           setActiveTab={setActiveTab}
           onLogout={handleLogout}
         />
-        <main ref={mainRef} id="main-content" className="flex-1 overflow-y-auto bg-muted cursor-default pb-24 lg:pb-6">
+        <main ref={mainRef} id="main-content" className="flex-1 overflow-y-auto bg-muted cursor-default pb-24 lg:pb-6 pt-16">
           {renderContent()}
         </main>
       </div>
