@@ -57,6 +57,21 @@ interface HistoryItem {
 }
 
 // --- Mock Data ---
+// Helper to convert a date range string like "Sep 10 - Sep 14" (with current year) to YYYY-MM-DD
+const rangeToIso = (rangeStr: string): { start: string; end: string } | null => {
+  try {
+    const year = new Date().getFullYear();
+    const parts = rangeStr.split(' - ');
+    if (parts.length !== 2) return null;
+    const s = new Date(`${parts[0]} ${year}`);
+    const e = new Date(`${parts[1]} ${year}`);
+    if (isNaN(s.getTime()) || isNaN(e.getTime())) return null;
+    return {
+      start: s.toISOString().split('T')[0],
+      end: e.toISOString().split('T')[0],
+    };
+  } catch { return null; }
+};
 const historyData: HistoryItem[] = [
   {
     id: '1',
@@ -181,17 +196,31 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   // --- Handlers ---
 
   const handleViewRequest = (item: { id: string; type: string; status: 'approved' | 'pending' | 'noshow'; range: string; duration: string }) => {
+    // For pending items (from calendar click), open edit modal directly
+    if (item.status === 'pending') {
+      const dates = rangeToIso(item.range);
+      setEditLeaveData({
+        leaveType: item.type,
+        fromDate: dates?.start ?? '',
+        toDate: dates?.end ?? '',
+        notes: '',
+      });
+      setEditLeaveOpen(true);
+      return;
+    }
+
     let leaveStatus: 'requested' | 'hr' | 'complete' | 'cancelled' = 'hr';
     if (item.status === 'approved') leaveStatus = 'complete';
     else if (item.status === 'noshow') leaveStatus = 'cancelled';
-    else if (item.status === 'pending') leaveStatus = 'requested';
 
+    // Find matching history item to get full detail
+    const histItem = historyData.find(h => h.id === item.id);
     setSelectedLeave({
       ...mockLeaveDetail,
       id: item.id,
       type: item.type,
-      dateRange: item.range,
-      duration: item.duration,
+      dateRange: histItem?.range ?? item.range,
+      duration: histItem?.duration ?? item.duration,
       status: leaveStatus,
     });
     setLeaveDetailOpen(true);
@@ -302,7 +331,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
       </div>
 
       {/* Timesheet Section */}
-      <section className="hidden space-y-4 min-[990px]:block">
+      <section className="hidden space-y-2 min-[990px]:block">
         <h3
           style={{
             fontFamily: "'Inter', sans-serif",
@@ -313,42 +342,32 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         >
           Timesheet
         </h3>
-        <CalendarGrid onViewRequest={handleViewRequest} />
-
-        {/* Color Indicators Legend */}
-        <div className="flex items-center gap-4 flex-wrap">
-          <span
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 'var(--text-sm)',
-              fontWeight: 'var(--font-weight-medium)',
-            }}
-          >
-            Color Indicators
-          </span>
-          <div className="flex items-center gap-4">
-            {[
-              { color: 'bg-chart-4', label: 'Pending' },
-              { color: 'bg-chart-5', label: 'No Show' },
-              { color: 'bg-chart-3', label: 'Approved' },
-              { color: 'bg-chart-1', label: 'In-office' },
-              { color: 'bg-muted', label: 'Weekend' },
-            ].map((item) => (
-              <div key={item.label} className="flex items-center gap-2">
-                <div className={cn('w-8 h-4 rounded-sm', item.color)} />
-                <span
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 'var(--text-sm)',
-                    fontWeight: 'var(--font-weight-normal)',
-                  }}
-                >
-                  {item.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <CalendarGrid
+          onViewRequest={handleViewRequest}
+          events={historyData
+            .filter(h => h.range)
+            .map(h => {
+              const dates = rangeToIso(h.range);
+              const color = h.customColor
+                ? h.customColor
+                : h.status === 'pending'
+                  ? 'bg-chart-4'
+                  : h.status === 'noshow'
+                    ? 'bg-chart-5'
+                    : 'bg-chart-3';
+              return {
+                id: h.id,
+                type: h.type,
+                label: h.labelOverride ?? h.type,
+                color,
+                status: h.status,
+                range: h.range,
+                duration: h.duration,
+                startDate: dates?.start,
+                endDate: dates?.end,
+              };
+            })}
+        />
       </section>
 
       {/* History Table */}
