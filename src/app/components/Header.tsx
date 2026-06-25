@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
   };
 
   return (
-    <header className="grid h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 bg-background/40 backdrop-blur-xl supports-[backdrop-filter]:bg-background/40 border-b border-border/30 px-3 absolute top-0 left-0 right-0 z-[60] w-full sm:px-6 transition-all">
+    <header className="grid h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 bg-background/40 backdrop-blur-xl supports-[backdrop-filter]:bg-background/40 px-3 absolute top-0 left-0 right-0 z-[60] w-full sm:px-6 transition-all">
       <div className="flex min-w-0 items-center justify-start gap-2">
         {/* Hamburger Menu on Mobile/Tablet */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen} modal={false}>

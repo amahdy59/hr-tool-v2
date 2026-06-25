@@ -128,7 +128,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         )}
       >
         {/* Logo */}
-        <div className={cn('border-b border-sidebar-border flex items-center shrink-0 px-4', collapsed ? 'h-16 justify-center' : 'h-16')}>
+        <div className={cn('flex items-center shrink-0 px-4', collapsed ? 'h-16 justify-center' : 'h-16')}>
           {collapsed ? (
             <Logo className="w-8 h-8 text-sidebar-foreground" ariaLabel="HR Logo" />
           ) : (
