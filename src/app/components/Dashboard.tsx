@@ -158,8 +158,8 @@ const weekendOptions = [
 ];
 
 interface DashboardProps {
-  onRequestLeave: () => void;
-  onRequestMission: () => void;
+  onRequestLeave: (data?: any) => void;
+  onRequestMission: (data?: any) => void;
   currentUser?: { name: string; email: string; image?: string };
 }
 
@@ -177,6 +177,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   // Edit leave states
   const [editLeaveOpen, setEditLeaveOpen] = useState(false);
   const [editLeaveData, setEditLeaveData] = useState<Partial<LeaveFormData>>({});
+
+  // Plus button choose type modal states
+  const [chooseRequestOpen, setChooseRequestOpen] = useState(false);
+  const [chooseRequestDate, setChooseRequestDate] = useState('');
 
   // History pagination state
   const [historyPage, setHistoryPage] = useState(1);
@@ -299,6 +303,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
     setPendingWeekend('');
   };
 
+  const handleAddRequest = (dateStr: string) => {
+    setChooseRequestDate(dateStr);
+    setChooseRequestOpen(true);
+  };
+
   return (
     <div className="space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 sm:space-y-8 max-w-7xl mx-auto">
 
@@ -366,11 +375,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                 color,
                 status: h.status,
                 range: h.range,
-                duration: h.duration,
-                startDate: dates?.start,
-                endDate: dates?.end,
               };
             })}
+          onAddRequest={handleAddRequest}
         />
       </section>
 
@@ -507,6 +514,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           itemsPerPage={historyPerPage}
           onPageChange={setHistoryPage}
           onItemsPerPageChange={(n) => { setHistoryPerPage(n); setHistoryPage(1); }}
+          totalItems={historyData.length}
         />
       </section>
 
@@ -722,6 +730,58 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         confirmClassName="bg-chart-3 hover:bg-chart-3/90 text-white"
         onConfirm={handleConfirmWeekendChange}
         onCancel={handleWeekendDiscard}
+      />
+
+      {/* Choice Dialog for vacation vs mission */}
+      <ConfirmDialog
+        open={chooseRequestOpen}
+        onOpenChange={setChooseRequestOpen}
+        title={isArabic ? 'نوع الطلب جديد' : 'New Request Type'}
+        message={
+          <div className="space-y-4 pt-2">
+            <p className="text-[var(--text-sm)] text-muted-foreground">
+              {isArabic 
+                ? 'الرجاء اختيار ما إذا كنت تريد طلب إجازة أو مهمة لهذا اليوم:' 
+                : 'Please choose whether you want to request a leave (vacation) or a mission for this day:'}
+            </p>
+            <div className="flex flex-col gap-2">
+              <Button
+                variant="outline"
+                className="w-full text-foreground border-border hover:bg-muted font-medium justify-start gap-2 h-11"
+                onClick={() => {
+                  setChooseRequestOpen(false);
+                  onRequestLeave({
+                    leaveType: 'Annual Leave',
+                    fromDate: chooseRequestDate,
+                    toDate: chooseRequestDate,
+                    notes: '',
+                  });
+                }}
+              >
+                🌴 {isArabic ? 'طلب إجازة / عطلة' : 'Request Leave (Vacation)'}
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full text-foreground border-border hover:bg-muted font-medium justify-start gap-2 h-11"
+                onClick={() => {
+                  setChooseRequestOpen(false);
+                  onRequestMission({
+                    missionType: 'Work From Home',
+                    fromDate: chooseRequestDate,
+                    toDate: chooseRequestDate,
+                    notes: '',
+                  });
+                }}
+              >
+                💼 {isArabic ? 'طلب مهمة (مثل العمل من المنزل)' : 'Request Mission (e.g. WFH)'}
+              </Button>
+            </div>
+          </div>
+        }
+        confirmLabel=""
+        cancelLabel={isArabic ? 'إلغاء' : 'Cancel'}
+        onConfirm={() => {}}
+        onCancel={() => setChooseRequestOpen(false)}
       />
     </div>
   );

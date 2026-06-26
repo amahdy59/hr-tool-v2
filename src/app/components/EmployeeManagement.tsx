@@ -207,6 +207,27 @@ export const EmployeeManagement: React.FC = () => {
   const [deptPage, setDeptPage] = useState(1);
   const [jtPage, setJtPage] = useState(1);
 
+  const paginatedEmployees = useMemo(() => {
+    const start = (empPage - 1) * 15;
+    return filteredEmployees.slice(start, start + 15);
+  }, [filteredEmployees, empPage]);
+
+  const paginatedActivityLog = useMemo(() => {
+    const start = (actPage - 1) * 15;
+    return filteredActivityLog.slice(start, start + 15);
+  }, [filteredActivityLog, actPage]);
+
+  const paginatedDepartments = useMemo(() => {
+    const start = (deptPage - 1) * 15;
+    return filteredDepartments.slice(start, start + 15);
+  }, [filteredDepartments, deptPage]);
+
+  const paginatedJobTitles = useMemo(() => {
+    const start = (jtPage - 1) * 15;
+    return filteredJobTitles.slice(start, start + 15);
+  }, [filteredJobTitles, jtPage]);
+
+
   // Handlers
   const applyFilters = () => {
     let count = 0;
@@ -373,7 +394,7 @@ export const EmployeeManagement: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {filteredEmployees.map((emp) => (
+                    {paginatedEmployees.map((emp) => (
                       <tr key={emp.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
                         <td className="whitespace-nowrap px-4 py-1 md:py-3">
                           <div className="flex items-center gap-2">
@@ -414,7 +435,7 @@ export const EmployeeManagement: React.FC = () => {
                 </table>
               )}
             </div>
-            <TablePagination page={empPage} setPage={setEmpPage} totalPages={4} />
+            <TablePagination page={empPage} setPage={setEmpPage} totalPages={Math.max(1, Math.ceil(filteredEmployees.length / 15))} totalItems={filteredEmployees.length} />
           </div>
         </TabsContent>
 
@@ -447,7 +468,7 @@ export const EmployeeManagement: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {filteredActivityLog.map((log) => (
+                    {paginatedActivityLog.map((log) => (
                       <tr key={log.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
                         <td className="whitespace-nowrap px-4 py-1 md:py-3">
                           <span className="font-[var(--font-weight-medium)] text-foreground">{log.admin}</span>
@@ -464,7 +485,7 @@ export const EmployeeManagement: React.FC = () => {
                 </table>
               )}
             </div>
-            <TablePagination page={actPage} setPage={setActPage} totalPages={2} />
+            <TablePagination page={actPage} setPage={setActPage} totalPages={Math.max(1, Math.ceil(filteredActivityLog.length / 15))} totalItems={filteredActivityLog.length} />
           </div>
         </TabsContent>
 
@@ -496,7 +517,7 @@ export const EmployeeManagement: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {filteredDepartments.map((dept) => (
+                    {paginatedDepartments.map((dept) => (
                       <tr key={dept.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)]">{dept.name}</td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">ID:</span>{dept.deptId}</td>
@@ -515,7 +536,7 @@ export const EmployeeManagement: React.FC = () => {
                 </table>
               )}
             </div>
-            <TablePagination page={deptPage} setPage={setDeptPage} totalPages={1} />
+            <TablePagination page={deptPage} setPage={setDeptPage} totalPages={Math.max(1, Math.ceil(filteredDepartments.length / 15))} totalItems={filteredDepartments.length} />
           </div>
         </TabsContent>
 
@@ -538,7 +559,7 @@ export const EmployeeManagement: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {filteredJobTitles.map((jt) => (
+                  {paginatedJobTitles.map((jt) => (
                     <tr key={jt.id} className="hover:bg-muted/30 transition-colors">
                       <td className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{jt.title}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums">{jt.count}</td>
@@ -562,7 +583,7 @@ export const EmployeeManagement: React.FC = () => {
                 </tbody>
               </table>
             </div>
-            <TablePagination page={jtPage} setPage={setJtPage} totalPages={1} />
+            <TablePagination page={jtPage} setPage={setJtPage} totalPages={Math.max(1, Math.ceil(filteredJobTitles.length / 15))} totalItems={filteredJobTitles.length} />
           </div>
         </TabsContent>
       </Tabs>

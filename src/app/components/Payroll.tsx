@@ -301,6 +301,7 @@ export const Payroll: React.FC = () => {
             itemsPerPage={payrollPerPage}
             onPageChange={setPayrollPage}
             onItemsPerPageChange={(n) => { setPayrollPerPage(n); setPayrollPage(1); }}
+            totalItems={filteredEmployees.length}
           />
         </>
       )}

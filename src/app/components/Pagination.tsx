@@ -9,6 +9,7 @@ interface PaginationProps {
   itemsPerPage: number;
   onPageChange: (page: number) => void;
   onItemsPerPageChange?: (items: number) => void;
+  totalItems?: number;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
@@ -17,11 +18,17 @@ export const Pagination: React.FC<PaginationProps> = ({
   itemsPerPage,
   onPageChange,
   onItemsPerPageChange,
+  totalItems,
 }) => {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const PreviousIcon = isArabic ? ChevronRight : ChevronLeft;
   const NextIcon = isArabic ? ChevronLeft : ChevronRight;
+
+  // Handle empty state (0 results or only 1 page)
+  if (totalPages <= 1 || (totalItems !== undefined && totalItems === 0)) {
+    return null;
+  }
 
   const handlePageClick = (page: number) => {
     if (page >= 1 && page <= totalPages && page !== currentPage) {
@@ -38,7 +45,6 @@ export const Pagination: React.FC<PaginationProps> = ({
         pages.push(i);
       }
     } else {
-      // Logic to show: 1 ... current-1 current current+1 ... totalPages
       if (currentPage <= 3) {
         pages.push(1, 2, 3, 4, 'ellipsis-end', totalPages);
       } else if (currentPage >= totalPages - 2) {
@@ -61,64 +67,83 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   const pageNumbers = getPageNumbers();
 
+  // Contextual info details
+  const startItem = totalItems !== undefined ? (currentPage - 1) * itemsPerPage + 1 : 0;
+  const endItem = totalItems !== undefined ? Math.min(currentPage * itemsPerPage, totalItems) : 0;
+
   return (
-    <div 
+    <nav 
+      aria-label={t('pagination.label', 'Pagination')}
       className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4 border-t border-border/60 bg-muted/10 rounded-b-[var(--radius)]"
       dir={isArabic ? 'rtl' : 'ltr'}
     >
-      {/* Items per page selector */}
-      <div className="flex items-center gap-2.5 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start whitespace-nowrap shrink-0">
-        <span>{t('pagination.itemsPerPage', 'Items Per Page')}</span>
-        {onItemsPerPageChange ? (
-          <select
-            value={itemsPerPage}
-            onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-            className="min-h-[44px] sm:h-9 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-center outline-none cursor-pointer hover:bg-muted/50 focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all shadow-sm font-medium"
-          >
-            <option value={10}>10</option>
-            <option value={15}>15</option>
-            <option value={30}>30</option>
-            <option value={50}>50</option>
-          </select>
-        ) : (
-          <div className="min-h-[44px] sm:h-9 px-3.5 border border-border rounded-[var(--radius-input)] bg-muted/30 text-muted-foreground text-[var(--text-sm)] flex items-center justify-center font-medium">
-            {itemsPerPage}
+      {/* Left section: Items per page selector & contextual info summary */}
+      <div className="flex flex-col sm:flex-row items-center gap-4 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
+        {onItemsPerPageChange && (
+          <div className="flex items-center gap-2.5 whitespace-nowrap shrink-0">
+            <span>{t('pagination.itemsPerPage', 'Items Per Page')}</span>
+            <select
+              value={itemsPerPage}
+              onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
+              className="min-h-[44px] sm:h-9 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-center outline-none cursor-pointer hover:bg-muted/50 focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all shadow-sm font-medium"
+            >
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+              <option value={30}>30</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
+        )}
+
+        {totalItems !== undefined && (
+          <div className="text-[var(--text-sm)] text-muted-foreground font-medium text-center sm:text-start" aria-live="polite">
+            {t('pagination.info', {
+              defaultValue: 'Showing {{start}} to {{end}} of {{total}} entries',
+              start: startItem,
+              end: endItem,
+              total: totalItems,
+            })}
           </div>
         )}
       </div>
 
-      {/* Page navigation */}
-      <div className="flex items-center justify-center sm:justify-end gap-1.5 pt-1 sm:pt-0 w-full sm:w-auto">
+      {/* Right section: Page navigation controls using list structure */}
+      <ul className="flex items-center justify-center sm:justify-end gap-1.5 pt-1 sm:pt-0 w-full sm:w-auto list-none m-0 p-0">
         {/* Previous Button */}
-        <button
-          onClick={() => handlePageClick(currentPage - 1)}
-          disabled={currentPage <= 1}
-          className={cn(
-            "w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
-          )}
-          aria-label={t('pagination.previous', 'Previous Page')}
-        >
-          <PreviousIcon className="pagination-nav-icon w-4.5 h-4.5 text-foreground" />
-        </button>
+        <li>
+          <button
+            onClick={() => handlePageClick(currentPage - 1)}
+            disabled={currentPage <= 1}
+            aria-disabled={currentPage <= 1 ? "true" : undefined}
+            className={cn(
+              "w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+            )}
+            aria-label={t('pagination.previous', 'Previous Page')}
+          >
+            <PreviousIcon className="pagination-nav-icon w-4.5 h-4.5 text-foreground" />
+          </button>
+        </li>
 
         {/* Page numbers */}
-        <div className="flex items-center gap-1">
-          {pageNumbers.map((page, index) => {
-            if (typeof page === 'string') {
-              return (
+        {pageNumbers.map((page, index) => {
+          if (typeof page === 'string') {
+            return (
+              <li key={`ellipsis-${index}`}>
                 <span
-                  key={`ellipsis-${index}`}
                   className="w-11 h-11 flex items-center justify-center text-muted-foreground/60 select-none text-[var(--text-sm)] font-medium"
+                  aria-hidden="true"
                 >
                   •••
                 </span>
-              );
-            }
+                <span className="sr-only">Skipped pages</span>
+              </li>
+            );
+          }
 
-            const isActive = page === currentPage;
-            return (
+          const isActive = page === currentPage;
+          return (
+            <li key={`page-${page}`}>
               <button
-                key={`page-${page}`}
                 onClick={() => handlePageClick(page)}
                 aria-current={isActive ? 'page' : undefined}
                 aria-label={t('pagination.page', { defaultValue: 'Page {{page}}', page })}
@@ -131,22 +156,25 @@ export const Pagination: React.FC<PaginationProps> = ({
               >
                 {page}
               </button>
-            );
-          })}
-        </div>
+            </li>
+          );
+        })}
 
         {/* Next Button */}
-        <button
-          onClick={() => handlePageClick(currentPage + 1)}
-          disabled={currentPage >= totalPages}
-          className={cn(
-            "w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
-          )}
-          aria-label={t('pagination.next', 'Next Page')}
-        >
-          <NextIcon className="pagination-nav-icon w-4.5 h-4.5 text-foreground" />
-        </button>
-      </div>
-    </div>
+        <li>
+          <button
+            onClick={() => handlePageClick(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            aria-disabled={currentPage >= totalPages ? "true" : undefined}
+            className={cn(
+              "w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+            )}
+            aria-label={t('pagination.next', 'Next Page')}
+          >
+            <NextIcon className="pagination-nav-icon w-4.5 h-4.5 text-foreground" />
+          </button>
+        </li>
+      </ul>
+    </nav>
   );
 };

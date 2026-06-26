@@ -341,6 +341,7 @@ export const RolesManagement: React.FC = () => {
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
             onItemsPerPageChange={(v) => { setItemsPerPage(v); setCurrentPage(1); setPageInput('1'); }}
+            totalItems={filteredRoles.length}
           />
         </div>
       </section>

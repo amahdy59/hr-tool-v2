@@ -35,6 +35,7 @@ interface CalendarGridProps {
   /** Structured leave / attendance events keyed to a date. Pass in real data from the parent. */
   events?: CalendarEvent[];
   onViewRequest?: (item: { id: string; type: string; status: 'approved' | 'pending' | 'noshow'; range: string; duration: string }) => void;
+  onAddRequest?: (dateStr: string) => void;
 }
 
 // ─── Static attendance mock (attendance records for the current user – gender-neutral) ─
@@ -167,7 +168,7 @@ const getAccessibleEventStyle = (type: string, isDimmed: boolean) => {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEvents, onViewRequest }) => {
+export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEvents, onViewRequest, onAddRequest }) => {
   const { i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
@@ -445,6 +446,11 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                   <div className="flex justify-between items-center w-full">
                     {cell.isCurrentMonth && cell.events.length === 0 ? (
                       <button 
+                        onClick={() => {
+                          if (onAddRequest) {
+                            onAddRequest(cell.dateStr);
+                          }
+                        }}
                         aria-label={isArabic ? 'أضف طلب جديد لهذا اليوم' : 'Add new request for this day'}
                         className="w-5 h-5 flex items-center justify-center rounded-full border border-dashed border-border/80 text-muted-foreground/0 group-hover:text-primary group-hover:border-primary/50 transition-all hover:bg-primary/10 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                       >

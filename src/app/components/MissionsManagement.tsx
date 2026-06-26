@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   MoreVertical, Download, Plus, Search, Filter,
   Info, Eye, ChevronLeft, ChevronRight, X, Check, Trash2, Rocket,
@@ -90,6 +90,31 @@ export const MissionsManagement: React.FC = () => {
   const [filterEmploymentTypes, setFilterEmploymentTypes] = useState<string[]>([]);
   const [activeFilters, setActiveFilters] = useState(0);
 
+  // Filtered and Paginated lists
+  const filteredPending = useMemo(() => {
+    return PENDING_MISSIONS.filter(m => 
+      !pendingSearch || m.name.toLowerCase().includes(pendingSearch.toLowerCase()) || m.employeeNumber?.includes(pendingSearch)
+    );
+  }, [pendingSearch]);
+
+  const paginatedPending = useMemo(() => {
+    const start = (pendingPage - 1) * 15;
+    return filteredPending.slice(start, start + 15);
+  }, [filteredPending, pendingPage]);
+
+  const filteredHistory = useMemo(() => {
+    return HISTORY_MISSIONS.filter(m => {
+      const matchesSearch = !historySearch || m.name.toLowerCase().includes(historySearch.toLowerCase());
+      const matchesDept = filterDept === 'All';
+      return matchesSearch && matchesDept;
+    });
+  }, [historySearch, filterDept]);
+
+  const paginatedHistory = useMemo(() => {
+    const start = (historyPage - 1) * 15;
+    return filteredHistory.slice(start, start + 15);
+  }, [filteredHistory, historyPage]);
+
   // Modals
   const [createMissionOpen, setCreateMissionOpen] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -171,7 +196,7 @@ export const MissionsManagement: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {PENDING_MISSIONS.map(m => (
+                    {paginatedPending.map(m => (
                       <tr key={m.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
                         <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell"><Checkbox checked={selectedPending.includes(m.id)} onCheckedChange={() => togglePending(m.id)} /></td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
@@ -201,7 +226,7 @@ export const MissionsManagement: React.FC = () => {
                 </table>
               )}
             </div>
-          <TablePagination page={pendingPage} setPage={setPendingPage} totalPages={2} />
+          <TablePagination page={pendingPage} setPage={setPendingPage} totalPages={Math.max(1, Math.ceil(filteredPending.length / 15))} totalItems={filteredPending.length} />
         </div>
       </section>
 
@@ -267,7 +292,7 @@ export const MissionsManagement: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {HISTORY_MISSIONS.map(m => (
+                  {paginatedHistory.map(m => (
                     <tr key={m.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
                         <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(m.name)}</span>
@@ -292,7 +317,7 @@ export const MissionsManagement: React.FC = () => {
               </table>
             )}
           </div>
-          <TablePagination page={historyPage} setPage={setHistoryPage} totalPages={3} />
+          <TablePagination page={historyPage} setPage={setHistoryPage} totalPages={Math.max(1, Math.ceil(filteredHistory.length / 15))} totalItems={filteredHistory.length} />
         </div>
       </section>
 
@@ -339,7 +364,7 @@ export const MissionsManagement: React.FC = () => {
 // ── Sub-components ──
 // ════════════════════════════════════
 
-const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; totalPages: number }> = ({ page, setPage, totalPages }) => {
+const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; totalPages: number; totalItems: number }> = ({ page, setPage, totalPages, totalItems }) => {
   return (
     <Pagination
       currentPage={page}
@@ -347,9 +372,11 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
       itemsPerPage={15}
       onPageChange={setPage}
       onItemsPerPageChange={() => setPage(1)}
+      totalItems={totalItems}
     />
   );
 };
+
 
 const FilterPanel: React.FC<{
   dept: string; setDept: (v: string) => void;

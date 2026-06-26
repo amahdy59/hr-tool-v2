@@ -842,6 +842,7 @@ export const Attendance: React.FC = () => {
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
             onItemsPerPageChange={(v) => { setItemsPerPage(v); setCurrentPage(1); setPageInput('1'); }}
+            totalItems={mockDays.length}
           />
         </div>
       </section>

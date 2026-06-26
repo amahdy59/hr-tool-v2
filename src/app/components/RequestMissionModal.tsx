@@ -22,6 +22,7 @@ interface RequestMissionModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: MissionFormData) => void;
+  initialData?: Partial<MissionFormData>;
 }
 
 export interface MissionFormData {
@@ -48,11 +49,21 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
   open,
   onOpenChange,
   onSubmit,
+  initialData,
 }) => {
   const [missionType, setMissionType] = useState('Work From Home');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [notes, setNotes] = useState('');
+
+  React.useEffect(() => {
+    if (open) {
+      setMissionType(initialData?.missionType || 'Work From Home');
+      setFromDate(initialData?.fromDate || '');
+      setToDate(initialData?.toDate || '');
+      setNotes(initialData?.notes || '');
+    }
+  }, [open, initialData]);
 
   // Compute days between selected dates
   const daysRequested = useMemo(() => {

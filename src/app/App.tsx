@@ -53,7 +53,9 @@ export default function App() {
   }, [isArabic]);
 
   const [requestLeaveOpen, setRequestLeaveOpen] = useState(false);
+  const [requestLeaveData, setRequestLeaveData] = useState<any>(null);
   const [requestMissionOpen, setRequestMissionOpen] = useState(false);
+  const [requestMissionData, setRequestMissionData] = useState<any>(null);
   const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
   const [confirmMissionOpen, setConfirmMissionOpen] = useState(false);
   const [pendingLeaveData, setPendingLeaveData] = useState<any>(null);
@@ -234,8 +236,14 @@ export default function App() {
       case 'dashboard':
         content = (
           <Dashboard
-            onRequestLeave={() => setRequestLeaveOpen(true)}
-            onRequestMission={() => setRequestMissionOpen(true)}
+            onRequestLeave={(data) => {
+              setRequestLeaveData(data || null);
+              setRequestLeaveOpen(true);
+            }}
+            onRequestMission={(data) => {
+              setRequestMissionData(data || null);
+              setRequestMissionOpen(true);
+            }}
             currentUser={currentUser}
           />
         );
@@ -325,11 +333,13 @@ export default function App() {
         open={requestLeaveOpen}
         onOpenChange={setRequestLeaveOpen}
         onSubmit={handleLeaveSubmit}
+        initialData={requestLeaveData}
       />
       <RequestMissionModal
         open={requestMissionOpen}
         onOpenChange={setRequestMissionOpen}
         onSubmit={handleMissionSubmit}
+        initialData={requestMissionData}
       />
       <ConfirmDialog
         open={confirmLeaveOpen}

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
   MoreVertical, Download, Plus, Search, Filter,
   Info, Edit, Trash2, Eye, ChevronLeft, ChevronRight, X, Check, FileText,
@@ -112,6 +112,44 @@ export const LeavesManagement: React.FC = () => {
   const [filterEmploymentTypes, setFilterEmploymentTypes] = useState<string[]>([]);
   const [activeFilters, setActiveFilters] = useState(0);
 
+  // Filtered and Paginated lists
+  const filteredPending = useMemo(() => {
+    return PENDING_LEAVES.filter(l => 
+      !pendingSearch || l.name.toLowerCase().includes(pendingSearch.toLowerCase()) || l.employeeNumber?.includes(pendingSearch)
+    );
+  }, [pendingSearch]);
+
+  const paginatedPending = useMemo(() => {
+    const start = (pendingPage - 1) * 15;
+    return filteredPending.slice(start, start + 15);
+  }, [filteredPending, pendingPage]);
+
+  const filteredHolidays = useMemo(() => {
+    return HOLIDAYS.filter(h => {
+      const matchesMonth = holidayMonth === 'All' || h.range.includes(holidayMonth);
+      const matchesYear = holidayYear === 'All' || h.range.includes(holidayYear);
+      return matchesMonth && matchesYear;
+    });
+  }, [holidayMonth, holidayYear]);
+
+  const paginatedHolidays = useMemo(() => {
+    const start = (holidayPage - 1) * 15;
+    return filteredHolidays.slice(start, start + 15);
+  }, [filteredHolidays, holidayPage]);
+
+  const filteredHistory = useMemo(() => {
+    return HISTORY_LEAVES.filter(l => {
+      const matchesSearch = !historySearch || l.name.toLowerCase().includes(historySearch.toLowerCase());
+      const matchesDept = filterDept === 'All';
+      return matchesSearch && matchesDept;
+    });
+  }, [historySearch, filterDept]);
+
+  const paginatedHistory = useMemo(() => {
+    const start = (historyPage - 1) * 15;
+    return filteredHistory.slice(start, start + 15);
+  }, [filteredHistory, historyPage]);
+
   // Modals
   const [createLeaveOpen, setCreateLeaveOpen] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -214,7 +252,7 @@ export const LeavesManagement: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {PENDING_LEAVES.map(leave => (
+                  {paginatedPending.map(leave => (
                     <tr key={leave.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
                       <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell"><Checkbox checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} /></td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
@@ -244,7 +282,7 @@ export const LeavesManagement: React.FC = () => {
               </table>
             )}
           </div>
-          <TablePagination page={pendingPage} setPage={setPendingPage} totalPages={3} />
+          <TablePagination page={pendingPage} setPage={setPendingPage} totalPages={Math.max(1, Math.ceil(filteredPending.length / 15))} totalItems={filteredPending.length} />
         </div>
       </section>
 
@@ -298,7 +336,7 @@ export const LeavesManagement: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {HOLIDAYS.map(h => (
+                {paginatedHolidays.map(h => (
                   <tr key={h.id} className="hover:bg-muted/30 transition-colors">
                     <td className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{h.type}</td>
                     <td className="whitespace-nowrap px-4 py-3 text-foreground">{h.range}</td>
@@ -319,7 +357,7 @@ export const LeavesManagement: React.FC = () => {
               </tbody>
             </table>
           </div>
-          <TablePagination page={holidayPage} setPage={setHolidayPage} totalPages={1} />
+          <TablePagination page={holidayPage} setPage={setHolidayPage} totalPages={Math.max(1, Math.ceil(filteredHolidays.length / 15))} totalItems={filteredHolidays.length} />
         </div>
       </section>
 
@@ -385,7 +423,7 @@ export const LeavesManagement: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {HISTORY_LEAVES.map(leave => (
+                  {paginatedHistory.map(leave => (
                     <tr key={leave.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
                         <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(leave.name)}</span>
@@ -409,7 +447,7 @@ export const LeavesManagement: React.FC = () => {
               </table>
             )}
           </div>
-          <TablePagination page={historyPage} setPage={setHistoryPage} totalPages={4} />
+          <TablePagination page={historyPage} setPage={setHistoryPage} totalPages={Math.max(1, Math.ceil(filteredHistory.length / 15))} totalItems={filteredHistory.length} />
         </div>
       </section>
 

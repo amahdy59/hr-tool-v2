@@ -77,6 +77,14 @@ const en = {
       title: 'Payrolls are coming soon',
       description: 'This section is intentionally paused while payroll workflows, permissions, and audit controls are finalized.',
     },
+    pagination: {
+      label: 'Pagination',
+      itemsPerPage: 'Items Per Page',
+      previous: 'Previous Page',
+      next: 'Next Page',
+      page: 'Page {{page}}',
+      info: 'Showing {{start}} to {{end}} of {{total}} entries',
+    },
   },
 };
 
@@ -154,6 +162,14 @@ const ar = {
     payrolls: {
       title: 'قسم الرواتب قريباً',
       description: 'هذا القسم متوقف مؤقتاً حتى يتم الانتهاء من مسارات الرواتب والصلاحيات وضوابط المراجعة.',
+    },
+    pagination: {
+      label: 'التنقل بين الصفحات',
+      itemsPerPage: 'العناصر لكل صفحة',
+      previous: 'الصفحة السابقة',
+      next: 'الصفحة التالية',
+      page: 'صفحة {{page}}',
+      info: 'عرض {{start}} إلى {{end}} من أصل {{total}} من المدخلات',
     },
   },
 };

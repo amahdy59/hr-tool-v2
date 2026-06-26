@@ -16,11 +16,11 @@ interface ConfirmDialogProps {
   onOpenChange: (open: boolean) => void;
   title: string;
   message: React.ReactNode;
-  confirmLabel: string;
+  confirmLabel?: string;
   cancelLabel?: string;
   confirmVariant?: 'default' | 'destructive';
   confirmClassName?: string;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   onCancel?: () => void;
 }
 
@@ -33,7 +33,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   cancelLabel = 'Cancel',
   confirmVariant = 'destructive',
   confirmClassName,
-  onConfirm,
+  onConfirm = () => {},
   onCancel,
 }) => {
   return (
@@ -62,16 +62,18 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           >
             {cancelLabel}
           </Button>
-          <Button
-            variant={confirmVariant}
-            onClick={() => {
-              onConfirm();
-              onOpenChange(false);
-            }}
-            className={cn("w-full sm:w-auto rounded-[var(--radius-button)]", confirmClassName)}
-          >
-            {confirmLabel}
-          </Button>
+          {confirmLabel && (
+            <Button
+              variant={confirmVariant}
+              onClick={() => {
+                onConfirm();
+                onOpenChange(false);
+              }}
+              className={cn("w-full sm:w-auto rounded-[var(--radius-button)]", confirmClassName)}
+            >
+              {confirmLabel}
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
