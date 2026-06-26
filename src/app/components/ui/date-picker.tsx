@@ -57,7 +57,7 @@ export function DatePicker({
           variant="outline"
           disabled={disabled}
           className={cn(
-            "w-full justify-start text-start min-h-[44px] h-[44px] px-3 font-normal text-[var(--text-sm)] rounded-[var(--radius-input)] border border-border bg-input-background dark:bg-input/30 dark:hover:bg-input/50",
+            "form-control w-full justify-start text-start min-h-[44px] h-[44px] px-3 font-normal text-[var(--text-sm)] rounded-[var(--radius-input)] border border-border bg-input-background text-foreground hover:bg-input-background focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
             !selectedDate && "text-muted-foreground",
             className
           )}

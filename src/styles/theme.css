@@ -520,6 +520,44 @@
   input:focus, textarea:focus, select:focus {
     transition: all 0.2s ease-out;
   }
+
+  .form-control,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  textarea,
+  select,
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"] {
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--border);
+    border-radius: var(--radius-input);
+    background-color: var(--input-background);
+    color: var(--foreground);
+  }
+
+  .form-control:hover,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):hover,
+  textarea:hover,
+  select:hover,
+  [data-slot="input"]:hover,
+  [data-slot="textarea"]:hover,
+  [data-slot="select-trigger"]:hover {
+    border-color: var(--border);
+    background-color: var(--input-background);
+  }
+
+  .form-control:focus,
+  .form-control:focus-visible,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+  textarea:focus,
+  select:focus,
+  [data-slot="input"]:focus,
+  [data-slot="textarea"]:focus,
+  [data-slot="select-trigger"]:focus,
+  [data-slot="select-trigger"]:focus-visible {
+    border-color: var(--ring);
+  }
 }
 
 /**
@@ -593,6 +631,10 @@
     /* Date input styling */
     input[type="date"] {
       color-scheme: light;
+    }
+
+    .dark input[type="date"] {
+      color-scheme: dark;
     }
     
     input[type="date"]::-webkit-calendar-picker-indicator {
