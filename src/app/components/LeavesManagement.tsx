@@ -506,7 +506,7 @@ export const LeavesManagement: React.FC = () => {
 // ── Sub-components ──
 // ════════════════════════════════════
 
-const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; totalPages: number }> = ({ page, setPage, totalPages }) => {
+const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; totalPages: number; totalItems?: number }> = ({ page, setPage, totalPages, totalItems }) => {
   return (
     <Pagination
       currentPage={page}
@@ -514,6 +514,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
       itemsPerPage={15}
       onPageChange={setPage}
       onItemsPerPageChange={() => setPage(1)}
+      totalItems={totalItems}
     />
   );
 };

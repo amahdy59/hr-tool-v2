@@ -167,6 +167,7 @@ interface DashboardProps {
 
 export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestMission, currentUser }) => {
   const { i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   // Modal states
   const [leaveDetailOpen, setLeaveDetailOpen] = useState(false);
   const [selectedLeave, setSelectedLeave] = useState<LeaveDetail | null>(null);

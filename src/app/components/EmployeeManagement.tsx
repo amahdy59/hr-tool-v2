@@ -207,6 +207,37 @@ export const EmployeeManagement: React.FC = () => {
   const [deptPage, setDeptPage] = useState(1);
   const [jtPage, setJtPage] = useState(1);
 
+  const filteredEmployees = useMemo(() => {
+    return EMPLOYEES.filter((employee) => {
+      const matchesSearch = includesQuery(
+        [employee.name, employee.employeeNumber, employee.email, employee.department, employee.jobTitle],
+        searchQuery
+      );
+      const matchesDepartment = filterDept === 'All' || employee.department === filterDept;
+      const matchesTitle = filterTitle === 'All' || employee.jobTitle === filterTitle;
+      const matchesHireDate = !filterHiredAfter || employee.hireDate >= filterHiredAfter;
+      const matchesActivity = filterActivityTypes.length === 0 || filterActivityTypes.includes(employee.activityType);
+      const matchesEmployment = filterEmploymentTypes.length === 0 || filterEmploymentTypes.includes(employee.contractType);
+
+      return matchesSearch && matchesDepartment && matchesTitle && matchesHireDate && matchesActivity && matchesEmployment;
+    });
+  }, [filterActivityTypes, filterDept, filterEmploymentTypes, filterHiredAfter, filterTitle, searchQuery]);
+
+  const filteredActivityLog = useMemo(
+    () => ACTIVITY_LOG.filter((log) => includesQuery([log.admin, log.action, log.date, log.affectedEmployeeNumber, log.affectedCount], searchQuery)),
+    [searchQuery]
+  );
+
+  const filteredDepartments = useMemo(
+    () => DEPARTMENTS.filter((department) => includesQuery([department.name, department.deptId, department.totalNumber], deptSearch)),
+    [deptSearch]
+  );
+
+  const filteredJobTitles = useMemo(
+    () => JOB_TITLES.filter((jobTitle) => includesQuery([jobTitle.title, jobTitle.count], jtSearch)),
+    [jtSearch]
+  );
+
   const paginatedEmployees = useMemo(() => {
     const start = (empPage - 1) * 15;
     return filteredEmployees.slice(start, start + 15);
@@ -252,37 +283,6 @@ export const EmployeeManagement: React.FC = () => {
     setActiveFiltersCount(0);
     toast.info('Filters cleared');
   };
-
-  const filteredEmployees = useMemo(() => {
-    return EMPLOYEES.filter((employee) => {
-      const matchesSearch = includesQuery(
-        [employee.name, employee.employeeNumber, employee.email, employee.department, employee.jobTitle],
-        searchQuery
-      );
-      const matchesDepartment = filterDept === 'All' || employee.department === filterDept;
-      const matchesTitle = filterTitle === 'All' || employee.jobTitle === filterTitle;
-      const matchesHireDate = !filterHiredAfter || employee.hireDate >= filterHiredAfter;
-      const matchesActivity = filterActivityTypes.length === 0 || filterActivityTypes.includes(employee.activityType);
-      const matchesEmployment = filterEmploymentTypes.length === 0 || filterEmploymentTypes.includes(employee.contractType);
-
-      return matchesSearch && matchesDepartment && matchesTitle && matchesHireDate && matchesActivity && matchesEmployment;
-    });
-  }, [filterActivityTypes, filterDept, filterEmploymentTypes, filterHiredAfter, filterTitle, searchQuery]);
-
-  const filteredActivityLog = useMemo(
-    () => ACTIVITY_LOG.filter((log) => includesQuery([log.admin, log.action, log.date, log.affectedEmployeeNumber, log.affectedCount], searchQuery)),
-    [searchQuery]
-  );
-
-  const filteredDepartments = useMemo(
-    () => DEPARTMENTS.filter((department) => includesQuery([department.name, department.deptId, department.totalNumber], deptSearch)),
-    [deptSearch]
-  );
-
-  const filteredJobTitles = useMemo(
-    () => JOB_TITLES.filter((jobTitle) => includesQuery([jobTitle.title, jobTitle.count], jtSearch)),
-    [jtSearch]
-  );
 
   return (
     <div className="px-1 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
@@ -686,7 +686,7 @@ export const EmployeeManagement: React.FC = () => {
 // ═══════════════════════════════════════
 
 // ── Table Pagination ──
-const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; totalPages: number }> = ({ page, setPage, totalPages }) => {
+const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; totalPages: number; totalItems?: number }> = ({ page, setPage, totalPages, totalItems }) => {
   return (
     <Pagination
       currentPage={page}
@@ -694,6 +694,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
       itemsPerPage={15}
       onPageChange={setPage}
       onItemsPerPageChange={() => setPage(1)}
+      totalItems={totalItems}
     />
   );
 };

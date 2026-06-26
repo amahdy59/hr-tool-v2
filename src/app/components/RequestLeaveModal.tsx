@@ -60,7 +60,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   mode = 'add',
 }) => {
   // Current user mock profile details (Ahmed Mahdy)
-  const gender = 'Male';
+  const gender: string = 'Male';
   const graduationYear = 2013;
   const hireDate = '2023-04-15';
 
