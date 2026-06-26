@@ -123,6 +123,9 @@ const officeHours = summaryData.find(d => d.id === 'in-office')?.hours ?? 0;
 const officePercent = totalHours > 0 ? Math.round((officeHours / totalHours) * 1000) / 10 : 0;
 const meetsOfficeGoal = officePercent >= OFFICE_GOAL_PERCENT;
 const officeGoalHours = Math.round((OFFICE_GOAL_PERCENT / 100) * EXPECTED_WORKING_HOURS);
+const officeGoalDelta = Math.round((officePercent - OFFICE_GOAL_PERCENT) * 10) / 10;
+const actualHoursPercent = Math.round((totalHours / EXPECTED_WORKING_HOURS) * 1000) / 10;
+const maxSummaryHours = Math.max(...summaryData.map((item) => item.hours));
 
 // Severity → color map for #4 (color-coded hours)
 const severityHoursClass = (severity: 'positive' | 'neutral' | 'negative' | 'warning') => {
@@ -305,6 +308,12 @@ export const Attendance: React.FC = () => {
     });
   };
 
+  const handleSummaryExport = () => {
+    toast.success('Monthly summary exported to CSV', {
+      description: `${monthLabel} ${selectedYear} attendance summary is ready for HR review.`,
+    });
+  };
+
   const handlePeriodChange = (date: string) => {
     setSelectedPeriodDate(date);
     if (!date) {
@@ -441,37 +450,109 @@ export const Attendance: React.FC = () => {
 
       {/* ── Summary View ── */}
       <section className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] sm:p-6" aria-labelledby="attendance-summary-heading">
-        <div className="mb-5 flex flex-col items-start gap-2 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-5 flex flex-col items-start gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-muted-foreground">
               Attendance
             </p>
             <h3 id="attendance-summary-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Summary View</h3>
           </div>
-          <span className="text-[var(--text-xs)] text-muted-foreground bg-muted px-3 py-1 rounded-full">
-            {monthLabel} {selectedYear}
+          <div className="flex items-center gap-2">
+            <span className="text-[var(--text-xs)] text-muted-foreground bg-muted px-3 py-1 rounded-full">
+              {monthLabel} {selectedYear}
+            </span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handleSummaryExport}
+                  aria-label="Export monthly attendance summary"
+                  className="h-11 w-11"
+                >
+                  <Download className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-[var(--text-xs)]">Export monthly summary to CSV</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </div>
+
+        <div
+          className={cn(
+            'mb-5 flex flex-col gap-3 rounded-[var(--radius-card)] border p-4 sm:flex-row sm:items-center sm:justify-between',
+            meetsOfficeGoal
+              ? 'border-[var(--chart-3)]/70 bg-[var(--chart-3)]/10'
+              : 'border-destructive/70 bg-destructive/10'
+          )}
+          role="status"
+          aria-live="polite"
+        >
+          <div className="flex items-start gap-3">
+            {meetsOfficeGoal ? (
+              <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-[var(--chart-3)]" aria-hidden="true" />
+            ) : (
+              <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" aria-hidden="true" />
+            )}
+            <div>
+              <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">
+                Office Attendance: {officePercent}%
+              </p>
+              <p className={cn('text-[var(--text-xs)] font-[var(--font-weight-medium)]', meetsOfficeGoal ? 'text-[var(--chart-3)]' : 'text-destructive')}>
+                {meetsOfficeGoal ? '▲' : '▼'} {Math.abs(officeGoalDelta)}% {meetsOfficeGoal ? 'above' : 'below'} the {OFFICE_GOAL_PERCENT}% company goal
+              </p>
+            </div>
+          </div>
+          <span className="rounded-full bg-card px-3 py-1 text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-foreground shadow-[var(--elevation-sm)]">
+            {meetsOfficeGoal ? 'Goal met' : 'Goal missed'}
           </span>
         </div>
 
         <div className="grid grid-cols-1 gap-6 items-start xl:grid-cols-[minmax(430px,1fr)_minmax(340px,0.9fr)] xl:gap-8">
           {/* Left: summary table */}
-          <div className="space-y-0 overflow-x-auto w-full">
-            <table className="min-w-[430px] w-full text-start border-collapse cursor-default">
+          <div className="hidden w-full overflow-x-auto sm:block">
+            <table className="min-w-[430px] w-full text-start border-collapse cursor-default" aria-label={`Attendance summary for ${monthLabel} ${selectedYear}`}>
               <caption className="sr-only">Attendance summary by category, hours, and percentage</caption>
               <thead>
                 <tr className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground border-b border-border">
-                  <th className="text-start pb-3 pe-6 font-medium min-w-[180px]">Category</th>
-                  <th className="text-end pb-3 px-6 font-medium min-w-[110px]">Hours</th>
-                  <th className="text-end pb-3 ps-6 font-medium min-w-[120px]">Percentage</th>
+                  <th scope="col" className="text-start pb-3 pe-6 font-medium min-w-[180px]">Category</th>
+                  <th scope="col" className="text-end pb-3 px-6 font-medium min-w-[150px]">
+                    <span className="inline-flex items-center justify-end gap-1.5">
+                      Hours
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button type="button" className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-sm)] hover:bg-muted" aria-label="Explain attendance hours">
+                            <HelpCircle className="h-3.5 w-3.5" aria-hidden="true" />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-[260px]">
+                          <p className="text-[var(--text-xs)]">Hours are calculated based on clock-in/clock-out records. Lunch breaks are excluded. Minimum day threshold is 4 hours.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </span>
+                  </th>
+                  <th scope="col" className="text-end pb-3 ps-6 font-medium min-w-[120px]">Percentage</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
+                <tr className="text-[var(--text-sm)] bg-muted/20">
+                  <th scope="row" className="py-3 pe-6 text-start font-[var(--font-weight-medium)] text-foreground">Expected Working Hours</th>
+                  <td className="py-3 px-6 text-end font-[var(--font-weight-medium)] text-foreground">{EXPECTED_WORKING_HOURS}h</td>
+                  <td className="py-3 ps-6 text-end text-muted-foreground">—</td>
+                </tr>
+                <tr className="text-[var(--text-sm)] bg-muted/10">
+                  <th scope="row" className="py-3 pe-6 text-start font-[var(--font-weight-medium)] text-foreground">Actual Hours Logged</th>
+                  <td className="py-3 px-6 text-end font-[var(--font-weight-medium)] text-foreground">{totalHours}h</td>
+                  <td className="py-3 ps-6 text-end text-muted-foreground">{actualHoursPercent}%</td>
+                </tr>
                 {summaryData.map((item) => (
                   <tr
                     key={item.id}
                     className="text-[var(--text-sm)] hover:bg-muted/30 transition-colors"
                   >
-                    <td className="py-3 pe-6 text-start">
+                    <th scope="row" className="py-3 pe-6 text-start font-[var(--font-weight-normal)]">
                       <div className="flex items-center gap-2.5">
                         <div
                           className="w-3 h-3 rounded-sm shrink-0"
@@ -479,19 +560,60 @@ export const Attendance: React.FC = () => {
                         />
                         <span className="text-foreground">{item.name}</span>
                       </div>
+                    </th>
+                    <td className={cn('py-3 px-6 text-end font-[var(--font-weight-medium)]', severityHoursClass(item.severity))}>
+                      <div className="ms-auto max-w-[120px] space-y-1">
+                        <span>{item.hours}h</span>
+                        <span className="block h-1.5 overflow-hidden rounded-full bg-muted" aria-hidden="true">
+                          <span
+                            className="block h-full rounded-full"
+                            style={{ width: `${Math.max(4, (item.hours / maxSummaryHours) * 100)}%`, backgroundColor: item.cssColor }}
+                          />
+                        </span>
+                      </div>
                     </td>
-                    <td className="py-3 px-6 text-end text-foreground font-[var(--font-weight-medium)]">{item.hours}h</td>
                     <td className="py-3 ps-6 text-end text-muted-foreground">{item.percentage}%</td>
                   </tr>
                 ))}
                 {/* Total */}
                 <tr className="font-[var(--font-weight-semibold)] text-[var(--text-sm)] text-foreground border-t border-border">
-                  <td className="py-4 pe-6 text-start font-semibold">Total Hours</td>
+                  <th scope="row" className="py-4 pe-6 text-start font-semibold">Total Hours</th>
                   <td className="py-4 px-6 text-end font-semibold">{totalHours}h</td>
                   <td className="py-4 ps-6 text-end font-semibold">100%</td>
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <div className="space-y-3 sm:hidden" aria-label={`Attendance summary cards for ${monthLabel} ${selectedYear}`}>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-[var(--radius-card)] border border-border bg-muted/20 p-3">
+                <p className="text-[var(--text-xs)] text-muted-foreground">Expected</p>
+                <p className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">{EXPECTED_WORKING_HOURS}h</p>
+              </div>
+              <div className="rounded-[var(--radius-card)] border border-border bg-muted/20 p-3">
+                <p className="text-[var(--text-xs)] text-muted-foreground">Actual</p>
+                <p className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">{totalHours}h</p>
+              </div>
+            </div>
+            {summaryData.map((item) => (
+              <div
+                key={item.id}
+                className="rounded-[var(--radius-card)] border border-border bg-card p-3 shadow-[var(--elevation-sm)]"
+                style={{ borderInlineStart: `4px solid ${item.cssColor}` }}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground">{item.name}</span>
+                  <span className={cn('text-[var(--text-sm)] font-[var(--font-weight-semibold)]', severityHoursClass(item.severity))}>{item.hours}h</span>
+                </div>
+                <div className="mt-2 flex items-center gap-3">
+                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted" aria-hidden="true">
+                    <div className="h-full rounded-full" style={{ width: `${Math.max(4, (item.hours / maxSummaryHours) * 100)}%`, backgroundColor: item.cssColor }} />
+                  </div>
+                  <span className="min-w-12 text-end text-[var(--text-xs)] text-muted-foreground">{item.percentage}%</span>
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Mobile: horizontal bar chart */}
@@ -503,6 +625,14 @@ export const Attendance: React.FC = () => {
                 margin={i18n.language === 'ar' ? { top: 4, right: 30, left: 10, bottom: 4 } : { top: 4, right: 10, left: 20, bottom: 4 }}
                 barCategoryGap="24%"
               >
+                <defs>
+                  {summaryData.map((entry) => (
+                    <pattern key={entry.id} id={`summary-mobile-${entry.id}`} width="8" height="8" patternUnits="userSpaceOnUse">
+                      <rect width="8" height="8" fill={entry.color} />
+                      <path d="M0 8L8 0" stroke="rgba(255,255,255,0.45)" strokeWidth="1" />
+                    </pattern>
+                  ))}
+                </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
                 <XAxis
                   type="number"
@@ -523,9 +653,15 @@ export const Attendance: React.FC = () => {
                   dx={i18n.language === 'ar' ? 8 : -8}
                 />
                 <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
+                <ReferenceLine
+                  x={officeGoalHours}
+                  stroke="var(--ring)"
+                  strokeDasharray="4 4"
+                  label={{ value: 'Min. Office Target', fill: 'var(--foreground)', fontSize: 11, position: 'insideTop' }}
+                />
                 <Bar dataKey="hours" radius={i18n.language === 'ar' ? [4, 0, 0, 4] : [0, 4, 4, 0]} maxBarSize={28}>
                   {summaryData.map((entry) => (
-                    <Cell key={entry.id} fill={entry.color} />
+                    <Cell key={entry.id} fill={`url(#summary-mobile-${entry.id})`} />
                   ))}
                 </Bar>
               </BarChart>
@@ -540,6 +676,14 @@ export const Attendance: React.FC = () => {
                 margin={i18n.language === 'ar' ? { top: 8, right: 16, left: 8, bottom: 18 } : { top: 8, right: 8, left: 16, bottom: 18 }}
                 barCategoryGap="18%"
               >
+                <defs>
+                  {summaryData.map((entry) => (
+                    <pattern key={entry.id} id={`summary-desktop-${entry.id}`} width="8" height="8" patternUnits="userSpaceOnUse">
+                      <rect width="8" height="8" fill={entry.color} />
+                      <path d="M0 8L8 0" stroke="rgba(255,255,255,0.45)" strokeWidth="1" />
+                    </pattern>
+                  ))}
+                </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
                 <XAxis
                   dataKey="name"
@@ -558,9 +702,15 @@ export const Attendance: React.FC = () => {
                   dx={i18n.language === 'ar' ? 4 : -4}
                 />
                 <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
+                <ReferenceLine
+                  y={officeGoalHours}
+                  stroke="var(--ring)"
+                  strokeDasharray="4 4"
+                  label={{ value: 'Min. Office Target', fill: 'var(--foreground)', fontSize: 11, position: 'insideTopRight' }}
+                />
                 <Bar dataKey="hours" radius={[4, 4, 0, 0]} maxBarSize={52}>
                   {summaryData.map((entry) => (
-                    <Cell key={entry.id} fill={entry.color} />
+                    <Cell key={entry.id} fill={`url(#summary-desktop-${entry.id})`} />
                   ))}
                 </Bar>
               </BarChart>
@@ -756,7 +906,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       <div className="space-y-1.5">
         <label className="text-foreground">Department</label>
         <Select value={department} onValueChange={setDepartment}>
-          <SelectTrigger className="h-10 rounded-[var(--radius-input)]">
+          <SelectTrigger className="min-h-[44px] rounded-[var(--radius-input)]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -771,7 +921,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       <div className="space-y-1.5">
         <label className="text-foreground">Job Title</label>
         <Select value={jobTitle} onValueChange={setJobTitle}>
-          <SelectTrigger className="h-10 rounded-[var(--radius-input)]">
+          <SelectTrigger className="min-h-[44px] rounded-[var(--radius-input)]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -790,7 +940,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           value={gradYear}
           onChange={(e) => setGradYear(e.target.value)}
           placeholder="e.g. 2013"
-          className="w-full h-9 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow"
+          className="w-full min-h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow"
         />
       </div>
 
