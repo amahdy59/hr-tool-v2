@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen} modal={false}>
           <SheetTrigger asChild>
             <button
-              className="lg:hidden flex items-center justify-center w-9 h-9 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
+              className="lg:hidden flex items-center justify-center w-11 h-11 border border-border bg-card shadow-sm rounded-[var(--radius-button)] hover:bg-muted text-foreground transition-all duration-300 cursor-pointer relative overflow-hidden"
               aria-label={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
               title={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
               aria-expanded={isMenuOpen}
@@ -142,7 +142,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         </Sheet>
         <button
           onClick={onOpenCommandPalette}
-          className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-56 md:justify-between md:px-3 xl:w-80"
+          className="flex h-11 w-11 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-56 md:justify-between md:px-3 xl:w-80"
           aria-label={t('header.searchCommand')}
           title={`${t('header.search')} (Ctrl+K)`}
         >
@@ -170,7 +170,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
       <div className="flex min-w-0 items-center justify-end gap-2 lg:gap-3">
         <button
           onClick={onOpenShortcuts}
-          className="hidden md:flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="hidden md:flex w-11 h-11 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label={t('header.shortcutsTitle')}
           title={t('header.shortcutsTitle')}
         >
@@ -179,7 +179,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
 
         <button
           onClick={toggleLanguage}
-          className="flex w-9 h-9 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex w-11 h-11 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label={t('header.toggleLanguage')}
           title={t('header.toggleLanguage')}
         >

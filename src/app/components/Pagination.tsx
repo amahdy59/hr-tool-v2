@@ -96,7 +96,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => handlePageClick(currentPage - 1)}
           disabled={currentPage <= 1}
           className={cn(
-            "w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+            "w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
           )}
           aria-label={t('pagination.previous', 'Previous Page')}
         >
@@ -110,7 +110,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               return (
                 <span
                   key={`ellipsis-${index}`}
-                  className="w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center text-muted-foreground/60 select-none text-[var(--text-sm)] font-medium"
+                  className="w-11 h-11 flex items-center justify-center text-muted-foreground/60 select-none text-[var(--text-sm)] font-medium"
                 >
                   •••
                 </span>
@@ -125,7 +125,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                 aria-current={isActive ? 'page' : undefined}
                 aria-label={t('pagination.page', { defaultValue: 'Page {{page}}', page })}
                 className={cn(
-                  "w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center rounded-[var(--radius-button)] text-[var(--text-sm)] font-medium transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary",
+                  "w-11 h-11 flex items-center justify-center rounded-[var(--radius-button)] text-[var(--text-sm)] font-medium transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary",
                   isActive
                     ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/95"
                     : "border border-border bg-card text-foreground hover:bg-muted shadow-sm"
@@ -142,7 +142,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => handlePageClick(currentPage + 1)}
           disabled={currentPage >= totalPages}
           className={cn(
-            "w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+            "w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
           )}
           aria-label={t('pagination.next', 'Next Page')}
         >

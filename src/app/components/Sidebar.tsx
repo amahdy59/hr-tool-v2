@@ -121,6 +121,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
   return (
     <TooltipProvider delayDuration={0}>
       <aside
+        aria-label={t('sidebar.mainNavigation', 'Main navigation and user actions')}
         dir={isArabic ? 'rtl' : 'ltr'}
         className={cn(
           'hidden lg:flex lg:flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 h-screen shrink-0',

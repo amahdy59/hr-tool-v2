@@ -198,7 +198,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
         <button
           onClick={goToPrevMonth}
           aria-label={isArabic ? 'الشهر السابق' : 'Previous month'}
-          className="w-8 h-8 flex items-center justify-center hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"
+          className="w-11 h-11 flex items-center justify-center hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"
         >
           <ChevronLeft className={cn('w-5 h-5 text-muted-foreground', isArabic && 'rotate-180')} />
         </button>
@@ -221,7 +221,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
         <button
           onClick={goToNextMonth}
           aria-label={isArabic ? 'الشهر التالي' : 'Next month'}
-          className="w-8 h-8 flex items-center justify-center hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"
+          className="w-11 h-11 flex items-center justify-center hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"
         >
           <ChevronRight className={cn('w-5 h-5 text-muted-foreground', isArabic && 'rotate-180')} />
         </button>
@@ -267,11 +267,19 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
             <div className="flex flex-col gap-0.5 w-full overflow-hidden">
               {cell.events.map((ev, eIdx) => {
                 const isInteractive = !!ev.id && !!onViewRequest && ev.status === 'pending';
-                return (
+                const eventClassName = cn(
+                  'text-[10px] leading-tight py-0.5 px-1.5 rounded-[3px] truncate font-[var(--font-weight-medium)] w-full text-start block border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
+                  ev.color,
+                  ev.textColor ?? 'text-white',
+                  isInteractive
+                    ? 'cursor-pointer hover:brightness-90 active:scale-[0.98] ring-1 ring-inset ring-white/20'
+                    : 'cursor-default'
+                );
+
+                return isInteractive ? (
                   <button
                     key={eIdx}
                     type="button"
-                    tabIndex={isInteractive ? 0 : -1}
                     onClick={() => {
                       if (ev.id && onViewRequest) {
                         onViewRequest({
@@ -284,17 +292,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                       }
                     }}
                     title={ev.label}
-                    className={cn(
-                      'text-[10px] leading-tight py-0.5 px-1.5 rounded-[3px] truncate font-[var(--font-weight-medium)] w-full text-start block border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
-                      ev.color,
-                      ev.textColor ?? 'text-white',
-                      isInteractive
-                        ? 'cursor-pointer hover:brightness-90 active:scale-[0.98] ring-1 ring-inset ring-white/20'
-                        : 'cursor-default'
-                    )}
+                    className={eventClassName}
                   >
                     {ev.label}
                   </button>
+                ) : (
+                  <span key={eIdx} title={ev.label} className={eventClassName}>
+                    {ev.label}
+                  </span>
                 );
               })}
             </div>

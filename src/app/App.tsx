@@ -272,7 +272,7 @@ export default function App() {
       <div className="flex h-screen bg-background text-foreground overflow-hidden">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2.5 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        className="skip-link fixed start-4 top-4 z-[100] flex min-h-11 min-w-11 -translate-y-20 items-center justify-center rounded-md bg-primary px-4 py-2.5 text-primary-foreground opacity-0 shadow-lg transition-transform focus:translate-y-0 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
         style={{ fontFamily: "'Inter', sans-serif" }}
       >
         Skip to main content

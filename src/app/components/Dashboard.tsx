@@ -17,13 +17,6 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './ui/select';
-import {
   MoreVertical,
   Download,
   ChevronLeft,
@@ -341,8 +334,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
       </div>
 
       {/* Timesheet Section */}
-      <section className="hidden space-y-2 min-[990px]:block">
+      <section className="hidden space-y-2 min-[990px]:block" aria-labelledby="timesheet-heading">
         <h3
+          id="timesheet-heading"
           style={{
             fontFamily: "'Inter', sans-serif",
             fontSize: 'var(--section-heading-size)',
@@ -381,8 +375,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
       </section>
 
       {/* History Table */}
-      <section className="space-y-4">
+      <section className="space-y-4" aria-labelledby="history-heading">
         <h3
+          id="history-heading"
           style={{
             fontFamily: "'Inter', sans-serif",
             fontSize: 'var(--section-heading-size)',
@@ -410,18 +405,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               <PopoverContent className="p-4 space-y-4 w-72">
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
-                  <Select value={historyLeaveType} onValueChange={setHistoryLeaveType}>
-                    <SelectTrigger className="min-h-[44px] w-full rounded-[var(--radius-input)] bg-card border-border">
-                      <SelectValue placeholder="Select leave type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="vacation">Vacation</SelectItem>
-                      <SelectItem value="sick">Sick</SelectItem>
-                      <SelectItem value="annual">Annual Leave</SelectItem>
-                      <SelectItem value="maternity">Maternity</SelectItem>
-                      <SelectItem value="paternity">Paternity</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <select
+                    value={historyLeaveType}
+                    onChange={(event) => setHistoryLeaveType(event.target.value)}
+                    className="min-h-[44px] w-full rounded-[var(--radius-input)] border border-border bg-card px-3 text-[var(--text-sm)] text-foreground outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/40"
+                  >
+                    <option value="vacation">Vacation</option>
+                    <option value="sick">Sick</option>
+                    <option value="annual">Annual Leave</option>
+                    <option value="maternity">Maternity</option>
+                    <option value="paternity">Paternity</option>
+                  </select>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
@@ -438,18 +432,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             <div className="hidden xl:flex items-center gap-3 flex-wrap">
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
-                <Select value={historyLeaveType} onValueChange={setHistoryLeaveType}>
-                  <SelectTrigger className="min-h-[44px] w-44 rounded-[var(--radius-input)] bg-card border-border">
-                    <SelectValue placeholder="Select leave type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="vacation">Vacation</SelectItem>
-                    <SelectItem value="sick">Sick</SelectItem>
-                    <SelectItem value="annual">Annual Leave</SelectItem>
-                    <SelectItem value="maternity">Maternity</SelectItem>
-                    <SelectItem value="paternity">Paternity</SelectItem>
-                  </SelectContent>
-                </Select>
+                <select
+                  value={historyLeaveType}
+                  onChange={(event) => setHistoryLeaveType(event.target.value)}
+                  className="min-h-[44px] w-44 rounded-[var(--radius-input)] border border-border bg-card px-3 text-[var(--text-sm)] text-foreground outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/40"
+                >
+                  <option value="vacation">Vacation</option>
+                  <option value="sick">Sick</option>
+                  <option value="annual">Annual Leave</option>
+                  <option value="maternity">Maternity</option>
+                  <option value="paternity">Paternity</option>
+                </select>
               </div>
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
@@ -465,6 +458,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
 
         <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card shadow-[var(--elevation-sm)]">
           <table className="w-full min-w-[760px] text-[var(--text-sm)] text-start">
+            <caption className="sr-only">Leaves and mission history requests</caption>
             <thead className="bg-muted/50 border-b border-border">
               <tr>
                 {[
@@ -518,8 +512,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
 
       {/* Balance Tables */}
       <div className="grid grid-cols-1 gap-8">
-        <section className="space-y-4">
+        <section className="space-y-4" aria-labelledby="annual-sick-leaves-heading">
           <h3
+            id="annual-sick-leaves-heading"
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: 'var(--section-heading-size)',
@@ -531,6 +526,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+              <caption className="sr-only">Annual and sick leave balances</caption>
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {[
@@ -589,8 +585,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </div>
         </section>
 
-        <section className="space-y-4">
+        <section className="space-y-4" aria-labelledby="other-leaves-heading">
           <h3
+            id="other-leaves-heading"
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: 'var(--section-heading-size)',
@@ -602,6 +599,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+              <caption className="sr-only">Other leave balances</caption>
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {['Leave Type', 'Balance'].map((h) => (
@@ -768,8 +766,11 @@ const HistoryRow: React.FC<{
       <td className="px-4 py-3 text-end">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="p-1 hover:bg-muted rounded-[var(--radius)]">
-              <MoreVertical className="w-4 h-4" />
+            <button
+              className="h-11 w-11 hover:bg-muted rounded-[var(--radius)]"
+              aria-label={`Open actions for ${item.type} request from ${item.reqDate}`}
+            >
+              <MoreVertical className="w-4 h-4" aria-hidden="true" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
