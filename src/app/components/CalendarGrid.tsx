@@ -190,6 +190,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
     : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   const monthLabel = isArabic ? arabicMonthNames[viewMonth] : monthNames[viewMonth];
+  const PrevMonthIcon = isArabic ? ChevronRight : ChevronLeft;
+  const NextMonthIcon = isArabic ? ChevronLeft : ChevronRight;
 
   return (
     <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]" dir={isArabic ? 'rtl' : 'ltr'}>
@@ -200,7 +202,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
           aria-label={isArabic ? 'الشهر السابق' : 'Previous month'}
           className="w-11 h-11 flex items-center justify-center hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"
         >
-          <ChevronLeft className={cn('w-5 h-5 text-muted-foreground', isArabic && 'rotate-180')} />
+          <PrevMonthIcon className="calendar-nav-icon w-5 h-5 text-muted-foreground" />
         </button>
 
         <div className="flex items-center gap-3">
@@ -223,7 +225,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
           aria-label={isArabic ? 'الشهر التالي' : 'Next month'}
           className="w-11 h-11 flex items-center justify-center hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"
         >
-          <ChevronRight className={cn('w-5 h-5 text-muted-foreground', isArabic && 'rotate-180')} />
+          <NextMonthIcon className="calendar-nav-icon w-5 h-5 text-muted-foreground" />
         </button>
       </div>
 

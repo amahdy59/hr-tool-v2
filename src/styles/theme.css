@@ -833,6 +833,10 @@ input[type="tel"] {
   transform: scaleX(-1);
 }
 
+[dir="rtl"] .calendar-nav-icon {
+  transform: none;
+}
+
 /* 4. Global RTL Alignment Overrides */
 [dir="rtl"] {
   text-align: right;
