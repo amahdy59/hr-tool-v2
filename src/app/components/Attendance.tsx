@@ -386,7 +386,7 @@ export const Attendance: React.FC = () => {
         <div className="w-full space-y-1.5 sm:w-52">
           <label className="text-foreground">Employee</label>
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-            <SelectTrigger className="h-10 rounded-[var(--radius-input)]">
+            <SelectTrigger className="min-h-[44px] rounded-[var(--radius-input)]">
               <SelectValue placeholder="Select employee" />
             </SelectTrigger>
             <SelectContent>

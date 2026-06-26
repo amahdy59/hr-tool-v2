@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { CalendarGrid } from './CalendarGrid';
 import { StatusBadge } from './StatusBadge';
 import { RequestLeaveModal, type LeaveFormData } from './RequestLeaveModal';
@@ -6,6 +6,7 @@ import { RequestMissionModal } from './RequestMissionModal';
 import { LeaveDetailModal, type LeaveDetail } from './LeaveDetailModal';
 import { ConfirmDialog } from './ConfirmDialog';
 import { Button } from './ui/button';
+import { Pagination } from './Pagination';
 import { DatePicker } from './ui/date-picker';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import {
@@ -183,6 +184,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   // Edit leave states
   const [editLeaveOpen, setEditLeaveOpen] = useState(false);
   const [editLeaveData, setEditLeaveData] = useState<Partial<LeaveFormData>>({});
+
+  // History pagination state
+  const [historyPage, setHistoryPage] = useState(1);
+  const [historyPerPage, setHistoryPerPage] = useState(10);
+  const historyTotalPages = Math.max(1, Math.ceil(historyData.length / historyPerPage));
+  const paginatedHistory = useMemo(() => {
+    const start = (historyPage - 1) * historyPerPage;
+    return historyData.slice(start, start + historyPerPage);
+  }, [historyPage, historyPerPage]);
 
   // Weekend state
   const [currentWeekend, setCurrentWeekend] = useState('Friday and Saturday');
@@ -401,7 +411,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
                   <Select value={historyLeaveType} onValueChange={setHistoryLeaveType}>
-                    <SelectTrigger className="h-10 w-full rounded-[var(--radius-input)] bg-card border-border">
+                    <SelectTrigger className="min-h-[44px] w-full rounded-[var(--radius-input)] bg-card border-border">
                       <SelectValue placeholder="Select leave type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -429,7 +439,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
                 <Select value={historyLeaveType} onValueChange={setHistoryLeaveType}>
-                  <SelectTrigger className="h-10 w-44 rounded-[var(--radius-input)] bg-card border-border">
+                  <SelectTrigger className="min-h-[44px] w-44 rounded-[var(--radius-input)] bg-card border-border">
                     <SelectValue placeholder="Select leave type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -484,7 +494,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {historyData.map((item) => (
+              {paginatedHistory.map((item) => (
                 <HistoryRow
                   key={item.id}
                   item={item}
@@ -497,27 +507,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </table>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4 px-4 py-4 border-t border-border bg-muted/20">
-          <div className="flex items-center gap-3 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start whitespace-nowrap shrink-0">
-            <span>Items Per Page</span>
-            <select className="h-11 px-3 border border-border rounded-[var(--radius-input)] bg-card text-foreground outline-none cursor-pointer">
-              <option>15</option>
-              <option>25</option>
-              <option>50</option>
-            </select>
-          </div>
-          <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
-            <button className="w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-sm" disabled>
-              <ChevronLeft className="w-4 h-4 text-foreground" />
-            </button>
-            <span className="text-[var(--text-sm)] text-foreground flex items-center gap-2 whitespace-nowrap">
-              Page <input type="text" value="1" readOnly className="w-12 h-11 text-center border border-border rounded-[var(--radius-input)] bg-input-background text-foreground shadow-sm" /> of 150
-            </span>
-            <button className="w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-sm)] bg-card hover:bg-muted transition-colors shadow-sm">
-              <ChevronRight className="w-4 h-4 text-foreground" />
-            </button>
-          </div>
-        </div>
+        <Pagination
+          currentPage={historyPage}
+          totalPages={historyTotalPages}
+          itemsPerPage={historyPerPage}
+          onPageChange={setHistoryPage}
+          onItemsPerPageChange={(n) => { setHistoryPerPage(n); setHistoryPage(1); }}
+        />
       </section>
 
       {/* Balance Tables */}

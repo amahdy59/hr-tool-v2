@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Download,
   Eye,
@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { Pagination } from './Pagination';
 
 // Mock employee data with sample names
 const EMPLOYEES = [
@@ -241,6 +242,15 @@ export const Payroll: React.FC = () => {
     emp.department.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Pagination state
+  const [payrollPage, setPayrollPage] = useState(1);
+  const [payrollPerPage, setPayrollPerPage] = useState(10);
+  const payrollTotalPages = Math.max(1, Math.ceil(filteredEmployees.length / payrollPerPage));
+  const paginatedEmployees = useMemo(() => {
+    const start = (payrollPage - 1) * payrollPerPage;
+    return filteredEmployees.slice(start, start + payrollPerPage);
+  }, [filteredEmployees, payrollPage, payrollPerPage]);
+
   return (
     <div className="px-1 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
       {/* Tabs */}
@@ -273,7 +283,7 @@ export const Payroll: React.FC = () => {
             placeholder="Search employees, payroll records..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-10 px-3 ps-10 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow" 
+            className="w-full min-h-[44px] px-3 ps-10 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow" 
             style={{
               fontFamily: "'Inter', sans-serif",
             }}
@@ -282,7 +292,18 @@ export const Payroll: React.FC = () => {
       </div>
 
       {activeTab === 'overview' && <OverviewTab selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} selectedYear={selectedYear} setSelectedYear={setSelectedYear} months={months} years={years} />}
-      {activeTab === 'employees' && <EmployeesTab filteredEmployees={filteredEmployees} handleGeneratePayslip={handleGeneratePayslip} />}
+      {activeTab === 'employees' && (
+        <>
+          <EmployeesTab filteredEmployees={paginatedEmployees} handleGeneratePayslip={handleGeneratePayslip} />
+          <Pagination
+            currentPage={payrollPage}
+            totalPages={payrollTotalPages}
+            itemsPerPage={payrollPerPage}
+            onPageChange={setPayrollPage}
+            onItemsPerPageChange={(n) => { setPayrollPerPage(n); setPayrollPage(1); }}
+          />
+        </>
+      )}
       {activeTab === 'compensation' && <CompensationTab />}
       {activeTab === 'deductions' && <DeductionsTab />}
 
@@ -321,7 +342,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
           <select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(e.target.value)}
-            className="w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-[var(--text-sm)]"
+            className="w-full min-h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-[var(--text-sm)]"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {months.map((month: string) => (
@@ -336,7 +357,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            className="w-full h-10 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-[var(--text-sm)]"
+            className="w-full min-h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-[var(--text-sm)]"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {years.map((year: string) => (

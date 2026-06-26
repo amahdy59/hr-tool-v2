@@ -75,7 +75,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           <select
             value={itemsPerPage}
             onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-            className="h-10 sm:h-9 px-3 border border-border/80 rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-center outline-none cursor-pointer hover:bg-muted/50 focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all shadow-sm font-medium"
+            className="min-h-[44px] sm:h-9 px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-center outline-none cursor-pointer hover:bg-muted/50 focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all shadow-sm font-medium"
           >
             <option value={10}>10</option>
             <option value={15}>15</option>
@@ -83,7 +83,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             <option value={50}>50</option>
           </select>
         ) : (
-          <div className="h-10 sm:h-9 px-3.5 border border-border/60 rounded-[var(--radius-input)] bg-muted/30 text-muted-foreground text-[var(--text-sm)] flex items-center justify-center font-medium">
+          <div className="min-h-[44px] sm:h-9 px-3.5 border border-border rounded-[var(--radius-input)] bg-muted/30 text-muted-foreground text-[var(--text-sm)] flex items-center justify-center font-medium">
             {itemsPerPage}
           </div>
         )}
@@ -96,7 +96,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => handlePageClick(currentPage - 1)}
           disabled={currentPage <= 1}
           className={cn(
-            "w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center border border-border/80 rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+            "w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
           )}
           aria-label={t('pagination.previous', 'Previous Page')}
         >
@@ -128,7 +128,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                   "w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center rounded-[var(--radius-button)] text-[var(--text-sm)] font-medium transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary",
                   isActive
                     ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/95"
-                    : "border border-border/80 bg-card text-foreground hover:bg-muted shadow-sm"
+                    : "border border-border bg-card text-foreground hover:bg-muted shadow-sm"
                 )}
               >
                 {page}
@@ -142,7 +142,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => handlePageClick(currentPage + 1)}
           disabled={currentPage >= totalPages}
           className={cn(
-            "w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center border border-border/80 rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+            "w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
           )}
           aria-label={t('pagination.next', 'Next Page')}
         >
