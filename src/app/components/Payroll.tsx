@@ -14,6 +14,7 @@ import {
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Pagination } from './Pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 // Mock employee data with sample names
 const EMPLOYEES = [
@@ -340,31 +341,37 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
           <label className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             Month
           </label>
-          <select
+          <Select
             value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-            className="w-full min-h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-[var(--text-sm)]"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            onValueChange={setSelectedMonth}
           >
-            {months.map((month: string) => (
-              <option key={month} value={month}>{month}</option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full min-h-[44px] border border-border rounded-[var(--radius-input)] bg-input-background text-foreground">
+              <SelectValue placeholder="Month" />
+            </SelectTrigger>
+            <SelectContent>
+              {months.map((month: string) => (
+                <SelectItem key={month} value={month}>{month}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="space-y-1.5">
           <label className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             Year
           </label>
-          <select
+          <Select
             value={selectedYear}
-            onChange={(e) => setSelectedYear(e.target.value)}
-            className="w-full min-h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-[var(--text-sm)]"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            onValueChange={setSelectedYear}
           >
-            {years.map((year: string) => (
-              <option key={year} value={year}>{year}</option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full min-h-[44px] border border-border rounded-[var(--radius-input)] bg-input-background text-foreground">
+              <SelectValue placeholder="Year" />
+            </SelectTrigger>
+            <SelectContent>
+              {years.map((year: string) => (
+                <SelectItem key={year} value={year}>{year}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>

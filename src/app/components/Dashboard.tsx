@@ -9,6 +9,7 @@ import { Button } from './ui/button';
 import { Pagination } from './Pagination';
 import { DatePicker } from './ui/date-picker';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +35,7 @@ import { toast } from 'sonner';
 import { format, parseISO, isValid } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { localizeFirstName } from '@/lib/localizedNames';
+import { calculateAnnualEntitlement } from '@/lib/leaveCalculations';
 
 // --- Types ---
 interface HistoryItem {
@@ -412,17 +414,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               <PopoverContent className="p-4 space-y-4 w-72">
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
-                  <select
+                  <Select
                     value={historyLeaveType}
-                    onChange={(event) => setHistoryLeaveType(event.target.value)}
-                    className="min-h-[44px] w-full rounded-[var(--radius-input)] border border-border bg-card px-3 text-[var(--text-sm)] text-foreground outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/40"
+                    onValueChange={setHistoryLeaveType}
                   >
-                    <option value="vacation">Vacation</option>
-                    <option value="sick">Sick</option>
-                    <option value="annual">Annual Leave</option>
-                    <option value="maternity">Maternity</option>
-                    <option value="paternity">Paternity</option>
-                  </select>
+                    <SelectTrigger className="min-h-[44px] w-full rounded-[var(--radius-input)] border border-border bg-card">
+                      <SelectValue placeholder="Leave Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="vacation">Vacation</SelectItem>
+                      <SelectItem value="sick">Sick</SelectItem>
+                      <SelectItem value="annual">Annual Leave</SelectItem>
+                      <SelectItem value="maternity">Maternity</SelectItem>
+                      <SelectItem value="paternity">Paternity</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
@@ -439,17 +445,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             <div className="hidden xl:flex items-center gap-3 flex-wrap">
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
-                <select
+                <Select
                   value={historyLeaveType}
-                  onChange={(event) => setHistoryLeaveType(event.target.value)}
-                  className="min-h-[44px] w-44 rounded-[var(--radius-input)] border border-border bg-card px-3 text-[var(--text-sm)] text-foreground outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/40"
+                  onValueChange={setHistoryLeaveType}
                 >
-                  <option value="vacation">Vacation</option>
-                  <option value="sick">Sick</option>
-                  <option value="annual">Annual Leave</option>
-                  <option value="maternity">Maternity</option>
-                  <option value="paternity">Paternity</option>
-                </select>
+                  <SelectTrigger className="min-h-[44px] w-44 rounded-[var(--radius-input)] border border-border bg-card">
+                    <SelectValue placeholder="Leave Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="vacation">Vacation</SelectItem>
+                    <SelectItem value="sick">Sick</SelectItem>
+                    <SelectItem value="annual">Annual Leave</SelectItem>
+                    <SelectItem value="maternity">Maternity</SelectItem>
+                    <SelectItem value="paternity">Paternity</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
@@ -562,11 +572,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               <tbody className="divide-y divide-border">
                 <tr>
                   <td className="px-4 py-3 text-[var(--text-sm)]">Annual Leave</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">21 days</td>
+                  <td className="px-4 py-3 text-[var(--text-sm)]">{calculateAnnualEntitlement(2013)} days</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">5</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">4</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">6</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">14</td>
+                  <td className="px-4 py-3 text-[var(--text-sm)] font-semibold text-[var(--chart-3)]">
+                    {calculateAnnualEntitlement(2013) - 5 + 4 - 6} days
+                  </td>
                 </tr>
                 <tr>
                   <td className="px-4 py-3 text-[var(--text-sm)]">Sick Leave</td>
@@ -574,7 +586,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                   <td className="px-4 py-3 text-[var(--text-sm)]">--</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">--</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">5</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">40</td>
+                  <td className="px-4 py-3 text-[var(--text-sm)] font-semibold text-[var(--chart-3)]">40</td>
                 </tr>
               </tbody>
             </table>
@@ -628,13 +640,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </thead>
               <tbody className="divide-y divide-border">
                 {[
-                  { type: 'Maternity (appears only to females)', balance: '5 months' },
-                  { type: 'Paternity (appears only to males)', balance: '2 weeks' },
-                  { type: 'Family Care', balance: '2 weeks' },
-                  { type: 'Hajj', balance: '4 weeks' },
-                  { type: 'Marriage', balance: '1 week' },
-                  { type: 'Bereavement', balance: '1 week' },
-                  { type: 'Unpaid', balance: '7 days' },
+                  // Show Paternity for male user, Maternity for female user
+                  { type: 'Paternity Leave', balance: '4 weeks (20 working days)' },
+                  { type: 'Family Care', balance: '2 weeks (10 working days)' },
+                  { type: 'Hajj', balance: '4 weeks (20 working days)' },
+                  { type: 'Marriage', balance: '1 week (5 working days)' },
+                  { type: 'Bereavement', balance: '1 week (5 working days)' },
+                  { type: 'Unpaid', balance: 'Case-by-case / No limit' },
                 ].map((row) => (
                   <tr key={row.type}>
                     <td className="px-4 py-3" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>

@@ -16,8 +16,15 @@ import {
 } from './ui/select';
 import { cn } from '@/lib/utils';
 import { DatePicker } from './ui/date-picker';
-import { differenceInBusinessDays, parseISO, isValid } from 'date-fns';
+import { parseISO, isValid } from 'date-fns';
 import { FileText, Upload, X } from 'lucide-react';
+import { 
+  isEgyptianWeekend, 
+  calculateWorkingDays, 
+  isNewlyHiredRestricted, 
+  isPreviousMonthRequestRestricted, 
+  calculateAnnualEntitlement 
+} from '@/lib/leaveCalculations';
 
 interface RequestLeaveModalProps {
   open: boolean;
@@ -35,18 +42,6 @@ export interface LeaveFormData {
   notes: string;
 }
 
-const leaveTypes = [
-  'Sick',
-  'Annual Leave',
-  'Maternity',
-  'Paternity',
-  'Family Care',
-  'Hajj',
-  'Marriage',
-  'Bereavement',
-  'Unpaid',
-];
-
 const attachmentRequiredLeaveTypes = new Set([
   'Sick',
   'Maternity',
@@ -57,19 +52,6 @@ const attachmentRequiredLeaveTypes = new Set([
   'Bereavement',
 ]);
 
-// Balance per leave type (mock data)
-const leaveBalances: Record<string, number> = {
-  'Sick': 45,
-  'Annual Leave': 21,
-  'Maternity': 150,
-  'Paternity': 14,
-  'Family Care': 14,
-  'Hajj': 28,
-  'Marriage': 7,
-  'Bereavement': 7,
-  'Unpaid': 7,
-};
-
 export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   open,
   onOpenChange,
@@ -77,6 +59,25 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   initialData,
   mode = 'add',
 }) => {
+  // Current user mock profile details (Ahmed Mahdy)
+  const gender = 'Male';
+  const graduationYear = 2013;
+  const hireDate = '2023-04-15';
+
+  const leaveTypes = useMemo(() => {
+    return [
+      'Sick',
+      'Annual Leave',
+      gender === 'Female' ? 'Maternity' : null,
+      gender === 'Male' ? 'Paternity' : null,
+      'Family Care',
+      'Hajj',
+      'Marriage',
+      'Bereavement',
+      'Unpaid',
+    ].filter(Boolean) as string[];
+  }, [gender]);
+
   const [leaveType, setLeaveType] = useState('Annual Leave');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
@@ -93,14 +94,25 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
     }
   }, [open, initialData]);
 
-  // Compute days between selected dates (business days, inclusive)
+  const annualEntitlement = calculateAnnualEntitlement(graduationYear);
+
+  const leaveBalances = useMemo<Record<string, number>>(() => {
+    return {
+      'Sick': 45,
+      'Annual Leave': annualEntitlement,
+      'Maternity': 150, // 5 months
+      'Paternity': 20,  // 4 weeks * 5 working days
+      'Family Care': 10, // 2 weeks * 5 working days
+      'Hajj': 20, // 4 weeks = 20 working days
+      'Marriage': 5, // 1 week = 5 working days
+      'Bereavement': 5, // 1 week = 5 working days
+      'Unpaid': 30,
+    };
+  }, [annualEntitlement]);
+
+  // Compute days between selected dates (excluding Egyptian weekends Fri & Sat)
   const daysRequested = useMemo(() => {
-    if (!fromDate || !toDate) return 0;
-    const from = parseISO(fromDate);
-    const to = parseISO(toDate);
-    if (!isValid(from) || !isValid(to) || to < from) return 0;
-    // differenceInBusinessDays doesn't include start day, so add 1
-    return differenceInBusinessDays(to, from) + 1;
+    return calculateWorkingDays(fromDate, toDate);
   }, [fromDate, toDate]);
 
   const currentBalance = leaveBalances[leaveType] ?? 21;
@@ -108,8 +120,48 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   const requiresAttachment = mode === 'add' && attachmentRequiredLeaveTypes.has(leaveType);
   const attachmentMissing = requiresAttachment && attachments.length === 0;
 
+  // Validate request based on user policies
+  const validationError = useMemo(() => {
+    if (!fromDate || !toDate) return null;
+    const from = parseISO(fromDate);
+    const to = parseISO(toDate);
+    if (!isValid(from) || !isValid(to) || to < from) {
+      return 'Invalid date range selected.';
+    }
+
+    if (isEgyptianWeekend(fromDate)) {
+      return 'Leaves cannot start on Egyptian weekends (Fridays or Saturdays).';
+    }
+    if (isEgyptianWeekend(toDate)) {
+      return 'Leaves cannot end on Egyptian weekends (Fridays or Saturdays).';
+    }
+
+    if (daysRequested === 0) {
+      return 'The selected date range only contains weekend days.';
+    }
+
+    if (leaveType === 'Annual Leave' && isNewlyHiredRestricted(hireDate, fromDate)) {
+      return 'Newly hired employees cannot request vacation during the first 3 months of work.';
+    }
+
+    if (leaveType === 'Annual Leave' && isPreviousMonthRequestRestricted(fromDate)) {
+      return 'Cannot request vacation for the previous month after the 5th of the current month.';
+    }
+
+    const currentYear = new Date().getFullYear();
+    if (leaveType === 'Annual Leave' && from.getFullYear() > currentYear) {
+      return "Vacation requests cannot be made from next year's balance.";
+    }
+
+    if (daysRequested > currentBalance) {
+      return `Request of ${daysRequested} days exceeds the available balance of ${currentBalance} days.`;
+    }
+
+    return null;
+  }, [fromDate, toDate, leaveType, daysRequested, currentBalance, hireDate]);
+
   const handleSubmit = () => {
-    if (attachmentMissing) return;
+    if (attachmentMissing || validationError) return;
 
     onSubmit({
       leaveType,
@@ -123,7 +175,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   const dateLabel = useMemo(() => {
     if (!fromDate && !toDate) return 'No dates selected';
     if (fromDate && toDate && daysRequested > 0) {
-      return `${daysRequested} day${daysRequested !== 1 ? 's' : ''} selected`;
+      return `${daysRequested} working day${daysRequested !== 1 ? 's' : ''} selected (excluding weekends)`;
     }
     return 'Select both dates';
   }, [fromDate, toDate, daysRequested]);
@@ -216,6 +268,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               />
             </div>
           </div>
+
           <p
             style={{
               fontFamily: "'Inter', sans-serif",
@@ -224,11 +277,17 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             }}
             className={cn(
               'text-muted-foreground -mt-3',
-              daysRequested > 0 && daysRequested > currentBalance && 'text-destructive'
+              (daysRequested > currentBalance || !!validationError) && 'text-destructive font-medium'
             )}
           >
-            {dateLabel}
-            {daysRequested > currentBalance && ' — exceeds available balance'}
+            {validationError ? (
+              <span className="flex items-center gap-1 text-red-600 dark:text-red-400">⚠️ {validationError}</span>
+            ) : (
+              <>
+                {dateLabel}
+                {daysRequested > currentBalance && ' — exceeds available balance'}
+              </>
+            )}
           </p>
 
           {/* Notes */}
@@ -421,7 +480,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
           <Button
             className="w-full bg-chart-3 hover:bg-chart-3/90 text-white"
             onClick={handleSubmit}
-            disabled={daysRequested === 0 || daysRequested > currentBalance || attachmentMissing}
+            disabled={daysRequested === 0 || !!validationError || attachmentMissing}
           >
             {mode === 'edit' ? 'Save Changes' : '✈ Book time off'}
             {daysRequested > 0 && mode === 'add' && (
