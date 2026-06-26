@@ -13,6 +13,7 @@ import {
   Palmtree 
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { isEgyptianWeekend } from '@/lib/leaveCalculations';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -428,6 +429,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
           <div className="grid grid-cols-7" style={{ minHeight: 380 }} role="rowgroup">
             {gridCells.map((cell, idx) => {
               const isTodayHighlight = cell.isToday;
+              const isWeekend = cell.isCurrentMonth && isEgyptianWeekend(cell.dateStr);
               return (
                 <div
                   key={`${cell.dateStr}-${idx}`}
@@ -437,6 +439,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                   className={cn(
                     'border-e border-b border-border p-2 flex flex-col gap-1.5 min-h-[90px] relative transition-all duration-200 group focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
                     !cell.isCurrentMonth && 'bg-muted/10',
+                    isWeekend && 'bg-muted/30 dark:bg-muted/5 border-dashed',
                     isTodayHighlight && 'bg-primary/5 dark:bg-primary/10 border-t-2 border-t-primary',
                     idx % 7 === 6 && 'border-e-0',
                     Math.floor(idx / 7) === Math.floor((gridCells.length - 1) / 7) && 'border-b-0'
@@ -444,7 +447,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                 >
                   {/* Day number & Empty Cell Interactive Plus Indicator */}
                   <div className="flex justify-between items-center w-full">
-                    {cell.isCurrentMonth && cell.events.length === 0 ? (
+                    {cell.isCurrentMonth && cell.events.length === 0 && !isWeekend ? (
                       <button 
                         onClick={() => {
                           if (onAddRequest) {
@@ -463,8 +466,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                       className={cn(
                         'w-6 h-6 flex items-center justify-center rounded-full text-[var(--text-xs)] shrink-0 font-bold',
                         cell.isToday && 'bg-primary text-primary-foreground font-[var(--font-weight-bold)] shadow-sm scale-110',
+                        isWeekend && 'text-muted-foreground font-semibold',
                         !cell.isCurrentMonth && 'text-muted-foreground/30',
-                        cell.isCurrentMonth && !cell.isToday && 'text-foreground'
+                        cell.isCurrentMonth && !cell.isToday && !isWeekend && 'text-foreground'
                       )}
                     >
                       {cell.day}
