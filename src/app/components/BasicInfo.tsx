@@ -84,7 +84,6 @@ interface BasicInfoProps {
 export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage }) => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
-  const displayName = localizePersonName(currentUser?.name, language);
   // State
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoData>({
     nameEn: currentUser?.name || 'Ahmed Mahdy',
@@ -98,6 +97,10 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
     nationality: 'Egyptian',
     address: 'Cairo, Egypt',
   });
+  const displayName = localizePersonName(
+    { nameEn: personalInfo.nameEn || currentUser?.name, nameAr: personalInfo.nameAr },
+    language
+  );
 
   const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContactData[]>([]);
 
@@ -218,6 +221,9 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
         <div className="grid grid-cols-1 gap-y-3">
           <InfoItem label="Full Name (English)" value={personalInfo.nameEn} />
           <InfoItem label="Full Name (Arabic)" value={personalInfo.nameAr} />
+          <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Arabic display names are shown from this Arabic name field or from HR-provided bilingual employee data.
+          </p>
           <InfoItem label="Date of Birth" value={new Date(personalInfo.dateOfBirth).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} />
           <InfoItem label="Gender" value={personalInfo.gender} />
           <InfoItem label="Email" value={personalInfo.email} />
@@ -546,7 +552,7 @@ const EditPersonalInfoModal: React.FC<{
         </DialogHeader>
         <div className="flex items-start gap-2 p-2 bg-primary/5 rounded border border-primary/10">
           <Shield className="w-3 h-3 text-primary shrink-0 mt-0.5" />
-          <span className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>This information is encrypted and protected. All changes are logged for security.</span>
+          <span className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Enter your name in both English and Arabic. HR can also maintain these bilingual name fields for employees.</span>
         </div>
         <div className="grid grid-cols-1 gap-4">
           <FormField label="Full Name (English) *" value={nameEn} onChange={setNameEn} />

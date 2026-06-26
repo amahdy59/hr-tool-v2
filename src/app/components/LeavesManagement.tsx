@@ -23,6 +23,8 @@ import { toast } from 'sonner';
 import { EmptyState } from './EmptyState';
 import { exportToCSV } from '../../lib/export';
 import { Pagination } from './Pagination';
+import { useTranslation } from 'react-i18next';
+import { localizePersonName } from '@/lib/localizedNames';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -84,6 +86,10 @@ const ACTIVITY_TYPES = ['My team', 'Lead Engineer', 'Application Consultant', 'P
 const EMPLOYMENT_TYPES = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
 
 export const LeavesManagement: React.FC = () => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
+  const displayEmployeeName = (name?: string) => localizePersonName(name, language);
+
   // Pending
   const [pendingSearch, setPendingSearch] = useState('');
   const [selectedPending, setSelectedPending] = useState<string[]>([]);
@@ -214,7 +220,7 @@ export const LeavesManagement: React.FC = () => {
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
                         <div className="flex items-center gap-2">
                           <Checkbox className="md:hidden" checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} />
-                          <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{leave.name}</span>
+                          <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(leave.name)}</span>
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
@@ -382,7 +388,7 @@ export const LeavesManagement: React.FC = () => {
                   {HISTORY_LEAVES.map(leave => (
                     <tr key={leave.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
-                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{leave.name}</span>
+                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(leave.name)}</span>
                       </td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{leave.range}</td>
@@ -435,9 +441,9 @@ export const LeavesManagement: React.FC = () => {
       <ConfirmDialog
         open={declineOpen} onOpenChange={setDeclineOpen}
         title="Decline Leave"
-        message={<>You are declining <strong>{declineData?.name}</strong>'s {declineData?.type?.toLowerCase()} leave from <strong>{declineData?.range}</strong>. This action is permanent.</>}
+        message={<>You are declining <strong>{displayEmployeeName(declineData?.name)}</strong>'s {declineData?.type?.toLowerCase()} leave from <strong>{declineData?.range}</strong>. This action is permanent.</>}
         confirmLabel="Decline" cancelLabel="Cancel" variant="destructive"
-        onConfirm={() => { setDeclineOpen(false); toast.success(`${declineData?.name}'s leave request declined`); }}
+        onConfirm={() => { setDeclineOpen(false); toast.success(`${displayEmployeeName(declineData?.name)}'s leave request declined`); }}
       />
 
       {/* Add Holiday */}
@@ -554,57 +560,67 @@ const CreateLeaveModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
 };
 
 // ── Review Selected Modal ──
-const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; items: LeaveRequest[]; onApprove: () => void }> = ({ open, onOpenChange, items, onApprove }) => (
-  <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="sm:max-w-2xl">
-      <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Review Selected Requests</DialogTitle><DialogDescription className="sr-only">Review and approve selected leave requests</DialogDescription></DialogHeader>
-        <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
-          <table className="w-full md:min-w-max text-[var(--text-sm)]">
-          <thead><tr className="bg-muted border-b border-border">
-            <th className={thClass}>Employee Name</th><th className={thClass}>Leave Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
-          </tr></thead>
-          <tbody className="divide-y divide-border">
-            {items.map(l => (
-              <tr key={l.id} className="hover:bg-muted/30">
-                <td className="whitespace-nowrap px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{l.name}</span></td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.type}</td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.range}</td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.duration}</td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">{l.notes}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <DialogFooter className="pt-4 gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
-        <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
-      </DialogFooter>
-    </DialogContent>
-  </Dialog>
-);
+const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; items: LeaveRequest[]; onApprove: () => void }> = ({ open, onOpenChange, items, onApprove }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-2xl">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Review Selected Requests</DialogTitle><DialogDescription className="sr-only">Review and approve selected leave requests</DialogDescription></DialogHeader>
+          <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
+            <table className="w-full md:min-w-max text-[var(--text-sm)]">
+            <thead><tr className="bg-muted border-b border-border">
+              <th className={thClass}>Employee Name</th><th className={thClass}>Leave Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
+            </tr></thead>
+            <tbody className="divide-y divide-border">
+              {items.map(l => (
+                <tr key={l.id} className="hover:bg-muted/30">
+                  <td className="whitespace-nowrap px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(l.name, language)}</span></td>
+                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.type}</td>
+                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.range}</td>
+                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.duration}</td>
+                  <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">{l.notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 // ── View Leave Detail Modal ──
-const ViewLeaveDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; leave: LeaveRequest | null }> = ({ open, onOpenChange, leave }) => (
-  <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="sm:max-w-md">
-      <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Leave Details</DialogTitle><DialogDescription className="sr-only">Leave request details</DialogDescription></DialogHeader>
-      {leave && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
-            <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{leave.name}</p><p className="text-[var(--text-xs)] text-muted-foreground uppercase">{leave.employeeNumber || '00000'}</p></div>
+const ViewLeaveDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; leave: LeaveRequest | null }> = ({ open, onOpenChange, leave }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Leave Details</DialogTitle><DialogDescription className="sr-only">Leave request details</DialogDescription></DialogHeader>
+        {leave && (
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
+              <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{localizePersonName(leave.name, language)}</p><p className="text-[var(--text-xs)] text-muted-foreground uppercase">{leave.employeeNumber || '00000'}</p></div>
+            </div>
+            <div className="space-y-2 text-[var(--text-sm)]">
+              <InfoRow label="Leave" value={`${leave.type} - ${leave.range} (${leave.duration})`} />
+              <InfoRow label="Notes" value={leave.notes} />
+              {leave.status && <InfoRow label="Status" value={leave.status.charAt(0).toUpperCase() + leave.status.slice(1)} />}
+            </div>
           </div>
-          <div className="space-y-2 text-[var(--text-sm)]">
-            <InfoRow label="Leave" value={`${leave.type} - ${leave.range} (${leave.duration})`} />
-            <InfoRow label="Notes" value={leave.notes} />
-            {leave.status && <InfoRow label="Status" value={leave.status.charAt(0).toUpperCase() + leave.status.slice(1)} />}
-          </div>
-        </div>
-      )}
-      <DialogFooter className="pt-2"><Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Close</Button></DialogFooter>
-    </DialogContent>
-  </Dialog>
-);
+        )}
+        <DialogFooter className="pt-2"><Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Close</Button></DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const EGYPTIAN_HOLIDAYS = [
   { nameEn: 'Eid Al-Fitr', nameAr: 'عيد الفطر' },

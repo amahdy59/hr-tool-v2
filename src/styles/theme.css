@@ -248,8 +248,8 @@
 }
 .accessibility-aaa-targets [role="checkbox"],
 .accessibility-aaa-targets [role="switch"] {
-  min-height: 44px !important;
-  min-width: 44px !important;
+  min-height: 24px !important;
+  min-width: 24px !important;
 }
 .accessibility-aaa-targets a:not(.skip-link):not(.sidebar-link) {
   min-height: 44px;
@@ -752,8 +752,8 @@ html {
   
   [role="checkbox"],
   [role="switch"] {
-    min-height: 44px !important;
-    min-width: 44px !important;
+    min-height: 24px !important;
+    min-width: 24px !important;
   }
   
   a:not(.skip-link):not(.sidebar-link) {

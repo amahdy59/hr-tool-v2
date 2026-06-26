@@ -16,7 +16,8 @@ import {
 } from './ui/select';
 import { cn } from '@/lib/utils';
 import { DatePicker } from './ui/date-picker';
-import { differenceInBusinessDays, parseISO, isValid, format } from 'date-fns';
+import { differenceInBusinessDays, parseISO, isValid } from 'date-fns';
+import { FileText, Upload, X } from 'lucide-react';
 
 interface RequestLeaveModalProps {
   open: boolean;
@@ -46,6 +47,16 @@ const leaveTypes = [
   'Unpaid',
 ];
 
+const attachmentRequiredLeaveTypes = new Set([
+  'Sick',
+  'Maternity',
+  'Paternity',
+  'Family Care',
+  'Hajj',
+  'Marriage',
+  'Bereavement',
+]);
+
 // Balance per leave type (mock data)
 const leaveBalances: Record<string, number> = {
   'Sick': 45,
@@ -70,6 +81,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [notes, setNotes] = useState('');
+  const [attachments, setAttachments] = useState<File[]>([]);
 
   React.useEffect(() => {
     if (open) {
@@ -77,6 +89,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
       setFromDate(initialData?.fromDate || '');
       setToDate(initialData?.toDate || '');
       setNotes(initialData?.notes || '');
+      setAttachments([]);
     }
   }, [open, initialData]);
 
@@ -92,8 +105,12 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
 
   const currentBalance = leaveBalances[leaveType] ?? 21;
   const remainingBalance = Math.max(0, currentBalance - daysRequested);
+  const requiresAttachment = mode === 'add' && attachmentRequiredLeaveTypes.has(leaveType);
+  const attachmentMissing = requiresAttachment && attachments.length === 0;
 
   const handleSubmit = () => {
+    if (attachmentMissing) return;
+
     onSubmit({
       leaveType,
       fromDate,
@@ -240,6 +257,68 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             />
           </div>
 
+          {requiresAttachment && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-3">
+                <label
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: 'var(--font-weight-medium)',
+                  }}
+                  className="text-foreground"
+                >
+                  Attachment required
+                </label>
+                <span className="text-[10px] font-[var(--font-weight-medium)] text-muted-foreground">
+                  PDF, PNG, JPG up to 10MB
+                </span>
+              </div>
+              <label
+                className="flex w-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-[var(--radius)] border border-dashed border-border/80 py-4 text-muted-foreground transition-all duration-200 hover:border-primary/80 hover:bg-primary/5 hover:text-primary focus-within:ring-2 focus-within:ring-ring"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                <input
+                  type="file"
+                  className="sr-only"
+                  multiple
+                  accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
+                  onChange={(event) => {
+                    const files = Array.from(event.target.files ?? []);
+                    setAttachments(files);
+                  }}
+                />
+                <Upload className="h-5 w-5 shrink-0" />
+                <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
+                  Upload file or drag and drop
+                </span>
+                <span className="text-[10px] text-muted-foreground/80">
+                  Required for {leaveType.toLowerCase()} requests
+                </span>
+              </label>
+              {attachments.length > 0 && (
+                <div className="space-y-2">
+                  {attachments.map((file) => (
+                    <div key={`${file.name}-${file.size}`} className="flex items-center gap-2 rounded-[var(--radius-sm)] border border-border bg-muted/30 px-3 py-2">
+                      <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <span className="min-w-0 flex-1 truncate text-[var(--text-xs)] text-foreground">
+                        {file.name}
+                      </span>
+                      <button
+                        type="button"
+                        aria-label={`Remove ${file.name}`}
+                        className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
+                        onClick={() => setAttachments((current) => current.filter((item) => item !== file))}
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Balance Info */}
           <div className="flex justify-between items-end bg-muted/50 p-4 rounded-[var(--radius)] border border-border">
             <div>
@@ -342,7 +421,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
           <Button
             className="w-full bg-chart-3 hover:bg-chart-3/90 text-white"
             onClick={handleSubmit}
-            disabled={daysRequested === 0 || daysRequested > currentBalance}
+            disabled={daysRequested === 0 || daysRequested > currentBalance || attachmentMissing}
           >
             {mode === 'edit' ? 'Save Changes' : '✈ Book time off'}
             {daysRequested > 0 && mode === 'add' && (

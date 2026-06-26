@@ -1197,16 +1197,18 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
     <span
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }}
-      className={cn("group relative px-2 py-1 w-fit rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5 cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
+      className={cn("group relative min-h-8 w-fit rounded-full border px-3 py-1 text-[var(--text-xs)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-1.5 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
       onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
-      {data.name}
+      <span className="flex min-h-[1.25rem] items-center justify-center text-center leading-none">
+        {data.name}
+      </span>
       <button
         type="button"
         onClick={(e) => { e.stopPropagation(); onDelete(); }}
         aria-label={`Delete ${data.name} skill`}
-        className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1 rounded-full"
+        className="flex h-4 w-4 items-center justify-center rounded-full opacity-0 transition-opacity hover:scale-110 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1"
       >
         <X className="w-3 h-3" />
       </button>

@@ -8,15 +8,17 @@ import {
   ResponsiveContainer,
   Tooltip as RechartsTooltip,
   Cell,
+  ReferenceLine,
 } from 'recharts';
 import {
   Search,
   Info,
   Download,
-  ChevronLeft,
-  ChevronRight,
   Filter,
   X,
+  HelpCircle,
+  CheckCircle,
+  XCircle,
 } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
 import { cn } from '@/lib/utils';
@@ -56,14 +58,18 @@ const CHART_COLORS = {
 
 // ── Raw CSS values for recharts (can't use var() directly) ──
 const CHART_RAW_COLORS = {
-  inOffice: '#3F51B5',   // --chart-1 / --primary
+  inOffice: '#1E40AF',   // --chart-1 / --primary
   missions: '#616161',   // --chart-5 / --muted-foreground
   leaves: '#FFCA28',     // --chart-2 / --secondary
-  noShow: '#FF9800',     // --chart-4 / --accent
-  unfilled: '#558B2F',   // --chart-3 / --success
+  noShow: '#9A3412',     // --chart-4 / --accent
+  unfilled: '#166534',   // --chart-3 / --success
 };
 
 // ── Summary chart data ──
+// Company policy: employees must attend from office ≥ 40% of total working hours
+const OFFICE_GOAL_PERCENT = 40;
+const EXPECTED_WORKING_HOURS = 284; // Expected for a typical month (22 days × ~8h + rounding)
+
 const summaryData = [
   {
     id: 'in-office',
@@ -72,6 +78,7 @@ const summaryData = [
     percentage: 53.4,
     color: CHART_RAW_COLORS.inOffice,
     cssColor: CHART_COLORS.inOffice,
+    severity: 'positive' as const,
   },
   {
     id: 'missions',
@@ -80,6 +87,7 @@ const summaryData = [
     percentage: 24.2,
     color: CHART_RAW_COLORS.missions,
     cssColor: CHART_COLORS.missions,
+    severity: 'neutral' as const,
   },
   {
     id: 'leaves',
@@ -88,6 +96,7 @@ const summaryData = [
     percentage: 1.2,
     color: CHART_RAW_COLORS.leaves,
     cssColor: CHART_COLORS.leaves,
+    severity: 'neutral' as const,
   },
   {
     id: 'no-show',
@@ -96,6 +105,7 @@ const summaryData = [
     percentage: 10.1,
     color: CHART_RAW_COLORS.noShow,
     cssColor: CHART_COLORS.noShow,
+    severity: 'negative' as const,
   },
   {
     id: 'unfilled',
@@ -104,10 +114,24 @@ const summaryData = [
     percentage: 11.1,
     color: CHART_RAW_COLORS.unfilled,
     cssColor: CHART_COLORS.unfilled,
+    severity: 'warning' as const,
   },
 ];
 
 const totalHours = summaryData.reduce((s, d) => s + d.hours, 0);
+const officeHours = summaryData.find(d => d.id === 'in-office')?.hours ?? 0;
+const officePercent = totalHours > 0 ? Math.round((officeHours / totalHours) * 1000) / 10 : 0;
+const meetsOfficeGoal = officePercent >= OFFICE_GOAL_PERCENT;
+const officeGoalHours = Math.round((OFFICE_GOAL_PERCENT / 100) * EXPECTED_WORKING_HOURS);
+
+// Severity → color map for #4 (color-coded hours)
+const severityHoursClass = (severity: 'positive' | 'neutral' | 'negative' | 'warning') => {
+  switch (severity) {
+    case 'negative': return 'text-destructive';
+    case 'warning': return 'text-chart-4';
+    default: return 'text-foreground';
+  }
+};
 
 // ── Mock day rows ──
 type DayStatus =
@@ -316,8 +340,8 @@ export const Attendance: React.FC = () => {
             <label className="text-foreground">Search Employees</label>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button className="cursor-pointer">
-                  <Info className="w-4 h-4 text-primary" />
+                <button className="h-11 w-11 cursor-pointer rounded-[var(--radius-sm)] hover:bg-muted" aria-label="Show employee search tips">
+                  <Info className="w-4 h-4 text-primary" aria-hidden="true" />
                 </button>
               </TooltipTrigger>
               <TooltipContent side="top" className="max-w-[260px]">
@@ -346,6 +370,7 @@ export const Attendance: React.FC = () => {
             <Popover open={filterOpen} onOpenChange={setFilterOpen}>
               <PopoverTrigger asChild>
                 <button
+                  aria-label={activeFiltersCount > 0 ? `Open filters, ${activeFiltersCount} active` : 'Open filters'}
                   className={cn(
                     'relative h-[44px] px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center gap-1.5',
                     activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground'
@@ -415,13 +440,13 @@ export const Attendance: React.FC = () => {
       </p>
 
       {/* ── Summary View ── */}
-      <section className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] sm:p-6">
+      <section className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] sm:p-6" aria-labelledby="attendance-summary-heading">
         <div className="mb-5 flex flex-col items-start gap-2 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-muted-foreground">
               Attendance
             </p>
-            <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Summary View</h3>
+            <h3 id="attendance-summary-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Summary View</h3>
           </div>
           <span className="text-[var(--text-xs)] text-muted-foreground bg-muted px-3 py-1 rounded-full">
             {monthLabel} {selectedYear}
@@ -432,6 +457,7 @@ export const Attendance: React.FC = () => {
           {/* Left: summary table */}
           <div className="space-y-0 overflow-x-auto w-full">
             <table className="min-w-[430px] w-full text-start border-collapse cursor-default">
+              <caption className="sr-only">Attendance summary by category, hours, and percentage</caption>
               <thead>
                 <tr className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground border-b border-border">
                   <th className="text-start pb-3 pe-6 font-medium min-w-[180px]">Category</th>
@@ -544,11 +570,12 @@ export const Attendance: React.FC = () => {
       </section>
 
       {/* ── Annual and Sick Leaves ── */}
-      <section className="space-y-3">
-        <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Annual and Sick Leaves</h3>
+      <section className="space-y-3" aria-labelledby="attendance-leave-balances-heading">
+        <h3 id="attendance-leave-balances-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Annual and Sick Leaves</h3>
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+              <caption className="sr-only">Annual and sick leave balance details</caption>
               <thead>
                 <tr className="bg-muted border-b border-border">
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Leave Type</th>
@@ -591,14 +618,14 @@ export const Attendance: React.FC = () => {
       </section>
 
       {/* ── Days View ── */}
-      <section className="space-y-3">
+      <section className="space-y-3" aria-labelledby="attendance-days-heading">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-2">
-            <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Days View</h3>
+            <h3 id="attendance-days-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Days View</h3>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button className="cursor-pointer">
-                  <Info className="w-4 h-4 text-primary" />
+                <button className="h-11 w-11 cursor-pointer rounded-[var(--radius-sm)] hover:bg-muted" aria-label="Show daily attendance table details">
+                  <Info className="w-4 h-4 text-primary" aria-hidden="true" />
                 </button>
               </TooltipTrigger>
               <TooltipContent side="top">
@@ -615,6 +642,7 @@ export const Attendance: React.FC = () => {
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+              <caption className="sr-only">Daily attendance records for the selected employee and period</caption>
               <thead>
                 <tr className="bg-muted border-b border-border">
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Day</th>
@@ -719,8 +747,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Filter Options</span>
-        <button onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
-          <X className="w-4 h-4 text-muted-foreground" />
+        <button onClick={onClose} className="h-11 w-11 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer" aria-label="Close filters">
+          <X className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
         </button>
       </div>
 

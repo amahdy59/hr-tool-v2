@@ -23,6 +23,8 @@ import { toast } from 'sonner';
 import { EmptyState } from './EmptyState';
 import { exportToCSV } from '../../lib/export';
 import { Pagination } from './Pagination';
+import { useTranslation } from 'react-i18next';
+import { localizePersonName } from '@/lib/localizedNames';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -67,6 +69,10 @@ const ACTIVITY_TYPES = ['My team', 'Lead Engineer', 'Application Consultant', 'P
 const EMPLOYMENT_TYPES = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
 
 export const MissionsManagement: React.FC = () => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
+  const displayEmployeeName = (name?: string) => localizePersonName(name, language);
+
   // Pending
   const [pendingSearch, setPendingSearch] = useState('');
   const [selectedPending, setSelectedPending] = useState<string[]>([]);
@@ -171,7 +177,7 @@ export const MissionsManagement: React.FC = () => {
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
                           <div className="flex items-center gap-2">
                             <Checkbox className="md:hidden" checked={selectedPending.includes(m.id)} onCheckedChange={() => togglePending(m.id)} />
-                            <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{m.name}</span>
+                            <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(m.name)}</span>
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{m.type}</td>
@@ -264,7 +270,7 @@ export const MissionsManagement: React.FC = () => {
                   {HISTORY_MISSIONS.map(m => (
                     <tr key={m.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
-                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{m.name}</span>
+                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(m.name)}</span>
                       </td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{m.type}</td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{m.range}</td>
@@ -314,14 +320,14 @@ export const MissionsManagement: React.FC = () => {
 
       {/* Decline */}
       <ConfirmDialog open={declineOpen} onOpenChange={setDeclineOpen}
-        title="Decline Mission" message={<>You are declining <strong>{declineData?.name}</strong>'s {declineData?.type?.toLowerCase()} mission from <strong>{declineData?.range}</strong>. This action is permanent.</>}
+        title="Decline Mission" message={<>You are declining <strong>{displayEmployeeName(declineData?.name)}</strong>'s {declineData?.type?.toLowerCase()} mission from <strong>{declineData?.range}</strong>. This action is permanent.</>}
         confirmLabel="Decline" cancelLabel="Cancel" variant="destructive"
-        onConfirm={() => { setDeclineOpen(false); toast.success(`${declineData?.name}'s mission declined`); }}
+        onConfirm={() => { setDeclineOpen(false); toast.success(`${displayEmployeeName(declineData?.name)}'s mission declined`); }}
       />
 
       {/* Delete */}
       <ConfirmDialog open={deleteOpen} onOpenChange={setDeleteOpen}
-        title="Delete Mission" message={<>You are deleting <strong>{deleteData?.name}</strong>'s mission from <strong>{deleteData?.range}</strong>. This action cannot be undone.</>}
+        title="Delete Mission" message={<>You are deleting <strong>{displayEmployeeName(deleteData?.name)}</strong>'s mission from <strong>{deleteData?.range}</strong>. This action cannot be undone.</>}
         confirmLabel="Confirm" cancelLabel="Cancel" variant="destructive"
         onConfirm={() => { setDeleteOpen(false); toast.success(`Mission deleted successfully`); }}
       />
@@ -423,37 +429,44 @@ const CreateMissionModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
   );
 };
 
-const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; items: MissionRequest[]; onApprove: () => void }> = ({ open, onOpenChange, items, onApprove }) => (
-  <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="sm:max-w-2xl">
-      <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Review Selected Requests</DialogTitle><DialogDescription className="sr-only">Review and approve selected mission requests</DialogDescription></DialogHeader>
-        <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
-          <table className="w-full md:min-w-max text-[var(--text-sm)]">
-          <thead><tr className="bg-muted border-b border-border">
-            <th className={thClass}>Employee Name</th><th className={thClass}>Mission Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
-          </tr></thead>
-          <tbody className="divide-y divide-border">
-            {items.map(m => (
-              <tr key={m.id} className="hover:bg-muted/30">
-                <td className="whitespace-nowrap px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{m.name}</span></td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{m.type}</td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{m.range}</td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{m.duration}</td>
-                <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">{m.notes}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <DialogFooter className="pt-4 gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
-        <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
-      </DialogFooter>
-    </DialogContent>
-  </Dialog>
-);
+const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; items: MissionRequest[]; onApprove: () => void }> = ({ open, onOpenChange, items, onApprove }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-2xl">
+        <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Review Selected Requests</DialogTitle><DialogDescription className="sr-only">Review and approve selected mission requests</DialogDescription></DialogHeader>
+          <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
+            <table className="w-full md:min-w-max text-[var(--text-sm)]">
+            <thead><tr className="bg-muted border-b border-border">
+              <th className={thClass}>Employee Name</th><th className={thClass}>Mission Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
+            </tr></thead>
+            <tbody className="divide-y divide-border">
+              {items.map(m => (
+                <tr key={m.id} className="hover:bg-muted/30">
+                  <td className="whitespace-nowrap px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(m.name, language)}</span></td>
+                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{m.type}</td>
+                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{m.range}</td>
+                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{m.duration}</td>
+                  <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">{m.notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const ViewMissionDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; mission: MissionRequest | null }> = ({ open, onOpenChange, mission }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
   const [detailTab, setDetailTab] = useState<'details' | 'history'>('details');
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -462,7 +475,7 @@ const ViewMissionDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
         {mission && (
           <div className="space-y-4">
             <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
-              <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{mission.name}</p><p className="text-[var(--text-xs)] text-muted-foreground">{mission.employeeNumber || '00000'}</p></div>
+              <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{localizePersonName(mission.name, language)}</p><p className="text-[var(--text-xs)] text-muted-foreground">{mission.employeeNumber || '00000'}</p></div>
             </div>
             <div className="flex border-b border-border gap-4">
               <button onClick={() => setDetailTab('details')} className={cn('border-b-2 border-transparent pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'details' ? 'border-accent text-accent font-[var(--font-weight-semibold)]' : 'text-muted-foreground hover:text-foreground')}>Details</button>

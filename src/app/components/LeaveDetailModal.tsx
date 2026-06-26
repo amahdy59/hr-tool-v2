@@ -9,7 +9,6 @@ import {
 import { Button } from './ui/button';
 import {
   FileText,
-  Upload,
   Check,
   Eye,
   Calendar,
@@ -273,17 +272,6 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                 </div>
               ))}
             </div>
-
-            {/* Premium Upload Drop Zone */}
-            <button
-              type="button"
-              className="w-full border border-dashed border-border/80 hover:border-primary/80 hover:bg-primary/5 transition-all duration-200 py-3 rounded-[var(--radius)] flex flex-col items-center justify-center gap-1.5 text-muted-foreground hover:text-primary cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              <Upload className="w-5 h-5 shrink-0" />
-              <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">Upload file or drag and drop</span>
-              <span className="text-[10px] text-muted-foreground/80">PDF, PNG, JPG up to 10MB</span>
-            </button>
           </div>
 
           {/* Notes / Timeline Section */}
