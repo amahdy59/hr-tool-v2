@@ -64,12 +64,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
   
   const NavButton = ({ item }: { item: typeof navItems[number] }) => {
     const isActive = activeTab === item.id;
+    const itemLabel = t(`sidebar.${item.id}`);
     const button = (
       <button
         onClick={() => setActiveTab(item.id)}
         aria-current={isActive ? 'page' : undefined}
+        aria-label={itemLabel}
         className={cn(
-          'relative flex min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-0 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-start',
+          'relative flex min-h-11 min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-11 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-start',
           sidebarItemTextClass,
           collapsed ? 'sm:justify-center' : 'sm:justify-start',
           isActive
@@ -109,7 +111,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         <Tooltip>
           <TooltipTrigger asChild>{button}</TooltipTrigger>
           <TooltipContent side="right" sideOffset={8} className="hidden sm:block text-[var(--text-sm)] font-[var(--font-weight-medium)]">
-            {t(`sidebar.${item.id}`)}
+            {itemLabel}
           </TooltipContent>
         </Tooltip>
       );
@@ -138,7 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         </div>
 
         {/* Navigation */}
-        <nav aria-label="Main navigation" className="flex-1 flex flex-col gap-1 overflow-y-auto p-3">
+        <nav aria-label={t('sidebar.mainNavigation', 'Main navigation')} className="flex-1 flex flex-col gap-1 overflow-y-auto p-3">
           <ul className="flex flex-col gap-1 w-full m-0 p-0 list-none">
             {navItems.map((item) => (
               <li key={item.id} className="w-full">
@@ -158,6 +160,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                 onLogout();
               }
             };
+            const itemLabel = item.id === 'profile'
+              ? (displayName ? `${t('sidebar.profile', 'Profile')}: ${displayName}` : t('sidebar.profile', 'Profile'))
+              : t('sidebar.logout', 'Log out');
 
             const IconContent = item.id === 'profile' ? (
               currentUser?.image ? (
@@ -187,8 +192,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                   <TooltipTrigger asChild>
                     <button
                       onClick={handleClick}
+                      aria-label={itemLabel}
                       className={cn(
-                        'w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+                        'w-full min-h-11 flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
                         sidebarItemTextClass
                       )}
                     >
@@ -196,7 +202,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side="right" sideOffset={8} className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
-                    {t(`sidebar.${item.id}`)}
+            {itemLabel}
                   </TooltipContent>
                 </Tooltip>
               );
@@ -206,8 +212,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
               <button
                 key={item.id}
                 onClick={handleClick}
+                aria-label={itemLabel}
                 className={cn(
-                  'w-full flex items-center justify-start gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring text-start',
+                  'w-full min-h-11 flex items-center justify-start gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring text-start',
                   sidebarItemTextClass
                 )}
               >
@@ -220,8 +227,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
           {/* Collapse toggle */}
           <button
             onClick={onToggle}
+            aria-label={collapsed ? t('sidebar.expand', 'Expand sidebar') : t('sidebar.collapse', 'Collapse sidebar')}
+            aria-expanded={!collapsed}
             className={cn(
-              'w-full flex items-center gap-3 px-3 py-2 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+              'w-full min-h-11 flex items-center gap-3 px-3 py-2 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
               sidebarItemTextClass,
               collapsed ? 'justify-center' : 'justify-start text-start'
             )}

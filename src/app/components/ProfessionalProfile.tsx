@@ -16,6 +16,8 @@ import { Resume } from './Resume';
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const sectionIdFromTitle = (title: string) => `professional-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 const maskPhoneNumber = (phone: string): string => {
   if (!phone || phone.includes('*')) return phone;
   return phone.replace(/(\+?\d{2,3}\s?\d{2,3}|0\d{2,3})([\s-]?\d+)(\d{3})$/, '$1 *** $3');
@@ -715,10 +717,10 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
   const completionScore = calculateCompletion();
 
   return (
-    <div className="space-y-6">
+    <section aria-labelledby="professional-profile-heading" className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Professional Profile</h3>
-        <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <h3 id="professional-profile-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Professional Profile</h3>
+        <p className="text-[var(--text-xs)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
           Last updated: {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </p>
       </div>
@@ -735,14 +737,14 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
             <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
               <div className="bg-chart-3 h-full rounded-full transition-all duration-500" style={{ width: `${completionScore}%` }} />
             </div>
-            <p className="text-[var(--text-xs)] text-muted-foreground mt-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <p className="text-[var(--text-xs)] text-foreground mt-2" style={{ fontFamily: "'Inter', sans-serif" }}>
               {completionScore === 100 ? 'Your profile is complete!' : 'Add more details to strengthen your profile'}
             </p>
           </div>
 
           {/* About */}
           <ProfileCard title="About Me" onEdit={() => setEditAboutOpen(true)}>
-            <p className="text-[var(--text-sm)] text-muted-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{about}</p>
+            <p className="text-[var(--text-sm)] text-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{about}</p>
           </ProfileCard>
 
           {/* Contact Information */}
@@ -754,9 +756,9 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
                   {maskPhoneNumber(contact.phone)}
                 </span>
               </div>
-              <div className="flex items-center gap-2.5 text-primary"><Globe className="w-4 h-4" /> <a href={`https://${contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{contact.linkedin}</a></div>
-              <div className="flex items-center gap-2.5 text-primary"><Globe className="w-4 h-4" /> <a href={`https://${contact.dribbble}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{contact.dribbble}</a></div>
-              <p className="text-[var(--text-xs)] text-muted-foreground">Email is hidden from the public profile and PDF export.</p>
+              <div className="flex items-center gap-2.5 text-foreground"><Globe className="w-4 h-4 text-primary" /> <a href={`https://${contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="font-medium underline decoration-primary underline-offset-4 hover:text-primary">{contact.linkedin}<span className="sr-only"> opens in a new tab</span></a></div>
+              <div className="flex items-center gap-2.5 text-foreground"><Globe className="w-4 h-4 text-primary" /> <a href={`https://${contact.dribbble}`} target="_blank" rel="noopener noreferrer" className="font-medium underline decoration-primary underline-offset-4 hover:text-primary">{contact.dribbble}<span className="sr-only"> opens in a new tab</span></a></div>
+              <p className="text-[var(--text-xs)] text-foreground">Email is hidden from the public profile and PDF export.</p>
             </div>
           </ProfileCard>
 
@@ -939,7 +941,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </section>
   );
 };
 
@@ -947,18 +949,21 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
 // ── Reusable Components ──
 // ════════════════════════════════════
 
-const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?: () => void; showAdd?: boolean; onAdd?: () => void }> = ({ title, children, onEdit, showAdd, onAdd }) => (
-  <div className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] space-y-3">
+const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?: () => void; showAdd?: boolean; onAdd?: () => void }> = ({ title, children, onEdit, showAdd, onAdd }) => {
+  const headingId = sectionIdFromTitle(title);
+  return (
+  <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] space-y-3">
     <div className="flex items-center justify-between border-b border-border pb-2">
-      <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
+      <span id={headingId} className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
       <div className="flex gap-1">
-        {showAdd && <button onClick={onAdd} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" aria-label={`Add ${title}`}><Plus className="w-4 h-4" /></button>}
-        {onEdit && <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer" aria-label={`Edit ${title}`}><Pencil className="w-4 h-4" /></button>}
+        {showAdd && <button onClick={onAdd} className={iconButtonClass} aria-label={`Add ${title}`}><Plus className="w-4 h-4" /></button>}
+        {onEdit && <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${title}`}><Pencil className="w-4 h-4" /></button>}
       </div>
     </div>
     {children}
-  </div>
-);
+  </section>
+  );
+};
 
 const ExperienceItem: React.FC<{
   data: ExperienceData;
@@ -998,15 +1003,15 @@ const ExperienceItem: React.FC<{
           <p className="text-sm font-bold text-foreground pt-0.5">{data.role}</p>
 
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
               {data.currentlyWorking ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}
             </span>
             {data.location && (
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
                 {data.location}
               </span>
             )}
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
               {data.employmentType}
             </span>
           </div>
@@ -1033,10 +1038,10 @@ const ExperienceItem: React.FC<{
       </div>
 
       <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
-        {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
-        {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
-        <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
-        <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-sm text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
+        {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.company} experience up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
+        {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.company} experience down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
+        <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.company} experience`} title="Edit"><Pencil className="w-4 h-4" /></button>
+        <button onClick={onDelete} className={cn(iconButtonClass, 'hover:bg-destructive/10 hover:text-destructive')} aria-label={`Delete ${data.company} experience`} title="Delete"><Trash2 className="w-4 h-4" /></button>
       </div>
     </div>
   );
@@ -1070,11 +1075,11 @@ const EducationItem: React.FC<{
         <p className="text-sm font-bold text-foreground pt-0.5">{data.degree}{data.fieldOfStudy && `, ${data.fieldOfStudy}`}</p>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
             {data.currentlyStudying ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}
           </span>
           {data.grade && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-muted-foreground whitespace-nowrap">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
               Grade: {data.grade}
             </span>
           )}
@@ -1083,10 +1088,10 @@ const EducationItem: React.FC<{
     </div>
 
     <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
-      {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
-      {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
-      <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
-      <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-sm text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
+      {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.school} education up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
+      {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.school} education down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
+      <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.school} education`} title="Edit"><Pencil className="w-4 h-4" /></button>
+      <button onClick={onDelete} className={cn(iconButtonClass, 'hover:bg-destructive/10 hover:text-destructive')} aria-label={`Delete ${data.school} education`} title="Delete"><Trash2 className="w-4 h-4" /></button>
     </div>
   </div>
 );
@@ -1105,11 +1110,11 @@ const ProjectItem: React.FC<{
         <h3 className="text-base font-bold text-foreground">{data.title}</h3>
         {data.featured && <span title="Featured project"><Star className="w-4 h-4 text-[#0F766E] fill-[#0F766E] dark:text-[#2DD4BF] dark:fill-[#2DD4BF]" /></span>}
       </div>
-      <span className="px-2 py-1 bg-muted/50 text-muted-foreground rounded-full text-xs font-medium shrink-0 w-fit">
+      <span className="px-2 py-1 bg-muted/50 text-foreground rounded-full text-xs font-medium shrink-0 w-fit">
         {data.category}
       </span>
     </div>
-    <p className="text-sm text-muted-foreground">
+    <p className="text-sm text-foreground">
       {data.role} - {data.issueDate}
     </p>
     <p className="text-sm text-foreground/90 leading-relaxed pt-1">
@@ -1128,16 +1133,16 @@ const ProjectItem: React.FC<{
       <div className="pt-3">
         <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
           <a href={/^https?:\/\//i.test(data.url) ? data.url : `https://${data.url}`} target="_blank" rel="noopener noreferrer">
-            View Project <ExternalLink className="w-3.5 h-3.5" />
+            View Project <ExternalLink className="w-3.5 h-3.5" /><span className="sr-only"> opens in a new tab</span>
           </a>
         </Button>
       </div>
     )}
     <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
-      {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
-      {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
-      <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
-      <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-sm text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
+      {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.title} project up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
+      {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.title} project down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
+      <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.title} project`} title="Edit"><Pencil className="w-4 h-4" /></button>
+      <button onClick={onDelete} className={cn(iconButtonClass, 'hover:bg-destructive/10 hover:text-destructive')} aria-label={`Delete ${data.title} project`} title="Delete"><Trash2 className="w-4 h-4" /></button>
     </div>
   </div>
 );
@@ -1158,8 +1163,8 @@ const CertificationItem: React.FC<{
         <h3 className="text-base font-bold text-foreground">{data.title}</h3>
         {isExpired && <span className="px-2 py-0.5 bg-[#FDECEC] text-[#7F1D1D] border border-[#B91C1C] rounded-full text-xs font-semibold">Expired</span>}
       </div>
-      <p className="text-sm text-muted-foreground">{data.issuer}</p>
-      <p className="text-sm text-muted-foreground pt-1">
+      <p className="text-sm text-foreground">{data.issuer}</p>
+      <p className="text-sm text-foreground pt-1">
         Issued {data.issueDate}{data.expiryDate && ` - Expires ${data.expiryDate}`}
         {data.credentialId && ` - ID: ${data.credentialId}`}
       </p>
@@ -1167,16 +1172,16 @@ const CertificationItem: React.FC<{
         <div className="pt-3">
           <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
             <a href={/^https?:\/\//i.test(data.credentialUrl) ? data.credentialUrl : `https://${data.credentialUrl}`} target="_blank" rel="noopener noreferrer">
-              Show Credential <ExternalLink className="w-3.5 h-3.5" />
+              Show Credential <ExternalLink className="w-3.5 h-3.5" /><span className="sr-only"> opens in a new tab</span>
             </a>
           </Button>
         </div>
       )}
       <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
-        {!isFirst && <button onClick={() => onMove('up')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move up"><ChevronUp className="w-4 h-4" /></button>}
-        {!isLast && <button onClick={() => onMove('down')} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Move down"><ChevronDown className="w-4 h-4" /></button>}
-        <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" title="Edit"><Pencil className="w-4 h-4" /></button>
-        <button onClick={onDelete} className="p-1.5 hover:bg-destructive/10 rounded-sm text-muted-foreground hover:text-destructive transition-colors cursor-pointer" title="Delete"><Trash2 className="w-4 h-4" /></button>
+        {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.title} certification up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
+        {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.title} certification down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
+        <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.title} certification`} title="Edit"><Pencil className="w-4 h-4" /></button>
+        <button onClick={onDelete} className={cn(iconButtonClass, 'hover:bg-destructive/10 hover:text-destructive')} aria-label={`Delete ${data.title} certification`} title="Delete"><Trash2 className="w-4 h-4" /></button>
       </div>
     </div>
   );

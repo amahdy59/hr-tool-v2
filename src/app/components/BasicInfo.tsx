@@ -17,6 +17,8 @@ import { localizePersonName } from '@/lib/localizedNames';
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const sectionIdFromTitle = (title: string) => `basic-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
 // Helper function to get initials from name
 const getInitials = (name: string): string => {
@@ -261,13 +263,15 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
                   <div className="flex gap-1 shrink-0">
                     <button
                       onClick={() => handleEditEmergency(contact)}
-                      className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                      aria-label={`Edit emergency contact ${contact.name}`}
+                      className={iconButtonClass}
                     >
                       <Pencil className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleDeleteEmergency(contact.id)}
-                      className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
+                      aria-label={`Delete emergency contact ${contact.name}`}
+                      className={cn(iconButtonClass, 'hover:bg-destructive/10 hover:text-destructive')}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -298,10 +302,10 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
       </ProfileCard>
 
       {/* Employment Details - Read Only */}
-      <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
+      <section aria-labelledby="basic-profile-employment-details" className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
         {/* Card Header */}
         <div className="flex items-center justify-between border-b border-border pb-2.5 mb-6">
-          <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Employment Details</span>
+          <span id="basic-profile-employment-details" className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Employment Details</span>
         </div>
 
         {/* Role Information Section */}
@@ -375,7 +379,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
             Request Update
           </Button>
         </div>
-      </div>
+      </section>
 
       {/* Bank Accounts - Controlled Access */}
       <ProfileCard title="Bank Accounts" locked icon={<Shield className="w-4 h-4 text-muted-foreground" />}>
@@ -463,21 +467,24 @@ const ProfileCard: React.FC<{
   onAdd?: () => void;
   locked?: boolean;
   icon?: React.ReactNode;
-}> = ({ title, children, onEdit, showAdd, onAdd, locked, icon }) => (
-  <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+}> = ({ title, children, onEdit, showAdd, onAdd, locked, icon }) => {
+  const headingId = sectionIdFromTitle(title);
+  return (
+  <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
     <div className="flex items-center justify-between border-b border-border pb-2.5">
       <div className="flex items-center gap-2">
-        <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
+        <span id={headingId} className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
         {icon}
       </div>
       <div className="flex gap-1">
-        {showAdd && <button onClick={onAdd} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Plus className="w-4 h-4" /></button>}
-        {onEdit && !locked && <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Pencil className="w-4 h-4" /></button>}
+        {showAdd && <button onClick={onAdd} aria-label={`Add ${title}`} className={iconButtonClass}><Plus className="w-4 h-4" /></button>}
+        {onEdit && !locked && <button onClick={onEdit} aria-label={`Edit ${title}`} className={iconButtonClass}><Pencil className="w-4 h-4" /></button>}
       </div>
     </div>
     {children}
-  </div>
-);
+  </section>
+  );
+};
 
 const InfoItem: React.FC<{ label: string; value: string; sensitive?: boolean; inline?: boolean }> = ({ label, value, sensitive, inline }) => (
   <div className={cn("flex gap-3 text-[var(--text-sm)]", inline ? "flex-col" : "flex-row items-start")} style={{ fontFamily: "'Inter', sans-serif" }}>

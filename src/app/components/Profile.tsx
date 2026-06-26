@@ -26,6 +26,7 @@ const ProfessionalProfile = lazy(() =>
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 
 interface DocumentItem {
   id: string;
@@ -122,10 +123,10 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
   ];
 
   return (
-    <div className="px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
+    <main aria-labelledby="profile-heading" className="px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: "var(--page-title-size)", fontWeight: "var(--page-title-weight)" }} className="text-foreground">Profile</h2>
+        <h2 id="profile-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: "var(--page-title-size)", fontWeight: "var(--page-title-weight)" }} className="text-foreground">Profile</h2>
       </div>
 
       {/* Tabs */}
@@ -160,8 +161,10 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
         </div>
       </div>
 
-      <div id={`profile-panel-${activeTab}`} role="tabpanel" aria-labelledby={`profile-tab-${activeTab}`} className="min-h-[560px]">
+      <div id="profile-panel-basic" role="tabpanel" aria-labelledby="profile-tab-basic" hidden={activeTab !== 'basic'} className="min-h-[560px]">
         {activeTab === 'basic' && <BasicInfo currentUser={currentUser} onUpdateImage={onUpdateImage} />}
+      </div>
+      <div id="profile-panel-professional" role="tabpanel" aria-labelledby="profile-tab-professional" hidden={activeTab !== 'professional'} className="min-h-[560px]">
         {activeTab === 'professional' && (
           <Suspense
             fallback={
@@ -173,9 +176,11 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
             <ProfessionalProfile currentUser={currentUser} />
           </Suspense>
         )}
+      </div>
+      <div id="profile-panel-documents" role="tabpanel" aria-labelledby="profile-tab-documents" hidden={activeTab !== 'documents'} className="min-h-[560px]">
         {activeTab === 'documents' && <DownloadCenter searchQuery={searchQuery} />}
       </div>
-    </div>
+    </main>
   );
 };
 
@@ -237,10 +242,10 @@ const DownloadCenter: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <section aria-labelledby="download-center-heading" className="space-y-6">
       <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">My Documents</h3>
+        <h3 id="download-center-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">My Documents</h3>
         <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => openPicker()}>
           <Upload className="w-4 h-4" /> Upload Document
         </Button>
@@ -262,7 +267,7 @@ const DownloadCenter: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
@@ -287,8 +292,8 @@ const LegacyDownloadCenter = () => (
             <p className="text-[var(--text-xs)] text-muted-foreground">65% • 10 seconds remaining</p>
           </div>
           <div className="flex gap-1.5">
-            <button className="p-1.5 text-muted-foreground hover:bg-muted rounded-[var(--radius-sm)] cursor-pointer transition-colors"><Pause className="w-4 h-4" /></button>
-            <button className="p-1.5 text-destructive hover:bg-destructive/10 rounded-[var(--radius-sm)] cursor-pointer transition-colors"><X className="w-4 h-4" /></button>
+            <button aria-label="Pause upload" className={iconButtonClass}><Pause className="w-4 h-4" /></button>
+            <button aria-label="Cancel upload" className={cn(iconButtonClass, 'text-destructive hover:bg-destructive/10 hover:text-destructive')}><X className="w-4 h-4" /></button>
           </div>
         </div>
         <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
@@ -304,13 +309,13 @@ const LegacyDownloadCenter = () => (
 // ════════════════════════════════════
 
 const InfoSection: React.FC<{ title: string; onEdit?: () => void; children: React.ReactNode }> = ({ title, onEdit, children }) => (
-  <div className="space-y-3">
+  <section aria-labelledby={`profile-info-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="space-y-3">
     <div className="flex items-center justify-between border-b border-border pb-2">
-      <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</span>
-      {onEdit && <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Pencil className="w-4 h-4" /></button>}
+      <span id={`profile-info-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</span>
+      {onEdit && <button onClick={onEdit} aria-label={`Edit ${title}`} className={iconButtonClass}><Pencil className="w-4 h-4" /></button>}
     </div>
     <div className="space-y-2.5">{children}</div>
-  </div>
+  </section>
 );
 
 const InfoItem: React.FC<{ label: string; value: string }> = ({ label, value }) => (
@@ -320,18 +325,21 @@ const InfoItem: React.FC<{ label: string; value: string }> = ({ label, value }) 
   </div>
 );
 
-const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?: () => void; showAdd?: boolean; onAdd?: () => void }> = ({ title, children, onEdit, showAdd, onAdd }) => (
-  <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?: () => void; showAdd?: boolean; onAdd?: () => void }> = ({ title, children, onEdit, showAdd, onAdd }) => {
+  const headingId = `profile-card-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  return (
+  <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
     <div className="flex items-center justify-between border-b border-border pb-2.5">
-      <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</span>
+      <span id={headingId} className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</span>
       <div className="flex gap-1">
-        {showAdd && <button onClick={onAdd} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Plus className="w-4 h-4" /></button>}
-        {onEdit && <button onClick={onEdit} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"><Pencil className="w-4 h-4" /></button>}
+        {showAdd && <button onClick={onAdd} aria-label={`Add ${title}`} className={iconButtonClass}><Plus className="w-4 h-4" /></button>}
+        {onEdit && <button onClick={onEdit} aria-label={`Edit ${title}`} className={iconButtonClass}><Pencil className="w-4 h-4" /></button>}
       </div>
     </div>
     {children}
-  </div>
-);
+  </section>
+  );
+};
 
 const ExperienceItem: React.FC<{ company: string; role: string; period: string; desc: string; onEdit?: () => void }> = ({ company, role, period, desc, onEdit }) => (
   <div className="relative group">
@@ -345,7 +353,8 @@ const ExperienceItem: React.FC<{ company: string; role: string; period: string; 
     {onEdit && (
       <button 
         onClick={onEdit}
-        className="absolute top-0 end-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+        aria-label={`Edit ${company} experience`}
+        className={cn(iconButtonClass, 'absolute top-0 end-0 opacity-0 group-hover:opacity-100 transition-all')}
       >
         <Pencil className="w-4 h-4" />
       </button>
@@ -364,7 +373,8 @@ const EducationItem: React.FC<{ school: string; degree: string; period: string; 
     {onEdit && (
       <button 
         onClick={onEdit}
-        className="absolute top-0 end-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+        aria-label={`Edit ${school} education`}
+        className={cn(iconButtonClass, 'absolute top-0 end-0 opacity-0 group-hover:opacity-100 transition-all')}
       >
         <Pencil className="w-4 h-4" />
       </button>
@@ -380,12 +390,13 @@ const ProjectItem: React.FC<{ title: string; date: string; desc: string; onEdit?
     <p className="text-[var(--text-xs)] text-muted-foreground">Issued {date}</p>
     <p className="text-[var(--text-sm)] text-muted-foreground">{desc}</p>
     <Button variant="outline" size="sm" className="gap-1.5 mt-1 text-[var(--text-xs)]">
-      Show Credential <ExternalLink className="w-3 h-3" />
+      Show Credential <ExternalLink className="w-3 h-3" /><span className="sr-only"> opens in a new tab</span>
     </Button>
     {onEdit && (
       <button 
         onClick={onEdit}
-        className="absolute top-0 end-0 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+        aria-label={`Edit ${title} project`}
+        className={cn(iconButtonClass, 'absolute top-0 end-0 opacity-0 group-hover:opacity-100 transition-all')}
       >
         <Pencil className="w-4 h-4" />
       </button>
@@ -399,7 +410,7 @@ const CertificationItem: React.FC<{ title: string; issuer: string; date: string 
     <p className="text-[var(--text-xs)] text-muted-foreground">{issuer}</p>
     <p className="text-[var(--text-xs)] text-muted-foreground">{date}</p>
     <Button variant="outline" size="sm" className="gap-1.5 mt-1 text-[var(--text-xs)]">
-      Show Credential <ExternalLink className="w-3 h-3" />
+      Show Credential <ExternalLink className="w-3 h-3" /><span className="sr-only"> opens in a new tab</span>
     </Button>
   </div>
 );
@@ -427,8 +438,8 @@ const DocumentCard: React.FC<{
       <div className="w-full md:w-60 h-36 bg-muted relative group shrink-0">
         <ImageWithFallback src={item.img} alt="" className="w-full h-full object-cover opacity-85" />
         <div className="absolute inset-0 flex items-center justify-between px-2">
-          <button type="button" aria-label={`Previous preview for ${item.title}`} className="p-1 bg-card/70 rounded-full hover:bg-card transition-colors cursor-pointer"><ChevronLeft className="w-4 h-4 text-foreground" /></button>
-          <button type="button" aria-label={`Next preview for ${item.title}`} className="p-1 bg-card/70 rounded-full hover:bg-card transition-colors cursor-pointer"><ChevronRight className="w-4 h-4 text-foreground" /></button>
+          <button type="button" aria-label={`Previous preview for ${item.title}`} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-card/80 transition-colors hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"><ChevronLeft className="w-4 h-4 text-foreground" /></button>
+          <button type="button" aria-label={`Next preview for ${item.title}`} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-card/80 transition-colors hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"><ChevronRight className="w-4 h-4 text-foreground" /></button>
         </div>
       </div>
       <div className="flex-1 p-5 flex flex-col justify-center gap-3">

@@ -304,7 +304,7 @@ export default function App() {
           setActiveTab={setActiveTab}
           onLogout={handleLogout}
         />
-        <main ref={mainRef} id="main-content" className="flex-1 overflow-y-auto bg-muted cursor-default pb-24 lg:pb-6 pt-16">
+        <main ref={mainRef} id="main-content" aria-label={t('common.mainContent', 'Main content')} className="flex-1 overflow-y-auto bg-muted cursor-default pb-24 lg:pb-6 pt-16">
           {renderContent()}
         </main>
       </div>

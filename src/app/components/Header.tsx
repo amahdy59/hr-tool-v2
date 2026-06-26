@@ -89,7 +89,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
             </div>
 
             {/* Nav Links */}
-            <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-1">
+            <nav aria-label={t('sidebar.mainNavigation', 'Main navigation')} className="flex-1 overflow-y-auto py-2 px-3 space-y-1">
               {[
                 { id: 'dashboard', label: t('sidebar.dashboard'), icon: LayoutDashboard },
                 { id: 'attendance', label: t('sidebar.attendance'), icon: CalendarCheck },
