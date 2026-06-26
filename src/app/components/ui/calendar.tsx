@@ -18,6 +18,9 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
   const currentYear = displayMonth.getFullYear();
   const currentMonth = displayMonth.getMonth();
+  const isRtl = typeof document !== "undefined" && document.documentElement.dir === "rtl";
+  const PreviousMonthIcon = isRtl ? ChevronRight : ChevronLeft;
+  const NextMonthIcon = isRtl ? ChevronLeft : ChevronRight;
 
   const years = Array.from({ length: toYear - fromYear + 1 }, (_, i) => fromYear + i);
   const months = [
@@ -37,7 +40,7 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
         disabled={!previousMonth}
         aria-label="Previous month"
       >
-        <ChevronLeft className="h-5 w-5" />
+        <PreviousMonthIcon className="calendar-nav-icon h-5 w-5" />
       </button>
 
       <div className="flex flex-1 gap-2 items-center justify-center">
@@ -84,7 +87,7 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
         disabled={!nextMonth}
         aria-label="Next month"
       >
-        <ChevronRight className="h-5 w-5" />
+        <NextMonthIcon className="calendar-nav-icon h-5 w-5" />
       </button>
     </div>
   );
@@ -144,8 +147,8 @@ function Calendar({
       }}
       components={{
         Caption: CalendarCaption,
-        IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-        IconRight: () => <ChevronRight className="h-4 w-4" />,
+        IconLeft: () => <ChevronLeft className="calendar-nav-icon h-4 w-4" />,
+        IconRight: () => <ChevronRight className="calendar-nav-icon h-4 w-4" />,
       }}
       {...props}
     />

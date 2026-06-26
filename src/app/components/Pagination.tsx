@@ -20,6 +20,8 @@ export const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+  const PreviousIcon = isArabic ? ChevronRight : ChevronLeft;
+  const NextIcon = isArabic ? ChevronLeft : ChevronRight;
 
   const handlePageClick = (page: number) => {
     if (page >= 1 && page <= totalPages && page !== currentPage) {
@@ -100,7 +102,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           )}
           aria-label={t('pagination.previous', 'Previous Page')}
         >
-          <ChevronLeft className={cn("w-4.5 h-4.5 text-foreground transition-transform", isArabic && "rotate-180")} />
+          <PreviousIcon className="pagination-nav-icon w-4.5 h-4.5 text-foreground" />
         </button>
 
         {/* Page numbers */}
@@ -146,7 +148,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           )}
           aria-label={t('pagination.next', 'Next Page')}
         >
-          <ChevronRight className={cn("w-4.5 h-4.5 text-foreground transition-transform", isArabic && "rotate-180")} />
+          <NextIcon className="pagination-nav-icon w-4.5 h-4.5 text-foreground" />
         </button>
       </div>
     </div>

@@ -833,7 +833,8 @@ input[type="tel"] {
   transform: scaleX(-1);
 }
 
-[dir="rtl"] .calendar-nav-icon {
+[dir="rtl"] .calendar-nav-icon,
+[dir="rtl"] .pagination-nav-icon {
   transform: none;
 }
 
