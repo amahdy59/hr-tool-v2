@@ -346,6 +346,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
       totalPages={totalPages}
       itemsPerPage={15}
       onPageChange={setPage}
+      onItemsPerPageChange={() => setPage(1)}
     />
   );
 };
@@ -454,6 +455,7 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
               ))}
             </tbody>
           </table>
+          <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>

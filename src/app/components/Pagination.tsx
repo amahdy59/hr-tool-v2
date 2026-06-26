@@ -59,10 +59,6 @@ export const Pagination: React.FC<PaginationProps> = ({
     return pages;
   };
 
-  if (totalPages <= 1 && !onItemsPerPageChange) {
-    return null;
-  }
-
   const pageNumbers = getPageNumbers();
 
   return (

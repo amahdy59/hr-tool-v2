@@ -571,6 +571,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </tbody>
             </table>
           </div>
+          <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
           <div className="flex gap-3 p-4 bg-primary/5 rounded-[var(--radius)] border border-primary/15">
             <Info className="w-5 h-5 text-primary shrink-0" />
             <p className="text-[var(--text-sm)] font-[var(--font-weight-normal)] text-foreground">
@@ -646,6 +647,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </tbody>
             </table>
           </div>
+          <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
         </section>
       </div>
 

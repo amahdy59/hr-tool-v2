@@ -672,6 +672,7 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
       totalPages={totalPages}
       itemsPerPage={15}
       onPageChange={setPage}
+      onItemsPerPageChange={() => setPage(1)}
     />
   );
 };
@@ -906,6 +907,7 @@ const FormerEmployeeModal: React.FC<{
                 ))}
               </tbody>
             </table>
+            <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
           </div>
         </div>
 
@@ -1026,6 +1028,7 @@ const AccessCardsModal: React.FC<{
                     ))}
                   </tbody>
                 </table>
+                <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
               </div>
             </div>
           </div>
