@@ -879,3 +879,61 @@ input[type="tel"] {
 .dark .border-input {
   border-color: var(--border) !important;
 }
+
+/* Final form control outline normalization.
+   Keep this outside Tailwind layers so date-picker button triggers, native inputs,
+   and Radix select triggers all retain the same visible field outline. */
+:where(
+  .form-control,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  textarea,
+  select,
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"],
+  [data-slot="date-picker-trigger"]
+) {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-input) !important;
+  background-color: var(--input-background) !important;
+  color: var(--foreground);
+  box-shadow: none;
+}
+
+:where(
+  .form-control,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  textarea,
+  select,
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"],
+  [data-slot="date-picker-trigger"]
+):hover {
+  border-color: var(--border) !important;
+  background-color: var(--input-background) !important;
+}
+
+:where(
+  .form-control,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  textarea,
+  select,
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"],
+  [data-slot="date-picker-trigger"]
+):focus,
+:where(
+  .form-control,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  textarea,
+  select,
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"],
+  [data-slot="date-picker-trigger"]
+):focus-visible {
+  border-color: var(--ring) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 28%, transparent) !important;
+}

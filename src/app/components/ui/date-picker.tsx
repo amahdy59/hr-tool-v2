@@ -56,6 +56,7 @@ export function DatePicker({
         <Button
           variant="outline"
           disabled={disabled}
+          data-slot="date-picker-trigger"
           className={cn(
             "form-control w-full justify-start text-start min-h-[44px] h-[44px] px-3 font-normal text-[var(--text-sm)] rounded-[var(--radius-input)] border border-border bg-input-background text-foreground hover:bg-input-background focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
             !selectedDate && "text-muted-foreground",
