@@ -1,16 +1,3 @@
-# HR Tool V2
-
-HR Tool V2 is a React + Vite implementation of a modern HR management interface based on the “HR System Development” Figma design system. It focuses on reusable components and clean, data-centric layouts for HR workflows.
-
-Original Figma project: [Figma Link](https://www.figma.com/design/Z8lVZssRryEplcmvDfDnnQ/HR-System-Development)
-
----
-
-## 🗄️ Database Architecture (Supabase / PostgreSQL)
-
-To transition this application from static mockups to a live, production-grade application, we propose the following relational database schema designed for performance, constraints, and scalability.
-
-```sql
 -- Enable necessary extensions
 create extension if not exists "uuid-ossp";
 
@@ -129,8 +116,29 @@ alter table public.attendance enable row level security;
 alter table public.payroll enable row level security;
 alter table public.activity_log enable row level security;
 
--- 9. AUTH SIGN-UP PROFILE TRIGGER
--- Automatically copies new users from Supabase Auth to public.employees table
+-- Setup basic RLS select rules (allowing users to view all records in directories for search functionality)
+create policy "Allow read access to authenticated users on departments"
+  on public.departments for select to authenticated using (true);
+
+create policy "Allow read access to authenticated users on job_titles"
+  on public.job_titles for select to authenticated using (true);
+
+create policy "Allow read access to authenticated users on employees"
+  on public.employees for select to authenticated using (true);
+
+create policy "Allow read/write access to employees for their own leaves"
+  on public.leaves for all to authenticated using (auth.uid() = employee_id);
+
+create policy "Allow read/write access to employees for their own missions"
+  on public.missions for all to authenticated using (auth.uid() = employee_id);
+
+create policy "Allow read/write access to employees for their own attendance"
+  on public.attendance for all to authenticated using (auth.uid() = employee_id);
+
+create policy "Allow read access to employees for their own payroll"
+  on public.payroll for select to authenticated using (auth.uid() = employee_id);
+
+-- trigger for auto signup profile creation
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
@@ -163,60 +171,3 @@ $$ language plpgsql security definer;
 create or replace trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
-```
-
----
-
-## 👥 Employee Attributes & Sample Data
-
-Each employee in the system contains key attributes crucial for operations, UI filters, payroll calculations, and accessibility configurations.
-
-### Employee Table Attributes Definition:
-- **ID (UUID)**: Ties directly to Supabase Authentication (`auth.users`).
-- **Employee Number (Text)**: A unique identifier prefix for administrative actions (e.g., `12345`).
-- **First Name & Last Name (Text)**: Localized dynamically in Arabic and English.
-- **Email & Phone (Text)**: Direct contact detail constraints.
-- **Gender (Text)**: Male / Female.
-- **Department ID (UUID)**: Linked department for operational division hierarchy.
-- **Job Title ID (UUID)**: Standardized corporate job title.
-- **Contract Type (Text)**: Full-Time, Part-Time, Contractor, Intern, or Freelance.
-- **Hire Date (Date)**: Official hiring date to compute vacation balances.
-- **Activity Type (Text)**: Direct / InDirect classification for cost-allocation and labor categorization.
-- **Is Manager (Boolean)**: Grants approval privileges for leave and mission requests.
-- **Role (Text)**: `Admin`, `Manager`, or `Employee` level of authorization.
-- **Img URL (Text)**: Reference to public avatar images stored in Supabase Storage.
-
-### Standardized Mock Database Seed:
-
-| Employee ID | Name | Employee No | Department | Job Title | Contract Type | Hire Date | Role | Activity Type |
-|---|---|---|---|---|---|---|---|---|
-| `e1` | Aleksander Garcia | 12345 | Marketing | Senior Solutions Architect | Freelance | 2023-04-15 | Employee | Direct |
-| `e2` | Tanvi Lumari | 54321 | Sales | Global Operations Manager | Permanent | 2022-01-10 | Manager | Direct |
-| `e3` | Jack Gray | 98765 | Software | Senior Project Manager | Permanent | 2021-08-22 | Employee | Direct |
-| `e4` | Saad Jawahir | 24680 | SCADA | Senior Cybersecurity Specialist | Contract | 2023-11-01 | Employee | InDirect |
-| `e5` | Imani Adimbola | 24252 | Oil & Gas | Director of Supply Chain Optimization | Permanent | 2020-03-14 | Manager | Direct |
-| `e6` | Ahmed Mahdy | 30111 | IT | Senior UX Designer & Data Analyst | Permanent | 2023-01-15 | Admin | Direct |
-| `e7` | Sarah Connor | 40222 | Engineering | Lead DevOps Engineer | Permanent | 2024-05-10 | Employee | Direct |
-| `e8` | Tarek Abdelaziz | 50333 | HR | HR Operations Manager | Permanent | 2022-09-01 | Manager | Direct |
-| `e9` | Fatima El-Sayed | 60444 | Finance | Senior Financial Controller | Permanent | 2023-02-28 | Employee | Direct |
-| `e10` | John Doe | 70555 | Software | Frontend Intern | Intern | 2026-06-01 | Employee | InDirect |
-
----
-
-## 🔒 Cybersecurity & Maintainability Guidelines
-
-To safeguard user data and ensure the codebase remains maintainable, we establish the following 10 recommendations:
-
-### Cybersecurity
-1. **Enforce Row Level Security (RLS)**: Enable RLS on all Supabase tables. Only grant authenticated users read/write permissions matching their specific identity (`auth.uid()`) or role.
-2. **Protect the Service Role Secret Key**: Never expose the Supabase `service_role` key on the client or in code checkins. Use only the `anon` key, which respects RLS.
-3. **Database Input Constraints & Type Safety**: Leverage strong schema declarations, strict PostgreSQL datatypes, and CHECK constraints to prevent SQL injection and dirty data.
-4. **Implement Short-Lived JWT Tokens**: Keep user tokens short-lived (e.g. 1 hour lifespans) and implement secure token refresh mechanics to prevent sessions from hijack.
-5. **Secure Storage Buckets Policies**: Define explicit security policies for the Supabase Storage buckets containing employee avatar images or administrative file attachments.
-
-### Maintainability
-6. **Version Control Database Migrations**: Use the Supabase CLI to create, version-control, and deploy database migrations (`supabase migration new`) instead of manual cloud-console edits.
-7. **Dynamic Frontend Types Generation**: Run the Supabase compiler generator tool `supabase gen types typescript` to instantly synchronize frontend interfaces with database schema layouts.
-8. **Automated Monitoring & Error Capture**: Set up Sentry or Datadog error monitoring on the web client, and actively monitor PostgreSQL server logs for database-side query failures.
-9. **Layered Database Service Layer**: Wrap Supabase API calls inside decoupled service files (such as `src/lib/services/employee.ts`) rather than writing raw database queries inside React components.
-10. **Establish Seeding Routines**: Keep a robust `seed.sql` script updated inside the codebase to allow developers to rapidly rebuild the DB environment locally.

@@ -16,6 +16,9 @@ import {
   Zap,
   ChevronLeft,
   ChevronRight,
+  Database,
+  Shield,
+  Terminal,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -74,6 +77,9 @@ const improvements = [
   { label: 'Navigation', detail: 'Consistent affordances across tabs, links, and buttons' },
   { label: 'Profiles & Modals', detail: 'Contextual edit modals, privacy-safe demo data' },
   { label: 'Deployment', detail: 'Vercel + GitHub Pages with automated CI/CD' },
+  { label: 'Supabase Backend Planning', detail: 'Relational PostgreSQL schemas designed for departments, jobs, employees, leaves, attendance, and payroll.' },
+  { label: 'Cybersecurity Measures', detail: 'Strict Row Level Security (RLS), protected secrets, short-lived JWT validation, and secure storage policies.' },
+  { label: 'Maintainability Blueprint', detail: 'Version-controlled database migrations, auto-generated TypeScript DB types, and layered data services.' },
 ];
 
 // --- COMPONENTS ---
@@ -360,6 +366,82 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ── DATABASE & SECURITY ROADMAP ── */}
+        <section aria-labelledby="database-roadmap-heading" className="space-y-6">
+          <div className="mb-6 space-y-2">
+            <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
+              <Database className="h-4 w-4" aria-hidden="true" />
+              Backend &amp; Security Roadmap
+            </p>
+            <h2 id="database-roadmap-heading" className="text-2xl font-semibold">
+              Live Supabase Integration &amp; Security Blueprint
+            </h2>
+            <p className="text-sm text-muted-foreground max-w-3xl">
+              We have designed a robust PostgreSQL schema and defined a 10-point cybersecurity and maintainability strategy to evolve this mockup into a fully operational application.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Database Card */}
+            <div className="rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-[var(--elevation-sm)] space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
+                  <Database className="h-5 w-5 text-accent" aria-hidden="true" />
+                </div>
+                <h3 className="text-lg font-semibold">Relational Database Schemas</h3>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Structured for high-performance indexing, foreign key constraints, and relational integrity.
+              </p>
+              <div className="space-y-2.5 text-xs text-muted-foreground">
+                <div className="flex justify-between border-b border-border pb-1.5">
+                  <span className="font-semibold text-foreground">public.employees</span>
+                  <span>Auth integration, roles, contract types</span>
+                </div>
+                <div className="flex justify-between border-b border-border pb-1.5">
+                  <span className="font-semibold text-foreground">public.leaves &amp; missions</span>
+                  <span>Request management with validation constraints</span>
+                </div>
+                <div className="flex justify-between border-b border-border pb-1.5">
+                  <span className="font-semibold text-foreground">public.attendance</span>
+                  <span>Daily clock in/out tracking (unique per date)</span>
+                </div>
+                <div className="flex justify-between border-b border-border pb-1.5">
+                  <span className="font-semibold text-foreground">public.payroll</span>
+                  <span>Autocalculated net salary columns</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-accent">
+                <Terminal className="h-4 w-4" />
+                <span>Full schema definitions are documented in the README</span>
+              </div>
+            </div>
+
+            {/* Security & Maintainability Card */}
+            <div className="rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-[var(--elevation-sm)] space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
+                  <Shield className="h-5 w-5 text-accent" aria-hidden="true" />
+                </div>
+                <h3 className="text-lg font-semibold">Cybersecurity &amp; Maintenance</h3>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Critical measures to safeguard sensitive employee data and ensure seamless system upkeep.
+              </p>
+              <ul className="space-y-2 text-xs text-muted-foreground list-disc list-inside">
+                <li><strong className="text-foreground">Row Level Security (RLS)</strong>: Prevent unauthorized cross-user reading or editing.</li>
+                <li><strong className="text-foreground">Credential Isolation</strong>: Keep Supabase service_role keys private at all times.</li>
+                <li><strong className="text-foreground">Type Safety</strong>: Dynamic compilation code synced via CLI command generation.</li>
+                <li><strong className="text-foreground">Migrations</strong>: Fully track all SQL scheme tweaks through Git versioning.</li>
+              </ul>
+              <div className="flex items-center gap-2 text-xs text-accent">
+                <CheckCircle2 className="h-4 w-4" />
+                <span>Follows modern OWASP &amp; Supabase best practices</span>
+              </div>
+            </div>
           </div>
         </section>
 
