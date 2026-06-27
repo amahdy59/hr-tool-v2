@@ -393,7 +393,7 @@ export const Attendance: React.FC = () => {
                   )}
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="end" className="w-80 p-0">
+              <PopoverContent align="end" collisionPadding={16} className="w-80 p-0">
                 <FilterPanel
                   department={filterDepartment}
                   setDepartment={setFilterDepartment}
@@ -896,7 +896,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   onClose,
 }) => {
   return (
-    <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+    <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
       {/* Header */}
       <div className="flex items-center justify-between">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Filter Options</span>

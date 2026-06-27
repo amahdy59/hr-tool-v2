@@ -709,7 +709,7 @@ const EmployeeFilterPanel: React.FC<{
   employmentTypes: string[]; toggleEmployment: (v: string) => void;
   onApply: () => void; onClear: () => void; onClose: () => void;
 }> = ({ dept, setDept, title, setTitle, gradYear, setGradYear, hiredAfter, setHiredAfter, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose }) => (
-  <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+  <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
     <div className="flex items-center justify-between">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
       <button type="button" aria-label="Close filters" onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>

@@ -379,7 +379,7 @@ export const LeavesManagement: React.FC = () => {
                     {activeFilters > 0 && <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFilters}</span>}
                   </button>
                 </PopoverTrigger>
-                <PopoverContent align="end" className="w-80 p-0">
+                <PopoverContent align="end" collisionPadding={16} className="w-80 p-0">
                   <FilterPanel
                     dept={filterDept} setDept={setFilterDept}
                     leaveType={filterLeaveType} setLeaveType={setFilterLeaveType}
@@ -529,7 +529,7 @@ const FilterPanel: React.FC<{
   employmentTypes: string[]; toggleEmployment: (v: string) => void;
   onApply: () => void; onClear: () => void; onClose: () => void;
 }> = ({ dept, setDept, leaveType, setLeaveType, from, setFrom, to, setTo, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose }) => (
-  <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+  <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
     <div className="flex items-center justify-between">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
       <button onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
