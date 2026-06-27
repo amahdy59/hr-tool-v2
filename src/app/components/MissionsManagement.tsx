@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   MoreVertical, Download, Plus, Search, Filter,
   Info, Eye, ChevronLeft, ChevronRight, X, Check, Trash2, Rocket,
@@ -324,14 +324,21 @@ export const MissionsManagement: React.FC = () => {
         onOpenChange={setCreateMissionOpen} 
         onSave={async (data) => {
           try {
+            const allEmployees = await EmployeeService.getAll();
+            const matchingEmployee = allEmployees.find(emp => emp.employeeNumber === data.employeeNumber);
+            if (!matchingEmployee) {
+              toast.error(`Employee with number ${data.employeeNumber} not found`);
+              return;
+            }
             await MissionService.create({
               ...data,
-              employeeId: '1' // Mapped admin id
+              employeeId: matchingEmployee.id
             });
             await loadMissions();
             setCreateMissionOpen(false);
             toast.success('Mission request created successfully');
           } catch (e) {
+            console.error(e);
             toast.error('Failed to create mission request');
           }
         }}
@@ -632,11 +639,11 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
             <tbody className="divide-y divide-border">
               {items.map(m => (
                 <tr key={m.id} className="hover:bg-muted/30">
-                  <td className="whitespace-nowrap px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(m.name, language)}</span></td>
-                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{m.type}</td>
-                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{m.range}</td>
-                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{m.duration}</td>
-                  <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">{m.notes}</td>
+                  <td className="whitespace-nowrap px-4 py-3"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(m.name, language)}</span></td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground">{m.type}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground">{m.range}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground">{m.duration}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{m.notes}</td>
                 </tr>
               ))}
             </tbody>

@@ -29,6 +29,8 @@ import {
   XCircle,
   Pencil,
   Filter,
+  Briefcase,
+  Umbrella,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -751,16 +753,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         onOpenChange={setChooseRequestOpen}
         title={isArabic ? 'نوع الطلب جديد' : 'New Request Type'}
         message={
-          <div className="space-y-4 pt-2">
-            <p className="text-[var(--text-sm)] text-muted-foreground">
-              {isArabic 
-                ? 'الرجاء اختيار ما إذا كنت تريد طلب إجازة أو مهمة لهذا اليوم:' 
-                : 'Please choose whether you want to request a leave (vacation) or a mission for this day:'}
-            </p>
-            <div className="flex flex-col gap-2">
+          <div className="space-y-4 pt-1">
+            <div className="grid grid-cols-1 gap-3">
               <Button
                 variant="outline"
-                className="w-full text-foreground border-border hover:bg-muted font-medium justify-start gap-2 h-11"
+                className="w-full justify-between items-center text-foreground border border-border bg-card/40 hover:bg-muted/80 font-medium py-6 px-4 rounded-[var(--radius)] hover:border-primary/50 transition-all group cursor-pointer"
                 onClick={() => {
                   setChooseRequestOpen(false);
                   onRequestLeave({
@@ -771,11 +768,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                   });
                 }}
               >
-                🌴 {isArabic ? 'طلب إجازة / عطلة' : 'Request Leave (Vacation)'}
+                <div className="flex items-center gap-3">
+                  <Umbrella className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                  <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
+                    {isArabic ? 'طلب إجازة / عطلة' : 'Request Leave (Vacation)'}
+                  </span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5 transition-transform" />
               </Button>
+              
               <Button
                 variant="outline"
-                className="w-full text-foreground border-border hover:bg-muted font-medium justify-start gap-2 h-11"
+                className="w-full justify-between items-center text-foreground border border-border bg-card/40 hover:bg-muted/80 font-medium py-6 px-4 rounded-[var(--radius)] hover:border-primary/50 transition-all group cursor-pointer"
                 onClick={() => {
                   setChooseRequestOpen(false);
                   onRequestMission({
@@ -786,7 +790,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                   });
                 }}
               >
-                💼 {isArabic ? 'طلب مهمة (مثل العمل من المنزل)' : 'Request Mission (e.g. WFH)'}
+                <div className="flex items-center gap-3">
+                  <Briefcase className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                  <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
+                    {isArabic ? 'طلب مأمورية' : 'Request Mission (e.g. WFH)'}
+                  </span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5 transition-transform" />
               </Button>
             </div>
           </div>

@@ -456,14 +456,21 @@ export const LeavesManagement: React.FC = () => {
         onOpenChange={setCreateLeaveOpen} 
         onSave={async (data) => {
           try {
+            const allEmployees = await EmployeeService.getAll();
+            const matchingEmployee = allEmployees.find(emp => emp.employeeNumber === data.employeeNumber);
+            if (!matchingEmployee) {
+              toast.error(`Employee with number ${data.employeeNumber} not found`);
+              return;
+            }
             await LeaveService.create({
               ...data,
-              employeeId: '1' // Default admin id or mapped user id
+              employeeId: matchingEmployee.id
             });
             await loadLeaves();
             setCreateLeaveOpen(false);
             toast.success('Leave created successfully');
           } catch (e) {
+            console.error(e);
             toast.error('Failed to create leave request');
           }
         }}
@@ -776,11 +783,11 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
             <tbody className="divide-y divide-border">
               {items.map(l => (
                 <tr key={l.id} className="hover:bg-muted/30">
-                  <td className="whitespace-nowrap px-4 py-2.5"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(l.name, language)}</span></td>
-                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.type}</td>
-                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.range}</td>
-                  <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{l.duration}</td>
-                  <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">{l.notes}</td>
+                  <td className="whitespace-nowrap px-4 py-3"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(l.name, language)}</span></td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground">{l.type}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground">{l.range}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground">{l.duration}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{l.notes}</td>
                 </tr>
               ))}
             </tbody>
