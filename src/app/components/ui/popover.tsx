@@ -11,11 +11,47 @@ function Popover({
   return <PopoverPrimitive.Root data-slot="popover" {...props} />;
 }
 
-function PopoverTrigger({
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
-  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
-}
+const PopoverTrigger = React.forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger>
+>(({ ...props }, forwardedRef) => {
+  const triggerRef = React.useRef<HTMLElement | null>(null);
+
+  const setRefs = React.useCallback(
+    (node: HTMLElement | null) => {
+      triggerRef.current = node;
+      if (typeof forwardedRef === "function") {
+        forwardedRef(node);
+      } else if (forwardedRef) {
+        forwardedRef.current = node;
+      }
+    },
+    [forwardedRef]
+  );
+
+  React.useEffect(() => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+
+    const syncClosedControls = () => {
+      if (trigger.getAttribute("aria-expanded") !== "true") {
+        trigger.removeAttribute("aria-controls");
+      }
+    };
+
+    syncClosedControls();
+    const observer = new MutationObserver(syncClosedControls);
+    observer.observe(trigger, {
+      attributes: true,
+      attributeFilter: ["aria-controls", "aria-expanded"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return <PopoverPrimitive.Trigger ref={setRefs} data-slot="popover-trigger" {...props} />;
+});
+PopoverTrigger.displayName = PopoverPrimitive.Trigger.displayName;
 function PopoverContent({
   className,
   align = "center",
@@ -26,6 +62,7 @@ function PopoverContent({
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         data-slot="popover-content"
+        forceMount
         align={align}
         sideOffset={sideOffset}
         className={cn(

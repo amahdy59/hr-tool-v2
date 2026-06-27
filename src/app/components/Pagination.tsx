@@ -2,7 +2,6 @@ import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 interface PaginationProps {
   currentPage: number;
@@ -83,20 +82,17 @@ export const Pagination: React.FC<PaginationProps> = ({
         {onItemsPerPageChange && (
           <div className="flex items-center gap-2.5 whitespace-nowrap shrink-0">
             <span>{t('pagination.itemsPerPage', 'Items Per Page')}</span>
-            <Select
+            <select
               value={itemsPerPage.toString()}
-              onValueChange={(val) => onItemsPerPageChange(Number(val))}
+              onChange={(event) => onItemsPerPageChange(Number(event.target.value))}
+              className="field-control min-h-[44px] h-[44px] px-3 w-[75px] rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] font-medium"
+              aria-label={t('pagination.itemsPerPage', 'Items Per Page')}
             >
-              <SelectTrigger className="min-h-[44px] h-[44px] sm:h-9 px-3 w-[75px] border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] justify-center font-medium">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="15">15</SelectItem>
-                <SelectItem value="30">30</SelectItem>
-                <SelectItem value="50">50</SelectItem>
-              </SelectContent>
-            </Select>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+            </select>
           </div>
         )}
 

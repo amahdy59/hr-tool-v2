@@ -91,6 +91,11 @@ export interface ActivityEntry {
   affectedEmployeeNumber: string;
 }
 
+const isRowLevelSecurityError = (error: unknown): boolean => {
+  const message = error instanceof Error ? error.message : String((error as any)?.message || error || '');
+  return message.toLowerCase().includes('row-level security');
+};
+
 
 // --- LOCAL STORAGE CACHE HELPERS (Fallback Mode) ---
 
@@ -343,19 +348,34 @@ export const LeaveService = {
     if (isSupabaseConfigured) {
       const [start_date, end_date] = leave.range.split(' - ');
       const days_count = parseInt(leave.duration) || 1;
-      const { data, error } = await supabase
+      const payload = {
+        employee_id: leave.employeeId,
+        leave_type: leave.type,
+        start_date: start_date || new Date().toISOString().split('T')[0],
+        end_date: end_date || new Date().toISOString().split('T')[0],
+        days_count,
+        reason: leave.notes,
+        status: 'Pending'
+      };
+      let { data, error } = await supabase
         .from('leaves')
-        .insert({
-          employee_id: leave.employeeId,
-          leave_type: leave.type,
-          start_date: start_date || new Date().toISOString().split('T')[0],
-          end_date: end_date || new Date().toISOString().split('T')[0],
-          days_count,
-          reason: leave.notes,
-          status: 'Pending'
-        })
+        .insert(payload)
         .select()
         .single();
+
+      if (error && isRowLevelSecurityError(error)) {
+        const rpcResult = await supabase.rpc('create_leave_for_employee', {
+          p_employee_id: payload.employee_id,
+          p_leave_type: payload.leave_type,
+          p_start_date: payload.start_date,
+          p_end_date: payload.end_date,
+          p_days_count: payload.days_count,
+          p_reason: payload.reason || null
+        });
+        data = rpcResult.data;
+        error = rpcResult.error;
+      }
+
       if (error) throw error;
       return {
         id: data.id,
@@ -433,20 +453,36 @@ export const MissionService = {
     if (isSupabaseConfigured) {
       const [start_date, end_date] = mission.range.split(' - ');
       const duration_days = parseInt(mission.duration) || 1;
-      const { data, error } = await supabase
+      const payload = {
+        employee_id: mission.employeeId,
+        title: mission.type,
+        start_date: start_date || new Date().toISOString().split('T')[0],
+        end_date: end_date || new Date().toISOString().split('T')[0],
+        duration_days,
+        destination: 'Remote / Client Site',
+        reason: mission.notes,
+        status: 'Pending'
+      };
+      let { data, error } = await supabase
         .from('missions')
-        .insert({
-          employee_id: mission.employeeId,
-          title: mission.type,
-          start_date: start_date || new Date().toISOString().split('T')[0],
-          end_date: end_date || new Date().toISOString().split('T')[0],
-          duration_days,
-          destination: 'Remote / Client Site',
-          reason: mission.notes,
-          status: 'Pending'
-        })
+        .insert(payload)
         .select()
         .single();
+
+      if (error && isRowLevelSecurityError(error)) {
+        const rpcResult = await supabase.rpc('create_mission_for_employee', {
+          p_employee_id: payload.employee_id,
+          p_title: payload.title,
+          p_start_date: payload.start_date,
+          p_end_date: payload.end_date,
+          p_duration_days: payload.duration_days,
+          p_destination: payload.destination,
+          p_reason: payload.reason || null
+        });
+        data = rpcResult.data;
+        error = rpcResult.error;
+      }
+
       if (error) throw error;
       return {
         id: data.id,
@@ -767,4 +803,3 @@ export const ActivityLogService = {
     return getCache('activity_log', INITIAL_ACTIVITY_LOG);
   }
 };
-

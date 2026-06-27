@@ -9,7 +9,6 @@ import { Button } from './ui/button';
 import { Pagination } from './Pagination';
 import { DatePicker } from './ui/date-picker';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -417,21 +416,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               <PopoverContent className="p-4 space-y-4 w-72">
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
-                  <Select
+                  <select
                     value={historyLeaveType}
-                    onValueChange={setHistoryLeaveType}
+                    onChange={(event) => setHistoryLeaveType(event.target.value)}
+                    className="field-control min-h-[44px] w-full rounded-[var(--radius-input)] px-3 text-[var(--text-sm)]"
                   >
-                    <SelectTrigger className="min-h-[44px] w-full rounded-[var(--radius-input)] border border-border bg-card">
-                      <SelectValue placeholder="Leave Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="vacation">Vacation</SelectItem>
-                      <SelectItem value="sick">Sick</SelectItem>
-                      <SelectItem value="annual">Annual Leave</SelectItem>
-                      <SelectItem value="maternity">Maternity</SelectItem>
-                      <SelectItem value="paternity">Paternity</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <option value="vacation">Vacation</option>
+                    <option value="sick">Sick</option>
+                    <option value="annual">Annual Leave</option>
+                    <option value="maternity">Maternity</option>
+                    <option value="paternity">Paternity</option>
+                  </select>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
@@ -448,21 +443,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             <div className="hidden xl:flex items-center gap-3 flex-wrap">
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
-                <Select
-                  value={historyLeaveType}
-                  onValueChange={setHistoryLeaveType}
-                >
-                  <SelectTrigger className="min-h-[44px] w-44 rounded-[var(--radius-input)] border border-border bg-card">
-                    <SelectValue placeholder="Leave Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="vacation">Vacation</SelectItem>
-                    <SelectItem value="sick">Sick</SelectItem>
-                    <SelectItem value="annual">Annual Leave</SelectItem>
-                    <SelectItem value="maternity">Maternity</SelectItem>
-                    <SelectItem value="paternity">Paternity</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <select
+                    value={historyLeaveType}
+                    onChange={(event) => setHistoryLeaveType(event.target.value)}
+                    className="field-control min-h-[44px] w-44 rounded-[var(--radius-input)] px-3 text-[var(--text-sm)]"
+                  >
+                    <option value="vacation">Vacation</option>
+                    <option value="sick">Sick</option>
+                    <option value="annual">Annual Leave</option>
+                    <option value="maternity">Maternity</option>
+                    <option value="paternity">Paternity</option>
+                  </select>
               </div>
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
@@ -752,6 +743,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         open={chooseRequestOpen}
         onOpenChange={setChooseRequestOpen}
         title={isArabic ? 'نوع الطلب جديد' : 'New Request Type'}
+        noCard={true}
+        showInfoIcon={true}
+        infoTooltip={isArabic ? 'اختر نوع الطلب المناسب للمتابعة' : 'Select the type of request to proceed'}
         message={
           <div className="space-y-4 pt-1">
             <div className="grid grid-cols-1 gap-3">

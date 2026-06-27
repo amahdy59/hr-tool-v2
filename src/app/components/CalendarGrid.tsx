@@ -407,6 +407,13 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
   ];
 
   const cellsToRender = calendarView === 'month' ? gridCells : weekCells;
+  const calendarRows = useMemo(() => {
+    const rows: typeof cellsToRender[] = [];
+    for (let i = 0; i < cellsToRender.length; i += 7) {
+      rows.push(cellsToRender.slice(i, i + 7));
+    }
+    return rows;
+  }, [cellsToRender]);
 
   return (
     <div 
@@ -424,14 +431,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
             <button
               onClick={goToPrev}
               aria-label={isArabic ? 'السابق' : 'Previous'}
-              className="w-9 h-9 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              className="w-11 h-11 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
               <PrevIcon className="w-4.5 h-4.5 text-muted-foreground" />
             </button>
 
             <button
               onClick={goToToday}
-              className="text-[12px] font-semibold text-foreground hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] px-3.5 py-1.5 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              className="min-h-11 text-[12px] font-semibold text-foreground hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] px-3.5 py-1.5 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
               {isArabic ? 'اليوم' : 'Today'}
             </button>
@@ -439,7 +446,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
             <button
               onClick={goToNext}
               aria-label={isArabic ? 'التالي' : 'Next'}
-              className="w-9 h-9 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              className="w-11 h-11 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
               <NextIcon className="w-4.5 h-4.5 text-muted-foreground" />
             </button>
@@ -494,7 +501,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
       {/* --- GRID VIEWS --- */}
       {calendarView === 'three-day' ? (
         /* 3-Day Layout (Optimized for Mobile/Compact) */
-        <div className="grid grid-cols-3 divide-x divide-border rtl:divide-x-reverse" style={{ minHeight: 380 }} role="rowgroup">
+        <div className="grid grid-cols-3 divide-x divide-border rtl:divide-x-reverse" style={{ minHeight: 380 }} role="row">
           {threeDayCells.map((cell, idx) => {
             const isTodayHighlight = cell.isToday;
             const cellDate = new Date(cell.dateStr);
@@ -530,7 +537,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                     <button 
                       onClick={() => onAddRequest?.(cell.dateStr)}
                       aria-label={isArabic ? 'أضف طلب جديد لهذا اليوم' : 'Add new request for this day'}
-                      className="w-7 h-7 flex items-center justify-center rounded-full border border-dashed border-border/80 text-muted-foreground/80 hover:text-primary hover:border-primary/50 transition-all hover:bg-primary/10 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                      className="w-11 h-11 flex items-center justify-center rounded-full border border-dashed border-border/80 text-muted-foreground hover:text-primary hover:border-primary/50 transition-all hover:bg-primary/10 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                     >
                       <Plus className="w-3.5 h-3.5" />
                     </button>
@@ -540,7 +547,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                 {/* Event list for the Day Column */}
                 <div className="flex flex-col gap-2 w-full overflow-hidden">
                   {cell.events.length === 0 ? (
-                    <div className="text-xs text-muted-foreground/40 italic py-5 text-center">
+                    <div className="text-xs text-muted-foreground italic py-5 text-center">
                       {isArabic ? 'لا توجد فعاليات' : 'No events'}
                     </div>
                   ) : (
@@ -601,7 +608,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
               <div
                 key={day}
                 role="columnheader"
-                className="py-3 px-2 text-center text-[10px] md:text-[11px] lg:text-xs font-bold uppercase tracking-wider text-muted-foreground/90 border-e border-border last:border-e-0"
+                className="py-3 px-2 text-center text-[10px] md:text-[11px] lg:text-xs font-bold uppercase tracking-wider text-muted-foreground border-e border-border last:border-e-0"
               >
                 {day}
               </div>
@@ -610,7 +617,10 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
 
           {/* Grid Cells */}
           <div className="grid grid-cols-7" style={{ minHeight: calendarView === 'week' ? 180 : 380 }} role="rowgroup">
-            {cellsToRender.map((cell, idx) => {
+            {calendarRows.map((row, rowIndex) => (
+              <div key={`calendar-row-${rowIndex}`} role="row" className="contents">
+                {row.map((cell, cellIndex) => {
+                  const idx = rowIndex * 7 + cellIndex;
               const isTodayHighlight = cell.isToday;
               const isWeekend = isEgyptianWeekend(cell.dateStr);
               return (
@@ -639,7 +649,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                           }
                         }}
                         aria-label={isArabic ? 'أضف طلب جديد لهذا اليوم' : 'Add new request for this day'}
-                        className="w-5 h-5 flex items-center justify-center rounded-full border border-dashed border-border/80 text-muted-foreground/0 group-hover:text-primary group-hover:border-primary/50 transition-all hover:bg-primary/10 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                        className="w-11 h-11 flex items-center justify-center rounded-full border border-dashed border-border/80 text-muted-foreground opacity-0 group-hover:opacity-100 focus-visible:opacity-100 group-focus-within:opacity-100 transition-all hover:text-primary hover:border-primary/50 hover:bg-primary/10 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                       >
                         <Plus className="w-3.5 h-3.5" />
                       </button>
@@ -651,7 +661,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                         'w-6 h-6 flex items-center justify-center rounded-full text-xs shrink-0 font-bold',
                         cell.isToday && 'bg-primary text-primary-foreground font-extrabold shadow-sm scale-110',
                         isWeekend && 'text-muted-foreground font-semibold',
-                        !cell.isCurrentMonth && 'text-muted-foreground/30',
+                        !cell.isCurrentMonth && 'text-muted-foreground',
                         cell.isCurrentMonth && !cell.isToday && !isWeekend && 'text-foreground'
                       )}
                     >
@@ -706,7 +716,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                   </div>
                 </div>
               );
-            })}
+              })}
+              </div>
+            ))}
           </div>
         </>
       )}
@@ -728,7 +740,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
             <span className="text-xs text-muted-foreground font-medium">{item.label}</span>
           </button>
         ))}
-        <span className="text-[11px] text-muted-foreground/60 ms-auto italic">
+        <span className="text-[11px] text-muted-foreground ms-auto italic">
           {isArabic ? '• اضغط على أيقونات التصفية للتصفية أو الطلبات المعلقة للتعديل' : '• Click on filter icons to filter or pending requests to edit'}
         </span>
       </div>

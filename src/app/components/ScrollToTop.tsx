@@ -35,11 +35,13 @@ export const ScrollToTop: React.FC<ScrollToTopProps> = ({ scrollContainerRef }) 
   return (
     <>
       {isVisible && (
-        <div className="fixed bottom-24 end-5 z-50 sm:bottom-8 sm:end-8">
+        <nav aria-label="Back to top" className="fixed bottom-24 end-5 z-50 sm:bottom-8 sm:end-8">
           <button
             onClick={scrollToTop}
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
+            onFocus={() => setShowTooltip(true)}
+            onBlur={() => setShowTooltip(false)}
             className="w-12 h-12 rounded-full bg-primary/20 backdrop-blur-md hover:bg-primary/30 border-2 border-primary/40 hover:border-primary/60 text-primary flex items-center justify-center shadow-[var(--elevation-lg)] transition-all duration-300 cursor-pointer hover:scale-110 sm:w-12 sm:h-12"
             aria-label="Scroll to top"
             style={{
@@ -61,7 +63,7 @@ export const ScrollToTop: React.FC<ScrollToTopProps> = ({ scrollContainerRef }) 
               <div className="absolute top-full end-4 w-0 h-0 border-s-4 border-e-4 border-t-4 border-transparent border-t-foreground" />
             </div>
           )}
-        </div>
+        </nav>
       )}
     </>
   );

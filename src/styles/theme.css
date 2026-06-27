@@ -13,7 +13,7 @@
   --text-xs: 12px;
   
   /* Core brand colors */
-  --color-primary-brand: #1D4ED8;
+  --color-primary-brand: #1E40AF;
   --color-primary-dark: #1E3A8A;
   --color-secondary-accent: #F59E0B;
   --color-accent-warm: #0F766E;
@@ -21,7 +21,7 @@
   --color-bg-main: #F8FAFC;
   --color-bg-subtle: #E0F2FE;
   --color-text-main: #0F172A;
-  --color-text-muted: #475569;
+  --color-text-muted: #334155;
   --color-border-divider: #CBD5E1;
   
   /* The default background color for the application. */
@@ -37,7 +37,7 @@
   /* The default color for text or elements that appear on top of dropdowns and tooltips. */
   --popover-foreground: #0F172A;
   /* The primary color used for buttons, links, and other interactive elements. */
-  --primary: #1D4ED8;
+  --primary: #1E40AF;
   /* The default color for text or elements that appear on top of primary colored elements. */
   --primary-foreground: #FFFFFF;
   /* The secondary color used for secondary(but NOT-DESTRUCTIVE) buttons and interactive elements. */
@@ -47,7 +47,7 @@
   /* The muted color used for less prominent elements, such as disabled buttons or disabled text. */
   --muted: #EEF2F7;
   /* The default color for text or elements that appear on top of muted colored elements. */
-  --muted-foreground: #475569;
+  --muted-foreground: #334155;
   /* The accent color used for highlights, links, and other interactive elements. */
   --accent: #0F766E;
   /* The default color for text or elements that appear on top of accent colored elements. */
@@ -355,6 +355,12 @@
   [role="button"] {
     min-width: 0;
     line-height: normal; /* Fixes vertical alignment issues globally */
+  }
+
+  button:not(.link-btn):not([role="checkbox"]):not([role="switch"]),
+  [role="button"]:not(.sidebar-link):not([role="checkbox"]):not([role="switch"]) {
+    min-height: 44px;
+    min-width: 44px;
   }
 
   /* Ensure robust vertical centering for buttons globally */
@@ -778,10 +784,106 @@ html {
 /* ==========================================================================
    TOAST NOTIFICATIONS
    ========================================================================== */
+[data-sonner-toaster] {
+  --width: min(360px, calc(100vw - 32px));
+}
+
+[data-sonner-toast] {
+  min-height: 44px !important;
+  width: var(--width) !important;
+  gap: 10px !important;
+  align-items: flex-start !important;
+  padding: 12px 40px 12px 14px !important;
+  border: 1px solid #d0d7de !important;
+  border-left-width: 4px !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  color: #24292f !important;
+  box-shadow: 0 8px 24px rgba(140, 149, 159, 0.2) !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
+
+[data-sonner-toast][data-type="success"] {
+  border-left-color: #1a7f37 !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  border-left-color: #cf222e !important;
+}
+
+[data-sonner-toast][data-type="info"] {
+  border-left-color: #0969da !important;
+}
+
+[data-sonner-toast] [data-icon] {
+  margin-top: 1px !important;
+  color: #57606a !important;
+}
+
+[data-sonner-toast][data-type="success"] [data-icon] {
+  color: #1a7f37 !important;
+}
+
+[data-sonner-toast][data-type="error"] [data-icon] {
+  color: #cf222e !important;
+}
+
+[data-sonner-toast] [data-title] {
+  color: #24292f !important;
+  font-weight: 600 !important;
+  text-align: start !important;
+}
+
+[data-sonner-toast] [data-description] {
+  margin-top: 2px !important;
+  color: #57606a !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  text-align: start !important;
+}
+
 [data-sonner-toast] [data-close-button] {
   left: auto !important;
-  right: -0.5rem !important; /* Position to the right, outside/partially outside */
-  transform: translate(0, -50%) !important;
+  right: 8px !important;
+  top: 10px !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: #57606a !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+[data-sonner-toast] [data-close-button]:hover {
+  background: #f6f8fa !important;
+  color: #24292f !important;
+}
+
+.dark [data-sonner-toast] {
+  border-color: #30363d !important;
+  background: #161b22 !important;
+  color: #f0f6fc !important;
+  box-shadow: 0 8px 24px rgba(1, 4, 9, 0.45) !important;
+}
+
+.dark [data-sonner-toast] [data-title] {
+  color: #f0f6fc !important;
+}
+
+.dark [data-sonner-toast] [data-description],
+.dark [data-sonner-toast] [data-icon],
+.dark [data-sonner-toast] [data-close-button] {
+  color: #8b949e !important;
+}
+
+.dark [data-sonner-toast] [data-close-button]:hover {
+  background: #21262d !important;
+  color: #f0f6fc !important;
 }
 
 /* ==========================================================================

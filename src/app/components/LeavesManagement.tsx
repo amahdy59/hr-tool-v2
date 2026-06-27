@@ -30,6 +30,8 @@ import { localizePersonName } from '@/lib/localizedNames';
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)] whitespace-nowrap';
+const getErrorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : String((error as any)?.message || 'Please check the request details and try again.');
 
 import { LeaveRequest, LeaveService, EmployeeService, Employee } from '../../lib/services/dbServices';
 
@@ -456,6 +458,10 @@ export const LeavesManagement: React.FC = () => {
         onOpenChange={setCreateLeaveOpen} 
         onSave={async (data) => {
           try {
+            if (!data.employeeNumber.trim() || !data.startDate || !data.endDate) {
+              toast.error('Employee number, start date, and end date are required');
+              return;
+            }
             const allEmployees = await EmployeeService.getAll();
             const matchingEmployee = allEmployees.find(emp => emp.employeeNumber === data.employeeNumber);
             if (!matchingEmployee) {
@@ -471,7 +477,7 @@ export const LeavesManagement: React.FC = () => {
             toast.success('Leave created successfully');
           } catch (e) {
             console.error(e);
-            toast.error('Failed to create leave request');
+            toast.error('Failed to create leave request', { description: getErrorMessage(e) });
           }
         }}
       />
@@ -616,7 +622,7 @@ const CheckboxGroup: React.FC<{ label: string; items: string[]; selected: string
 const CreateLeaveModal: React.FC<{ 
   open: boolean; 
   onOpenChange: (v: boolean) => void;
-  onSave: (data: { name: string; employeeNumber: string; type: string; range: string; duration: string; notes: string }) => void;
+  onSave: (data: { name: string; employeeNumber: string; type: string; range: string; duration: string; notes: string; startDate: string; endDate: string }) => void;
 }> = ({ open, onOpenChange, onSave }) => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
@@ -749,15 +755,24 @@ const CreateLeaveModal: React.FC<{
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
           <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => {
+            if (!employeeNumber.trim() || !startDate || !endDate) {
+              toast.error('Employee number, start date, and end date are required');
+              return;
+            }
+            if (new Date(endDate) < new Date(startDate)) {
+              toast.error('End date must be after start date');
+              return;
+            }
             const diffDays = Math.max(1, Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)) + 1);
-            onOpenChange(false);
             onSave({
               name,
               employeeNumber,
               type: leaveType,
               range: `${startDate} - ${endDate}`,
               duration: `${diffDays} days`,
-              notes: 'Created via admin panel'
+              notes: 'Created via admin panel',
+              startDate,
+              endDate
             });
           }}>Create Leave</Button>
         </DialogFooter>
