@@ -21,7 +21,7 @@ export interface Employee {
 export interface LeaveRequest {
   id: string;
   name: string;
-  img: string;
+  img?: string;
   type: string;
   range: string;
   duration: string;
@@ -33,7 +33,7 @@ export interface LeaveRequest {
 export interface MissionRequest {
   id: string;
   name: string;
-  img: string;
+  img?: string;
   type: string;
   range: string;
   duration: string;

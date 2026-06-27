@@ -217,8 +217,9 @@ export const EmployeeManagement: React.FC = () => {
 
   const filteredEmployees = useMemo(() => {
     return employees.filter((employee) => {
+      const employeeNameStr = typeof employee.name === 'string' ? employee.name : `${employee.name?.nameEn || ''} ${employee.name?.nameAr || ''}`;
       const matchesSearch = includesQuery(
-        [employee.name, employee.employeeNumber, employee.email, employee.department, employee.jobTitle],
+        [employeeNameStr, employee.employeeNumber, employee.email, employee.department, employee.jobTitle],
         searchQuery
       );
       const matchesDepartment = filterDept === 'All' || employee.department === filterDept;
@@ -828,7 +829,8 @@ const EmployeeFormModal: React.FC<{
 
   React.useEffect(() => {
     if (employee) {
-      setName(employee.name); setEmployeeNumber(employee.employeeNumber); setEmail(employee.email);
+      const employeeNameStr = typeof employee.name === 'string' ? employee.name : (employee.name?.nameEn || '');
+      setName(employeeNameStr); setEmployeeNumber(employee.employeeNumber); setEmail(employee.email);
       setPhone(employee.phone); setGender(employee.gender); setIsManager(employee.isManager);
       setDept(employee.department); setJobTitle(employee.jobTitle);
       setContractType(employee.contractType); setHireDate(employee.hireDate);

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, Suspense } from 'react';
 import { Toaster, toast } from 'sonner';
 import { format, parseISO, isValid } from 'date-fns';
 import { LayoutDashboard, CalendarPlus, Rocket } from 'lucide-react';
@@ -6,14 +6,15 @@ import { cn } from '@/lib/utils';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { Dashboard } from './components/Dashboard';
-import { Attendance } from './components/Attendance';
-import { EmployeeManagement } from './components/EmployeeManagement';
-import { LeavesManagement } from './components/LeavesManagement';
-import { MissionsManagement } from './components/MissionsManagement';
-import { RolesManagement } from './components/RolesManagement';
-import { Profile } from './components/Profile';
-import { Login } from './components/Login';
 import { ScrollToTop } from './components/ScrollToTop';
+
+const Attendance = React.lazy(() => import('./components/Attendance').then(m => ({ default: m.Attendance })));
+const EmployeeManagement = React.lazy(() => import('./components/EmployeeManagement').then(m => ({ default: m.EmployeeManagement })));
+const LeavesManagement = React.lazy(() => import('./components/LeavesManagement').then(m => ({ default: m.LeavesManagement })));
+const MissionsManagement = React.lazy(() => import('./components/MissionsManagement').then(m => ({ default: m.MissionsManagement })));
+const RolesManagement = React.lazy(() => import('./components/RolesManagement').then(m => ({ default: m.RolesManagement })));
+const Profile = React.lazy(() => import('./components/Profile').then(m => ({ default: m.Profile })));
+import { Login } from './components/Login';
 import { CommandPalette } from './components/CommandPalette';
 import { KeyboardShortcutsPanel } from './components/KeyboardShortcutsPanel';
 import { RequestLeaveModal } from './components/RequestLeaveModal';
@@ -272,7 +273,20 @@ export default function App() {
       default:
         content = null;
     }
-    return <div className="animate-fadeIn">{content}</div>;
+    return (
+      <div className="animate-fadeIn">
+        <Suspense fallback={
+          <div className="flex items-center justify-center min-h-[400px] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <div className="flex flex-col items-center gap-3">
+              <span className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></span>
+              <span>Loading...</span>
+            </div>
+          </div>
+        }>
+          {content}
+        </Suspense>
+      </div>
+    );
   };
 
   return (
