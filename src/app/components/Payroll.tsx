@@ -325,7 +325,7 @@ export const Payroll: React.FC = () => {
         </div>
       </div>
 
-      {activeTab === 'overview' && <OverviewTab selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} selectedYear={selectedYear} setSelectedYear={setSelectedYear} months={months} years={years} />}
+      {activeTab === 'overview' && <OverviewTab selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} selectedYear={selectedYear} setSelectedYear={setSelectedYear} months={months} years={years} employees={employees} />}
       {activeTab === 'employees' && (
         <>
           <EmployeesTab filteredEmployees={paginatedEmployees} handleGeneratePayslip={handleGeneratePayslip} />
@@ -353,7 +353,7 @@ export const Payroll: React.FC = () => {
 // ════════════════════════════════════
 // ── Overview Tab ──
 // ════════════════════════════════════
-const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelectedYear, months, years }: any) => (
+const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelectedYear, months, years, employees }: any) => (
   <div className="space-y-6 max-w-3xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Payroll Overview</h3>
 

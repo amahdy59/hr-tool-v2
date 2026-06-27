@@ -167,7 +167,8 @@ export const EmployeeService = {
 
   async create(employee: Omit<Employee, 'id'>): Promise<Employee> {
     if (isSupabaseConfigured) {
-      const [first_name, ...last_names] = employee.name.split(' ');
+      const nameStr = typeof employee.name === 'string' ? employee.name : (employee.name?.nameEn || '');
+      const [first_name, ...last_names] = nameStr.split(' ');
       const last_name = last_names.join(' ') || 'Employee';
 
       // Insert dummy auth user first if on remote, or rely on triggers/admins.
@@ -218,7 +219,8 @@ export const EmployeeService = {
     if (isSupabaseConfigured) {
       const dbUpdates: any = {};
       if (updates.name) {
-        const [first_name, ...last_names] = updates.name.split(' ');
+        const nameStr = typeof updates.name === 'string' ? updates.name : (updates.name?.nameEn || '');
+        const [first_name, ...last_names] = nameStr.split(' ');
         dbUpdates.first_name = first_name;
         dbUpdates.last_name = last_names.join(' ') || 'Employee';
       }
