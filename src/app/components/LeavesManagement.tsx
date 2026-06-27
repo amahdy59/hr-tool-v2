@@ -31,7 +31,7 @@ const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--rad
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)] whitespace-nowrap';
 
-import { LeaveRequest, LeaveService } from '../../lib/services/dbServices';
+import { LeaveRequest, LeaveService, EmployeeService, Employee } from '../../lib/services/dbServices';
 
 interface Holiday {
   id: string;
@@ -611,19 +611,128 @@ const CreateLeaveModal: React.FC<{
   onOpenChange: (v: boolean) => void;
   onSave: (data: { name: string; employeeNumber: string; type: string; range: string; duration: string; notes: string }) => void;
 }> = ({ open, onOpenChange, onSave }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
+
   const [name, setName] = useState('');
   const [employeeNumber, setEmployeeNumber] = useState('');
   const [leaveType, setLeaveType] = useState('Sick');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [showNameSuggestions, setShowNameSuggestions] = useState(false);
+  const [showNumberSuggestions, setShowNumberSuggestions] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      EmployeeService.getAll().then(setEmployees).catch(console.error);
+    }
+  }, [open]);
+
+  // Suggestions matching the name (max 4)
+  const nameSuggestions = useMemo(() => {
+    if (!name.trim()) return [];
+    const query = name.toLowerCase();
+    return employees.filter(emp => {
+      const enName = typeof emp.name === 'string' ? emp.name : emp.name.nameEn;
+      const arName = typeof emp.name === 'string' ? '' : emp.name.nameAr;
+      return enName.toLowerCase().includes(query) || arName.toLowerCase().includes(query) || emp.employeeNumber.includes(query);
+    }).slice(0, 4);
+  }, [name, employees]);
+
+  // Suggestions matching the employee number (max 4)
+  const numberSuggestions = useMemo(() => {
+    if (!employeeNumber.trim()) return [];
+    const query = employeeNumber.toLowerCase();
+    return employees.filter(emp => {
+      const enName = typeof emp.name === 'string' ? emp.name : emp.name.nameEn;
+      const arName = typeof emp.name === 'string' ? '' : emp.name.nameAr;
+      return emp.employeeNumber.toLowerCase().includes(query) || enName.toLowerCase().includes(query) || arName.toLowerCase().includes(query);
+    }).slice(0, 4);
+  }, [employeeNumber, employees]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Create Leave</DialogTitle><DialogDescription className="sr-only">Create a new leave request</DialogDescription></DialogHeader>
         <div className="space-y-4">
-          <FormField label="Employee Name" value={name} onChange={setName} placeholder="Full name" />
-          <FormField label="Employee Number" value={employeeNumber} onChange={setEmployeeNumber} placeholder="XXXXX" />
+          <div className="relative">
+            <label className={labelClass}>Employee Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                setShowNameSuggestions(true);
+              }}
+              onFocus={() => setShowNameSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowNameSuggestions(false), 200)}
+              placeholder="Full name"
+              className={inputClass}
+            />
+            {showNameSuggestions && nameSuggestions.length > 0 && (
+              <div className="absolute z-50 left-0 right-0 mt-1 bg-popover border border-border rounded-[var(--radius-input)] shadow-md overflow-hidden max-h-60">
+                {nameSuggestions.map((emp) => {
+                  const displayName = typeof emp.name === 'string' ? emp.name : (language === 'ar' ? emp.name.nameAr : emp.name.nameEn);
+                  return (
+                    <button
+                      key={emp.id}
+                      type="button"
+                      className="w-full px-3 py-2 text-start hover:bg-muted/80 text-[var(--text-sm)] text-foreground flex justify-between items-center transition-colors border-b border-border/40 last:border-0 cursor-pointer"
+                      onMouseDown={() => {
+                        setName(displayName);
+                        setEmployeeNumber(emp.employeeNumber);
+                        setShowNameSuggestions(false);
+                      }}
+                    >
+                      <span className="font-medium truncate">{displayName}</span>
+                      <span className="text-xs text-muted-foreground font-mono">#{emp.employeeNumber}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className="relative">
+            <label className={labelClass}>Employee Number</label>
+            <input
+              type="text"
+              value={employeeNumber}
+              onChange={(e) => {
+                setEmployeeNumber(e.target.value);
+                setShowNumberSuggestions(true);
+              }}
+              onFocus={() => setShowNumberSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowNumberSuggestions(false), 200)}
+              placeholder="XXXXX"
+              className={inputClass}
+            />
+            {showNumberSuggestions && numberSuggestions.length > 0 && (
+              <div className="absolute z-50 left-0 right-0 mt-1 bg-popover border border-border rounded-[var(--radius-input)] shadow-md overflow-hidden max-h-60">
+                {numberSuggestions.map((emp) => {
+                  const displayName = typeof emp.name === 'string' ? emp.name : (language === 'ar' ? emp.name.nameAr : emp.name.nameEn);
+                  return (
+                    <button
+                      key={emp.id}
+                      type="button"
+                      className="w-full px-3 py-2 text-start hover:bg-muted/80 text-[var(--text-sm)] text-foreground flex justify-between items-center transition-colors border-b border-border/40 last:border-0 cursor-pointer"
+                      onMouseDown={() => {
+                        setName(displayName);
+                        setEmployeeNumber(emp.employeeNumber);
+                        setShowNumberSuggestions(false);
+                      }}
+                    >
+                      <span className="font-medium truncate">{displayName}</span>
+                      <span className="text-xs text-muted-foreground font-mono">#{emp.employeeNumber}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
           <SelectField label="Leave Type" value={leaveType} onChange={setLeaveType} options={LEAVE_TYPES.filter(l => l !== 'All')} />
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <FormField label="Start Date" value={startDate} onChange={setStartDate} type="date" />

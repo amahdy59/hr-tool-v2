@@ -381,76 +381,76 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
           )}
 
           {/* Balance Info */}
-          <div className="flex justify-between items-end bg-muted/50 p-4 rounded-[var(--radius)] border border-border">
-            <div>
-              <p
+          <div className="grid grid-cols-3 gap-3 bg-muted/40 p-3.5 rounded-[var(--radius-lg)] border border-border">
+            <div className="flex flex-col items-center justify-center p-3 rounded-[var(--radius)] bg-card/60 border border-border/50 text-center shadow-xs">
+              <span
                 style={{
                   fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: 'var(--font-weight-normal)',
+                  fontSize: '11px',
+                  fontWeight: 'var(--font-weight-medium)',
                 }}
-                className="text-muted-foreground"
+                className="text-muted-foreground uppercase tracking-wider mb-1 text-center"
               >
                 Current Balance
-              </p>
-              <p
+              </span>
+              <span
                 style={{
                   fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-lg)',
-                  fontWeight: 'var(--font-weight-semibold)',
+                  fontSize: 'var(--text-xl)',
+                  fontWeight: 'var(--font-weight-bold)',
                 }}
-                className="text-foreground block text-start w-full"
+                className="text-foreground"
               >
                 {currentBalance}
-              </p>
+              </span>
             </div>
-            {daysRequested > 0 && (
-              <div className="text-center">
-                <p
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 'var(--text-xs)',
-                    fontWeight: 'var(--font-weight-normal)',
-                  }}
-                  className="text-muted-foreground"
-                >
-                  Requesting
-                </p>
-                <p
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 'var(--text-lg)',
-                    fontWeight: 'var(--font-weight-semibold)',
-                  }}
-                  className="text-[var(--chart-4)]"
-                >
-                  −{daysRequested}
-                </p>
-              </div>
-            )}
-            <div className="text-end">
-              <p
+
+            <div className="flex flex-col items-center justify-center p-3 rounded-[var(--radius)] bg-card/60 border border-border/50 text-center shadow-xs">
+              <span
                 style={{
                   fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: 'var(--font-weight-normal)',
+                  fontSize: '11px',
+                  fontWeight: 'var(--font-weight-medium)',
                 }}
-                className="text-muted-foreground"
+                className="text-muted-foreground uppercase tracking-wider mb-1 text-center"
+              >
+                Requesting
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 'var(--text-xl)',
+                  fontWeight: 'var(--font-weight-bold)',
+                }}
+                className={daysRequested > 0 ? "text-[var(--chart-4)]" : "text-muted-foreground/60"}
+              >
+                {daysRequested > 0 ? `-${daysRequested}` : '0'}
+              </span>
+            </div>
+
+            <div className="flex flex-col items-center justify-center p-3 rounded-[var(--radius)] bg-card/60 border border-border/50 text-center shadow-xs">
+              <span
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '11px',
+                  fontWeight: 'var(--font-weight-medium)',
+                }}
+                className="text-muted-foreground uppercase tracking-wider mb-1 text-center"
               >
                 Remaining when approved
-              </p>
-              <p
+              </span>
+              <span
                 style={{
                   fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-lg)',
-                  fontWeight: 'var(--font-weight-semibold)',
+                  fontSize: 'var(--text-xl)',
+                  fontWeight: 'var(--font-weight-bold)',
                 }}
                 className={cn(
-                  remainingBalance < 0 ? 'text-destructive' : 'text-[var(--chart-3)]'
+                  remainingBalance < 0 ? 'text-destructive animate-pulse' : 'text-[var(--chart-3)]'
                 )}
               >
                 {remainingBalance}
-              </p>
+              </span>
             </div>
           </div>
 
