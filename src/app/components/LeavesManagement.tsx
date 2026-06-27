@@ -56,10 +56,18 @@ const HOLIDAYS: Holiday[] = [
   { id: '5', type: 'Holiday', name: 'Spring Day', range: 'Jan 15 - Jan 17', duration: '3 days', notes: 'Spring celebration' },
 ];
 
-const DEPARTMENTS = ['All', 'Marketing', 'Software', 'Oil & Gas', 'Sales', 'SCADA', 'IT', 'Finance', 'HR'];
 const LEAVE_TYPES = ['All', 'Sick', 'Vacation', 'Maternity', 'Paternity', 'Family Care', 'Hajj', 'Marriage', 'Bereavement', 'Unpaid'];
 const ACTIVITY_TYPES = ['My team', 'Lead Engineer', 'Application Consultant', 'Project Manager'];
 const EMPLOYMENT_TYPES = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
+const uniqueOptions = (values: Array<string | undefined>) =>
+  Array.from(new Set(values.map((value) => value?.trim()).filter((value): value is string => Boolean(value)))).sort((a, b) => a.localeCompare(b));
+
+const getRequestDate = (request: Pick<LeaveRequest, 'startDate' | 'endDate' | 'range'>, boundary: 'start' | 'end') => {
+  if (boundary === 'start' && request.startDate) return request.startDate;
+  if (boundary === 'end' && request.endDate) return request.endDate;
+  const [start, end] = request.range.split(' - ');
+  return boundary === 'start' ? start : end || start;
+};
 
 export const LeavesManagement: React.FC = () => {
   const { i18n } = useTranslation();
@@ -111,6 +119,11 @@ export const LeavesManagement: React.FC = () => {
   const [filterEmploymentTypes, setFilterEmploymentTypes] = useState<string[]>([]);
   const [activeFilters, setActiveFilters] = useState(0);
 
+  const departmentOptions = useMemo(() => ['All', ...uniqueOptions(allLeaves.map(l => l.department))], [allLeaves]);
+  const leaveTypeOptions = useMemo(() => ['All', ...uniqueOptions(allLeaves.map(l => l.type))], [allLeaves]);
+  const activityTypeOptions = useMemo(() => uniqueOptions(allLeaves.map(l => l.activityType)), [allLeaves]);
+  const employmentTypeOptions = useMemo(() => uniqueOptions(allLeaves.map(l => l.contractType)), [allLeaves]);
+
   // Filtered and Paginated lists
   const filteredPending = useMemo(() => {
     return pendingLeaves.filter(l => 
@@ -138,11 +151,18 @@ export const LeavesManagement: React.FC = () => {
 
   const filteredHistory = useMemo(() => {
     return historyLeaves.filter(l => {
-      const matchesSearch = !historySearch || l.name.toLowerCase().includes(historySearch.toLowerCase());
-      const matchesDept = filterDept === 'All';
-      return matchesSearch && matchesDept;
+      const requestStart = getRequestDate(l, 'start');
+      const requestEnd = getRequestDate(l, 'end');
+      const matchesSearch = !historySearch || l.name.toLowerCase().includes(historySearch.toLowerCase()) || l.employeeNumber?.includes(historySearch);
+      const matchesDept = filterDept === 'All' || l.department === filterDept;
+      const matchesLeaveType = filterLeaveType === 'All' || l.type === filterLeaveType;
+      const matchesFrom = !filterFrom || requestEnd >= filterFrom;
+      const matchesTo = !filterTo || requestStart <= filterTo;
+      const matchesActivity = filterActivityTypes.length === 0 || (l.activityType ? filterActivityTypes.includes(l.activityType) : false);
+      const matchesEmployment = filterEmploymentTypes.length === 0 || (l.contractType ? filterEmploymentTypes.includes(l.contractType) : false);
+      return matchesSearch && matchesDept && matchesLeaveType && matchesFrom && matchesTo && matchesActivity && matchesEmployment;
     });
-  }, [historyLeaves, historySearch, filterDept]);
+  }, [historyLeaves, historySearch, filterDept, filterLeaveType, filterFrom, filterTo, filterActivityTypes, filterEmploymentTypes]);
 
   const paginatedHistory = useMemo(() => {
     const start = (historyPage - 1) * 15;
@@ -386,6 +406,10 @@ export const LeavesManagement: React.FC = () => {
                     to={filterTo} setTo={setFilterTo}
                     activityTypes={filterActivityTypes} toggleActivity={t => setFilterActivityTypes(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])}
                     employmentTypes={filterEmploymentTypes} toggleEmployment={t => setFilterEmploymentTypes(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])}
+                    departmentOptions={departmentOptions}
+                    leaveTypeOptions={leaveTypeOptions}
+                    activityTypeOptions={activityTypeOptions}
+                    employmentTypeOptions={employmentTypeOptions}
                     onApply={applyFilters} onClear={clearFilters} onClose={() => setFilterOpen(false)}
                   />
                 </PopoverContent>
@@ -393,7 +417,7 @@ export const LeavesManagement: React.FC = () => {
             </div>
           </div>
           <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
-            exportToCSV(historyLeaves, 'Leaves_History');
+            exportToCSV(filteredHistory, 'Leaves_History');
             toast.success('Download started', { description: 'Leaves data exported to CSV.' });
           }}>
             <Download className="w-4 h-4" /> Download Data
@@ -576,19 +600,23 @@ const FilterPanel: React.FC<{
   to: string; setTo: (v: string) => void;
   activityTypes: string[]; toggleActivity: (v: string) => void;
   employmentTypes: string[]; toggleEmployment: (v: string) => void;
+  departmentOptions: string[];
+  leaveTypeOptions: string[];
+  activityTypeOptions: string[];
+  employmentTypeOptions: string[];
   onApply: () => void; onClear: () => void; onClose: () => void;
-}> = ({ dept, setDept, leaveType, setLeaveType, from, setFrom, to, setTo, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose }) => (
+}> = ({ dept, setDept, leaveType, setLeaveType, from, setFrom, to, setTo, activityTypes, toggleActivity, employmentTypes, toggleEmployment, departmentOptions, leaveTypeOptions, activityTypeOptions, employmentTypeOptions, onApply, onClear, onClose }) => (
   <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
     <div className="flex items-center justify-between">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
       <button onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
     </div>
-    <SelectField label="Department" value={dept} onChange={setDept} options={DEPARTMENTS} />
-    <SelectField label="Leave Type" value={leaveType} onChange={setLeaveType} options={LEAVE_TYPES} />
+    <SelectField label="Department" value={dept} onChange={setDept} options={departmentOptions} />
+    <SelectField label="Leave Type" value={leaveType} onChange={setLeaveType} options={leaveTypeOptions.length > 1 ? leaveTypeOptions : LEAVE_TYPES} />
     <div className="space-y-1.5"><label className={labelClass}>From</label><DatePicker value={from} onChange={setFrom} placeholder="Select from date" /></div>
     <div className="space-y-1.5"><label className={labelClass}>To</label><DatePicker value={to} onChange={setTo} placeholder="Select to date" /></div>
-    <CheckboxGroup label="Activity Type" items={ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
-    <CheckboxGroup label="Employment Type" items={EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
+    <CheckboxGroup label="Activity Type" items={activityTypeOptions.length ? activityTypeOptions : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
+    <CheckboxGroup label="Employment Type" items={employmentTypeOptions.length ? employmentTypeOptions : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
     <div className="space-y-2 pt-2">
       <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
       <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)] border-border">Clear Filter</Button>

@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
-import { cn } from '@/lib/utils';
 import { DatePicker } from './ui/date-picker';
 import { differenceInBusinessDays, parseISO, isValid } from 'date-fns';
 
@@ -43,8 +42,6 @@ const missionTypes = [
   'Other',
 ];
 
-const MISSION_BALANCE = 21;
-
 export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
   open,
   onOpenChange,
@@ -65,7 +62,6 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
     }
   }, [open, initialData]);
 
-  // Compute days between selected dates
   const daysRequested = useMemo(() => {
     if (!fromDate || !toDate) return 0;
     const from = parseISO(fromDate);
@@ -73,9 +69,6 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
     if (!isValid(from) || !isValid(to) || to < from) return 0;
     return differenceInBusinessDays(to, from) + 1;
   }, [fromDate, toDate]);
-
-  const currentBalance = MISSION_BALANCE;
-  const remainingBalance = Math.max(0, currentBalance - daysRequested);
 
   const handleSubmit = () => {
     onSubmit({ missionType, fromDate, toDate, daysRequested, notes });
@@ -100,7 +93,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
               fontWeight: 'var(--section-heading-weight)',
             }}
           >
-            Request Mission
+            Request mission
           </DialogTitle>
           <DialogDescription className="sr-only">
             Request a mission
@@ -108,7 +101,6 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
         </DialogHeader>
 
         <div className="space-y-5">
-          {/* Mission Type Select */}
           <div className="space-y-1.5">
             <label
               style={{
@@ -118,7 +110,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
               }}
               className="text-foreground block text-start w-full"
             >
-              Mission Type
+              Mission type
             </label>
             <Select value={missionType} onValueChange={setMissionType}>
               <SelectTrigger className="h-10 w-full rounded-[var(--radius-input)]">
@@ -134,7 +126,6 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
             </Select>
           </div>
 
-          {/* Date Inputs with DatePicker */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-1.5">
               <label
@@ -149,10 +140,10 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
               </label>
               <DatePicker
                 value={fromDate}
-                onChange={(d) => {
-                  setFromDate(d);
-                  if (!toDate || (d && toDate && d > toDate)) {
-                    setToDate(d);
+                onChange={(date) => {
+                  setFromDate(date);
+                  if (!toDate || (date && toDate && date > toDate)) {
+                    setToDate(date);
                   }
                 }}
                 placeholder="Start date"
@@ -176,22 +167,18 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
               />
             </div>
           </div>
+
           <p
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: 'var(--text-xs)',
               fontWeight: 'var(--font-weight-normal)',
             }}
-            className={cn(
-              'text-muted-foreground -mt-3',
-              daysRequested > 0 && daysRequested > currentBalance && 'text-destructive'
-            )}
+            className="text-muted-foreground -mt-3"
           >
             {dateLabel}
-            {daysRequested > currentBalance && ' — exceeds available balance'}
           </p>
 
-          {/* Notes */}
           <div className="space-y-1.5">
             <label
               style={{
@@ -203,9 +190,10 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
             >
               Notes (optional)
             </label>
-            <textarea dir="auto"
+            <textarea
+              dir="auto"
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={(event) => setNotes(event.target.value)}
               rows={3}
               placeholder="Add any notes for your mission request..."
               className="w-full px-3 py-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring resize-none transition-shadow"
@@ -217,87 +205,12 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
             />
           </div>
 
-          {/* Balance Info */}
-          <div className="grid grid-cols-3 gap-3 bg-muted/40 p-3.5 rounded-[var(--radius-lg)] border border-border">
-            <div className="flex flex-col items-center justify-center p-3 rounded-[var(--radius)] bg-card/60 border border-border/50 text-center shadow-xs">
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '11px',
-                  fontWeight: 'var(--font-weight-medium)',
-                }}
-                className="text-muted-foreground uppercase tracking-wider mb-1 text-center"
-              >
-                Current Balance
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: 'var(--font-weight-bold)',
-                }}
-                className="text-foreground"
-              >
-                {currentBalance}
-              </span>
-            </div>
-
-            <div className="flex flex-col items-center justify-center p-3 rounded-[var(--radius)] bg-card/60 border border-border/50 text-center shadow-xs">
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '11px',
-                  fontWeight: 'var(--font-weight-medium)',
-                }}
-                className="text-muted-foreground uppercase tracking-wider mb-1 text-center"
-              >
-                Requesting
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: 'var(--font-weight-bold)',
-                }}
-                className={daysRequested > 0 ? "text-[var(--chart-4)]" : "text-muted-foreground/60"}
-              >
-                {daysRequested > 0 ? `-${daysRequested}` : '0'}
-              </span>
-            </div>
-
-            <div className="flex flex-col items-center justify-center p-3 rounded-[var(--radius)] bg-card/60 border border-border/50 text-center shadow-xs">
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '11px',
-                  fontWeight: 'var(--font-weight-medium)',
-                }}
-                className="text-muted-foreground uppercase tracking-wider mb-1 text-center"
-              >
-                Remaining when approved
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: 'var(--font-weight-bold)',
-                }}
-                className={cn(
-                  remainingBalance < 0 ? 'text-destructive animate-pulse' : 'text-[var(--chart-3)]'
-                )}
-              >
-                {remainingBalance}
-              </span>
-            </div>
-          </div>
-
-          {/* Submit Button */}
           <Button
             className="w-full bg-chart-3 hover:bg-chart-3/90 text-white"
             onClick={handleSubmit}
-            disabled={daysRequested === 0 || daysRequested > currentBalance}
+            disabled={daysRequested === 0}
           >
-            ✈ Book mission
+            Book mission
             {daysRequested > 0 && (
               <span className="ms-1 opacity-80">
                 ({daysRequested} day{daysRequested !== 1 ? 's' : ''})

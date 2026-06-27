@@ -88,6 +88,8 @@ const DEPARTMENTS_LIST = ['Marketing', 'Software', 'Oil & Gas', 'Sales', 'SCADA'
 const JOB_TITLES_LIST = ['Senior Solutions Architect', 'Global Operations Manager', 'Senior Project Manager', 'Cybersecurity Specialist', 'Director of Supply Chain Optimization', 'Software Developer', 'Engineer'];
 const ACTIVITY_TYPES = ['Direct', 'InDirect'];
 const EMPLOYMENT_TYPES = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
+const uniqueOptions = (values: Array<string | undefined>) =>
+  Array.from(new Set(values.map((value) => value?.trim()).filter((value): value is string => Boolean(value)))).sort((a, b) => a.localeCompare(b));
 
 // ── Shared input style ──
 const inputClass = "w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow";
@@ -185,6 +187,9 @@ export const EmployeeManagement: React.FC = () => {
   const jobTitlesList = useMemo(() => {
     return jobTitles.length > 0 ? jobTitles.map(j => j.title) : JOB_TITLES_LIST;
   }, [jobTitles]);
+
+  const activityTypesList = useMemo(() => uniqueOptions(employees.map(e => e.activityType)), [employees]);
+  const employmentTypesList = useMemo(() => uniqueOptions(employees.map(e => e.contractType)), [employees]);
 
   React.useEffect(() => {
     loadData();
@@ -353,6 +358,8 @@ export const EmployeeManagement: React.FC = () => {
                       onApply={applyFilters} onClear={clearFilters} onClose={() => setFilterOpen(false)}
                       departmentsList={departmentsList}
                       jobTitlesList={jobTitlesList}
+                      activityTypesList={activityTypesList}
+                      employmentTypesList={employmentTypesList}
                     />
                   </PopoverContent>
                 </Popover>
@@ -796,7 +803,9 @@ const EmployeeFilterPanel: React.FC<{
   onApply: () => void; onClear: () => void; onClose: () => void;
   departmentsList: string[];
   jobTitlesList: string[];
-}> = ({ dept, setDept, title, setTitle, gradYear, setGradYear, hiredAfter, setHiredAfter, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose, departmentsList, jobTitlesList }) => (
+  activityTypesList: string[];
+  employmentTypesList: string[];
+}> = ({ dept, setDept, title, setTitle, gradYear, setGradYear, hiredAfter, setHiredAfter, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose, departmentsList, jobTitlesList, activityTypesList, employmentTypesList }) => (
   <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
     <div className="flex items-center justify-between">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
@@ -819,8 +828,8 @@ const EmployeeFilterPanel: React.FC<{
       <label className={labelClass}>Hired After</label>
       <DatePicker value={hiredAfter} onChange={setHiredAfter} placeholder="Select date" />
     </div>
-    <CheckboxGroup label="Activity Type" items={ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
-    <CheckboxGroup label="Employment Type" items={EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
+    <CheckboxGroup label="Activity Type" items={activityTypesList.length ? activityTypesList : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
+    <CheckboxGroup label="Employment Type" items={employmentTypesList.length ? employmentTypesList : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
     <div className="space-y-2 pt-2">
       <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
       <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)]">Clear Filter</Button>

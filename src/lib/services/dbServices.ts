@@ -28,6 +28,12 @@ export interface LeaveRequest {
   notes: string;
   status?: string;
   employeeNumber?: string;
+  department?: string;
+  jobTitle?: string;
+  contractType?: string;
+  activityType?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface MissionRequest {
@@ -41,6 +47,12 @@ export interface MissionRequest {
   status?: string;
   employeeNumber?: string;
   reason?: string;
+  department?: string;
+  jobTitle?: string;
+  contractType?: string;
+  activityType?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface AttendanceEntry {
@@ -95,6 +107,14 @@ const isRowLevelSecurityError = (error: unknown): boolean => {
   const message = error instanceof Error ? error.message : String((error as any)?.message || error || '');
   return message.toLowerCase().includes('row-level security');
 };
+
+const isMissingRpcFunctionError = (error: unknown, functionName: string): boolean => {
+  const message = error instanceof Error ? error.message : String((error as any)?.message || error || '');
+  return message.includes(functionName) && message.toLowerCase().includes('schema cache');
+};
+
+const missingSubmissionFunctionMessage = (functionName: string): string =>
+  `The database is missing ${functionName}. Run supabase/repair-mission-submission-functions.sql in Supabase SQL Editor, then try again.`;
 
 
 // --- LOCAL STORAGE CACHE HELPERS (Fallback Mode) ---
@@ -326,7 +346,16 @@ export const LeaveService = {
           days_count,
           reason,
           status,
-          employees:employees!employee_id ( first_name, last_name, employee_number, img_url )
+          employees:employees!employee_id (
+            first_name,
+            last_name,
+            employee_number,
+            img_url,
+            contract_type,
+            activity_type,
+            departments ( name ),
+            job_titles ( title )
+          )
         `);
       if (error) throw error;
       return (data || []).map((l: any) => ({
@@ -338,7 +367,13 @@ export const LeaveService = {
         duration: `${l.days_count} days`,
         notes: l.reason || '',
         status: l.status,
-        employeeNumber: l.employees?.employee_number || ''
+        employeeNumber: l.employees?.employee_number || '',
+        department: l.employees?.departments?.name || 'Unassigned',
+        jobTitle: l.employees?.job_titles?.title || 'Unassigned',
+        contractType: l.employees?.contract_type || '',
+        activityType: l.employees?.activity_type || '',
+        startDate: l.start_date,
+        endDate: l.end_date
       }));
     }
     return getCache('leaves', INITIAL_LEAVES);
@@ -374,6 +409,10 @@ export const LeaveService = {
         });
         data = rpcResult.data;
         error = rpcResult.error;
+      }
+
+      if (error && isMissingRpcFunctionError(error, 'create_leave_for_employee')) {
+        throw new Error(missingSubmissionFunctionMessage('create_leave_for_employee'));
       }
 
       if (error) throw error;
@@ -430,7 +469,16 @@ export const MissionService = {
           destination,
           reason,
           status,
-          employees:employees!employee_id ( first_name, last_name, employee_number, img_url )
+          employees:employees!employee_id (
+            first_name,
+            last_name,
+            employee_number,
+            img_url,
+            contract_type,
+            activity_type,
+            departments ( name ),
+            job_titles ( title )
+          )
         `);
       if (error) throw error;
       return (data || []).map((m: any) => ({
@@ -443,7 +491,13 @@ export const MissionService = {
         notes: m.reason || '',
         reason: m.reason || '',
         status: m.status,
-        employeeNumber: m.employees?.employee_number || ''
+        employeeNumber: m.employees?.employee_number || '',
+        department: m.employees?.departments?.name || 'Unassigned',
+        jobTitle: m.employees?.job_titles?.title || 'Unassigned',
+        contractType: m.employees?.contract_type || '',
+        activityType: m.employees?.activity_type || '',
+        startDate: m.start_date,
+        endDate: m.end_date
       }));
     }
     return getCache('missions', INITIAL_MISSIONS);
@@ -481,6 +535,10 @@ export const MissionService = {
         });
         data = rpcResult.data;
         error = rpcResult.error;
+      }
+
+      if (error && isMissingRpcFunctionError(error, 'create_mission_for_employee')) {
+        throw new Error(missingSubmissionFunctionMessage('create_mission_for_employee'));
       }
 
       if (error) throw error;

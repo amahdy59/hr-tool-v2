@@ -15,10 +15,10 @@ const PopoverTrigger = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger>
 >(({ ...props }, forwardedRef) => {
-  const triggerRef = React.useRef<HTMLElement | null>(null);
+  const triggerRef = React.useRef<React.ElementRef<typeof PopoverPrimitive.Trigger> | null>(null);
 
   const setRefs = React.useCallback(
-    (node: HTMLElement | null) => {
+    (node: React.ElementRef<typeof PopoverPrimitive.Trigger> | null) => {
       triggerRef.current = node;
       if (typeof forwardedRef === "function") {
         forwardedRef(node);

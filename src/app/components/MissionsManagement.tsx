@@ -38,9 +38,17 @@ import { MissionRequest, MissionService, EmployeeService, Employee } from '../..
 // ── Mock Data ──
 const MISSION_TYPES = ['Work From Home', 'Visa Issuing', 'Client Visit', 'Training', 'Conference'];
 
-const DEPARTMENTS = ['All', 'Marketing', 'Software', 'Oil & Gas', 'Sales', 'SCADA', 'IT', 'Finance', 'HR'];
 const ACTIVITY_TYPES = ['My team', 'Lead Engineer', 'Application Consultant', 'Project Manager'];
 const EMPLOYMENT_TYPES = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
+const uniqueOptions = (values: Array<string | undefined>) =>
+  Array.from(new Set(values.map((value) => value?.trim()).filter((value): value is string => Boolean(value)))).sort((a, b) => a.localeCompare(b));
+
+const getRequestDate = (request: Pick<MissionRequest, 'startDate' | 'endDate' | 'range'>, boundary: 'start' | 'end') => {
+  if (boundary === 'start' && request.startDate) return request.startDate;
+  if (boundary === 'end' && request.endDate) return request.endDate;
+  const [start, end] = request.range.split(' - ');
+  return boundary === 'start' ? start : end || start;
+};
 
 export const MissionsManagement: React.FC = () => {
   const { i18n } = useTranslation();
@@ -87,6 +95,11 @@ export const MissionsManagement: React.FC = () => {
   const [filterEmploymentTypes, setFilterEmploymentTypes] = useState<string[]>([]);
   const [activeFilters, setActiveFilters] = useState(0);
 
+  const departmentOptions = useMemo(() => ['All', ...uniqueOptions(allMissions.map(m => m.department))], [allMissions]);
+  const missionTypeOptions = useMemo(() => ['All', ...uniqueOptions(allMissions.map(m => m.type))], [allMissions]);
+  const activityTypeOptions = useMemo(() => uniqueOptions(allMissions.map(m => m.activityType)), [allMissions]);
+  const employmentTypeOptions = useMemo(() => uniqueOptions(allMissions.map(m => m.contractType)), [allMissions]);
+
   // Filtered and Paginated lists
   const filteredPending = useMemo(() => {
     return pendingMissions.filter(m => 
@@ -101,11 +114,18 @@ export const MissionsManagement: React.FC = () => {
 
   const filteredHistory = useMemo(() => {
     return historyMissions.filter(m => {
-      const matchesSearch = !historySearch || m.name.toLowerCase().includes(historySearch.toLowerCase());
-      const matchesDept = filterDept === 'All';
-      return matchesSearch && matchesDept;
+      const requestStart = getRequestDate(m, 'start');
+      const requestEnd = getRequestDate(m, 'end');
+      const matchesSearch = !historySearch || m.name.toLowerCase().includes(historySearch.toLowerCase()) || m.employeeNumber?.includes(historySearch);
+      const matchesDept = filterDept === 'All' || m.department === filterDept;
+      const matchesMissionType = filterMissionType === 'All' || m.type === filterMissionType;
+      const matchesFrom = !filterFrom || requestEnd >= filterFrom;
+      const matchesTo = !filterTo || requestStart <= filterTo;
+      const matchesActivity = filterActivityTypes.length === 0 || (m.activityType ? filterActivityTypes.includes(m.activityType) : false);
+      const matchesEmployment = filterEmploymentTypes.length === 0 || (m.contractType ? filterEmploymentTypes.includes(m.contractType) : false);
+      return matchesSearch && matchesDept && matchesMissionType && matchesFrom && matchesTo && matchesActivity && matchesEmployment;
     });
-  }, [historyMissions, historySearch, filterDept]);
+  }, [historyMissions, historySearch, filterDept, filterMissionType, filterFrom, filterTo, filterActivityTypes, filterEmploymentTypes]);
 
   const paginatedHistory = useMemo(() => {
     const start = (historyPage - 1) * 15;
@@ -252,6 +272,10 @@ export const MissionsManagement: React.FC = () => {
                     from={filterFrom} setFrom={setFilterFrom} to={filterTo} setTo={setFilterTo}
                     activityTypes={filterActivityTypes} toggleActivity={t => setFilterActivityTypes(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])}
                     employmentTypes={filterEmploymentTypes} toggleEmployment={t => setFilterEmploymentTypes(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])}
+                    departmentOptions={departmentOptions}
+                    missionTypeOptions={missionTypeOptions}
+                    activityTypeOptions={activityTypeOptions}
+                    employmentTypeOptions={employmentTypeOptions}
                     onApply={applyFilters} onClear={clearFilters} onClose={() => setFilterOpen(false)}
                   />
                 </PopoverContent>
@@ -259,7 +283,7 @@ export const MissionsManagement: React.FC = () => {
             </div>
           </div>
           <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
-            exportToCSV(historyMissions, 'Missions_History');
+            exportToCSV(filteredHistory, 'Missions_History');
             toast.success('Download started', { description: 'Missions data exported to CSV.' });
           }}>
             <Download className="w-4 h-4" /> Download Data
@@ -431,19 +455,23 @@ const FilterPanel: React.FC<{
   from: string; setFrom: (v: string) => void; to: string; setTo: (v: string) => void;
   activityTypes: string[]; toggleActivity: (v: string) => void;
   employmentTypes: string[]; toggleEmployment: (v: string) => void;
+  departmentOptions: string[];
+  missionTypeOptions: string[];
+  activityTypeOptions: string[];
+  employmentTypeOptions: string[];
   onApply: () => void; onClear: () => void; onClose: () => void;
-}> = ({ dept, setDept, missionType, setMissionType, from, setFrom, to, setTo, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose }) => (
+}> = ({ dept, setDept, missionType, setMissionType, from, setFrom, to, setTo, activityTypes, toggleActivity, employmentTypes, toggleEmployment, departmentOptions, missionTypeOptions, activityTypeOptions, employmentTypeOptions, onApply, onClear, onClose }) => (
   <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
     <div className="flex items-center justify-between">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
       <button onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
     </div>
-    <SelectField label="Department" value={dept} onChange={setDept} options={DEPARTMENTS} />
-    <SelectField label="Mission Type" value={missionType} onChange={setMissionType} options={['All', ...MISSION_TYPES]} />
+    <SelectField label="Department" value={dept} onChange={setDept} options={departmentOptions} />
+    <SelectField label="Mission Type" value={missionType} onChange={setMissionType} options={missionTypeOptions.length > 1 ? missionTypeOptions : ['All', ...MISSION_TYPES]} />
     <div className="space-y-1.5"><label className={labelClass}>From</label><DatePicker value={from} onChange={setFrom} placeholder="Select from date" /></div>
     <div className="space-y-1.5"><label className={labelClass}>To</label><DatePicker value={to} onChange={setTo} placeholder="Select to date" /></div>
-    <CheckboxGroup label="Activity Type" items={ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
-    <CheckboxGroup label="Employment Type" items={EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
+    <CheckboxGroup label="Activity Type" items={activityTypeOptions.length ? activityTypeOptions : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
+    <CheckboxGroup label="Employment Type" items={employmentTypeOptions.length ? employmentTypeOptions : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
     <div className="space-y-2 pt-2">
       <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
       <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)] border-border">Clear Filter</Button>

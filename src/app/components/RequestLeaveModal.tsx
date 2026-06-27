@@ -115,7 +115,8 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
     return calculateWorkingDays(fromDate, toDate);
   }, [fromDate, toDate]);
 
-  const currentBalance = leaveBalances[leaveType] ?? 21;
+  const isVacationRequest = leaveType === 'Annual Leave';
+  const currentBalance = isVacationRequest ? leaveBalances[leaveType] ?? 21 : Number.POSITIVE_INFINITY;
   const remainingBalance = Math.max(0, currentBalance - daysRequested);
   const requiresAttachment = mode === 'add' && attachmentRequiredLeaveTypes.has(leaveType);
   const attachmentMissing = requiresAttachment && attachments.length === 0;
@@ -153,12 +154,12 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
       return "Vacation requests cannot be made from next year's balance.";
     }
 
-    if (daysRequested > currentBalance) {
+    if (isVacationRequest && daysRequested > currentBalance) {
       return `Request of ${daysRequested} days exceeds the available balance of ${currentBalance} days.`;
     }
 
     return null;
-  }, [fromDate, toDate, leaveType, daysRequested, currentBalance, hireDate]);
+  }, [fromDate, toDate, leaveType, daysRequested, currentBalance, hireDate, isVacationRequest]);
 
   const handleSubmit = () => {
     if (attachmentMissing || validationError) return;
@@ -191,7 +192,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               fontWeight: 'var(--section-heading-weight)',
             }}
           >
-            {mode === 'edit' ? 'Edit Request' : 'Request Leave'}
+            {mode === 'edit' ? 'Edit request' : 'Request leave'}
           </DialogTitle>
           <DialogDescription className="sr-only">
             {mode === 'edit' ? 'Edit your leave request' : 'Request a leave'}
@@ -209,7 +210,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               }}
               className="text-foreground block text-start w-full"
             >
-              Leave Type
+              Leave type
             </label>
             <Select value={leaveType} onValueChange={setLeaveType}>
               <SelectTrigger className="h-10 w-full rounded-[var(--radius-input)]">
@@ -279,7 +280,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             }}
             className={cn(
               'text-muted-foreground -mt-3',
-              (daysRequested > currentBalance || !!validationError) && 'text-destructive font-medium'
+              ((isVacationRequest && daysRequested > currentBalance) || !!validationError) && 'text-destructive font-medium'
             )}
           >
             {validationError ? (
@@ -287,7 +288,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             ) : (
               <>
                 {dateLabel}
-                {daysRequested > currentBalance && ' — exceeds available balance'}
+                {isVacationRequest && daysRequested > currentBalance && ' - exceeds available balance'}
               </>
             )}
           </p>
@@ -380,79 +381,44 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             </div>
           )}
 
-          {/* Balance Info */}
-          <div className="grid grid-cols-3 gap-3 bg-muted/40 p-3.5 rounded-[var(--radius-lg)] border border-border">
-            <div className="flex flex-col items-center justify-center p-3 rounded-[var(--radius)] bg-card/60 border border-border/50 text-center shadow-xs">
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '11px',
-                  fontWeight: 'var(--font-weight-medium)',
-                }}
-                className="text-muted-foreground uppercase tracking-wider mb-1 text-center"
-              >
-                Current Balance
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: 'var(--font-weight-bold)',
-                }}
-                className="text-foreground"
-              >
-                {currentBalance}
-              </span>
-            </div>
-
-            <div className="flex flex-col items-center justify-center p-3 rounded-[var(--radius)] bg-card/60 border border-border/50 text-center shadow-xs">
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '11px',
-                  fontWeight: 'var(--font-weight-medium)',
-                }}
-                className="text-muted-foreground uppercase tracking-wider mb-1 text-center"
-              >
-                Requesting
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: 'var(--font-weight-bold)',
-                }}
-                className={daysRequested > 0 ? "text-[var(--chart-4)]" : "text-muted-foreground/60"}
-              >
-                {daysRequested > 0 ? `-${daysRequested}` : '0'}
-              </span>
-            </div>
-
-            <div className="flex flex-col items-center justify-center p-3 rounded-[var(--radius)] bg-card/60 border border-border/50 text-center shadow-xs">
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '11px',
-                  fontWeight: 'var(--font-weight-medium)',
-                }}
-                className="text-muted-foreground uppercase tracking-wider mb-1 text-center"
-              >
-                Remaining when approved
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: 'var(--font-weight-bold)',
-                }}
-                className={cn(
-                  remainingBalance < 0 ? 'text-destructive animate-pulse' : 'text-[var(--chart-3)]'
-                )}
-              >
-                {remainingBalance}
-              </span>
-            </div>
-          </div>
+          {isVacationRequest && (
+            <dl className="grid grid-cols-3 rounded-[var(--radius-lg)] border border-border bg-muted/30 px-3 py-3">
+              {[
+                { label: 'Current balance', value: currentBalance, className: 'text-foreground' },
+                { label: 'Requesting', value: daysRequested > 0 ? `-${daysRequested}` : '0', className: daysRequested > 0 ? 'text-[var(--chart-4)]' : 'text-muted-foreground' },
+                { label: 'Remaining when approved', value: remainingBalance, className: remainingBalance < 0 ? 'text-destructive' : 'text-[var(--chart-3)]' },
+              ].map((item, index) => (
+                <div
+                  key={item.label}
+                  className={cn(
+                    'flex min-h-[74px] flex-col justify-between gap-2 px-2 text-center',
+                    index > 0 && 'border-s border-border'
+                  )}
+                >
+                  <dt
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: '11px',
+                      fontWeight: 'var(--font-weight-medium)',
+                    }}
+                    className="min-h-[30px] text-balance text-muted-foreground"
+                  >
+                    {item.label}
+                  </dt>
+                  <dd
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 'var(--text-xl)',
+                      fontWeight: 'var(--font-weight-bold)',
+                    }}
+                    className={cn('tabular-nums leading-none', item.className)}
+                  >
+                    {item.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          )}
 
           {/* Approver Info */}
           <div className="flex items-center gap-2">
@@ -484,7 +450,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             onClick={handleSubmit}
             disabled={daysRequested === 0 || !!validationError || attachmentMissing}
           >
-            {mode === 'edit' ? 'Save Changes' : '✈ Book time off'}
+            {mode === 'edit' ? 'Save changes' : 'Book time off'}
             {daysRequested > 0 && mode === 'add' && (
               <span className="ms-1 opacity-80">
                 ({daysRequested} day{daysRequested !== 1 ? 's' : ''})
