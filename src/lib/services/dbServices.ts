@@ -275,7 +275,7 @@ export const LeaveService = {
           days_count,
           reason,
           status,
-          employees ( first_name, last_name, employee_number, img_url )
+          employees:employees!employee_id ( first_name, last_name, employee_number, img_url )
         `);
       if (error) throw error;
       return (data || []).map((l: any) => ({
@@ -364,7 +364,7 @@ export const MissionService = {
           destination,
           reason,
           status,
-          employees ( first_name, last_name, employee_number, img_url )
+          employees:employees!employee_id ( first_name, last_name, employee_number, img_url )
         `);
       if (error) throw error;
       return (data || []).map((m: any) => ({
