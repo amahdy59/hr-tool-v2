@@ -63,40 +63,18 @@ import { exportToCSV } from '../../lib/export';
 import { useTranslation } from 'react-i18next';
 import { localizePersonName } from '@/lib/localizedNames';
 
-import { Employee, EmployeeService } from '../../lib/services/dbServices';
+import {
+  Employee,
+  EmployeeService,
+  Department,
+  JobTitle,
+  ActivityEntry,
+  DepartmentService,
+  JobTitleService,
+  ActivityLogService,
+} from '../../lib/services/dbServices';
 
 // ── Types ──
-interface ActivityEntry {
-  id: string;
-  admin: string;
-  action: string;
-  date: string;
-  affectedCount: number;
-  affectedEmployeeNumber: string;
-}
-
-interface ActivityEntry {
-  id: string;
-  admin: string;
-  action: string;
-  date: string;
-  affectedCount: number;
-  affectedEmployeeNumber: string;
-}
-
-interface Department {
-  id: string;
-  name: string;
-  deptId: string;
-  totalNumber: number;
-}
-
-interface JobTitle {
-  id: string;
-  title: string;
-  count: number;
-}
-
 interface AccessCard {
   id: string;
   cardNumber: string;
@@ -105,30 +83,6 @@ interface AccessCard {
   cardType: string;
   status: 'Active' | 'Expired' | 'Suspended';
 }
-
-// Note: EMPLOYEES array replaced by dynamic database service calls.
-
-const ACTIVITY_LOG: ActivityEntry[] = [
-  { id: '1', admin: 'Muhammed Habib', action: 'Edited Employee Info', date: 'February 25, 2013', affectedCount: 2, affectedEmployeeNumber: '12345' },
-  { id: '2', admin: 'Lena Mohamed', action: 'Terminated Employee', date: 'April 25, 2011', affectedCount: 1, affectedEmployeeNumber: '54321' },
-  { id: '3', admin: 'Mohammed Habib', action: 'Added New Employee', date: 'January 4, 2014', affectedCount: 3, affectedEmployeeNumber: '98765' },
-  { id: '4', admin: 'Mohammed Habib', action: 'Edited Access Card Details', date: 'January 4, 2014', affectedCount: 1, affectedEmployeeNumber: '98765' },
-];
-
-const DEPARTMENTS: Department[] = [
-  { id: '1', name: 'Marketing', deptId: 'D1001', totalNumber: 23 },
-  { id: '2', name: 'Software', deptId: 'D1002', totalNumber: 45 },
-  { id: '3', name: 'Oil & Gas', deptId: 'D1003', totalNumber: 31 },
-  { id: '4', name: 'Sales', deptId: 'D1004', totalNumber: 18 },
-  { id: '5', name: 'SCADA', deptId: 'D1005', totalNumber: 12 },
-];
-
-const JOB_TITLES: JobTitle[] = [
-  { id: '1', title: 'Cybersecurity Engineer', count: 5 },
-  { id: '2', title: 'Software Developer', count: 12 },
-  { id: '3', title: 'Senior Product Manager', count: 3 },
-  { id: '4', title: 'Solutions Architect', count: 7 },
-];
 
 const DEPARTMENTS_LIST = ['Marketing', 'Software', 'Oil & Gas', 'Sales', 'SCADA', 'IT', 'Finance', 'HR', 'Engineering'];
 const JOB_TITLES_LIST = ['Senior Solutions Architect', 'Global Operations Manager', 'Senior Project Manager', 'Cybersecurity Specialist', 'Director of Supply Chain Optimization', 'Software Developer', 'Engineer'];
@@ -196,27 +150,48 @@ export const EmployeeManagement: React.FC = () => {
   const [jtPage, setJtPage] = useState(1);
 
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [jobTitles, setJobTitles] = useState<JobTitle[]>([]);
+  const [activityLog, setActivityLog] = useState<ActivityEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const loadEmployees = async () => {
+  const loadData = async () => {
     try {
       setLoading(true);
-      const data = await EmployeeService.getAll();
-      setEmployees(data);
+      const [empData, deptData, jtData, actData] = await Promise.all([
+        EmployeeService.getAll(),
+        DepartmentService.getAll(),
+        JobTitleService.getAll(),
+        ActivityLogService.getAll(),
+      ]);
+      setEmployees(empData);
+      setDepartments(deptData);
+      setJobTitles(jtData);
+      setActivityLog(actData);
     } catch (err) {
       console.error(err);
-      toast.error('Failed to load employees from database');
+      toast.error('Failed to load data from database');
     } finally {
       setLoading(false);
     }
   };
 
+  const loadEmployees = loadData;
+
+  const departmentsList = useMemo(() => {
+    return departments.length > 0 ? departments.map(d => d.name) : DEPARTMENTS_LIST;
+  }, [departments]);
+
+  const jobTitlesList = useMemo(() => {
+    return jobTitles.length > 0 ? jobTitles.map(j => j.title) : JOB_TITLES_LIST;
+  }, [jobTitles]);
+
   React.useEffect(() => {
-    loadEmployees();
+    loadData();
   }, []);
 
   const filteredEmployees = useMemo(() => {
-    return employees.filter((employee) => {
+    const result = employees.filter((employee) => {
       const employeeNameStr = typeof employee.name === 'string' ? employee.name : `${employee.name?.nameEn || ''} ${employee.name?.nameAr || ''}`;
       const matchesSearch = includesQuery(
         [employeeNameStr, employee.employeeNumber, employee.email, employee.department, employee.jobTitle],
@@ -230,21 +205,23 @@ export const EmployeeManagement: React.FC = () => {
 
       return matchesSearch && matchesDepartment && matchesTitle && matchesHireDate && matchesActivity && matchesEmployment;
     });
-  }, [filterActivityTypes, filterDept, filterEmploymentTypes, filterHiredAfter, filterTitle, searchQuery]);
+    console.log('Filtered Employees:', result.length, 'out of', employees.length);
+    return result;
+  }, [filterActivityTypes, filterDept, filterEmploymentTypes, filterHiredAfter, filterTitle, searchQuery, employees]);
 
   const filteredActivityLog = useMemo(
-    () => ACTIVITY_LOG.filter((log) => includesQuery([log.admin, log.action, log.date, log.affectedEmployeeNumber, log.affectedCount], searchQuery)),
-    [searchQuery]
+    () => activityLog.filter((log) => includesQuery([log.admin, log.action, log.date, log.affectedEmployeeNumber, log.affectedCount], searchQuery)),
+    [searchQuery, activityLog]
   );
 
   const filteredDepartments = useMemo(
-    () => DEPARTMENTS.filter((department) => includesQuery([department.name, department.deptId, department.totalNumber], deptSearch)),
-    [deptSearch]
+    () => departments.filter((department) => includesQuery([department.name, department.deptId, department.totalNumber], deptSearch)),
+    [deptSearch, departments]
   );
 
   const filteredJobTitles = useMemo(
-    () => JOB_TITLES.filter((jobTitle) => includesQuery([jobTitle.title, jobTitle.count], jtSearch)),
-    [jtSearch]
+    () => jobTitles.filter((jobTitle) => includesQuery([jobTitle.title, jobTitle.count], jtSearch)),
+    [jtSearch, jobTitles]
   );
 
   const paginatedEmployees = useMemo(() => {
@@ -374,6 +351,8 @@ export const EmployeeManagement: React.FC = () => {
                       activityTypes={filterActivityTypes} toggleActivity={(t) => setFilterActivityTypes(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])}
                       employmentTypes={filterEmploymentTypes} toggleEmployment={(t) => setFilterEmploymentTypes(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])}
                       onApply={applyFilters} onClear={clearFilters} onClose={() => setFilterOpen(false)}
+                      departmentsList={departmentsList}
+                      jobTitlesList={jobTitlesList}
                     />
                   </PopoverContent>
                 </Popover>
@@ -425,7 +404,7 @@ export const EmployeeManagement: React.FC = () => {
                               <DropdownMenuItem onClick={() => { setAccessCardEmp(emp); setAccessCardsOpen(true); }} className="cursor-pointer gap-2">
                                 <CreditCard className="w-4 h-4" /> Manage Access Cards
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => { setActivityLogDetail(ACTIVITY_LOG[0]); setActivityLogDetailOpen(true); }} className="cursor-pointer gap-2">
+                              <DropdownMenuItem onClick={() => { setActivityLogDetail(activityLog[0] || null); setActivityLogDetailOpen(true); }} className="cursor-pointer gap-2">
                                 <Eye className="w-4 h-4" /> View Activity Log
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => setAddFormerOpen(true)} className="cursor-pointer gap-2">
@@ -604,6 +583,8 @@ export const EmployeeManagement: React.FC = () => {
         open={addEmpOpen}
         onOpenChange={setAddEmpOpen}
         title="Add an Employee"
+        departmentsList={departmentsList}
+        jobTitlesList={jobTitlesList}
         onSave={async (data) => {
           try {
             await EmployeeService.create(data);
@@ -622,6 +603,8 @@ export const EmployeeManagement: React.FC = () => {
         onOpenChange={setEditEmpOpen}
         title="Edit Employee"
         employee={editEmpData}
+        departmentsList={departmentsList}
+        jobTitlesList={jobTitlesList}
         onSave={async (data) => {
           try {
             if (editEmpData) {
@@ -680,21 +663,52 @@ export const EmployeeManagement: React.FC = () => {
         open={addDeptOpen}
         onOpenChange={setAddDeptOpen}
         title="Add Department"
-        onSave={() => { setAddDeptOpen(false); toast.success('Department added successfully'); }}
+        onSave={async (data) => {
+          try {
+            await DepartmentService.create(data);
+            await loadData();
+            setAddDeptOpen(false);
+            toast.success('Department added successfully');
+          } catch (e) {
+            toast.error('Failed to add department to database');
+          }
+        }}
       />
       <DepartmentFormModal
         open={editDeptOpen}
         onOpenChange={setEditDeptOpen}
         title="Edit Department"
         department={editDeptData}
-        onSave={() => { setEditDeptOpen(false); toast.success('Department updated successfully'); }}
+        onSave={async (data) => {
+          try {
+            if (editDeptData) {
+              await DepartmentService.update(editDeptData.id, data);
+              await loadData();
+              setEditDeptOpen(false);
+              toast.success('Department updated successfully');
+            }
+          } catch (e) {
+            toast.error('Failed to update department');
+          }
+        }}
       />
       <DeleteConfirmModal
         open={deleteDeptOpen}
         onOpenChange={setDeleteDeptOpen}
         itemType="Department"
         itemName={deleteDeptData?.name ?? ''}
-        onConfirm={() => { setDeleteDeptOpen(false); toast.success(`${deleteDeptData?.name} department deleted successfully`); }}
+        onConfirm={async () => {
+          try {
+            if (deleteDeptData) {
+              await DepartmentService.delete(deleteDeptData.id);
+              await loadData();
+              setDeleteDeptOpen(false);
+              toast.success(`${deleteDeptData?.name} department deleted successfully`);
+            }
+          } catch (e) {
+            toast.error('Failed to delete department');
+          }
+        }}
       />
 
       {/* Job Title CRUD */}
@@ -702,21 +716,52 @@ export const EmployeeManagement: React.FC = () => {
         open={addJtOpen}
         onOpenChange={setAddJtOpen}
         title="Add Job Title"
-        onSave={() => { setAddJtOpen(false); toast.success('Job title added successfully'); }}
+        onSave={async (titleStr) => {
+          try {
+            await JobTitleService.create(titleStr);
+            await loadData();
+            setAddJtOpen(false);
+            toast.success('Job title added successfully');
+          } catch (e) {
+            toast.error('Failed to add job title to database');
+          }
+        }}
       />
       <JobTitleFormModal
         open={editJtOpen}
         onOpenChange={setEditJtOpen}
         title="Edit Job Title"
         jobTitle={editJtData}
-        onSave={() => { setEditJtOpen(false); toast.success('Job title updated successfully'); }}
+        onSave={async (titleStr) => {
+          try {
+            if (editJtData) {
+              await JobTitleService.update(editJtData.id, titleStr);
+              await loadData();
+              setEditJtOpen(false);
+              toast.success('Job title updated successfully');
+            }
+          } catch (e) {
+            toast.error('Failed to update job title');
+          }
+        }}
       />
       <DeleteConfirmModal
         open={deleteJtOpen}
         onOpenChange={setDeleteJtOpen}
         itemType="Job Title"
         itemName={deleteJtData?.title ?? ''}
-        onConfirm={() => { setDeleteJtOpen(false); toast.success(`${deleteJtData?.title} deleted successfully`); }}
+        onConfirm={async () => {
+          try {
+            if (deleteJtData) {
+              await JobTitleService.delete(deleteJtData.id);
+              await loadData();
+              setDeleteJtOpen(false);
+              toast.success(`${deleteJtData?.title} deleted successfully`);
+            }
+          } catch (e) {
+            toast.error('Failed to delete job title');
+          }
+        }}
       />
     </div>
   );
@@ -749,7 +794,9 @@ const EmployeeFilterPanel: React.FC<{
   activityTypes: string[]; toggleActivity: (v: string) => void;
   employmentTypes: string[]; toggleEmployment: (v: string) => void;
   onApply: () => void; onClear: () => void; onClose: () => void;
-}> = ({ dept, setDept, title, setTitle, gradYear, setGradYear, hiredAfter, setHiredAfter, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose }) => (
+  departmentsList: string[];
+  jobTitlesList: string[];
+}> = ({ dept, setDept, title, setTitle, gradYear, setGradYear, hiredAfter, setHiredAfter, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose, departmentsList, jobTitlesList }) => (
   <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
     <div className="flex items-center justify-between">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
@@ -762,8 +809,8 @@ const EmployeeFilterPanel: React.FC<{
         <li>Search by <strong>name</strong>, <strong>email</strong>, or <strong>Employee#</strong>.</li>
       </ul>
     </div>
-    <FilterSelect label="Department" value={dept} onChange={setDept} options={['All', ...DEPARTMENTS_LIST]} />
-    <FilterSelect label="Job Title" value={title} onChange={setTitle} options={['All', ...JOB_TITLES_LIST]} />
+    <FilterSelect label="Department" value={dept} onChange={setDept} options={['All', ...departmentsList]} />
+    <FilterSelect label="Job Title" value={title} onChange={setTitle} options={['All', ...jobTitlesList]} />
     <div className="space-y-1.5">
       <label className={labelClass}>Graduation Year</label>
       <input type="text" inputMode="numeric" value={gradYear} onChange={(e) => setGradYear(e.target.value)} placeholder="e.g. 2013" className={inputClass} />
@@ -814,15 +861,17 @@ const EmployeeFormModal: React.FC<{
   title: string;
   employee?: Employee | null;
   onSave: (data: Omit<Employee, 'id'>) => void;
-}> = ({ open, onOpenChange, title, employee, onSave }) => {
+  departmentsList: string[];
+  jobTitlesList: string[];
+}> = ({ open, onOpenChange, title, employee, onSave, departmentsList, jobTitlesList }) => {
   const [name, setName] = useState('');
   const [employeeNumber, setEmployeeNumber] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [gender, setGender] = useState('Male');
   const [isManager, setIsManager] = useState(false);
-  const [dept, setDept] = useState(DEPARTMENTS_LIST[0]);
-  const [jobTitle, setJobTitle] = useState(JOB_TITLES_LIST[0]);
+  const [dept, setDept] = useState('');
+  const [jobTitle, setJobTitle] = useState('');
   const [contractType, setContractType] = useState('Permanent');
   const [hireDate, setHireDate] = useState('');
   const [activityType, setActivityType] = useState('Direct');
@@ -832,15 +881,18 @@ const EmployeeFormModal: React.FC<{
       const employeeNameStr = typeof employee.name === 'string' ? employee.name : (employee.name?.nameEn || '');
       setName(employeeNameStr); setEmployeeNumber(employee.employeeNumber); setEmail(employee.email);
       setPhone(employee.phone); setGender(employee.gender); setIsManager(employee.isManager);
-      setDept(employee.department); setJobTitle(employee.jobTitle);
+      setDept(employee.department || departmentsList[0] || '');
+      setJobTitle(employee.jobTitle || jobTitlesList[0] || '');
       setContractType(employee.contractType); setHireDate(employee.hireDate);
       setActivityType(employee.activityType);
     } else {
       setName(''); setEmployeeNumber(''); setEmail(''); setPhone(''); setGender('Male');
-      setIsManager(false); setDept(DEPARTMENTS_LIST[0]); setJobTitle(JOB_TITLES_LIST[0]);
+      setIsManager(false);
+      setDept(departmentsList[0] || '');
+      setJobTitle(jobTitlesList[0] || '');
       setContractType('Permanent'); setHireDate(''); setActivityType('Direct');
     }
-  }, [employee, open]);
+  }, [employee, open, departmentsList, jobTitlesList]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -874,8 +926,8 @@ const EmployeeFormModal: React.FC<{
 
           <div className="space-y-4">
             <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Job Related</p>
-            <FilterSelect label="Department" value={dept} onChange={setDept} options={DEPARTMENTS_LIST} />
-            <FilterSelect label="Job Title" value={jobTitle} onChange={setJobTitle} options={JOB_TITLES_LIST} />
+            <FilterSelect label="Department" value={dept} onChange={setDept} options={departmentsList} />
+            <FilterSelect label="Job Title" value={jobTitle} onChange={setJobTitle} options={jobTitlesList} />
             <div className="space-y-1.5">
               <label className={labelClass}>Contract Type</label>
               <Select value={contractType} onValueChange={setContractType}>
@@ -1238,7 +1290,7 @@ const DepartmentFormModal: React.FC<{
   onOpenChange: (v: boolean) => void;
   title: string;
   department?: Department | null;
-  onSave: () => void;
+  onSave: (data: { name: string; deptId: string }) => void;
 }> = ({ open, onOpenChange, title, department, onSave }) => {
   const [name, setName] = useState('');
   const [deptId, setDeptId] = useState('');
@@ -1266,7 +1318,7 @@ const DepartmentFormModal: React.FC<{
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
-          <Button onClick={onSave} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
+          <Button onClick={() => onSave({ name, deptId })} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
             {department ? 'Save Department' : 'Add Department'}
           </Button>
         </DialogFooter>
@@ -1281,7 +1333,7 @@ const JobTitleFormModal: React.FC<{
   onOpenChange: (v: boolean) => void;
   title: string;
   jobTitle?: JobTitle | null;
-  onSave: () => void;
+  onSave: (titleStr: string) => void;
 }> = ({ open, onOpenChange, title, jobTitle: jt, onSave }) => {
   const [jtName, setJtName] = useState('');
 
@@ -1301,7 +1353,7 @@ const JobTitleFormModal: React.FC<{
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
-          <Button onClick={onSave} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
+          <Button onClick={() => onSave(jtName)} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
             {jt ? 'Save Job Title' : 'Add Job Title'}
           </Button>
         </DialogFooter>

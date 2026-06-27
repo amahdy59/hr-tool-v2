@@ -19,6 +19,7 @@ interface DatePickerProps {
   placeholder?: string;
   className?: string;
   disabled?: boolean;
+  disabledDays?: (date: Date) => boolean;
 }
 
 export function DatePicker({
@@ -27,6 +28,7 @@ export function DatePicker({
   placeholder = "Pick a date",
   className,
   disabled = false,
+  disabledDays,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -85,6 +87,7 @@ export function DatePicker({
           mode="single"
           selected={selectedDate}
           onSelect={handleSelect}
+          disabled={disabledDays}
           initialFocus
         />
       </PopoverContent>

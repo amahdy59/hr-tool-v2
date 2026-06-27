@@ -69,6 +69,29 @@ export interface PayrollEntry {
   status: 'Paid' | 'Pending';
 }
 
+export interface Department {
+  id: string;
+  name: string;
+  deptId: string;
+  totalNumber: number;
+}
+
+export interface JobTitle {
+  id: string;
+  title: string;
+  count: number;
+}
+
+export interface ActivityEntry {
+  id: string;
+  admin: string;
+  action: string;
+  date: string;
+  affectedCount: number;
+  affectedEmployeeNumber: string;
+}
+
+
 // --- LOCAL STORAGE CACHE HELPERS (Fallback Mode) ---
 
 const getCache = <T>(key: string, initialData: T[]): T[] => {
@@ -116,6 +139,29 @@ const INITIAL_MISSIONS: MissionRequest[] = [
 
 const INITIAL_ATTENDANCE: AttendanceEntry[] = [];
 const INITIAL_PAYROLL: PayrollEntry[] = [];
+
+const INITIAL_DEPARTMENTS: Department[] = [
+  { id: '1', name: 'Marketing', deptId: 'D1001', totalNumber: 23 },
+  { id: '2', name: 'Software', deptId: 'D1002', totalNumber: 45 },
+  { id: '3', name: 'Oil & Gas', deptId: 'D1003', totalNumber: 31 },
+  { id: '4', name: 'Sales', deptId: 'D1004', totalNumber: 18 },
+  { id: '5', name: 'SCADA', deptId: 'D1005', totalNumber: 12 }
+];
+
+const INITIAL_JOB_TITLES: JobTitle[] = [
+  { id: '1', title: 'Cybersecurity Engineer', count: 5 },
+  { id: '2', title: 'Software Developer', count: 12 },
+  { id: '3', title: 'Senior Project Manager', count: 3 },
+  { id: '4', title: 'Solutions Architect', count: 7 }
+];
+
+const INITIAL_ACTIVITY_LOG: ActivityEntry[] = [
+  { id: '1', admin: 'Muhammed Habib', action: 'Edited Employee Info', date: 'February 25, 2013', affectedCount: 2, affectedEmployeeNumber: '12345' },
+  { id: '2', admin: 'Lena Mohamed', action: 'Terminated Employee', date: 'April 25, 2011', affectedCount: 1, affectedEmployeeNumber: '54321' },
+  { id: '3', admin: 'Mohammed Habib', action: 'Added New Employee', date: 'January 4, 2014', affectedCount: 3, affectedEmployeeNumber: '98765' },
+  { id: '4', admin: 'Mohammed Habib', action: 'Edited Access Card Details', date: 'January 4, 2014', affectedCount: 1, affectedEmployeeNumber: '98765' }
+];
+
 
 // --- API SERVICES ---
 
@@ -535,3 +581,190 @@ export const PayrollService = {
     return getCache('payroll', INITIAL_PAYROLL);
   }
 };
+
+export const DepartmentService = {
+  async getAll(): Promise<Department[]> {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase
+        .from('departments')
+        .select(`
+          id,
+          name,
+          dept_code,
+          employees:employees!department_id ( id )
+        `);
+      if (error) throw error;
+      return (data || []).map((d: any) => ({
+        id: d.id,
+        name: d.name,
+        deptId: d.dept_code,
+        totalNumber: d.employees ? d.employees.length : 0
+      }));
+    }
+    return getCache('departments', INITIAL_DEPARTMENTS);
+  },
+  async create(dept: Omit<Department, 'id' | 'totalNumber'>): Promise<Department> {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase
+        .from('departments')
+        .insert({
+          name: dept.name,
+          dept_code: dept.deptId
+        })
+        .select()
+        .single();
+      if (error) throw error;
+      return {
+        id: data.id,
+        name: data.name,
+        deptId: data.dept_code,
+        totalNumber: 0
+      };
+    }
+    const cached = getCache('departments', INITIAL_DEPARTMENTS);
+    const newDept = { ...dept, id: Math.random().toString(36).substr(2, 9), totalNumber: 0 };
+    cached.push(newDept);
+    setCache('departments', cached);
+    return newDept;
+  },
+  async update(id: string, updates: Omit<Department, 'id' | 'totalNumber'>): Promise<void> {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase
+        .from('departments')
+        .update({
+          name: updates.name,
+          dept_code: updates.deptId
+        })
+        .eq('id', id);
+      if (error) throw error;
+      return;
+    }
+    const cached = getCache('departments', INITIAL_DEPARTMENTS);
+    const idx = cached.findIndex(d => d.id === id);
+    if (idx !== -1) {
+      cached[idx] = { ...cached[idx], ...updates };
+      setCache('departments', cached);
+    }
+  },
+  async delete(id: string): Promise<void> {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase
+        .from('departments')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      return;
+    }
+    const cached = getCache('departments', INITIAL_DEPARTMENTS);
+    const filtered = cached.filter(d => d.id !== id);
+    setCache('departments', filtered);
+  }
+};
+
+
+export const JobTitleService = {
+  async getAll(): Promise<JobTitle[]> {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase
+        .from('job_titles')
+        .select(`
+          id,
+          title,
+          employees:employees!job_title_id ( id )
+        `);
+      if (error) throw error;
+      return (data || []).map((j: any) => ({
+        id: j.id,
+        title: j.title,
+        count: j.employees ? j.employees.length : 0
+      }));
+    }
+    return getCache('job_titles', INITIAL_JOB_TITLES);
+  },
+  async create(titleStr: string): Promise<JobTitle> {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase
+        .from('job_titles')
+        .insert({ title: titleStr })
+        .select()
+        .single();
+      if (error) throw error;
+      return {
+        id: data.id,
+        title: data.title,
+        count: 0
+      };
+    }
+    const cached = getCache('job_titles', INITIAL_JOB_TITLES);
+    const newJt = { id: Math.random().toString(36).substr(2, 9), title: titleStr, count: 0 };
+    cached.push(newJt);
+    setCache('job_titles', cached);
+    return newJt;
+  },
+  async update(id: string, titleStr: string): Promise<void> {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase
+        .from('job_titles')
+        .update({ title: titleStr })
+        .eq('id', id);
+      if (error) throw error;
+      return;
+    }
+    const cached = getCache('job_titles', INITIAL_JOB_TITLES);
+    const idx = cached.findIndex(j => j.id === id);
+    if (idx !== -1) {
+      cached[idx].title = titleStr;
+      setCache('job_titles', cached);
+    }
+  },
+  async delete(id: string): Promise<void> {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase
+        .from('job_titles')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      return;
+    }
+    const cached = getCache('job_titles', INITIAL_JOB_TITLES);
+    const filtered = cached.filter(j => j.id !== id);
+    setCache('job_titles', filtered);
+  }
+};
+
+
+export const ActivityLogService = {
+  async getAll(): Promise<ActivityEntry[]> {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase
+        .from('activity_log')
+        .select(`
+          id,
+          action,
+          date,
+          affected_employee_number,
+          details,
+          employees:admin_id ( first_name, last_name )
+        `)
+        .order('date', { ascending: false });
+      if (error) throw error;
+      return (data || []).map((log: any) => {
+        const adminName = log.employees ? `${log.employees.first_name} ${log.employees.last_name}` : 'System';
+        return {
+          id: log.id,
+          admin: adminName,
+          action: log.action,
+          date: new Date(log.date).toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+          }),
+          affectedCount: log.details?.affectedCount || 1,
+          affectedEmployeeNumber: log.affected_employee_number || 'N/A'
+        };
+      });
+    }
+    return getCache('activity_log', INITIAL_ACTIVITY_LOG);
+  }
+};
+

@@ -248,6 +248,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                   }
                 }}
                 placeholder="Start date"
+                disabledDays={isEgyptianWeekend}
               />
             </div>
             <div className="space-y-1.5">
@@ -265,6 +266,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 value={toDate}
                 onChange={setToDate}
                 placeholder="End date"
+                disabledDays={isEgyptianWeekend}
               />
             </div>
           </div>

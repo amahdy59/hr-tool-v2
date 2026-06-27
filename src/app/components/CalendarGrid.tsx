@@ -144,7 +144,6 @@ const getEventIcon = (type: string) => {
 };
 
 // WCAG AAA standard high-contrast accessible styles mapped dynamically.
-// We override flat colors with semi-transparent high-contrast border layouts.
 const getAccessibleEventStyle = (type: string, isDimmed: boolean) => {
   const t = type.toLowerCase();
   let baseStyle = '';
@@ -167,6 +166,19 @@ const getAccessibleEventStyle = (type: string, isDimmed: boolean) => {
   return cn(baseStyle, isDimmed && 'opacity-20');
 };
 
+const getStartOfWeek = (d: Date) => {
+  const date = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0);
+  const day = date.getDay(); // 0 is Sunday
+  date.setDate(date.getDate() - day);
+  return date;
+};
+
+const addDays = (d: Date, days: number) => {
+  const date = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0);
+  date.setDate(date.getDate() + days);
+  return date;
+};
+
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEvents, onViewRequest, onAddRequest }) => {
@@ -174,8 +186,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
   const now = new Date();
-  const [viewYear, setViewYear] = useState(now.getFullYear());
-  const [viewMonth, setViewMonth] = useState(now.getMonth());
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [calendarView, setCalendarView] = useState<'month' | 'week' | 'three-day'>('month');
 
   // Interactive filter state for legend categories
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -190,11 +202,22 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
     return () => media.removeEventListener('change', listener);
   }, []);
 
+  // Sync view selection with responsiveness: mobile defaults to 3-day view, desktop defaults to month
+  useEffect(() => {
+    if (isMobile) {
+      setCalendarView('three-day');
+    } else {
+      setCalendarView('month');
+    }
+  }, [isMobile]);
+
   const allEvents = useMemo(() => [...MOCK_ATTENDANCE, ...(externalEvents ?? [])], [externalEvents]);
 
-  // Build the grid: 6 rows × 7 cols
+  // Build the month grid: 6 rows × 7 cols
   const gridCells = useMemo(() => {
     const cells: Array<{ dateStr: string; day: number; isCurrentMonth: boolean; isToday: boolean; events: CalendarEvent[] }> = [];
+    const viewYear = currentDate.getFullYear();
+    const viewMonth = currentDate.getMonth();
     const total = daysInMonth(viewYear, viewMonth);
     const startDow = firstDayOfMonth(viewYear, viewMonth); // 0=Sun
 
@@ -234,25 +257,120 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
     }
 
     return cells;
-  }, [viewYear, viewMonth, allEvents]);
+  }, [currentDate, allEvents]);
 
-  const goToPrevMonth = () => {
-    if (viewMonth === 0) { setViewMonth(11); setViewYear(y => y - 1); }
-    else setViewMonth(m => m - 1);
+  // Build the week grid: 7 cells
+  const weekCells = useMemo(() => {
+    const cells: Array<{ dateStr: string; day: number; isCurrentMonth: boolean; isToday: boolean; events: CalendarEvent[] }> = [];
+    const startOfWeek = getStartOfWeek(currentDate);
+    for (let i = 0; i < 7; i++) {
+      const date = addDays(startOfWeek, i);
+      const dateStr = todayStr(date);
+      const isToday = dateStr === todayStr(now);
+
+      const dayEvents = allEvents.filter(ev => {
+        if (!ev.startDate) return false;
+        const start = ev.startDate;
+        const end = ev.endDate ?? ev.startDate;
+        return dateStr >= start && dateStr <= end;
+      });
+
+      cells.push({
+        dateStr,
+        day: date.getDate(),
+        isCurrentMonth: date.getMonth() === currentDate.getMonth(),
+        isToday,
+        events: dayEvents
+      });
+    }
+    return cells;
+  }, [currentDate, allEvents]);
+
+  // Build the 3-day grid: 3 cells
+  const threeDayCells = useMemo(() => {
+    const cells: Array<{ dateStr: string; day: number; isCurrentMonth: boolean; isToday: boolean; events: CalendarEvent[] }> = [];
+    for (let i = 0; i < 3; i++) {
+      const date = addDays(currentDate, i);
+      const dateStr = todayStr(date);
+      const isToday = dateStr === todayStr(now);
+
+      const dayEvents = allEvents.filter(ev => {
+        if (!ev.startDate) return false;
+        const start = ev.startDate;
+        const end = ev.endDate ?? ev.startDate;
+        return dateStr >= start && dateStr <= end;
+      });
+
+      cells.push({
+        dateStr,
+        day: date.getDate(),
+        isCurrentMonth: date.getMonth() === currentDate.getMonth(),
+        isToday,
+        events: dayEvents
+      });
+    }
+    return cells;
+  }, [currentDate, allEvents]);
+
+  const goToPrev = () => {
+    if (calendarView === 'month') {
+      setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1, 12, 0, 0));
+    } else if (calendarView === 'week') {
+      setCurrentDate(prev => addDays(prev, -7));
+    } else {
+      setCurrentDate(prev => addDays(prev, -3));
+    }
   };
 
-  const goToNextMonth = () => {
-    if (viewMonth === 11) { setViewMonth(0); setViewYear(y => y + 1); }
-    else setViewMonth(m => m + 1);
+  const goToNext = () => {
+    if (calendarView === 'month') {
+      setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1, 12, 0, 0));
+    } else if (calendarView === 'week') {
+      setCurrentDate(prev => addDays(prev, 7));
+    } else {
+      setCurrentDate(prev => addDays(prev, 3));
+    }
+  };
+
+  const goToToday = () => {
+    setCurrentDate(new Date());
   };
 
   const dayLabels = isArabic
     ? ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
     : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  const monthLabel = isArabic ? arabicMonthNames[viewMonth] : monthNames[viewMonth];
-  const PrevMonthIcon = isArabic ? ChevronRight : ChevronLeft;
-  const NextMonthIcon = isArabic ? ChevronLeft : ChevronRight;
+  const PrevIcon = isArabic ? ChevronRight : ChevronLeft;
+  const NextIcon = isArabic ? ChevronLeft : ChevronRight;
+
+  // Header range title computation
+  const headerTitle = useMemo(() => {
+    if (calendarView === 'month') {
+      const monthLabel = isArabic ? arabicMonthNames[currentDate.getMonth()] : monthNames[currentDate.getMonth()];
+      return `${monthLabel} ${currentDate.getFullYear()}`;
+    } else if (calendarView === 'week') {
+      const start = getStartOfWeek(currentDate);
+      const end = addDays(start, 6);
+      
+      const format = (d: Date) => {
+        const m = isArabic ? arabicMonthNames[d.getMonth()] : monthNames[d.getMonth()].slice(0, 3);
+        return `${d.getDate()} ${m}`;
+      };
+      
+      return `${format(start)} – ${format(end)} (${currentDate.getFullYear()})`;
+    } else {
+      // 3-day view
+      const start = currentDate;
+      const end = addDays(currentDate, 2);
+      
+      const format = (d: Date) => {
+        const m = isArabic ? arabicMonthNames[d.getMonth()] : monthNames[d.getMonth()].slice(0, 3);
+        return `${d.getDate()} ${m}`;
+      };
+      
+      return `${format(start)} – ${format(end)} (${currentDate.getFullYear()})`;
+    }
+  }, [calendarView, currentDate, isArabic]);
 
   // Helper to determine if an event matches the current filter settings
   const isEventDimmed = (evType: string) => {
@@ -288,6 +406,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
     { key: 'weekend', color: 'bg-gray-400 dark:bg-gray-600', label: isArabic ? 'عطلة نهاية الأسبوع' : 'Weekend' },
   ];
 
+  const cellsToRender = calendarView === 'month' ? gridCells : weekCells;
+
   return (
     <div 
       className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)] focus-visible:outline-none"
@@ -295,141 +415,204 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
       role="grid"
       aria-label={isArabic ? 'جدول المواعيد والغياب' : 'Attendance and Leave Calendar'}
     >
-      {/* Calendar Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
-        <button
-          onClick={goToPrevMonth}
-          aria-label={isArabic ? 'الشهر السابق' : 'Previous month'}
-          className="w-11 h-11 flex items-center justify-center hover:bg-muted rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-        >
-          <PrevMonthIcon className="calendar-nav-icon w-5 h-5 text-muted-foreground" />
-        </button>
+      {/* Calendar Header with Navigation, Range Display, and View Toggles */}
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b border-border bg-muted/30">
+        
+        {/* Navigation Actions */}
+        <div className="flex items-center justify-between md:justify-start gap-2">
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={goToPrev}
+              aria-label={isArabic ? 'السابق' : 'Previous'}
+              className="w-9 h-9 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+            >
+              <PrevIcon className="w-4.5 h-4.5 text-muted-foreground" />
+            </button>
 
-        <div className="flex items-center gap-3">
-          <span className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground">
-            {monthLabel}
-          </span>
-          <span className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground">
-            {viewYear}
-          </span>
-          <button
-            onClick={() => { setViewMonth(now.getMonth()); setViewYear(now.getFullYear()); }}
-            className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-primary hover:text-primary/80 border border-primary/30 rounded px-2.5 py-1 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-          >
-            {isArabic ? 'اليوم' : 'Today'}
-          </button>
+            <button
+              onClick={goToToday}
+              className="text-[12px] font-semibold text-foreground hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] px-3.5 py-1.5 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+            >
+              {isArabic ? 'اليوم' : 'Today'}
+            </button>
+
+            <button
+              onClick={goToNext}
+              aria-label={isArabic ? 'التالي' : 'Next'}
+              className="w-9 h-9 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+            >
+              <NextIcon className="w-4.5 h-4.5 text-muted-foreground" />
+            </button>
+          </div>
         </div>
 
-        <button
-          onClick={goToNextMonth}
-          aria-label={isArabic ? 'الشهر التالي' : 'Next month'}
-          className="w-11 h-11 flex items-center justify-center hover:bg-muted rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-        >
-          <NextMonthIcon className="calendar-nav-icon w-5 h-5 text-muted-foreground" />
-        </button>
+        {/* Date Title / Active Range */}
+        <div className="text-center md:text-start self-center">
+          <span className="text-[15px] font-bold text-foreground tracking-wide">
+            {headerTitle}
+          </span>
+        </div>
+
+        {/* View Switcher Segmented Control */}
+        <div className="flex items-center bg-muted/65 p-1 rounded-lg border border-border/60 self-center md:self-auto shadow-inner min-w-[210px] justify-between">
+          <button
+            onClick={() => setCalendarView('month')}
+            className={cn(
+              "flex-1 text-center py-1.5 px-2.5 text-xs font-semibold rounded-md transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              calendarView === 'month' 
+                ? "bg-card text-foreground shadow-sm" 
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {isArabic ? 'شهر' : 'Month'}
+          </button>
+          <button
+            onClick={() => setCalendarView('week')}
+            className={cn(
+              "flex-1 text-center py-1.5 px-2.5 text-xs font-semibold rounded-md transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              calendarView === 'week' 
+                ? "bg-card text-foreground shadow-sm" 
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {isArabic ? 'أسبوع' : 'Week'}
+          </button>
+          <button
+            onClick={() => setCalendarView('three-day')}
+            className={cn(
+              "flex-1 text-center py-1.5 px-2.5 text-xs font-semibold rounded-md transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              calendarView === 'three-day' 
+                ? "bg-card text-foreground shadow-sm" 
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {isArabic ? '٣ أيام' : '3 Days'}
+          </button>
+        </div>
       </div>
 
-      {/* --- RESPONSIVE CONDITIONAL RENDERING --- */}
-      {isMobile ? (
-        /* Mobile List / Agenda View */
-        <div className="divide-y divide-border max-h-[480px] overflow-y-auto" role="rowgroup">
-          {gridCells
-            .filter(cell => cell.isCurrentMonth && (cell.events.length > 0 || cell.isToday))
-            .map((cell, idx) => (
-              <div 
-                key={`${cell.dateStr}-${idx}`} 
+      {/* --- GRID VIEWS --- */}
+      {calendarView === 'three-day' ? (
+        /* 3-Day Layout (Optimized for Mobile/Compact) */
+        <div className="grid grid-cols-3 divide-x divide-border rtl:divide-x-reverse" style={{ minHeight: 380 }} role="rowgroup">
+          {threeDayCells.map((cell, idx) => {
+            const isTodayHighlight = cell.isToday;
+            const cellDate = new Date(cell.dateStr);
+            const dayName = dayLabels[cellDate.getDay()];
+            const isWeekend = isEgyptianWeekend(cell.dateStr);
+            
+            return (
+              <div
+                key={`${cell.dateStr}-${idx}`}
+                role="gridcell"
+                aria-selected={isTodayHighlight}
                 className={cn(
-                  "p-4 flex gap-4 items-start transition-colors", 
-                  cell.isToday && "bg-primary/5 dark:bg-primary/10"
+                  'p-3.5 flex flex-col gap-3 min-h-[280px] transition-all duration-200 group focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+                  isWeekend && 'bg-muted/30 dark:bg-muted/5',
+                  isTodayHighlight && 'bg-primary/5 dark:bg-primary/10 border-t-2 border-t-primary'
                 )}
-                role="row"
               >
-                <div className="flex flex-col items-center justify-center min-w-[48px] h-[48px] rounded-full bg-muted shrink-0 relative">
-                  {cell.isToday && (
-                    <span className="absolute -top-1 px-1.5 py-0.2 bg-primary text-[8px] font-bold text-primary-foreground rounded-full uppercase">
-                      {isArabic ? 'اليوم' : 'Today'}
+                {/* Header for the Day Column */}
+                <div className="flex items-center justify-between gap-1 border-b border-border pb-2.5">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                      {dayName}
                     </span>
+                    <span className={cn(
+                      "text-base font-extrabold mt-0.5",
+                      isTodayHighlight ? "text-primary" : "text-foreground"
+                    )}>
+                      {cell.day}
+                    </span>
+                  </div>
+                  {/* Quick Add request button */}
+                  {!isWeekend && (
+                    <button 
+                      onClick={() => onAddRequest?.(cell.dateStr)}
+                      aria-label={isArabic ? 'أضف طلب جديد لهذا اليوم' : 'Add new request for this day'}
+                      className="w-7 h-7 flex items-center justify-center rounded-full border border-dashed border-border/80 text-muted-foreground/80 hover:text-primary hover:border-primary/50 transition-all hover:bg-primary/10 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
                   )}
-                  <span className="text-[var(--text-xs)] text-muted-foreground">
-                    {dayLabels[new Date(cell.dateStr).getDay()].slice(0, 3)}
-                  </span>
-                  <span className="text-[var(--text-sm)] font-bold text-foreground -mt-0.5">
-                    {cell.day}
-                  </span>
                 </div>
 
-                <div className="flex-1 space-y-2">
+                {/* Event list for the Day Column */}
+                <div className="flex flex-col gap-2 w-full overflow-hidden">
                   {cell.events.length === 0 ? (
-                    <p className="text-[var(--text-xs)] text-muted-foreground/60 italic pt-3">
-                      {isArabic ? 'لا توجد طلبات أو مهام' : 'No requests or events'}
-                    </p>
-                  ) : (
-                    <div className="flex flex-col gap-2">
-                      {cell.events.map((ev, eIdx) => {
-                        const IconComponent = getEventIcon(ev.type);
-                        const isDimmed = isEventDimmed(ev.type);
-                        const isInteractive = !!ev.id && !!onViewRequest && ev.status === 'pending';
-                        
-                        return (
-                          <div 
-                            key={eIdx}
-                            onClick={() => {
-                              if (isInteractive && ev.id && onViewRequest) {
-                                onViewRequest({
-                                  id: ev.id,
-                                  type: ev.type,
-                                  status: ev.status as 'approved' | 'pending' | 'noshow',
-                                  range: ev.range ?? '',
-                                  duration: ev.duration ?? '',
-                                });
-                              }
-                            }}
-                            className={cn(
-                              "flex items-center gap-2 p-2.5 rounded-[var(--radius)] text-[var(--text-xs)] font-[var(--font-weight-medium)] border transition-all",
-                              getAccessibleEventStyle(ev.type, isDimmed),
-                              isInteractive ? "cursor-pointer hover:scale-[1.01] active:scale-[0.99]" : "cursor-default"
-                            )}
-                          >
-                            <IconComponent className="w-4 h-4 shrink-0" />
-                            <span className="flex-1 truncate">{ev.label}</span>
-                            {ev.status && (
-                              <span className={cn(
-                                "text-[9px] uppercase px-1.5 py-0.5 rounded font-bold tracking-wider",
-                                ev.status === 'approved' ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400" : "bg-amber-500/20 text-amber-700 dark:text-amber-400"
-                              )}>
-                                {ev.status}
-                              </span>
-                            )}
-                          </div>
-                        );
-                      })}
+                    <div className="text-xs text-muted-foreground/40 italic py-5 text-center">
+                      {isArabic ? 'لا توجد فعاليات' : 'No events'}
                     </div>
+                  ) : (
+                    cell.events.map((ev, eIdx) => {
+                      const isDimmed = isEventDimmed(ev.type);
+                      const isInteractive = !!ev.id && !!onViewRequest && ev.status === 'pending';
+                      const IconComponent = getEventIcon(ev.type);
+                      
+                      const eventClassName = cn(
+                        'text-[10px] leading-tight py-2 px-2.5 rounded-[var(--radius-sm)] font-semibold w-full text-start flex items-center gap-2 border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
+                        getAccessibleEventStyle(ev.type, isDimmed),
+                        isInteractive
+                          ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98] ring-1 ring-inset ring-white/10 dark:ring-white/5 shadow-sm'
+                          : 'cursor-default'
+                      );
+
+                      return isInteractive ? (
+                        <button
+                          key={eIdx}
+                          type="button"
+                          onClick={() => {
+                            if (ev.id && onViewRequest) {
+                              onViewRequest({
+                                id: ev.id,
+                                type: ev.type,
+                                status: ev.status as 'approved' | 'pending' | 'noshow',
+                                range: ev.range ?? '',
+                                duration: ev.duration ?? '',
+                              });
+                            }
+                          }}
+                          title={ev.label}
+                          className={eventClassName}
+                          aria-label={`${ev.label} - ${ev.status ?? 'no status'}`}
+                        >
+                          <IconComponent className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{ev.label}</span>
+                        </button>
+                      ) : (
+                        <span key={eIdx} title={ev.label} className={eventClassName}>
+                          <IconComponent className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{ev.label}</span>
+                        </span>
+                      );
+                    })
                   )}
                 </div>
               </div>
-            ))}
+            );
+          })}
         </div>
       ) : (
-        /* Desktop Grid View */
+        /* 7-Column Grid Layout (Month and Week Views) */
         <>
-          {/* Day Labels */}
-          <div className="grid grid-cols-7 border-b border-border" role="row">
+          {/* Enhanced Day-of-Week Labels */}
+          <div className="grid grid-cols-7 border-b border-border bg-muted/20" role="row">
             {dayLabels.map((day) => (
               <div
                 key={day}
                 role="columnheader"
-                className="py-2 text-center text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground bg-muted/20 border-e border-border last:border-e-0"
+                className="py-3 px-2 text-center text-[10px] md:text-[11px] lg:text-xs font-bold uppercase tracking-wider text-muted-foreground/90 border-e border-border last:border-e-0"
               >
                 {day}
               </div>
             ))}
           </div>
 
-          {/* Date Cells */}
-          <div className="grid grid-cols-7" style={{ minHeight: 380 }} role="rowgroup">
-            {gridCells.map((cell, idx) => {
+          {/* Grid Cells */}
+          <div className="grid grid-cols-7" style={{ minHeight: calendarView === 'week' ? 180 : 380 }} role="rowgroup">
+            {cellsToRender.map((cell, idx) => {
               const isTodayHighlight = cell.isToday;
-              const isWeekend = cell.isCurrentMonth && isEgyptianWeekend(cell.dateStr);
+              const isWeekend = isEgyptianWeekend(cell.dateStr);
               return (
                 <div
                   key={`${cell.dateStr}-${idx}`}
@@ -437,12 +620,13 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                   aria-selected={isTodayHighlight}
                   tabIndex={cell.isCurrentMonth ? 0 : -1}
                   className={cn(
-                    'border-e border-b border-border p-2 flex flex-col gap-1.5 min-h-[90px] relative transition-all duration-200 group focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+                    'border-e border-b border-border p-2.5 flex flex-col gap-1.5 min-h-[90px] relative transition-all duration-200 group focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
                     !cell.isCurrentMonth && 'bg-muted/10',
                     isWeekend && 'bg-muted/30 dark:bg-muted/5 border-dashed',
                     isTodayHighlight && 'bg-primary/5 dark:bg-primary/10 border-t-2 border-t-primary',
                     idx % 7 === 6 && 'border-e-0',
-                    Math.floor(idx / 7) === Math.floor((gridCells.length - 1) / 7) && 'border-b-0'
+                    calendarView === 'month' && Math.floor(idx / 7) === 5 && 'border-b-0',
+                    calendarView === 'week' && 'border-b-0'
                   )}
                 >
                   {/* Day number & Empty Cell Interactive Plus Indicator */}
@@ -464,8 +648,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                     )}
                     <div
                       className={cn(
-                        'w-6 h-6 flex items-center justify-center rounded-full text-[var(--text-xs)] shrink-0 font-bold',
-                        cell.isToday && 'bg-primary text-primary-foreground font-[var(--font-weight-bold)] shadow-sm scale-110',
+                        'w-6 h-6 flex items-center justify-center rounded-full text-xs shrink-0 font-bold',
+                        cell.isToday && 'bg-primary text-primary-foreground font-extrabold shadow-sm scale-110',
                         isWeekend && 'text-muted-foreground font-semibold',
                         !cell.isCurrentMonth && 'text-muted-foreground/30',
                         cell.isCurrentMonth && !cell.isToday && !isWeekend && 'text-foreground'
@@ -475,7 +659,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                     </div>
                   </div>
 
-                  {/* Events */}
+                  {/* Events List */}
                   <div className="flex flex-col gap-1.5 w-full overflow-hidden">
                     {cell.events.map((ev, eIdx) => {
                       const isDimmed = isEventDimmed(ev.type);
@@ -483,10 +667,10 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                       const IconComponent = getEventIcon(ev.type);
                       
                       const eventClassName = cn(
-                        'text-[10px] leading-tight py-1.5 px-2 rounded-[var(--radius-sm)] font-[var(--font-weight-medium)] w-full text-start flex items-center gap-1.5 border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
+                        'text-[10px] leading-tight py-1.5 px-2 rounded-[var(--radius-sm)] font-semibold w-full text-start flex items-center gap-1.5 border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
                         getAccessibleEventStyle(ev.type, isDimmed),
                         isInteractive
-                          ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98] ring-1 ring-inset ring-white/10 dark:ring-white/5'
+                          ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98] ring-1 ring-inset ring-white/10 dark:ring-white/5 shadow-sm'
                           : 'cursor-default'
                       );
 
@@ -498,10 +682,10 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                             if (ev.id && onViewRequest) {
                               onViewRequest({
                                 id: ev.id,
-                                  type: ev.type,
-                                  status: ev.status as 'approved' | 'pending' | 'noshow',
-                                  range: ev.range ?? '',
-                                  duration: ev.duration ?? '',
+                                type: ev.type,
+                                status: ev.status as 'approved' | 'pending' | 'noshow',
+                                range: ev.range ?? '',
+                                duration: ev.duration ?? '',
                               });
                             }
                           }}
@@ -541,10 +725,10 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
             aria-pressed={activeFilter === item.key}
           >
             <div className={cn('w-3.5 h-3.5 rounded-sm shrink-0 border border-black/10 dark:border-white/10', item.color)} />
-            <span className="text-[var(--text-xs)] text-muted-foreground">{item.label}</span>
+            <span className="text-xs text-muted-foreground font-medium">{item.label}</span>
           </button>
         ))}
-        <span className="text-[var(--text-xs)] text-muted-foreground/60 ms-auto italic">
+        <span className="text-[11px] text-muted-foreground/60 ms-auto italic">
           {isArabic ? '• اضغط على أيقونات التصفية للتصفية أو الطلبات المعلقة للتعديل' : '• Click on filter icons to filter or pending requests to edit'}
         </span>
       </div>
