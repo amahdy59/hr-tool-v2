@@ -4,7 +4,7 @@ import { supabase, isSupabaseConfigured } from '../supabaseClient';
 
 export interface Employee {
   id: string;
-  name: string;
+  name: string | { nameEn: string; nameAr: string };
   employeeNumber: string;
   department: string;
   jobTitle: string;
@@ -129,6 +129,8 @@ export const EmployeeService = {
           employee_number,
           first_name,
           last_name,
+          first_name_ar,
+          last_name_ar,
           email,
           phone,
           gender,
@@ -143,7 +145,10 @@ export const EmployeeService = {
       if (error) throw error;
       return (data || []).map((e: any) => ({
         id: e.id,
-        name: `${e.first_name} ${e.last_name}`,
+        name: e.first_name_ar && e.last_name_ar ? {
+          nameEn: `${e.first_name} ${e.last_name}`,
+          nameAr: `${e.first_name_ar} ${e.last_name_ar}`
+        } : `${e.first_name} ${e.last_name}`,
         employeeNumber: e.employee_number,
         department: e.departments?.name || 'Unassigned',
         jobTitle: e.job_titles?.title || 'Unassigned',
