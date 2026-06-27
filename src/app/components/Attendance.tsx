@@ -46,6 +46,7 @@ import { DatePicker } from './ui/date-picker';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { localizePersonName } from '@/lib/localizedNames';
+import { AttendanceService } from '../../lib/services/dbServices';
 
 // ── CSS variable colors for charts ──
 const CHART_COLORS = {
@@ -256,12 +257,40 @@ export const Attendance: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(15);
   const [pageInput, setPageInput] = useState('1');
 
+  // State for days
+  const [days, setDays] = useState<DayRecord[]>(mockDays);
+
+  React.useEffect(() => {
+    const fetchAttendance = async () => {
+      try {
+        const todayStr = new Date().toISOString().split('T')[0];
+        const dbList = await AttendanceService.getByDate(todayStr);
+        if (dbList.length > 0) {
+          // If we have live database logs, display them
+          const mapped = dbList.map((a, index) => ({
+            id: index + 1,
+            day: new Date(a.date).toLocaleDateString('en-US', { weekday: 'long' }),
+            date: new Date(a.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
+            timeIn: a.clockIn || '---',
+            timeOut: a.clockOut || '---',
+            totalHours: a.clockIn && a.clockOut ? '8h 00m' : '---',
+            status: a.status === 'Present' ? 'In-office' as const : a.status as any
+          }));
+          setDays(mapped);
+        }
+      } catch (err) {
+        console.error('Failed to load attendance:', err);
+      }
+    };
+    fetchAttendance();
+  }, []);
+
   // Compute
-  const totalPages = Math.max(1, Math.ceil(mockDays.length / itemsPerPage));
+  const totalPages = Math.max(1, Math.ceil(days.length / itemsPerPage));
   const paginatedDays = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
-    return mockDays.slice(start, start + itemsPerPage);
-  }, [currentPage, itemsPerPage]);
+    return days.slice(start, start + itemsPerPage);
+  }, [currentPage, itemsPerPage, days]);
 
   // Filter helpers
   const toggleActivityType = (type: string) => {

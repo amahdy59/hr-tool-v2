@@ -31,38 +31,10 @@ const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--rad
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)] whitespace-nowrap';
 
-// ── Types ──
-interface MissionRequest {
-  id: string;
-  name: string;
-  img: string;
-  type: string;
-  range: string;
-  duration: string;
-  notes: string;
-  status?: string;
-  employeeNumber?: string;
-  reason?: string;
-}
+import { MissionRequest, MissionService } from '../../lib/services/dbServices';
 
 // ── Mock Data ──
 const MISSION_TYPES = ['Work From Home', 'Visa Issuing', 'Client Visit', 'Training', 'Conference'];
-
-const PENDING_MISSIONS: MissionRequest[] = [
-  { id: '1', name: 'Sara Abdallah', employeeNumber: '49201', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop', type: 'Work From Home', range: 'Sep 10 - Sep 14', duration: '5 days', notes: 'Remote work for project', reason: 'Project deadline requires focus time' },
-  { id: '2', name: 'Vinay Ansari', employeeNumber: '31245', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', type: 'Work From Home', range: 'Oct 5 - Oct 12', duration: '8 days', notes: 'Personal reasons', reason: 'Working remotely for personal convenience' },
-  { id: '3', name: 'Sara Kasongo', employeeNumber: '20124', img: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop', type: 'Client Visit', range: 'Nov 3 - Nov 6', duration: '4 days', notes: 'Client site visit', reason: 'On-site client requirements review' },
-  { id: '4', name: 'María Fernanda', employeeNumber: '55102', img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop', type: 'Training', range: 'Dec 20 - Jan 2', duration: '14 days', notes: 'Professional training', reason: 'Advanced cybersecurity certification' },
-  { id: '5', name: 'Luka Silva', employeeNumber: '12098', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', type: 'Visa Issuing', range: 'Jan 15 - Jan 17', duration: '3 days', notes: 'Visa appointment', reason: 'Travel visa processing' },
-];
-
-const HISTORY_MISSIONS: MissionRequest[] = [
-  { id: '1', name: 'Sara Abdallah', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop', type: 'Work From Home', range: 'Sep 10 - Sep 14', duration: '5 days', notes: 'Remote sprint work', status: 'approved' },
-  { id: '2', name: 'Priyanka Ram', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop', type: 'Work From Home', range: 'Oct 5 - Oct 12', duration: '8 days', notes: 'Personal convenience', status: 'approved' },
-  { id: '3', name: 'Natalia Díaz', img: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?w=100&h=100&fit=crop', type: 'Client Visit', range: 'Nov 3 - Nov 6', duration: '4 days', notes: 'Client requirements', status: 'approved' },
-  { id: '4', name: 'Jay Gupta', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop', type: 'Visa Issuing', range: 'Dec 20 - Jan 2', duration: '14 days', notes: 'Visa processing', status: 'rejected' },
-  { id: '5', name: 'Charles Brown', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', type: 'Work From Home', range: 'Jan 15 - Jan 17', duration: '3 days', notes: 'Remote work', status: 'rejected' },
-];
 
 const DEPARTMENTS = ['All', 'Marketing', 'Software', 'Oil & Gas', 'Sales', 'SCADA', 'IT', 'Finance', 'HR'];
 const ACTIVITY_TYPES = ['My team', 'Lead Engineer', 'Application Consultant', 'Project Manager'];
@@ -72,6 +44,29 @@ export const MissionsManagement: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const displayEmployeeName = (name?: string) => localizePersonName(name, language);
+
+  const [allMissions, setAllMissions] = useState<MissionRequest[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadMissions = async () => {
+    try {
+      setLoading(true);
+      const data = await MissionService.getAll();
+      setAllMissions(data);
+    } catch (e) {
+      console.error(e);
+      toast.error('Failed to load mission requests');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    loadMissions();
+  }, []);
+
+  const pendingMissions = useMemo(() => allMissions.filter(m => m.status === 'pending' || m.status === 'Pending'), [allMissions]);
+  const historyMissions = useMemo(() => allMissions.filter(m => m.status === 'approved' || m.status === 'Approved' || m.status === 'rejected' || m.status === 'Rejected'), [allMissions]);
 
   // Pending
   const [pendingSearch, setPendingSearch] = useState('');
@@ -92,10 +87,10 @@ export const MissionsManagement: React.FC = () => {
 
   // Filtered and Paginated lists
   const filteredPending = useMemo(() => {
-    return PENDING_MISSIONS.filter(m => 
+    return pendingMissions.filter(m => 
       !pendingSearch || m.name.toLowerCase().includes(pendingSearch.toLowerCase()) || m.employeeNumber?.includes(pendingSearch)
     );
-  }, [pendingSearch]);
+  }, [pendingMissions, pendingSearch]);
 
   const paginatedPending = useMemo(() => {
     const start = (pendingPage - 1) * 15;
@@ -103,12 +98,12 @@ export const MissionsManagement: React.FC = () => {
   }, [filteredPending, pendingPage]);
 
   const filteredHistory = useMemo(() => {
-    return HISTORY_MISSIONS.filter(m => {
+    return historyMissions.filter(m => {
       const matchesSearch = !historySearch || m.name.toLowerCase().includes(historySearch.toLowerCase());
       const matchesDept = filterDept === 'All';
       return matchesSearch && matchesDept;
     });
-  }, [historySearch, filterDept]);
+  }, [historyMissions, historySearch, filterDept]);
 
   const paginatedHistory = useMemo(() => {
     const start = (historyPage - 1) * 15;
@@ -127,7 +122,7 @@ export const MissionsManagement: React.FC = () => {
   const [deleteData, setDeleteData] = useState<MissionRequest | null>(null);
 
   const togglePending = (id: string) => setSelectedPending(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id]);
-  const toggleAll = () => setSelectedPending(p => p.length === PENDING_MISSIONS.length ? [] : PENDING_MISSIONS.map(m => m.id));
+  const toggleAll = () => setSelectedPending(p => p.length === pendingMissions.length ? [] : pendingMissions.map(m => m.id));
 
   const applyFilters = () => {
     let c = 0;
@@ -175,7 +170,7 @@ export const MissionsManagement: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            {PENDING_MISSIONS.length === 0 ? (
+            {pendingMissions.length === 0 ? (
               <EmptyState 
                 icon={Rocket} 
                 title="No Pending Missions" 
@@ -186,7 +181,7 @@ export const MissionsManagement: React.FC = () => {
                 <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
-                      <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === PENDING_MISSIONS.length && PENDING_MISSIONS.length > 0} onCheckedChange={toggleAll} /></th>
+                      <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingMissions.length && pendingMissions.length > 0} onCheckedChange={toggleAll} /></th>
                       <th className={thClass}>Employee Name</th>
                       <th className={thClass}>Mission Type</th>
                       <th className={thClass}>Date Range</th>
@@ -262,7 +257,7 @@ export const MissionsManagement: React.FC = () => {
             </div>
           </div>
           <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
-            exportToCSV(HISTORY_MISSIONS, 'Missions_History');
+            exportToCSV(historyMissions, 'Missions_History');
             toast.success('Download started', { description: 'Missions data exported to CSV.' });
           }}>
             <Download className="w-4 h-4" /> Download Data
@@ -271,7 +266,7 @@ export const MissionsManagement: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            {HISTORY_MISSIONS.length === 0 ? (
+            {historyMissions.length === 0 ? (
               <EmptyState 
                 icon={Rocket} 
                 title="No Mission History" 
@@ -324,12 +319,28 @@ export const MissionsManagement: React.FC = () => {
       {/* ═══ MODALS ═══ */}
 
       {/* Create Mission */}
-      <CreateMissionModal open={createMissionOpen} onOpenChange={setCreateMissionOpen} />
+      <CreateMissionModal 
+        open={createMissionOpen} 
+        onOpenChange={setCreateMissionOpen} 
+        onSave={async (data) => {
+          try {
+            await MissionService.create({
+              ...data,
+              employeeId: '1' // Mapped admin id
+            });
+            await loadMissions();
+            setCreateMissionOpen(false);
+            toast.success('Mission request created successfully');
+          } catch (e) {
+            toast.error('Failed to create mission request');
+          }
+        }}
+      />
 
       {/* Review Selected */}
       <ReviewSelectedModal
         open={reviewOpen} onOpenChange={setReviewOpen}
-        items={PENDING_MISSIONS.filter(m => selectedPending.includes(m.id))}
+        items={pendingMissions.filter(m => selectedPending.includes(m.id))}
         onApprove={() => { setReviewOpen(false); setConfirmApprovalOpen(true); }}
       />
 
@@ -337,7 +348,19 @@ export const MissionsManagement: React.FC = () => {
       <ConfirmDialog open={confirmApprovalOpen} onOpenChange={setConfirmApprovalOpen}
         title="Confirm Approval" message={`You are approving ${selectedPending.length} mission request(s). This action cannot be undone.`}
         confirmLabel="Confirm" cancelLabel="Cancel"
-        onConfirm={() => { setConfirmApprovalOpen(false); setSelectedPending([]); toast.success(`${selectedPending.length} mission(s) approved successfully`); }}
+        onConfirm={async () => {
+          try {
+            for (const id of selectedPending) {
+              await MissionService.updateStatus(id, 'approved');
+            }
+            await loadMissions();
+            setConfirmApprovalOpen(false);
+            setSelectedPending([]);
+            toast.success(`${selectedPending.length} mission(s) approved successfully`);
+          } catch (e) {
+            toast.error('Failed to approve selected mission requests');
+          }
+        }}
       />
 
       {/* View Detail */}
@@ -347,7 +370,18 @@ export const MissionsManagement: React.FC = () => {
       <ConfirmDialog open={declineOpen} onOpenChange={setDeclineOpen}
         title="Decline Mission" message={<>You are declining <strong>{displayEmployeeName(declineData?.name)}</strong>'s {declineData?.type?.toLowerCase()} mission from <strong>{declineData?.range}</strong>. This action is permanent.</>}
         confirmLabel="Decline" cancelLabel="Cancel" variant="destructive"
-        onConfirm={() => { setDeclineOpen(false); toast.success(`${displayEmployeeName(declineData?.name)}'s mission declined`); }}
+        onConfirm={async () => {
+          try {
+            if (declineData) {
+              await MissionService.updateStatus(declineData.id, 'rejected');
+              await loadMissions();
+            }
+            setDeclineOpen(false);
+            toast.success(`${displayEmployeeName(declineData?.name)}'s mission declined`);
+          } catch (e) {
+            toast.error('Failed to decline mission');
+          }
+        }}
       />
 
       {/* Delete */}
@@ -426,7 +460,11 @@ const CheckboxGroup: React.FC<{ label: string; items: string[]; selected: string
   </div>
 );
 
-const CreateMissionModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+const CreateMissionModal: React.FC<{ 
+  open: boolean; 
+  onOpenChange: (v: boolean) => void;
+  onSave: (data: { name: string; employeeNumber: string; type: string; range: string; duration: string; notes: string; reason: string }) => void;
+}> = ({ open, onOpenChange, onSave }) => {
   const [name, setName] = useState('');
   const [employeeNumber, setEmployeeNumber] = useState('');
   const [missionType, setMissionType] = useState(MISSION_TYPES[0]);
@@ -450,7 +488,19 @@ const CreateMissionModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Mission created successfully'); }}>Create Mission</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => {
+            const diffDays = Math.max(1, Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)) + 1);
+            onOpenChange(false);
+            onSave({
+              name,
+              employeeNumber,
+              type: missionType,
+              range: `${startDate} - ${endDate}`,
+              duration: `${diffDays} days`,
+              notes: reason,
+              reason: reason
+            });
+          }}>Create Mission</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

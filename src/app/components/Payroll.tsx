@@ -15,9 +15,10 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Pagination } from './Pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { PayrollService } from '../../lib/services/dbServices';
 
 // Mock employee data with sample names
-const EMPLOYEES = [
+const INITIAL_EMPLOYEES = [
   { 
     id: 'E001', 
     sesaId: '580506',
@@ -209,9 +210,41 @@ export const Payroll: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedMonth, setSelectedMonth] = useState('October');
   const [selectedYear, setSelectedYear] = useState('2024');
-  const [selectedEmployee, setSelectedEmployee] = useState<typeof EMPLOYEES[0] | null>(null);
+  const [employees, setEmployees] = useState(INITIAL_EMPLOYEES);
+  const [selectedEmployee, setSelectedEmployee] = useState<typeof INITIAL_EMPLOYEES[0] | null>(null);
   const [showPayslipModal, setShowPayslipModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  React.useEffect(() => {
+    const fetchPayroll = async () => {
+      try {
+        const dbList = await PayrollService.getAll('2026-06-01');
+        if (dbList.length > 0) {
+          const mapped = dbList.map((p) => ({
+            id: p.employeeNumber,
+            sesaId: p.employeeNumber,
+            name: p.employeeName,
+            position: p.jobTitle,
+            department: p.department,
+            grossSalary: p.basicSalary,
+            colaAllowance: p.allowances,
+            bonus: 0,
+            totalAllowances: p.allowances,
+            taxDeducted: p.deductions,
+            socialInsurance: 0,
+            pensionEmployeeShare: 0,
+            familyDeductions: 0,
+            totalDeductions: p.deductions,
+            netPay: p.netSalary
+          }));
+          setEmployees(mapped);
+        }
+      } catch (err) {
+        console.error('Failed to load payroll:', err);
+      }
+    };
+    fetchPayroll();
+  }, []);
 
   const tabs = [
     { id: 'overview', label: 'Overview' },
@@ -227,7 +260,7 @@ export const Payroll: React.FC = () => {
 
   const years = ['2023', '2024', '2025', '2026'];
 
-  const handleGeneratePayslip = (employee: typeof EMPLOYEES[0]) => {
+  const handleGeneratePayslip = (employee: typeof INITIAL_EMPLOYEES[0]) => {
     setSelectedEmployee(employee);
     setShowPayslipModal(true);
   };
@@ -237,7 +270,7 @@ export const Payroll: React.FC = () => {
     setShowPayslipModal(false);
   };
 
-  const filteredEmployees = EMPLOYEES.filter(emp =>
+  const filteredEmployees = employees.filter(emp =>
     emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     emp.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
     emp.department.toLowerCase().includes(searchQuery.toLowerCase())
@@ -326,8 +359,8 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
 
     {/* Summary Cards */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <SummaryCard icon={Users} label="Total Employees" value={EMPLOYEES.length.toString()} color="text-primary" />
-      <SummaryCard icon={DollarSign} label="Monthly Payroll" value={`$${EMPLOYEES.reduce((sum, emp) => sum + emp.netPay, 0).toLocaleString()}`} color="text-chart-3" />
+      <SummaryCard icon={Users} label="Total Employees" value={employees.length.toString()} color="text-primary" />
+      <SummaryCard icon={DollarSign} label="Monthly Payroll" value={`$${employees.reduce((sum, emp) => sum + emp.netPay, 0).toLocaleString()}`} color="text-chart-3" />
       <SummaryCard icon={TrendingUp} label="Pending Actions" value="3" color="text-accent" />
     </div>
 
@@ -388,7 +421,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
           bgColor="bg-chart-3/10" 
           borderColor="border-chart-3/30"
           title={`Payroll processed successfully for ${selectedMonth} ${selectedYear}`}
-          description={`All ${EMPLOYEES.length} employees have been processed`}
+          description={`All ${employees.length} employees have been processed`}
         />
         <NotificationItem 
           icon={Clock} 

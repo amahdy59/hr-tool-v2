@@ -31,18 +31,7 @@ const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--rad
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)] whitespace-nowrap';
 
-// ── Types ──
-interface LeaveRequest {
-  id: string;
-  name: string;
-  img: string;
-  type: string;
-  range: string;
-  duration: string;
-  notes: string;
-  status?: string;
-  employeeNumber?: string;
-}
+import { LeaveRequest, LeaveService } from '../../lib/services/dbServices';
 
 interface Holiday {
   id: string;
@@ -55,22 +44,7 @@ interface Holiday {
   notes: string;
 }
 
-// ── Mock Data ──
-const PENDING_LEAVES: LeaveRequest[] = [
-  { id: '1', name: 'Sara Abdallah', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop', type: 'Sick', range: 'Sep 10 - Sep 14', duration: '5 days', notes: 'Fever and flu', employeeNumber: '49201' },
-  { id: '2', name: 'Vinay Ansari', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', type: 'Vacation', range: 'Oct 5 - Oct 12', duration: '8 days', notes: 'Annual leave', employeeNumber: '31245' },
-  { id: '3', name: 'Sara Kasongo', img: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop', type: 'Sick', range: 'Nov 3 - Nov 6', duration: '4 days', notes: 'Stomachache', employeeNumber: '20124' },
-  { id: '4', name: 'María Fernanda', img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop', type: 'Vacation', range: 'Dec 20 - Jan 2', duration: '14 days', notes: 'Holiday travel', employeeNumber: '55102' },
-  { id: '5', name: 'Luka Silva', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', type: 'Vacation', range: 'Jan 15 - Jan 17', duration: '3 days', notes: 'Cold symptoms', employeeNumber: '12098' },
-];
-
-const HISTORY_LEAVES: LeaveRequest[] = [
-  { id: '1', name: 'Sara Abdallah', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop', type: 'Sick', range: 'Sep 10 - Sep 14', duration: '5 days', notes: 'Fever and flu', status: 'approved' },
-  { id: '2', name: 'Priyanka Ram', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop', type: 'Vacation', range: 'Oct 5 - Oct 12', duration: '8 days', notes: 'Annual leave', status: 'approved' },
-  { id: '3', name: 'Natalia Díaz', img: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?w=100&h=100&fit=crop', type: 'Sick', range: 'Nov 3 - Nov 6', duration: '4 days', notes: 'Stomachache', status: 'approved' },
-  { id: '4', name: 'Jay Gupta', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop', type: 'Vacation', range: 'Dec 20 - Jan 2', duration: '14 days', notes: 'Holiday travel', status: 'rejected' },
-  { id: '5', name: 'Charles Brown', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', type: 'Vacation', range: 'Jan 15 - Jan 17', duration: '3 days', notes: 'Cold symptoms', status: 'rejected' },
-];
+// Note: PENDING_LEAVES and HISTORY_LEAVES mock arrays replaced by dynamic database service.
 
 const HOLIDAYS: Holiday[] = [
   { id: '1', type: 'Bridge', name: 'National Day Bridge', range: 'Sep 10 - Sep 14', duration: '5 days', notes: 'Extended weekend following National Day' },
@@ -89,6 +63,29 @@ export const LeavesManagement: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const displayEmployeeName = (name?: string) => localizePersonName(name, language);
+
+  const [allLeaves, setAllLeaves] = useState<LeaveRequest[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadLeaves = async () => {
+    try {
+      setLoading(true);
+      const data = await LeaveService.getAll();
+      setAllLeaves(data);
+    } catch (e) {
+      console.error(e);
+      toast.error('Failed to load leave requests');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadLeaves();
+  }, []);
+
+  const pendingLeaves = useMemo(() => allLeaves.filter(l => l.status === 'pending' || l.status === 'Pending'), [allLeaves]);
+  const historyLeaves = useMemo(() => allLeaves.filter(l => l.status === 'approved' || l.status === 'Approved' || l.status === 'rejected' || l.status === 'Rejected'), [allLeaves]);
 
   // Pending
   const [pendingSearch, setPendingSearch] = useState('');
@@ -114,10 +111,10 @@ export const LeavesManagement: React.FC = () => {
 
   // Filtered and Paginated lists
   const filteredPending = useMemo(() => {
-    return PENDING_LEAVES.filter(l => 
+    return pendingLeaves.filter(l => 
       !pendingSearch || l.name.toLowerCase().includes(pendingSearch.toLowerCase()) || l.employeeNumber?.includes(pendingSearch)
     );
-  }, [pendingSearch]);
+  }, [pendingLeaves, pendingSearch]);
 
   const paginatedPending = useMemo(() => {
     const start = (pendingPage - 1) * 15;
@@ -138,12 +135,12 @@ export const LeavesManagement: React.FC = () => {
   }, [filteredHolidays, holidayPage]);
 
   const filteredHistory = useMemo(() => {
-    return HISTORY_LEAVES.filter(l => {
+    return historyLeaves.filter(l => {
       const matchesSearch = !historySearch || l.name.toLowerCase().includes(historySearch.toLowerCase());
       const matchesDept = filterDept === 'All';
       return matchesSearch && matchesDept;
     });
-  }, [historySearch, filterDept]);
+  }, [historyLeaves, historySearch, filterDept]);
 
   const paginatedHistory = useMemo(() => {
     const start = (historyPage - 1) * 15;
@@ -173,7 +170,7 @@ export const LeavesManagement: React.FC = () => {
   }, [selectedPending.length]);
 
   const togglePending = (id: string) => setSelectedPending(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id]);
-  const toggleAllPending = () => setSelectedPending(p => p.length === PENDING_LEAVES.length ? [] : PENDING_LEAVES.map(l => l.id));
+  const toggleAllPending = () => setSelectedPending(p => p.length === pendingLeaves.length ? [] : pendingLeaves.map(l => l.id));
 
   const applyFilters = () => {
     let c = 0;
@@ -231,7 +228,7 @@ export const LeavesManagement: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            {PENDING_LEAVES.length === 0 ? (
+            {pendingLeaves.length === 0 ? (
               <EmptyState 
                 icon={FileText} 
                 title="No Pending Requests" 
@@ -242,7 +239,7 @@ export const LeavesManagement: React.FC = () => {
               <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-muted border-b border-border">
-                    <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === PENDING_LEAVES.length && PENDING_LEAVES.length > 0} onCheckedChange={toggleAllPending} /></th>
+                    <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingLeaves.length && pendingLeaves.length > 0} onCheckedChange={toggleAllPending} /></th>
                     <th className={thClass}>Employee Name</th>
                     <th className={thClass}>Leave Type</th>
                     <th className={thClass}>Date Range</th>
@@ -394,7 +391,7 @@ export const LeavesManagement: React.FC = () => {
             </div>
           </div>
           <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
-            exportToCSV(HISTORY_LEAVES, 'Leaves_History');
+            exportToCSV(historyLeaves, 'Leaves_History');
             toast.success('Download started', { description: 'Leaves data exported to CSV.' });
           }}>
             <Download className="w-4 h-4" /> Download Data
@@ -403,7 +400,7 @@ export const LeavesManagement: React.FC = () => {
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
-            {HISTORY_LEAVES.length === 0 ? (
+            {historyLeaves.length === 0 ? (
               <EmptyState 
                 icon={FileText} 
                 title="No History Found" 
@@ -454,12 +451,28 @@ export const LeavesManagement: React.FC = () => {
       {/* ═══ MODALS ═══ */}
 
       {/* Create Leave */}
-      <CreateLeaveModal open={createLeaveOpen} onOpenChange={setCreateLeaveOpen} />
+      <CreateLeaveModal 
+        open={createLeaveOpen} 
+        onOpenChange={setCreateLeaveOpen} 
+        onSave={async (data) => {
+          try {
+            await LeaveService.create({
+              ...data,
+              employeeId: '1' // Default admin id or mapped user id
+            });
+            await loadLeaves();
+            setCreateLeaveOpen(false);
+            toast.success('Leave created successfully');
+          } catch (e) {
+            toast.error('Failed to create leave request');
+          }
+        }}
+      />
 
       {/* Review Selected */}
       <ReviewSelectedModal
         open={reviewOpen} onOpenChange={setReviewOpen}
-        items={PENDING_LEAVES.filter(l => selectedPending.includes(l.id))}
+        items={pendingLeaves.filter(l => selectedPending.includes(l.id))}
         onApprove={() => { setReviewOpen(false); setConfirmApprovalOpen(true); }}
       />
 
@@ -469,7 +482,19 @@ export const LeavesManagement: React.FC = () => {
         title="Confirm Approval"
         message={`You are approving ${selectedPending.length} leave request(s). This action cannot be undone.`}
         confirmLabel="Confirm" cancelLabel="Cancel"
-        onConfirm={() => { setConfirmApprovalOpen(false); setSelectedPending([]); toast.success(`${selectedPending.length} request(s) approved successfully`); }}
+        onConfirm={async () => {
+          try {
+            for (const id of selectedPending) {
+              await LeaveService.updateStatus(id, 'approved');
+            }
+            await loadLeaves();
+            setConfirmApprovalOpen(false);
+            setSelectedPending([]);
+            toast.success(`${selectedPending.length} request(s) approved successfully`);
+          } catch (e) {
+            toast.error('Failed to approve selected leaves');
+          }
+        }}
       />
 
       {/* View Profile / Leave Details */}
@@ -481,7 +506,18 @@ export const LeavesManagement: React.FC = () => {
         title="Decline Leave"
         message={<>You are declining <strong>{displayEmployeeName(declineData?.name)}</strong>'s {declineData?.type?.toLowerCase()} leave from <strong>{declineData?.range}</strong>. This action is permanent.</>}
         confirmLabel="Decline" cancelLabel="Cancel" variant="destructive"
-        onConfirm={() => { setDeclineOpen(false); toast.success(`${displayEmployeeName(declineData?.name)}'s leave request declined`); }}
+        onConfirm={async () => {
+          try {
+            if (declineData) {
+              await LeaveService.updateStatus(declineData.id, 'rejected');
+              await loadLeaves();
+            }
+            setDeclineOpen(false);
+            toast.success(`${displayEmployeeName(declineData?.name)}'s leave request declined`);
+          } catch (e) {
+            toast.error('Failed to decline leave request');
+          }
+        }}
       />
 
       {/* Add Holiday */}
@@ -570,7 +606,11 @@ const CheckboxGroup: React.FC<{ label: string; items: string[]; selected: string
 );
 
 // ── Create Leave Modal ──
-const CreateLeaveModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void }> = ({ open, onOpenChange }) => {
+const CreateLeaveModal: React.FC<{ 
+  open: boolean; 
+  onOpenChange: (v: boolean) => void;
+  onSave: (data: { name: string; employeeNumber: string; type: string; range: string; duration: string; notes: string }) => void;
+}> = ({ open, onOpenChange, onSave }) => {
   const [name, setName] = useState('');
   const [employeeNumber, setEmployeeNumber] = useState('');
   const [leaveType, setLeaveType] = useState('Sick');
@@ -592,7 +632,18 @@ const CreateLeaveModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Leave created successfully'); }}>Create Leave</Button>
+          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => {
+            const diffDays = Math.max(1, Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)) + 1);
+            onOpenChange(false);
+            onSave({
+              name,
+              employeeNumber,
+              type: leaveType,
+              range: `${startDate} - ${endDate}`,
+              duration: `${diffDays} days`,
+              notes: 'Created via admin panel'
+            });
+          }}>Create Leave</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

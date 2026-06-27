@@ -63,21 +63,16 @@ import { exportToCSV } from '../../lib/export';
 import { useTranslation } from 'react-i18next';
 import { localizePersonName } from '@/lib/localizedNames';
 
+import { Employee, EmployeeService } from '../../lib/services/dbServices';
+
 // ── Types ──
-interface Employee {
+interface ActivityEntry {
   id: string;
-  name: string;
-  employeeNumber: string;
-  department: string;
-  jobTitle: string;
-  email: string;
-  phone: string;
-  gender: string;
-  contractType: string;
-  hireDate: string;
-  activityType: string;
-  isManager: boolean;
-  img: string;
+  admin: string;
+  action: string;
+  date: string;
+  affectedCount: number;
+  affectedEmployeeNumber: string;
 }
 
 interface ActivityEntry {
@@ -111,14 +106,7 @@ interface AccessCard {
   status: 'Active' | 'Expired' | 'Suspended';
 }
 
-// ── Mock Data ──
-const EMPLOYEES: Employee[] = [
-  { id: '1', name: 'Aleksander Garcia', employeeNumber: '12345', department: 'Marketing', jobTitle: 'Senior Solutions Architect', email: 'alex.garcia@acme.com', phone: '+972(0) 2788-9451', gender: 'Male', contractType: 'Freelance', hireDate: '2023-04-15', activityType: 'Direct', isManager: false, img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop' },
-  { id: '2', name: 'Tanvi Lumari', employeeNumber: '54321', department: 'Sales', jobTitle: 'Global Operations Manager', email: 'tanvi.l@acme.com', phone: '+972(0) 2788-9452', gender: 'Female', contractType: 'Permanent', hireDate: '2022-01-10', activityType: 'Direct', isManager: true, img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop' },
-  { id: '3', name: 'Jack Gray', employeeNumber: '98765', department: 'Software', jobTitle: 'Senior Project Manager', email: 'jack.g@acme.com', phone: '+972(0) 2788-9453', gender: 'Male', contractType: 'Permanent', hireDate: '2021-08-22', activityType: 'Direct', isManager: false, img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop' },
-  { id: '4', name: 'Saad Jawahir', employeeNumber: '24680', department: 'SCADA', jobTitle: 'Senior Cybersecurity Specialist', email: 'saad.j@acme.com', phone: '+972(0) 2788-9454', gender: 'Male', contractType: 'Contract', hireDate: '2023-11-01', activityType: 'InDirect', isManager: false, img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop' },
-  { id: '5', name: 'Imani Adimbola', employeeNumber: '24252', department: 'Oil & Gas', jobTitle: 'Director of Supply Chain Optimization', email: 'imani.a@acme.com', phone: '+972(0) 2788-9455', gender: 'Female', contractType: 'Permanent', hireDate: '2020-03-14', activityType: 'Direct', isManager: true, img: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop' },
-];
+// Note: EMPLOYEES array replaced by dynamic database service calls.
 
 const ACTIVITY_LOG: ActivityEntry[] = [
   { id: '1', admin: 'Muhammed Habib', action: 'Edited Employee Info', date: 'February 25, 2013', affectedCount: 2, affectedEmployeeNumber: '12345' },
@@ -207,8 +195,28 @@ export const EmployeeManagement: React.FC = () => {
   const [deptPage, setDeptPage] = useState(1);
   const [jtPage, setJtPage] = useState(1);
 
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadEmployees = async () => {
+    try {
+      setLoading(true);
+      const data = await EmployeeService.getAll();
+      setEmployees(data);
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to load employees from database');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    loadEmployees();
+  }, []);
+
   const filteredEmployees = useMemo(() => {
-    return EMPLOYEES.filter((employee) => {
+    return employees.filter((employee) => {
       const matchesSearch = includesQuery(
         [employee.name, employee.employeeNumber, employee.email, employee.department, employee.jobTitle],
         searchQuery
@@ -595,7 +603,16 @@ export const EmployeeManagement: React.FC = () => {
         open={addEmpOpen}
         onOpenChange={setAddEmpOpen}
         title="Add an Employee"
-        onSave={() => { setAddEmpOpen(false); toast.success('Employee added successfully'); }}
+        onSave={async (data) => {
+          try {
+            await EmployeeService.create(data);
+            await loadEmployees();
+            setAddEmpOpen(false);
+            toast.success('Employee added successfully');
+          } catch (e) {
+            toast.error('Failed to save employee to database');
+          }
+        }}
       />
 
       {/* Edit Employee */}
@@ -604,7 +621,18 @@ export const EmployeeManagement: React.FC = () => {
         onOpenChange={setEditEmpOpen}
         title="Edit Employee"
         employee={editEmpData}
-        onSave={() => { setEditEmpOpen(false); toast.success('Employee updated successfully'); }}
+        onSave={async (data) => {
+          try {
+            if (editEmpData) {
+              await EmployeeService.update(editEmpData.id, data);
+              await loadEmployees();
+              setEditEmpOpen(false);
+              toast.success('Employee updated successfully');
+            }
+          } catch (e) {
+            toast.error('Failed to update employee details');
+          }
+        }}
       />
 
       {/* Add Former Employee */}
@@ -625,6 +653,18 @@ export const EmployeeManagement: React.FC = () => {
         open={terminateOpen}
         onOpenChange={setTerminateOpen}
         employee={terminateEmp}
+        onConfirm={async () => {
+          try {
+            if (terminateEmp) {
+              await EmployeeService.delete(terminateEmp.id);
+              await loadEmployees();
+              setTerminateOpen(false);
+              toast.success(`${localizePersonName(terminateEmp.name, language)} has been terminated`);
+            }
+          } catch (e) {
+            toast.error('Failed to terminate employee');
+          }
+        }}
       />
 
       {/* Activity Log Detail */}
@@ -772,7 +812,7 @@ const EmployeeFormModal: React.FC<{
   onOpenChange: (v: boolean) => void;
   title: string;
   employee?: Employee | null;
-  onSave: () => void;
+  onSave: (data: Omit<Employee, 'id'>) => void;
 }> = ({ open, onOpenChange, title, employee, onSave }) => {
   const [name, setName] = useState('');
   const [employeeNumber, setEmployeeNumber] = useState('');
@@ -861,7 +901,22 @@ const EmployeeFormModal: React.FC<{
 
         <DialogFooter className="pt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
-          <Button onClick={onSave} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
+          <Button onClick={() => {
+            onSave({
+              name,
+              employeeNumber,
+              email,
+              phone,
+              gender,
+              department: dept,
+              jobTitle,
+              contractType,
+              hireDate,
+              activityType,
+              isManager,
+              img: employee?.img || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop'
+            });
+          }} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
             {employee ? 'Save' : 'Add'}
           </Button>
         </DialogFooter>
@@ -1069,7 +1124,8 @@ const TerminateModal: React.FC<{
   open: boolean;
   onOpenChange: (v: boolean) => void;
   employee: Employee | null;
-}> = ({ open, onOpenChange, employee }) => {
+  onConfirm: () => void;
+}> = ({ open, onOpenChange, employee, onConfirm }) => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const [resetPassword, setResetPassword] = useState(false);
@@ -1106,7 +1162,7 @@ const TerminateModal: React.FC<{
 
         <DialogFooter className="pt-2 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
-          <Button variant="destructive" onClick={() => { onOpenChange(false); toast.success(`${localizePersonName(employee?.name, language)} has been terminated`); }} className="w-full sm:w-auto rounded-[var(--radius-button)]">
+          <Button variant="destructive" onClick={onConfirm} className="w-full sm:w-auto rounded-[var(--radius-button)]">
             Terminate Employee
           </Button>
         </DialogFooter>
