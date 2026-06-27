@@ -1015,21 +1015,21 @@ const FormerEmployeeModal: React.FC<{
             <table className="w-full md:min-w-max text-[var(--text-sm)]">
               <thead>
                 <tr className="bg-muted border-b border-border">
-                  <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
-                  <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Employee#</th>
-                  <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Dept</th>
-                  <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Title</th>
-                  <th className="whitespace-nowrap px-4 py-2.5 text-end font-[var(--font-weight-medium)] text-muted-foreground">Action</th>
+                  <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
+                  <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Employee#</th>
+                  <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Dept</th>
+                  <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Title</th>
+                  <th className="whitespace-nowrap px-4 py-3 text-end font-[var(--font-weight-medium)] text-muted-foreground">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {formerEmployees.map((fe, i) => (
                   <tr key={i} className="hover:bg-muted/30">
-                    <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{localizePersonName(fe.name, language)}</td>
-                    <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground uppercase tabular-nums">{fe.employeeNumber}</td>
-                    <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{fe.dept}</td>
-                    <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{fe.title}</td>
-                    <td className="whitespace-nowrap px-4 py-2.5 text-end">
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{localizePersonName(fe.name, language)}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground uppercase tabular-nums">{fe.employeeNumber}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{fe.dept}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{fe.title}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-end">
                       <Button size="sm" variant="outline" className="gap-1.5 rounded-[var(--radius-button)]" onClick={() => { onOpenChange(false); toast.success(`${localizePersonName(fe.name, language)} added back as an employee`); }}>
                         <Plus className="w-3 h-3" /> Add
                       </Button>
@@ -1133,21 +1133,21 @@ const AccessCardsModal: React.FC<{
                 <table className="w-full md:min-w-max text-[var(--text-sm)]">
                   <thead>
                     <tr className="bg-muted border-b border-border">
-                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Number</th>
-                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Start Date</th>
-                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">End Date</th>
-                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Type</th>
-                      <th className="whitespace-nowrap px-4 py-2.5 text-start font-[var(--font-weight-medium)] text-muted-foreground">Status</th>
+                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Number</th>
+                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Start Date</th>
+                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">End Date</th>
+                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Type</th>
+                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
                     {mockCards.map((card) => (
                       <tr key={card.id} className="hover:bg-muted/30">
-                        <td className="whitespace-nowrap px-4 py-2.5 text-foreground tabular-nums">{card.cardNumber}</td>
-                        <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{card.startDate}</td>
-                        <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{card.endDate}</td>
-                        <td className="whitespace-nowrap px-4 py-2.5 text-foreground">{card.cardType}</td>
-                        <td className="whitespace-nowrap px-4 py-2.5">
+                        <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums">{card.cardNumber}</td>
+                        <td className="whitespace-nowrap px-4 py-3 text-foreground">{card.startDate}</td>
+                        <td className="whitespace-nowrap px-4 py-3 text-foreground">{card.endDate}</td>
+                        <td className="whitespace-nowrap px-4 py-3 text-foreground">{card.cardType}</td>
+                        <td className="whitespace-nowrap px-4 py-3">
                           <span className={cn(
                             'px-2.5 py-0.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)]',
                             card.status === 'Active'
