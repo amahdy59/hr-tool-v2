@@ -797,7 +797,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                     {isArabic ? 'طلب إجازة / عطلة' : 'Request Leave (Vacation)'}
                   </span>
                 </div>
-                <ChevronRight className="calendar-nav-icon w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                {isArabic ? (
+                  <ChevronLeft className="calendar-nav-icon w-4 h-4 text-muted-foreground transition-transform group-hover:-translate-x-0.5" />
+                ) : (
+                  <ChevronRight className="calendar-nav-icon w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                )}
               </Button>
               
               <Button
@@ -819,7 +823,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                     {isArabic ? 'طلب مأمورية' : 'Request Mission (e.g. WFH)'}
                   </span>
                 </div>
-                <ChevronRight className="calendar-nav-icon w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                {isArabic ? (
+                  <ChevronLeft className="calendar-nav-icon w-4 h-4 text-muted-foreground transition-transform group-hover:-translate-x-0.5" />
+                ) : (
+                  <ChevronRight className="calendar-nav-icon w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                )}
               </Button>
             </div>
           </div>

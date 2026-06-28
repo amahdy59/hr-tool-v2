@@ -7,11 +7,9 @@ import { cn } from "./utils";
 import { fieldControlClassName } from "./form-control";
 import { Button } from "./button";
 import { Calendar } from "./calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "./popover";
+import { ar } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 interface DatePickerProps {
   value?: string;
@@ -39,6 +37,8 @@ export function DatePicker({
   "aria-invalid": ariaInvalid,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
+  const { i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
   // Parse the value string (YYYY-MM-DD) to a Date object safely
   const selectedDate = React.useMemo(() => {
@@ -72,6 +72,8 @@ export function DatePicker({
           aria-label={ariaLabel || placeholder}
           aria-describedby={ariaDescribedBy}
           aria-invalid={ariaInvalid}
+          aria-haspopup="dialog"
+          aria-expanded={open}
           className={cn(
             fieldControlClassName,
             "w-full justify-start text-start min-h-[44px] h-[44px] px-3 font-normal text-[var(--text-sm)] hover:bg-input-background focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
@@ -87,7 +89,7 @@ export function DatePicker({
           <CalendarIcon className="me-2 h-4 w-4 shrink-0" />
           {selectedDate ? (
             <span className="text-foreground truncate">
-              {format(selectedDate, "dd MMM yyyy")}
+              {format(selectedDate, "dd MMMM yyyy", { locale: isArabic ? ar : undefined })}
             </span>
           ) : (
             <span className="truncate">{placeholder}</span>

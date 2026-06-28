@@ -75,13 +75,22 @@ We follow strict accessibility color rules:
 - Menu content should use the shared popover surface: `bg-popover`, `border-border`, `rounded-[var(--radius-input)]`, and constrained max height with vertical scrolling.
 
 ### Pagination
-- Use the shared `src/app/components/Pagination.tsx` component for table/list pagination across the site.
-- Pagination must expose a `nav` landmark with a translated `aria-label`, `aria-current="page"` on the active page, descriptive previous/next labels, and disabled states where actions are unavailable.
-- Page-size controls must use the shared `Select` component and a unique label id from `React.useId()` when multiple pagination components can appear on the same page.
-- Pagination must not create page-level horizontal scrolling on mobile.
-- Page buttons must remain at least `44px` by `44px`.
-- Middle page buttons may be hidden on very narrow screens, but first page, current page, last page, previous, next, and ellipsis context should remain understandable.
-- Empty states should show useful text such as `No entries found` instead of rendering inactive pagination controls.
+- **Shared Component**: Use the shared [Pagination.tsx](file:///c:/Users/AhmedMahdy/OneDrive%20-%20Advansys%20IS/Documents/Antigravity/HR%20Tool/src/app/components/Pagination.tsx) component for all tables and lists across the site to guarantee a unified experience.
+- **Visual Style (GitHub / Primer CSS inspired)**:
+  - **Structure**: Group the page navigation buttons into a single, contiguous flex-group wrapper without horizontal gaps.
+  - **Border Overlapping**: Buttons use `-ms-[1px]` logical margin with a z-index management (`hover:z-10 focus:z-10`) to overlap adjacent borders, avoiding double-thick borders.
+  - **Border Radius**: Round only the outer corners of the pagination bar (start of the first element `rounded-s-md` and end of the last element `rounded-e-md`), leaving all inner corners square.
+  - **Interactive States**:
+    - *Default/Inactive*: Transparent/default background with standard border (`--border`) and a light background hover transition.
+    - *Active*: GitHub-style accent blue (`#0969da` in light mode, `#1f6feb` in dark mode) with matching border and white text. Exposes `z-10` to sit on top of adjacent borders.
+    - *Disabled*: Muted text, transparent background, and `pointer-events-none` with reduced opacity.
+  - **Textual Indicators**: The "Previous" and "Next" buttons include visible text labels accompanied by directional chevrons for improved usability.
+- **Accessibility & i18n (WCAG 2.2 AAA)**:
+  - Must expose a semantic `<nav>` landmark with a translated `aria-label`.
+  - Active page button requires `aria-current="page"`.
+  - Buttons keep a minimum touch target height of `44px` (`h-11`) to meet accessibility standards.
+  - Directional mirroring is handled automatically in RTL (Arabic script layout) via CSS logical properties and Flexbox flow direction.
+  - Page-size drop-down menu must be labeled dynamically using `React.useId()`.
 
 ### Form Labels and Field Accessibility
 - Every visible label must be programmatically associated with its field using `htmlFor` and a matching `id`, or by using a component that provides equivalent ARIA labeling.

@@ -430,7 +430,11 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
               aria-label={isArabic ? 'السابق' : 'Previous'}
               className="w-11 h-11 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
-              <ChevronLeft className="calendar-nav-icon w-4.5 h-4.5 text-muted-foreground" />
+              {isArabic ? (
+                <ChevronRight className="calendar-nav-icon w-4.5 h-4.5 text-muted-foreground" />
+              ) : (
+                <ChevronLeft className="calendar-nav-icon w-4.5 h-4.5 text-muted-foreground" />
+              )}
             </button>
 
             <button
@@ -445,7 +449,11 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
               aria-label={isArabic ? 'التالي' : 'Next'}
               className="w-11 h-11 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
-              <ChevronRight className="calendar-nav-icon w-4.5 h-4.5 text-muted-foreground" />
+              {isArabic ? (
+                <ChevronLeft className="calendar-nav-icon w-4.5 h-4.5 text-muted-foreground" />
+              ) : (
+                <ChevronRight className="calendar-nav-icon w-4.5 h-4.5 text-muted-foreground" />
+              )}
             </button>
           </div>
         </div>

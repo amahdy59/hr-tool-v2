@@ -3,6 +3,8 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { format, startOfMonth } from "date-fns";
+import { ar } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 import { CaptionProps, DayPicker, useNavigation } from "react-day-picker";
 
 import { cn } from "./utils";
@@ -16,17 +18,19 @@ const toYear = new Date().getFullYear() + 10;
 
 function CalendarCaption({ displayMonth }: CaptionProps) {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
+  const { i18n, t } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+
   const currentYear = displayMonth.getFullYear();
   const currentMonth = displayMonth.getMonth();
 
   const years = Array.from({ length: toYear - fromYear + 1 }, (_, i) => fromYear + i);
-  const months = [
-    "January", "February", "March", "April", "May", "June", 
-    "July", "August", "September", "October", "November", "December"
-  ];
+  const months = Array.from({ length: 12 }, (_, i) =>
+    format(new Date(2023, i, 1), "MMMM", { locale: isArabic ? ar : undefined })
+  );
 
   return (
-    <div className="flex items-center justify-between w-full gap-2 px-1 pt-1 pb-2">
+    <div className="flex items-center justify-between w-full gap-2 px-1 pt-1 pb-2" dir={isArabic ? "rtl" : "ltr"}>
       <button
         type="button"
         className={cn(
@@ -35,9 +39,13 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
         )}
         onClick={() => previousMonth && goToMonth(previousMonth)}
         disabled={!previousMonth}
-        aria-label="Previous month"
+        aria-label={isArabic ? "الشهر السابق" : "Previous month"}
       >
-        <ChevronLeft className="calendar-nav-icon h-5 w-5" />
+        {isArabic ? (
+          <ChevronRight className="calendar-nav-icon h-5 w-5" />
+        ) : (
+          <ChevronLeft className="calendar-nav-icon h-5 w-5" />
+        )}
       </button>
 
       <div className="flex flex-1 gap-2 items-center justify-center">
@@ -46,8 +54,11 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
             value={currentMonth.toString()}
             onValueChange={(val) => goToMonth(new Date(currentYear, Number(val), 1))}
           >
-            <SelectTrigger className="h-11 text-sm bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0">
-              <SelectValue placeholder="Month" />
+            <SelectTrigger 
+              className="h-11 text-sm bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0"
+              aria-label={isArabic ? "اختر الشهر" : "Select month"}
+            >
+              <SelectValue placeholder={isArabic ? "الشهر" : "Month"} />
             </SelectTrigger>
             <SelectContent>
               {months.map((m, i) => (
@@ -62,8 +73,11 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
             value={currentYear.toString()}
             onValueChange={(val) => goToMonth(new Date(Number(val), currentMonth, 1))}
           >
-            <SelectTrigger className="h-11 text-sm bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0">
-              <SelectValue placeholder="Year" />
+            <SelectTrigger 
+              className="h-11 text-sm bg-input-background font-[var(--font-weight-medium)] border-border focus:ring-2 focus:ring-ring focus:ring-offset-0"
+              aria-label={isArabic ? "اختر السنة" : "Select year"}
+            >
+              <SelectValue placeholder={isArabic ? "السنة" : "Year"} />
             </SelectTrigger>
             <SelectContent>
               {years.map((y) => (
@@ -82,9 +96,13 @@ function CalendarCaption({ displayMonth }: CaptionProps) {
         )}
         onClick={() => nextMonth && goToMonth(nextMonth)}
         disabled={!nextMonth}
-        aria-label="Next month"
+        aria-label={isArabic ? "الشهر التالي" : "Next month"}
       >
-        <ChevronRight className="calendar-nav-icon h-5 w-5" />
+        {isArabic ? (
+          <ChevronLeft className="calendar-nav-icon h-5 w-5" />
+        ) : (
+          <ChevronRight className="calendar-nav-icon h-5 w-5" />
+        )}
       </button>
     </div>
   );
@@ -96,12 +114,17 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const { i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       fromYear={fromYear}
       toYear={toYear}
+      locale={isArabic ? ar : undefined}
+      dir={isArabic ? "rtl" : "ltr"}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
@@ -144,8 +167,8 @@ function Calendar({
       }}
       components={{
         Caption: CalendarCaption,
-        IconLeft: () => <ChevronLeft className="calendar-nav-icon h-4 w-4" />,
-        IconRight: () => <ChevronRight className="calendar-nav-icon h-4 w-4" />,
+        IconLeft: () => isArabic ? <ChevronRight className="calendar-nav-icon h-4 w-4" /> : <ChevronLeft className="calendar-nav-icon h-4 w-4" />,
+        IconRight: () => isArabic ? <ChevronLeft className="calendar-nav-icon h-4 w-4" /> : <ChevronRight className="calendar-nav-icon h-4 w-4" />,
       }}
       {...props}
     />

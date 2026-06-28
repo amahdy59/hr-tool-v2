@@ -9,6 +9,8 @@ import {
   Tooltip as RechartsTooltip,
   Cell,
   ReferenceLine,
+  PieChart,
+  Pie,
 } from 'recharts';
 import {
   Search,
@@ -51,6 +53,7 @@ import {
   DepartmentService,
   EmployeeService,
   JobTitleService,
+  Employee,
 } from '../../lib/services/dbServices';
 
 // ── CSS variable colors for charts ──
@@ -247,6 +250,7 @@ export const Attendance: React.FC = () => {
   const [selectedPeriodDate, setSelectedPeriodDate] = useState('2023-11-01');
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState('Mohamed Shalaby');
+  const [employees, setEmployees] = useState<Employee[]>([]);
 
   // Advanced filter state
   const [filterDepartment, setFilterDepartment] = useState(ALL_FILTER_VALUE);
@@ -282,10 +286,30 @@ export const Attendance: React.FC = () => {
 
         if (!isMounted) return;
 
+        let finalEmployees = employeeList;
+        if (!finalEmployees || finalEmployees.length === 0) {
+          finalEmployees = employeeNames.map((name, index) => ({
+            id: String(index + 1),
+            name,
+            employeeNumber: `EMP00${index + 1}`,
+            department: index % 2 === 0 ? 'Software' : 'Marketing',
+            jobTitle: index % 2 === 0 ? 'Developer' : 'Specialist',
+            email: `${name.toLowerCase().replace(' ', '.')}@acme.com`,
+            phone: '+123456789',
+            gender: 'Male',
+            contractType: 'Full-Time',
+            hireDate: '2023-01-01',
+            activityType: 'Direct',
+            isManager: false,
+            img: `https://images.unsplash.com/photo-${1500000000000 + index * 100000}?w=100&h=100&fit=crop`
+          }));
+        }
+        setEmployees(finalEmployees);
+
         const nextDepartments = [ALL_FILTER_VALUE, ...uniqueSorted(departmentList.map((department) => department.name))];
         const nextJobTitles = [ALL_FILTER_VALUE, ...uniqueSorted(jobTitleList.map((jobTitle) => jobTitle.title))];
-        const nextActivityTypes = uniqueSorted(employeeList.map((employee) => employee.activityType));
-        const nextEmploymentTypes = uniqueSorted(employeeList.map((employee) => employee.contractType));
+        const nextActivityTypes = uniqueSorted(finalEmployees.map((employee) => employee.activityType));
+        const nextEmploymentTypes = uniqueSorted(finalEmployees.map((employee) => employee.contractType));
 
         setDepartmentOptions(nextDepartments);
         setJobTitleOptions(nextJobTitles);
@@ -308,6 +332,45 @@ export const Attendance: React.FC = () => {
       isMounted = false;
     };
   }, []);
+
+  const filteredEmployees = useMemo(() => {
+    return employees.filter((emp) => {
+      const empName = typeof emp.name === 'string' ? emp.name : emp.name.nameEn;
+      const empNameAr = typeof emp.name === 'string' ? emp.name : emp.name.nameAr;
+      const q = searchQuery.trim().toLowerCase();
+
+      const matchesSearch =
+        !q ||
+        empName.toLowerCase().includes(q) ||
+        empNameAr.toLowerCase().includes(q) ||
+        emp.employeeNumber.toLowerCase().includes(q) ||
+        emp.email.toLowerCase().includes(q);
+
+      const matchesDepartment = filterDepartment === ALL_FILTER_VALUE || emp.department === filterDepartment;
+      const matchesJobTitle = filterJobTitle === ALL_FILTER_VALUE || emp.jobTitle === filterJobTitle;
+      const matchesHireDate = !filterHiredAfter || emp.hireDate >= filterHiredAfter;
+      const matchesActivity = filterActivityTypes.length === 0 || filterActivityTypes.includes(emp.activityType);
+      const matchesEmployment = filterEmploymentTypes.length === 0 || filterEmploymentTypes.includes(emp.contractType);
+
+      return matchesSearch && matchesDepartment && matchesJobTitle && matchesHireDate && matchesActivity && matchesEmployment;
+    });
+  }, [employees, searchQuery, filterDepartment, filterJobTitle, filterHiredAfter, filterActivityTypes, filterEmploymentTypes]);
+
+  React.useEffect(() => {
+    if (filteredEmployees.length > 0) {
+      const currentExists = filteredEmployees.some((emp) => {
+        const name = typeof emp.name === 'string' ? emp.name : emp.name.nameEn;
+        return name === selectedEmployee;
+      });
+      if (!currentExists) {
+        const firstEmp = filteredEmployees[0];
+        const name = typeof firstEmp.name === 'string' ? firstEmp.name : firstEmp.name.nameEn;
+        setSelectedEmployee(name);
+      }
+    } else {
+      setSelectedEmployee('');
+    }
+  }, [filteredEmployees, selectedEmployee]);
 
   React.useEffect(() => {
     const fetchAttendance = async () => {
@@ -499,40 +562,85 @@ export const Attendance: React.FC = () => {
             </Popover>
           </div>
         </div>
-
-        {/* Employee */}
-        <div className="w-full space-y-1 sm:w-52">
-          <label htmlFor="attendance-employee-select" className="text-foreground">Employee</label>
-          <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-            <SelectTrigger id="attendance-employee-select" className="min-h-[44px] rounded-[var(--radius-input)]" aria-label="Employee">
-              <SelectValue placeholder="Select employee" />
-            </SelectTrigger>
-            <SelectContent>
-              {employeeNames.map((n) => (
-                <SelectItem key={n} value={n}>{localizePersonName(n, language)}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Period */}
-        <div className="w-full space-y-1 sm:w-56">
-          <label htmlFor="attendance-period" className="text-foreground">Attendance Period</label>
-          <DatePicker
-            id="attendance-period"
-            value={selectedPeriodDate}
-            onChange={handlePeriodChange}
-            placeholder="Select date"
-            aria-label="Attendance period"
-          />
-        </div>
       </div>
 
-      {/* ── Context label ── */}
-      <p className="text-[var(--text-sm)] text-foreground">
-        Showing attendance for <span className="font-[var(--font-weight-semibold)] text-primary">{localizePersonName(selectedEmployee, language)}</span>
-        {selectedMonth !== 'all' && <> &middot; {monthLabel} {selectedYear}</>}
-      </p>
+      {/* ── Matching Employees Selection Bar ── */}
+      {filteredEmployees.length > 1 && (
+        <div className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] space-y-2">
+          <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-muted-foreground uppercase tracking-wider">
+            {language === 'ar' ? 'الموظفون المطابقون' : 'Matching Employees'} ({filteredEmployees.length})
+          </p>
+          <div className="flex items-center gap-3 overflow-x-auto pb-1 scrollbar-thin">
+            {filteredEmployees.map((emp) => {
+              const empName = typeof emp.name === 'string' ? emp.name : emp.name.nameEn;
+              const isSelected = empName === selectedEmployee;
+              return (
+                <button
+                  key={emp.id}
+                  onClick={() => setSelectedEmployee(empName)}
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all text-xs font-[var(--font-weight-medium)] cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-ring outline-none min-h-[36px]",
+                    isSelected
+                      ? "bg-primary border-primary text-primary-foreground shadow-[var(--elevation-sm)]"
+                      : "bg-background border-border text-foreground hover:bg-muted hover:border-muted-foreground/30"
+                  )}
+                  aria-pressed={isSelected}
+                >
+                  {emp.img ? (
+                    <img
+                      src={emp.img}
+                      alt=""
+                      className="w-5 h-5 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className={cn(
+                      "w-5 h-5 rounded-full flex items-center justify-center text-[10px] uppercase font-bold",
+                      isSelected ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
+                    )}>
+                      {empName.charAt(0)}
+                    </div>
+                  )}
+                  <span>{localizePersonName(empName, language)}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {filteredEmployees.length === 0 ? (
+        <div className="bg-card border border-border rounded-[var(--radius-card)] p-8 text-center shadow-[var(--elevation-sm)]">
+          <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
+            <Search className="w-6 h-6 text-muted-foreground" />
+          </div>
+          <h3 className="text-base font-[var(--font-weight-semibold)] text-foreground mb-1">
+            {language === 'ar' ? 'لا يوجد موظفين مطابقين' : 'No Matching Employees'}
+          </h3>
+          <p className="text-sm text-muted-foreground max-w-md mx-auto">
+            {language === 'ar' 
+              ? 'جرّب تعديل عبارة البحث أو إزالة بعض الفلاتر لعرض نتائج الحضور.' 
+              : 'Try adjusting your search query or clearing some filters to view attendance records.'}
+          </p>
+          {(searchQuery || activeFiltersCount > 0) && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSearchQuery('');
+                clearFilters();
+              }}
+              className="mt-4 rounded-[var(--radius-button)]"
+            >
+              {language === 'ar' ? 'إعادة تعيين البحث والفلاتر' : 'Reset Search & Filters'}
+            </Button>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* ── Context label ── */}
+          <p className="text-[var(--text-sm)] text-foreground">
+            Showing attendance for <span className="font-[var(--font-weight-semibold)] text-primary">{localizePersonName(selectedEmployee, language)}</span>
+            {selectedMonth !== 'all' && <> &middot; {monthLabel} {selectedYear}</>}
+          </p>
 
       {/* ── Summary View ── */}
       <section className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] sm:p-6" aria-labelledby="attendance-summary-heading">
@@ -576,12 +684,7 @@ export const Attendance: React.FC = () => {
           role="status"
           aria-live="polite"
         >
-          <div className="flex items-start gap-3">
-            {meetsOfficeGoal ? (
-              <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-[var(--chart-3)]" aria-hidden="true" />
-            ) : (
-              <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" aria-hidden="true" />
-            )}
+          <div className="flex items-start">
             <div>
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">
                 Office Attendance: {officePercent}%
@@ -591,8 +694,21 @@ export const Attendance: React.FC = () => {
               </p>
             </div>
           </div>
-          <span className="rounded-full bg-card px-3 py-1 text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-foreground shadow-[var(--elevation-sm)]">
-            {meetsOfficeGoal ? 'Goal met' : 'Goal missed'}
+          <span
+            className={cn(
+              "rounded-full p-1.5 flex items-center justify-center shadow-[var(--elevation-sm)] border shrink-0",
+              meetsOfficeGoal 
+                ? "bg-[var(--chart-3)]/20 text-[var(--chart-3)] border-[var(--chart-3)]/30" 
+                : "bg-destructive/20 text-destructive border-destructive/30"
+            )}
+            title={meetsOfficeGoal ? 'Goal met' : 'Goal missed'}
+            aria-label={meetsOfficeGoal ? 'Goal met' : 'Goal missed'}
+          >
+            {meetsOfficeGoal ? (
+              <CheckCircle className="h-5 w-5" aria-hidden="true" />
+            ) : (
+              <XCircle className="h-5 w-5" aria-hidden="true" />
+            )}
           </span>
         </div>
 
@@ -623,16 +739,6 @@ export const Attendance: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
-                <tr className="text-[var(--text-sm)] bg-muted/20">
-                  <th scope="row" className="py-3 pe-6 text-start font-[var(--font-weight-medium)] text-foreground">Expected Working Hours</th>
-                  <td className="py-3 px-6 text-end font-[var(--font-weight-medium)] text-foreground">{EXPECTED_WORKING_HOURS}h</td>
-                  <td className="py-3 ps-6 text-end text-muted-foreground">—</td>
-                </tr>
-                <tr className="text-[var(--text-sm)] bg-muted/10">
-                  <th scope="row" className="py-3 pe-6 text-start font-[var(--font-weight-medium)] text-foreground">Actual Hours Logged</th>
-                  <td className="py-3 px-6 text-end font-[var(--font-weight-medium)] text-foreground">{totalHours}h</td>
-                  <td className="py-3 ps-6 text-end text-muted-foreground">{actualHoursPercent}%</td>
-                </tr>
                 {summaryData.map((item) => (
                   <tr
                     key={item.id}
@@ -755,53 +861,36 @@ export const Attendance: React.FC = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* Desktop: vertical bar chart */}
-          <div className="hidden h-[280px] min-w-0 overflow-hidden xl:block">
+          {/* Desktop: Donut Chart representing breakdown of logged hours */}
+          <div className="hidden h-[280px] min-w-0 xl:block relative">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={summaryData}
-                margin={i18n.language === 'ar' ? { top: 8, right: 16, left: 8, bottom: 18 } : { top: 8, right: 8, left: 16, bottom: 18 }}
-                barCategoryGap="18%"
-              >
-                <defs>
+              <PieChart>
+                <Pie
+                  data={summaryData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={65}
+                  outerRadius={95}
+                  paddingAngle={3}
+                  dataKey="hours"
+                  nameKey="name"
+                >
                   {summaryData.map((entry) => (
-                    <pattern key={entry.id} id={`summary-desktop-${entry.id}`} width="8" height="8" patternUnits="userSpaceOnUse">
-                      <rect width="8" height="8" fill={entry.color} />
-                      <path d="M0 8L8 0" stroke="rgba(255,255,255,0.45)" strokeWidth="1" />
-                    </pattern>
+                    <Cell key={entry.id} fill={entry.cssColor} />
                   ))}
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  interval={0}
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 11, fontFamily: 'Inter, sans-serif' }}
-                  dy={4}
-                  reversed={i18n.language === 'ar'}
-                />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
-                  unit="h"
-                  dx={i18n.language === 'ar' ? 4 : -4}
-                />
-                <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
-                <ReferenceLine
-                  y={officeGoalHours}
-                  stroke="var(--ring)"
-                  strokeDasharray="4 4"
-                  label={{ value: 'Min. Office Target', fill: 'var(--foreground)', fontSize: 11, position: 'insideTopRight' }}
-                />
-                <Bar dataKey="hours" radius={[4, 4, 0, 0]} maxBarSize={52}>
-                  {summaryData.map((entry) => (
-                    <Cell key={entry.id} fill={`url(#summary-desktop-${entry.id})`} />
-                  ))}
-                </Bar>
-              </BarChart>
+                </Pie>
+                <RechartsTooltip content={<CustomBarTooltip />} />
+              </PieChart>
             </ResponsiveContainer>
+            {/* Center Text for Donut Chart */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span className="text-[var(--text-2xl)] font-[var(--font-weight-semibold)] text-foreground">
+                {totalHours}h
+              </span>
+              <span className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground mt-0.5">
+                {i18n.language === 'ar' ? 'ساعة مسجلة' : 'Logged'}
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -932,6 +1021,8 @@ export const Attendance: React.FC = () => {
           />
         </div>
       </section>
+      </>
+      )}
     </div>
   );
 };
