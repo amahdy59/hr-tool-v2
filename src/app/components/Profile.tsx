@@ -153,6 +153,31 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
         ))}
       </div>
 
+
+      {/* Tabs */}
+      <div className="flex flex-col sm:flex-row border-b border-border gap-1 sm:gap-6 sm:overflow-x-auto" role="tablist" aria-label="Profile sections">
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            type="button"
+            id={`profile-tab-${tab.id}`}
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            aria-controls={`profile-panel-${tab.id}`}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              'border-s-2 border-b-0 sm:border-s-0 sm:border-b-2 border-transparent px-3 py-2 sm:px-0 sm:pb-3 sm:pt-1 text-start sm:text-center text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
+              activeTab === tab.id
+                ? "text-accent font-[var(--font-weight-semibold)] border-accent"
+                : 'text-muted-foreground hover:text-foreground font-[var(--font-weight-medium)]'
+            )}
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       {/* Search */}
       <div>
         <div className="relative">
@@ -162,7 +187,7 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
       </div>
 
       <div id="profile-panel-basic" role="tabpanel" aria-labelledby="profile-tab-basic" hidden={activeTab !== 'basic'} className="min-h-[560px]">
-        {activeTab === 'basic' && <BasicInfo currentUser={currentUser} onUpdateImage={onUpdateImage} />}
+        {activeTab === 'basic' && <BasicInfo currentUser={currentUser} onUpdateImage={onUpdateImage} searchQuery={searchQuery} />}
       </div>
       <div id="profile-panel-professional" role="tabpanel" aria-labelledby="profile-tab-professional" hidden={activeTab !== 'professional'} className="min-h-[560px]">
         {activeTab === 'professional' && (
@@ -173,7 +198,7 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
               </div>
             }
           >
-            <ProfessionalProfile currentUser={currentUser} />
+            <ProfessionalProfile currentUser={currentUser} searchQuery={searchQuery} />
           </Suspense>
         )}
       </div>

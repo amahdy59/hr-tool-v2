@@ -81,9 +81,10 @@ interface BasicInfoProps {
     image: string;
   } | null;
   onUpdateImage: (newImage: string) => void;
+  searchQuery?: string;
 }
 
-export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage }) => {
+export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage, searchQuery = '' }) => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   // State
@@ -124,6 +125,23 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
 
   // Mock current user role (in real app, this comes from auth)
   const [userRole] = useState<'employee' | 'hr' | 'admin'>('employee');
+
+  const query = searchQuery.toLowerCase().trim();
+
+  const visibleEmergencyContacts = emergencyContacts.filter(contact =>
+    !query ||
+    contact.name.toLowerCase().includes(query) ||
+    (contact.relationship || '').toLowerCase().includes(query) ||
+    contact.phone.toLowerCase().includes(query)
+  );
+
+  const visibleBankAccounts = bankAccounts.filter(acc =>
+    !query ||
+    acc.bankName.toLowerCase().includes(query) ||
+    acc.accountNumber.toLowerCase().includes(query) ||
+    acc.currency.toLowerCase().includes(query) ||
+    (acc.iban || '').toLowerCase().includes(query)
+  );
 
   // Handlers - Personal Info
   const handleSavePersonalInfo = (data: PersonalInfoData) => {
@@ -239,22 +257,26 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
 
       {/* Emergency Contacts */}
       <ProfileCard title="Emergency Contacts" showAdd onAdd={handleAddEmergency}>
-        {emergencyContacts.length === 0 ? (
+        {visibleEmergencyContacts.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground text-[var(--text-sm)] mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
-              No emergency contacts added.
+              {query ? 'No emergency contacts match your search.' : 'No emergency contacts added.'}
             </p>
-            <p className="text-muted-foreground text-[var(--text-xs)] mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Add a contact so HR can reach someone in case of emergency.
-            </p>
-            <Button onClick={handleAddEmergency} variant="outline" size="sm">
-              <Plus className="w-4 h-4 me-2" />
-              Add Contact
-            </Button>
+            {!query && (
+              <>
+                <p className="text-muted-foreground text-[var(--text-xs)] mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  Add a contact so HR can reach someone in case of emergency.
+                </p>
+                <Button onClick={handleAddEmergency} variant="outline" size="sm">
+                  <Plus className="w-4 h-4 me-2" />
+                  Add Contact
+                </Button>
+              </>
+            )}
           </div>
         ) : (
           <div className="space-y-4">
-            {emergencyContacts.map((contact) => (
+            {visibleEmergencyContacts.map((contact) => (
               <div key={contact.id} className="pb-4 border-b border-border last:border-0 last:pb-0">
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <h4 className="text-foreground font-[var(--font-weight-semibold)] text-[var(--text-sm)]" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -384,7 +406,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
       {/* Bank Accounts - Controlled Access */}
       <ProfileCard title="Bank Accounts" locked icon={<Shield className="w-4 h-4 text-muted-foreground" />}>
         <div className="space-y-3">
-          {bankAccounts.map((account) => (
+          {visibleBankAccounts.map((account) => (
             <div key={account.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-[var(--radius-sm)] border border-border">
               <div className="flex-1">
                 <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -397,6 +419,11 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
               <Shield className="w-4 h-4 text-muted-foreground" />
             </div>
           ))}
+          {visibleBankAccounts.length === 0 && (
+            <p className="text-center text-muted-foreground text-[var(--text-sm)] py-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+              No bank accounts match your search.
+            </p>
+          )}
         </div>
         <div className="flex items-start gap-2 mt-4 p-3 bg-primary/5 rounded-[var(--radius-sm)] border border-primary/20">
           <AlertCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />

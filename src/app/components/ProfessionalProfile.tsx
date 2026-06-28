@@ -795,6 +795,52 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
 
   const completionScore = calculateCompletion();
 
+  const query = (searchQuery || '').toLowerCase().trim();
+
+  const filteredExperiences = experiences.filter(exp => 
+    !query || 
+    exp.company.toLowerCase().includes(query) || 
+    exp.role.toLowerCase().includes(query) || 
+    exp.desc.toLowerCase().includes(query) || 
+    (exp.skillsUsed || []).some(s => s.toLowerCase().includes(query))
+  );
+
+  const filteredEducations = educations.filter(edu => 
+    !query || 
+    edu.school.toLowerCase().includes(query) || 
+    edu.degree.toLowerCase().includes(query) || 
+    (edu.fieldOfStudy || '').toLowerCase().includes(query) || 
+    (edu.activities || '').toLowerCase().includes(query) || 
+    (edu.desc || '').toLowerCase().includes(query)
+  );
+
+  const filteredProjects = projects.filter(p => 
+    !query || 
+    p.title.toLowerCase().includes(query) || 
+    p.role.toLowerCase().includes(query) || 
+    p.desc.toLowerCase().includes(query) || 
+    p.toolsUsed.some(t => t.toLowerCase().includes(query))
+  );
+
+  const filteredCertifications = certifications.filter(c => 
+    !query || 
+    c.title.toLowerCase().includes(query) || 
+    c.issuer.toLowerCase().includes(query)
+  );
+
+  const filteredSkills = skills.filter(s => 
+    !query || 
+    s.name.toLowerCase().includes(query) || 
+    s.category.toLowerCase().includes(query) || 
+    s.level.toLowerCase().includes(query)
+  );
+
+  const filteredLanguages = languages.filter(l => 
+    !query || 
+    l.name.toLowerCase().includes(query) || 
+    l.proficiency.toLowerCase().includes(query)
+  );
+
   return (
     <section aria-labelledby="professional-profile-heading" className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -855,7 +901,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
           {/* Certifications */}
           <ProfileCard title="Certifications" showAdd onAdd={handleAddCertification}>
             <div className="space-y-4">
-              {certifications.sort((a, b) => a.orderIndex - b.orderIndex).map((cert, index) => (
+              {filteredCertifications.sort((a, b) => a.orderIndex - b.orderIndex).map((cert, index) => (
                 <CertificationItem
                   key={cert.id}
                   data={cert}
@@ -875,7 +921,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
               <div>
                 <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Core UX & Design</p>
                 <div className="flex flex-wrap gap-2">
-                  {skills.filter(s => s.category.includes('UX')).map(s => (
+                  {filteredSkills.filter(s => s.category.includes('UX')).map(s => (
                     <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
                   ))}
                 </div>
@@ -883,7 +929,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
               <div>
                 <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground mb-2 mt-4" style={{ fontFamily: "'Inter', sans-serif" }}>Data Analysis & Visualization</p>
                 <div className="flex flex-wrap gap-2">
-                  {skills.filter(s => s.category.includes('Data')).map(s => (
+                  {filteredSkills.filter(s => s.category.includes('Data')).map(s => (
                     <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
                   ))}
                 </div>
@@ -894,7 +940,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
           {/* Languages */}
           <ProfileCard title="Languages" showAdd onAdd={handleAddLanguage}>
             <div className="space-y-4">
-              {languages.map((lang) => (
+              {filteredLanguages.map((lang) => (
                 <div key={lang.id} className="relative group flex items-center justify-between py-1.5 border-b border-border last:border-0 last:pb-0">
                   <div className="space-y-0.5">
                     <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -919,7 +965,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
           {/* Projects */}
           <ProfileCard title="Projects" showAdd onAdd={handleAddProject}>
             <div className="space-y-4">
-              {projects.sort((a, b) => {
+              {filteredProjects.sort((a, b) => {
                 if (a.featured && !b.featured) return -1;
                 if (!a.featured && b.featured) return 1;
                 return a.orderIndex - b.orderIndex;
@@ -942,7 +988,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
           {/* Experience */}
           <ProfileCard title="Employment" showAdd onAdd={handleAddExperience}>
             <div className="space-y-2">
-              {experiences.sort((a, b) => a.orderIndex - b.orderIndex).map((exp, index) => (
+              {filteredExperiences.sort((a, b) => a.orderIndex - b.orderIndex).map((exp, index) => (
                 <ExperienceItem
                   key={exp.id}
                   data={exp}
@@ -969,7 +1015,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
           {/* Education */}
           <ProfileCard title="Education" showAdd onAdd={handleAddEducation}>
             <div className="space-y-2">
-              {educations.sort((a, b) => a.orderIndex - b.orderIndex).map((edu, index) => (
+              {filteredEducations.sort((a, b) => a.orderIndex - b.orderIndex).map((edu, index) => (
                 <EducationItem
                   key={edu.id}
                   data={edu}
@@ -1360,18 +1406,20 @@ const CertificationItem: React.FC<{
     <span
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }}
-      className={cn("group relative min-h-9 w-fit rounded-full border px-3.5 py-1.5 text-[var(--text-sm)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-1.5 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
+      className={cn("group relative min-h-9 w-fit rounded-full border px-4 py-1.5 text-[var(--text-sm)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-2.5 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
       onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
-      <span className="flex min-h-[1.25rem] items-center justify-center text-center leading-none">
-        {data.name}
-      </span>
+      <div className="flex items-center gap-1.5 leading-none">
+        <span className="font-[var(--font-weight-bold)]">{data.name}</span>
+        <span className="text-[10px] sm:text-xs font-[var(--font-weight-medium)] uppercase tracking-wider px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5">{data.level}</span>
+        <span className="text-[10px] sm:text-xs font-[var(--font-weight-normal)] opacity-75 border-s border-current/20 ps-1.5 leading-none">{data.category}</span>
+      </div>
       <button
         type="button"
         onClick={(e) => { e.stopPropagation(); onDelete(); }}
         aria-label={`Delete ${data.name} skill`}
-        className="flex h-4 w-4 items-center justify-center rounded-full opacity-60 transition-opacity hover:opacity-100 hover:scale-110 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1"
+        className="flex h-4 w-4 items-center justify-center rounded-full opacity-60 transition-opacity hover:opacity-100 hover:scale-110 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1 shrink-0"
       >
         <X className="w-3.5 h-3.5" />
       </button>
