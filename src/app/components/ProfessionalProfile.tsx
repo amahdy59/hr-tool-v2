@@ -1147,8 +1147,8 @@ const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?:
     <div className="flex items-center justify-between border-b border-border pb-3">
       <span id={headingId} className="text-[var(--text-lg)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
       <div className="flex gap-1">
-        {showAdd && <button onClick={onAdd} className={iconButtonClass} aria-label={`Add ${title}`}><Plus className="w-5 h-5" /></button>}
-        {onEdit && <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${title}`}><Pencil className="w-4 h-4" /></button>}
+        {showAdd && <button onClick={onAdd} className={iconButtonClass} aria-label={`Add ${title}`} title={`Add ${title}`}><Plus className="w-5 h-5" /></button>}
+        {onEdit && <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${title}`} title={`Edit ${title}`}><Pencil className="w-4 h-4" /></button>}
       </div>
     </div>
     {children}
@@ -1440,7 +1440,7 @@ const CertificationItem: React.FC<{
     <span
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }}
-      className={cn("group relative min-h-8 w-fit rounded-full border px-3.5 py-1 text-xs sm:text-[var(--text-sm)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-2 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
+      className={cn("group relative min-h-8 w-fit rounded-full border ps-3.5 pe-1.5 py-1.5 text-sm sm:text-base font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-1.5 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
       onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
@@ -1449,9 +1449,10 @@ const CertificationItem: React.FC<{
         type="button"
         onClick={(e) => { e.stopPropagation(); onDelete(); }}
         aria-label={`Delete ${data.name} skill`}
-        className="flex h-3.5 w-3.5 items-center justify-center rounded-full opacity-60 transition-opacity hover:opacity-100 hover:scale-110 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1 shrink-0"
+        title={`Delete ${data.name} skill`}
+        className="flex h-4 w-4 items-center justify-center rounded-full opacity-60 transition-opacity hover:opacity-100 hover:scale-110 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1 shrink-0"
       >
-        <X className="w-3 h-3" />
+        <X className="w-3.5 h-3.5" />
       </button>
     </span>
   );

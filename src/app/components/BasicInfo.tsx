@@ -504,8 +504,8 @@ const ProfileCard: React.FC<{
         {icon}
       </div>
       <div className="flex gap-1">
-        {showAdd && <button onClick={onAdd} aria-label={`Add ${title}`} className={iconButtonClass}><Plus className="w-4 h-4" /></button>}
-        {onEdit && !locked && <button onClick={onEdit} aria-label={`Edit ${title}`} className={iconButtonClass}><Pencil className="w-4 h-4" /></button>}
+        {showAdd && <button onClick={onAdd} aria-label={`Add ${title}`} title={`Add ${title}`} className={iconButtonClass}><Plus className="w-4 h-4" /></button>}
+        {onEdit && !locked && <button onClick={onEdit} aria-label={`Edit ${title}`} title={`Edit ${title}`} className={iconButtonClass}><Pencil className="w-4 h-4" /></button>}
       </div>
     </div>
     {children}
