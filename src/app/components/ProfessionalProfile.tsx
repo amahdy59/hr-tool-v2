@@ -1440,7 +1440,7 @@ const CertificationItem: React.FC<{
     <span
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }}
-      className={cn("group relative min-h-8 w-fit rounded-full border ps-3.5 pe-1.5 py-1.5 text-sm sm:text-base font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-1.5 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
+      className={cn("group relative min-h-8 w-fit rounded-full border ps-3.5 pe-1.5 py-1 text-sm sm:text-base font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-1.5 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
       onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
