@@ -1396,7 +1396,7 @@ const CertificationItem: React.FC<{
     <div className="relative group space-y-1.5 pb-6 border-b border-border last:border-b-0 last:pb-0">
       <div className="flex items-center gap-2">
         <h3 className="text-base font-bold text-foreground">{data.title}</h3>
-        {isExpired && <span className="px-2 py-0.5 bg-[#FDECEC] text-[#7F1D1D] border border-[#B91C1C] rounded-full text-sm font-semibold">Expired</span>}
+        {isExpired && <span className="px-2 py-0.5 bg-red-50 text-red-900 border border-red-200 dark:bg-red-950/30 dark:text-red-200 dark:border-red-800 rounded-full text-sm font-semibold">Expired</span>}
       </div>
       <p className="text-base text-foreground">{data.issuer}</p>
       <p className="text-base text-muted-foreground pt-1">
@@ -1423,11 +1423,16 @@ const CertificationItem: React.FC<{
 };const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () => void }> = ({ data, onEdit, onDelete }) => {
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'Beginner': return 'bg-[#EEF2F7] text-[#334155] border-[#94A3B8]';
-      case 'Intermediate': return 'bg-[#EAF2FF] text-[#1E3A8A] border-[#2563EB]';
-      case 'Advanced': return 'bg-[#F3E8FF] text-[#581C87] border-[#7E22CE]';
-      case 'Expert': return 'bg-[#E7F6EF] text-[#064E3B] border-[#047857]';
-      default: return 'bg-[#EAF2FF] text-[#1E3A8A] border-[#2563EB]';
+      case 'Beginner': 
+        return 'bg-slate-100 text-slate-900 border-slate-300 dark:bg-slate-800/40 dark:text-slate-200 dark:border-slate-700';
+      case 'Intermediate': 
+        return 'bg-blue-50 text-blue-900 border-blue-200 dark:bg-blue-950/30 dark:text-blue-200 dark:border-blue-800';
+      case 'Advanced': 
+        return 'bg-violet-50 text-violet-900 border-violet-200 dark:bg-violet-950/30 dark:text-violet-200 dark:border-violet-800';
+      case 'Expert': 
+        return 'bg-emerald-50 text-emerald-900 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-200 dark:border-emerald-800';
+      default: 
+        return 'bg-blue-50 text-blue-900 border-blue-200 dark:bg-blue-950/30 dark:text-blue-200 dark:border-blue-800';
     }
   };
 
@@ -1439,7 +1444,7 @@ const CertificationItem: React.FC<{
       onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
-      <span className="font-[var(--font-weight-semibold)]">{data.name}</span>
+      <span className="font-[var(--font-weight-semibold)] text-inherit">{data.name}</span>
       <button
         type="button"
         onClick={(e) => { e.stopPropagation(); onDelete(); }}
