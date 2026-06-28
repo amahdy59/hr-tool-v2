@@ -40,7 +40,6 @@ const openExternalLink = (url: string): void => {
   if (!normalizedUrl) return;
   window.open(normalizedUrl, '_blank', 'noopener,noreferrer');
 };
-
 // ── Data Types ──
 interface ExperienceData {
   id: string;
@@ -48,10 +47,12 @@ interface ExperienceData {
   role: string;
   employmentType: string;
   location: string;
+  locationType: string; // On-site, Hybrid, Remote
   startDate: string;
   endDate: string;
   currentlyWorking: boolean;
   desc: string;
+  skillsUsed: string[];
   orderIndex: number;
   createdAt: string;
   updatedAt: string;
@@ -66,6 +67,7 @@ interface EducationData {
   endDate: string;
   currentlyStudying: boolean;
   grade: string;
+  activities: string; // Activities and Societies
   desc: string;
   orderIndex: number;
   createdAt: string;
@@ -81,6 +83,7 @@ interface ProjectData {
   desc: string;
   toolsUsed: string[];
   url: string;
+  associatedWith: string; // Linked to Experience company or Education school
   featured: boolean;
   orderIndex: number;
   createdAt: string;
@@ -105,6 +108,13 @@ interface SkillData {
   name: string;
   category: string;
   level: string;
+  createdAt: string;
+}
+
+interface LanguageData {
+  id: string;
+  name: string;
+  proficiency: string; // Elementary, Limited Working, Professional Working, Full Professional, Native or Bilingual
   createdAt: string;
 }
 
@@ -319,6 +329,11 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
     { id: '20', name: 'KPI Analysis', category: 'Data Analysis & Visualization', level: 'Advanced', createdAt: '2023-01-01T00:00:00Z' },
   ]);
 
+  const [languages, setLanguages] = useState<LanguageData[]>([
+    { id: '1', name: 'Arabic', proficiency: 'Native or Bilingual', createdAt: new Date().toISOString() },
+    { id: '2', name: 'English', proficiency: 'Full Professional', createdAt: new Date().toISOString() },
+  ]);
+
   // Modal states
   const [editAboutOpen, setEditAboutOpen] = useState(false);
   const [editContactOpen, setEditContactOpen] = useState(false);
@@ -327,6 +342,8 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
   const [editProjectOpen, setEditProjectOpen] = useState(false);
   const [editCertOpen, setEditCertOpen] = useState(false);
   const [editSkillOpen, setEditSkillOpen] = useState(false);
+  const [editLangOpen, setEditLangOpen] = useState(false);
+  const [linkedInImportOpen, setLinkedInImportOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   // Selected item for editing
@@ -335,6 +352,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
   const [selectedCertification, setSelectedCertification] = useState<CertificationData | null>(null);
   const [selectedSkill, setSelectedSkill] = useState<SkillData | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageData | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ type: string; id: string; name: string } | null>(null);
 
   // Expanded states
@@ -616,6 +634,54 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
     }
   };
 
+  // Handlers - Languages
+  const handleAddLanguage = () => {
+    const now = new Date().toISOString();
+    setSelectedLanguage({
+      id: Date.now().toString(),
+      name: '',
+      proficiency: 'Professional Working',
+      createdAt: now,
+    });
+    setEditLangOpen(true);
+  };
+
+  const handleEditLanguage = (lang: LanguageData) => {
+    setSelectedLanguage(lang);
+    setEditLangOpen(true);
+  };
+
+  const handleSaveLanguage = (data: LanguageData) => {
+    if (languages.find(l => l.id === data.id)) {
+      setLanguages(languages.map(l => l.id === data.id ? data : l));
+      toast.success('Language updated successfully');
+    } else {
+      setLanguages([...languages, data]);
+      toast.success('Language added successfully');
+    }
+    setEditLangOpen(false);
+    setLastUpdated(new Date().toISOString());
+  };
+
+  const handleDeleteLanguage = (id: string) => {
+    const lang = languages.find(l => l.id === id);
+    if (lang) {
+      setDeleteTarget({ type: 'language', id, name: lang.name });
+      setDeleteConfirmOpen(true);
+    }
+  };
+
+  const handleImportLinkedInData = (data: any) => {
+    if (data.about) setAbout(data.about);
+    if (data.experiences) setExperiences(data.experiences);
+    if (data.educations) setEducations(data.educations);
+    if (data.projects) setProjects(data.projects);
+    if (data.certifications) setCertifications(data.certifications);
+    if (data.skills) setSkills(data.skills);
+    if (data.languages) setLanguages(data.languages);
+    setLastUpdated(new Date().toISOString());
+  };
+
   // Confirm Delete
   const confirmDelete = () => {
     if (!deleteTarget) return;
@@ -640,6 +706,10 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
       case 'skill':
         setSkills(skills.filter(s => s.id !== deleteTarget.id));
         toast.success('Skill deleted');
+        break;
+      case 'language':
+        setLanguages(languages.filter(l => l.id !== deleteTarget.id));
+        toast.success('Language deleted');
         break;
     }
 
@@ -727,8 +797,19 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
 
   return (
     <section aria-labelledby="professional-profile-heading" className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h3 id="professional-profile-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Professional Profile</h3>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <h3 id="professional-profile-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground font-bold">Professional Profile</h3>
+          <Button
+            type="button"
+            onClick={() => setLinkedInImportOpen(true)}
+            className="rounded-[var(--radius-button)] bg-[#0077b5] hover:bg-[#006297] text-white flex items-center gap-1.5 min-h-9 px-3 text-sm font-semibold cursor-pointer"
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            <span className="font-bold text-xs tracking-tight bg-white text-[#0077b5] w-4.5 h-4.5 rounded flex items-center justify-center">in</span>
+            <span>Import from LinkedIn</span>
+          </Button>
+        </div>
         <p className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
           Last updated: {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </p>
@@ -809,6 +890,28 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
               </div>
             </div>
           </ProfileCard>
+
+          {/* Languages */}
+          <ProfileCard title="Languages" showAdd onAdd={handleAddLanguage}>
+            <div className="space-y-4">
+              {languages.map((lang) => (
+                <div key={lang.id} className="relative group flex items-center justify-between py-1.5 border-b border-border last:border-0 last:pb-0">
+                  <div className="space-y-0.5">
+                    <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      {lang.name}
+                    </p>
+                    <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      {lang.proficiency}
+                    </p>
+                  </div>
+                  <div className="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onClick={() => handleEditLanguage(lang)} className={iconButtonClass} aria-label={`Edit ${lang.name} language`} title="Edit"><Pencil className="w-4 h-4" /></button>
+                    <button onClick={() => handleDeleteLanguage(lang.id)} className={cn(iconButtonClass, 'hover:bg-destructive/10 hover:text-destructive')} aria-label={`Delete ${lang.name} language`} title="Delete"><Trash2 className="w-4 h-4" /></button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ProfileCard>
         </div>
 
         {/* Right Column */}
@@ -829,6 +932,8 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
                   onEdit={() => handleEditProject(proj)}
                   onDelete={() => handleDeleteProject(proj.id)}
                   onMove={(dir) => handleMoveProject(proj.id, dir)}
+                  experiences={experiences}
+                  educations={educations}
                 />
               ))}
             </div>
@@ -931,9 +1036,11 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
       <EditContactModal open={editContactOpen} onOpenChange={setEditContactOpen} data={contact} onSave={setContact} />
       {selectedExperience && <EditExperienceModal key={selectedExperience.id} open={editExpOpen} onOpenChange={setEditExpOpen} data={selectedExperience} onSave={handleSaveExperience} />}
       {selectedEducation && <EditEducationModal key={selectedEducation.id} open={editEduOpen} onOpenChange={setEditEduOpen} data={selectedEducation} onSave={handleSaveEducation} />}
-      {selectedProject && <EditProjectModal key={selectedProject.id} open={editProjectOpen} onOpenChange={setEditProjectOpen} data={selectedProject} onSave={handleSaveProject} />}
+      {selectedProject && <EditProjectModal key={selectedProject.id} open={editProjectOpen} onOpenChange={setEditProjectOpen} data={selectedProject} onSave={handleSaveProject} experiences={experiences} educations={educations} />}
       {selectedCertification && <EditCertificationModal key={selectedCertification.id} open={editCertOpen} onOpenChange={setEditCertOpen} data={selectedCertification} onSave={handleSaveCertification} />}
       {selectedSkill && <EditSkillModal key={selectedSkill.id} open={editSkillOpen} onOpenChange={setEditSkillOpen} data={selectedSkill} onSave={handleSaveSkill} />}
+      {selectedLanguage && <EditLanguageModal key={selectedLanguage.id} open={editLangOpen} onOpenChange={setEditLangOpen} data={selectedLanguage} onSave={handleSaveLanguage} />}
+      <LinkedInImportModal open={linkedInImportOpen} onOpenChange={setLinkedInImportOpen} onImport={handleImportLinkedInData} />
 
       {/* Delete Confirmation Modal */}
       <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
@@ -1017,7 +1124,7 @@ const ExperienceItem: React.FC<{
             </span>
             {data.location && (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
-                {data.location}
+                {data.location} {data.locationType ? `(${data.locationType})` : ''}
               </span>
             )}
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
@@ -1042,6 +1149,17 @@ const ExperienceItem: React.FC<{
             >
               {expanded ? 'Show less' : 'Show more'}
             </button>
+          )}
+
+          {data.skillsUsed && data.skillsUsed.length > 0 && (
+            <div className="pt-2 flex flex-wrap gap-1.5 items-center">
+              <span className="text-xs text-muted-foreground font-[var(--font-weight-medium)] mr-1">Skills:</span>
+              {data.skillsUsed.map((sk, i) => (
+                <span key={i} className="inline-flex items-center px-2 py-0.5 rounded-md bg-secondary/60 text-secondary-foreground text-xs font-medium">
+                  {sk}
+                </span>
+              ))}
+            </div>
           )}
         </div>
       </div>
@@ -1093,6 +1211,17 @@ const EducationItem: React.FC<{
             </span>
           )}
         </div>
+
+        {data.activities && (
+          <p className="text-sm text-muted-foreground pt-1 leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <strong>Activities & Societies:</strong> {data.activities}
+          </p>
+        )}
+        {data.desc && (
+          <p className="text-sm text-foreground/80 leading-relaxed pt-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+            {data.desc}
+          </p>
+        )}
       </div>
     </div>
 
@@ -1112,20 +1241,41 @@ const ProjectItem: React.FC<{
   onEdit: () => void;
   onDelete: () => void;
   onMove: (dir: 'up' | 'down') => void;
-}> = ({ data, isFirst, isLast, onEdit, onDelete, onMove }) => (
-  <div className="relative group space-y-2.5 pb-6 border-b border-border last:border-b-0 last:pb-0">
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-      <div className="flex items-center gap-2 flex-1">
-        <h3 className="text-lg font-bold text-foreground">{data.title}</h3>
-        {data.featured && <span title="Featured project"><Star className="w-4.5 h-4.5 text-[#0F766E] fill-[#0F766E] dark:text-[#2DD4BF] dark:fill-[#2DD4BF]" /></span>}
+  experiences: ExperienceData[];
+  educations: EducationData[];
+}> = ({ data, isFirst, isLast, onEdit, onDelete, onMove, experiences = [], educations = [] }) => {
+  let associationName = '';
+  if (data.associatedWith) {
+    if (data.associatedWith.startsWith('exp-')) {
+      const expId = data.associatedWith.replace('exp-', '');
+      const exp = experiences.find(e => e.id === expId);
+      if (exp) associationName = exp.company;
+    } else if (data.associatedWith.startsWith('edu-')) {
+      const eduId = data.associatedWith.replace('edu-', '');
+      const edu = educations.find(e => e.id === eduId);
+      if (edu) associationName = edu.school;
+    }
+  }
+
+  return (
+    <div className="relative group space-y-2.5 pb-6 border-b border-border last:border-b-0 last:pb-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div className="flex items-center gap-2 flex-1">
+          <h3 className="text-lg font-bold text-foreground">{data.title}</h3>
+          {data.featured && <span title="Featured project"><Star className="w-4.5 h-4.5 text-[#0F766E] fill-[#0F766E] dark:text-[#2DD4BF] dark:fill-[#2DD4BF]" /></span>}
+        </div>
+        <span className="px-2.5 py-1 bg-muted/50 text-foreground rounded-full text-sm font-medium shrink-0 w-fit">
+          {data.category}
+        </span>
       </div>
-      <span className="px-2.5 py-1 bg-muted/50 text-foreground rounded-full text-sm font-medium shrink-0 w-fit">
-        {data.category}
-      </span>
-    </div>
-    <p className="text-base text-foreground font-[var(--font-weight-medium)]">
-      {data.role} - {data.issueDate}
-    </p>
+      <p className="text-base text-foreground font-[var(--font-weight-medium)]">
+        {data.role} - {data.issueDate}
+      </p>
+      {associationName && (
+        <p className="text-xs text-muted-foreground italic" style={{ fontFamily: "'Inter', sans-serif" }}>
+          Associated with: {associationName}
+        </p>
+      )}
     <p className="text-base text-foreground/90 leading-relaxed pt-1">
       {data.desc}
     </p>
@@ -1154,7 +1304,8 @@ const ProjectItem: React.FC<{
       <button onClick={onDelete} className={cn(iconButtonClass, 'hover:bg-destructive/10 hover:text-destructive')} aria-label={`Delete ${data.title} project`} title="Delete"><Trash2 className="w-4 h-4" /></button>
     </div>
   </div>
-);
+  );
+};
 
 const CertificationItem: React.FC<{
   data: CertificationData;
@@ -1311,10 +1462,12 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
   const [role, setRole] = useState(data.role);
   const [employmentType, setEmploymentType] = useState(data.employmentType);
   const [location, setLocation] = useState(data.location);
+  const [locationType, setLocationType] = useState(data.locationType || 'On-site');
   const [startDate, setStartDate] = useState(data.startDate);
   const [endDate, setEndDate] = useState(data.endDate);
   const [currentlyWorking, setCurrentlyWorking] = useState(data.currentlyWorking);
   const [desc, setDesc] = useState(data.desc);
+  const [skillsUsed, setSkillsUsed] = useState((data.skillsUsed || []).join(', '));
 
   useEffect(() => {
     if (!open) return;
@@ -1322,10 +1475,12 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
     setRole(data.role);
     setEmploymentType(data.employmentType);
     setLocation(data.location);
+    setLocationType(data.locationType || 'On-site');
     setStartDate(data.startDate);
     setEndDate(data.endDate);
     setCurrentlyWorking(data.currentlyWorking);
     setDesc(data.desc);
+    setSkillsUsed((data.skillsUsed || []).join(', '));
   }, [data, open]);
 
   const handleSave = () => {
@@ -1339,10 +1494,12 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
       role,
       employmentType,
       location,
+      locationType,
       startDate,
       endDate: currentlyWorking ? '' : endDate,
       currentlyWorking,
-      desc
+      desc,
+      skillsUsed: skillsUsed.split(',').map(s => s.trim()).filter(s => s)
     });
     onOpenChange(false);
   };
@@ -1367,6 +1524,17 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
               </SelectContent>
             </Select>
           </div>
+          <div className="space-y-1.5">
+            <label id="location-type-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Location Type</label>
+            <Select value={locationType} onValueChange={setLocationType}>
+              <SelectTrigger aria-labelledby="location-type-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
+                <SelectItem value="On-site">On-site</SelectItem>
+                <SelectItem value="Hybrid">Hybrid</SelectItem>
+                <SelectItem value="Remote">Remote</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <FormField label="Location" value={location} onChange={setLocation} placeholder="e.g., Cairo, Egypt" />
           <FormField label="Start Date *" value={startDate} onChange={setStartDate} placeholder="e.g., Jan 2023" />
           <FormField label="End Date" value={endDate} onChange={setEndDate} placeholder="e.g., Dec 2024" disabled={currentlyWorking} />
@@ -1375,6 +1543,11 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
               <input id="currently-working-checkbox" type="checkbox" checked={currentlyWorking} onChange={e => setCurrentlyWorking(e.target.checked)} className="w-4.5 h-4.5 rounded border-border text-chart-3 focus:ring-2 focus:ring-ring/50" />
               <span className="text-[var(--text-base)] text-foreground font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>I currently work here</span>
             </label>
+          </div>
+          <div className="md:col-span-2 space-y-1.5">
+            <label htmlFor="experience-skills-used-input" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Skills Used (LinkedIn Sync)</label>
+            <input id="experience-skills-used-input" type="text" value={skillsUsed} onChange={e => setSkillsUsed(e.target.value)} className={inputClass} placeholder="Separate with commas" style={{ fontFamily: "'Inter', sans-serif" }} />
+            <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>e.g., Figma, Accessibility, UX Research</p>
           </div>
           <div className="md:col-span-2 space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
@@ -1389,7 +1562,6 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
     </Dialog>
   );
 };
-
 const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; data: EducationData; onSave: (v: EducationData) => void }> = ({ open, onOpenChange, data, onSave }) => {
   const [school, setSchool] = useState(data.school);
   const [degree, setDegree] = useState(data.degree);
@@ -1398,6 +1570,7 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
   const [endDate, setEndDate] = useState(data.endDate);
   const [currentlyStudying, setCurrentlyStudying] = useState(data.currentlyStudying);
   const [grade, setGrade] = useState(data.grade);
+  const [activities, setActivities] = useState(data.activities || '');
   const [desc, setDesc] = useState(data.desc);
 
   useEffect(() => {
@@ -1409,6 +1582,7 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
     setEndDate(data.endDate);
     setCurrentlyStudying(data.currentlyStudying);
     setGrade(data.grade);
+    setActivities(data.activities || '');
     setDesc(data.desc);
   }, [data, open]);
 
@@ -1426,6 +1600,7 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
       endDate: currentlyStudying ? '' : endDate,
       currentlyStudying,
       grade,
+      activities,
       desc
     });
     onOpenChange(false);
@@ -1449,6 +1624,10 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
             </label>
           </div>
           <div className="md:col-span-2 space-y-1.5">
+            <label htmlFor="education-activities-input" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Activities and Societies (LinkedIn Sync)</label>
+            <input id="education-activities-input" type="text" value={activities} onChange={e => setActivities(e.target.value)} className={inputClass} placeholder="e.g., Debate Club, Design Committee" style={{ fontFamily: "'Inter', sans-serif" }} />
+          </div>
+          <div className="md:col-span-2 space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description (Optional)</label>
             <textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
@@ -1462,7 +1641,15 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
   );
 };
 
-const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; data: ProjectData; onSave: (v: ProjectData) => void }> = ({ open, onOpenChange, data, onSave }) => {
+
+const EditProjectModal: React.FC<{
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  data: ProjectData;
+  onSave: (v: ProjectData) => void;
+  experiences: ExperienceData[];
+  educations: EducationData[];
+}> = ({ open, onOpenChange, data, onSave, experiences, educations }) => {
   const [title, setTitle] = useState(data.title);
   const [category, setCategory] = useState(data.category);
   const [role, setRole] = useState(data.role);
@@ -1470,7 +1657,21 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
   const [desc, setDesc] = useState(data.desc);
   const [toolsUsed, setToolsUsed] = useState(data.toolsUsed.join(', '));
   const [url, setUrl] = useState(data.url);
+  const [associatedWith, setAssociatedWith] = useState(data.associatedWith || '');
   const [featured, setFeatured] = useState(data.featured);
+
+  useEffect(() => {
+    if (!open) return;
+    setTitle(data.title);
+    setCategory(data.category);
+    setRole(data.role);
+    setIssueDate(data.issueDate);
+    setDesc(data.desc);
+    setToolsUsed(data.toolsUsed.join(', '));
+    setUrl(data.url);
+    setAssociatedWith(data.associatedWith || '');
+    setFeatured(data.featured);
+  }, [data, open]);
 
   const handleSave = () => {
     if (!title || !category) {
@@ -1486,6 +1687,7 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
       desc,
       toolsUsed: toolsUsed.split(',').map(t => t.trim()).filter(t => t),
       url,
+      associatedWith: associatedWith === 'none' ? '' : associatedWith,
       featured
     });
     onOpenChange(false);
@@ -1500,12 +1702,37 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <div className="space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="UX Projects">UX Projects</SelectItem>
                 <SelectItem value="Data Analysis & Visualization Projects">Data Analysis & Visualization Projects</SelectItem>
                 <SelectItem value="Research Projects">Research Projects</SelectItem>
                 <SelectItem value="Other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
+            <label id="project-associated-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Associated With (LinkedIn Sync)</label>
+            <Select value={associatedWith || 'none'} onValueChange={setAssociatedWith}>
+              <SelectTrigger aria-labelledby="project-associated-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
+                <SelectItem value="none">None (Independent Project)</SelectItem>
+                {experiences.length > 0 && (
+                  <SelectGroup>
+                    <SelectLabel className="px-2 py-1 text-xs font-bold text-muted-foreground">Employment</SelectLabel>
+                    {experiences.map(exp => (
+                      <SelectItem key={exp.id} value={`exp-${exp.id}`}>{exp.company} - {exp.role}</SelectItem>
+                    ))}
+                  </SelectGroup>
+                )}
+                {educations.length > 0 && (
+                  <SelectGroup>
+                    <SelectLabel className="px-2 py-1 text-xs font-bold text-muted-foreground">Education</SelectLabel>
+                    {educations.map(edu => (
+                      <SelectItem key={edu.id} value={`edu-${edu.id}`}>{edu.school} - {edu.degree}</SelectItem>
+                    ))}
+                  </SelectGroup>
+                )}
               </SelectContent>
             </Select>
           </div>
@@ -1640,6 +1867,355 @@ const EditSkillModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
           <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
         </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const EditLanguageModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; data: LanguageData; onSave: (v: LanguageData) => void }> = ({ open, onOpenChange, data, onSave }) => {
+  const [name, setName] = useState(data.name);
+  const [proficiency, setProficiency] = useState(data.proficiency);
+
+  useEffect(() => {
+    if (!open) return;
+    setName(data.name);
+    setProficiency(data.proficiency);
+  }, [data, open]);
+
+  const handleSave = () => {
+    if (!name) {
+      toast.error('Language name is required');
+      return;
+    }
+    onSave({ ...data, name, proficiency });
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+            {data.name ? 'Edit' : 'Add'} Language
+          </DialogTitle>
+          <DialogDescription className="sr-only">Edit language details</DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <FormField label="Language Name *" value={name} onChange={setName} placeholder="e.g., Arabic, English, German" />
+          <div className="space-y-1.5">
+            <label id="language-proficiency-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Proficiency Level</label>
+            <Select value={proficiency} onValueChange={setProficiency}>
+              <SelectTrigger aria-labelledby="language-proficiency-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
+                <SelectItem value="Elementary">Elementary</SelectItem>
+                <SelectItem value="Limited Working">Limited Working</SelectItem>
+                <SelectItem value="Professional Working">Professional Working</SelectItem>
+                <SelectItem value="Full Professional">Full Professional</SelectItem>
+                <SelectItem value="Native or Bilingual">Native or Bilingual</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <DialogFooter className="pt-4 gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+interface LinkedInImportModalProps {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  onImport: (data: {
+    about: string;
+    experiences: ExperienceData[];
+    educations: EducationData[];
+    projects: ProjectData[];
+    certifications: CertificationData[];
+    skills: SkillData[];
+    languages: LanguageData[];
+  }) => void;
+}
+
+const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({ open, onOpenChange, onImport }) => {
+  const [activeTab, setActiveTab] = useState<'pdf' | 'link'>('pdf');
+  const [profileUrl, setProfileUrl] = useState('');
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [parsingStep, setParsingStep] = useState<number>(0);
+  const [parsedData, setParsedData] = useState<any>(null);
+
+  const simulateImport = () => {
+    if (activeTab === 'link' && !profileUrl) {
+      toast.error('Please enter a valid LinkedIn profile URL');
+      return;
+    }
+    if (activeTab === 'pdf' && !fileName) {
+      toast.error('Please choose a LinkedIn PDF resume export first');
+      return;
+    }
+
+    setParsingStep(1);
+    setTimeout(() => {
+      setParsingStep(2);
+      setTimeout(() => {
+        setParsingStep(3);
+        setTimeout(() => {
+          const mockData = {
+            about: "Experienced User Experience Designer & Instructional Tech Analyst with a demonstrated history of working in the information technology and energy management services. Skilled in Figma, Information Architecture, Usability Testing, Data Storytelling, and B2B SaaS system design.",
+            experiences: [
+              {
+                id: 'li-exp-1',
+                company: 'Advansys IS',
+                role: 'Senior User Experience Designer',
+                employmentType: 'Full-time',
+                location: 'Cairo, Egypt',
+                locationType: 'Hybrid',
+                startDate: 'Jan 2023',
+                endDate: '',
+                currentlyWorking: true,
+                desc: 'Created scalable enterprise design systems and structured UX blueprints. Synthesized complex B2B workflow requirements to optimize UI/UX efficiency. Integrated key analytics systems and metrics dashboards.',
+                skillsUsed: ['Figma', 'Design Systems', 'Interaction Design', 'Accessibility'],
+                orderIndex: 0,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              },
+              {
+                id: 'li-exp-2',
+                company: 'Schneider Electric',
+                role: 'Instructional Designer',
+                employmentType: 'Full-time',
+                location: 'Cairo, Egypt',
+                locationType: 'On-site',
+                startDate: 'Jul 2018',
+                endDate: 'Jan 2023',
+                currentlyWorking: false,
+                desc: 'Structured visual UX patterns for corporate LMS portals. Decreased bounce rates of training modules and increased user retention rates through interactive gamification.',
+                skillsUsed: ['Instructional Design', 'User Research', 'Adobe Creative Suite'],
+                orderIndex: 1,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              }
+            ],
+            educations: [
+              {
+                id: 'li-edu-1',
+                school: 'Information Technology Institute (ITI)',
+                degree: 'Postgraduate Diploma',
+                fieldOfStudy: 'Instructional Technology',
+                startDate: 'Sep 2016',
+                endDate: 'Jun 2017',
+                currentlyStudying: false,
+                grade: 'Excellent',
+                activities: 'UX Design Student Union',
+                desc: 'Focused on UI design models and pedagogical application architectures.',
+                orderIndex: 0,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              }
+            ],
+            projects: [
+              {
+                id: 'li-proj-1',
+                title: 'Haj Arafa E-Commerce Platform',
+                category: 'UX Projects',
+                role: 'Lead UX Designer',
+                issueDate: '2024',
+                desc: 'Re-engineered product flows and search filters to double user checkout completion rate. Fully translated system features to support proper Arabic/English mirroring.',
+                toolsUsed: ['Figma', 'Usability Testing', 'React'],
+                url: 'https://hajaraja.com',
+                associatedWith: 'exp-1',
+                featured: true,
+                orderIndex: 0,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              }
+            ],
+            certifications: [
+              {
+                id: 'li-cert-1',
+                title: 'Google Professional UX Design Certificate',
+                issuer: 'Google',
+                issueDate: 'Jul 2022',
+                expiryDate: '',
+                credentialId: 'GUXD-2022-005',
+                credentialUrl: 'https://coursera.org/verify/guxd-2022',
+                orderIndex: 0,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              }
+            ],
+            skills: [
+              { id: 'li-sk-1', name: 'Interaction Design', category: 'Core UX & Design', level: 'Advanced', createdAt: new Date().toISOString() },
+              { id: 'li-sk-2', name: 'Information Architecture', category: 'Core UX & Design', level: 'Advanced', createdAt: new Date().toISOString() },
+              { id: 'li-sk-3', name: 'Accessibility', category: 'Core UX & Design', level: 'Advanced', createdAt: new Date().toISOString() },
+              { id: 'li-sk-4', name: 'Figma', category: 'Core UX & Design', level: 'Advanced', createdAt: new Date().toISOString() },
+            ],
+            languages: [
+              { id: 'li-lang-1', name: 'Arabic', proficiency: 'Native or Bilingual', createdAt: new Date().toISOString() },
+              { id: 'li-lang-2', name: 'English', proficiency: 'Full Professional', createdAt: new Date().toISOString() }
+            ]
+          };
+          setParsedData(mockData);
+          setParsingStep(4);
+        }, 1200);
+      }, 1000);
+    }, 800);
+  };
+
+  const handleFinish = () => {
+    if (parsedData) {
+      onImport(parsedData);
+      toast.success('Successfully synchronized profile with LinkedIn data!');
+      onOpenChange(false);
+      setParsingStep(0);
+      setParsedData(null);
+      setFileName(null);
+      setProfileUrl('');
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] flex items-center gap-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <span className="bg-[#0077b5] text-white p-1 rounded font-bold text-sm tracking-tight">in</span>
+            Import Profile from LinkedIn
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground text-[var(--text-sm)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Sync your profile with LinkedIn to maintain ATS compatibility and avoid manual data entry.
+          </DialogDescription>
+        </DialogHeader>
+
+        {parsingStep === 0 && (
+          <div className="space-y-6 py-4">
+            <div className="flex border-b border-border">
+              <button
+                type="button"
+                onClick={() => setActiveTab('pdf')}
+                className={cn("pb-2.5 px-4 font-[var(--font-weight-medium)] text-[var(--text-sm)] border-b-2 transition-colors", activeTab === 'pdf' ? "border-chart-3 text-chart-3 font-[var(--font-weight-bold)]" : "border-transparent text-muted-foreground")}
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                LinkedIn PDF Export / Resume
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('link')}
+                className={cn("pb-2.5 px-4 font-[var(--font-weight-medium)] text-[var(--text-sm)] border-b-2 transition-colors", activeTab === 'link' ? "border-chart-3 text-chart-3 font-[var(--font-weight-bold)]" : "border-transparent text-muted-foreground")}
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                Public Profile URL
+              </button>
+            </div>
+
+            {activeTab === 'pdf' ? (
+              <div className="space-y-4">
+                <p className="text-[var(--text-sm)] text-muted-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  To export your profile: Go to your LinkedIn profile page, click <strong>"More"</strong>, and choose <strong>"Save to PDF"</strong>. Then upload the downloaded PDF here.
+                </p>
+                <div className="border-2 border-dashed border-border rounded-xl p-8 text-center bg-muted/40 hover:bg-muted/65 transition-colors cursor-pointer relative">
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setFileName(e.target.files[0].name);
+                      }
+                    }}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <span className="bg-chart-3/10 text-chart-3 p-3 rounded-full">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                    </span>
+                    <span className="font-[var(--font-weight-medium)] text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      {fileName ? fileName : "Upload LinkedIn PDF"}
+                    </span>
+                    <span className="text-xs text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>PDF format up to 5MB</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <FormField
+                  label="LinkedIn Profile URL"
+                  value={profileUrl}
+                  onChange={setProfileUrl}
+                  placeholder="https://www.linkedin.com/in/username"
+                />
+                <p className="text-xs text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  e.g., https://linkedin.com/in/creativemahdy
+                </p>
+              </div>
+            )}
+
+            <DialogFooter className="pt-4 gap-2">
+              <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+              <Button className="rounded-[var(--radius-button)] bg-[#0077b5] hover:bg-[#006297] text-white flex items-center gap-1.5" onClick={simulateImport} style={{ fontFamily: "'Inter', sans-serif" }}>
+                <span>Import Profile</span>
+              </Button>
+            </DialogFooter>
+          </div>
+        )}
+
+        {parsingStep > 0 && parsingStep < 4 && (
+          <div className="flex flex-col items-center justify-center py-16 space-y-6">
+            <div className="relative flex items-center justify-center">
+              <div className="w-16 h-16 border-4 border-chart-3/20 border-t-chart-3 rounded-full animate-spin"></div>
+              <span className="absolute text-xs font-bold text-chart-3">in</span>
+            </div>
+            <div className="text-center space-y-2">
+              <h3 className="font-[var(--font-weight-semibold)] text-[var(--text-lg)] animate-pulse" style={{ fontFamily: "'Inter', sans-serif" }}>
+                {parsingStep === 1 && "Connecting to LinkedIn Gateway..."}
+                {parsingStep === 2 && "Extracting experience and profile headers..."}
+                {parsingStep === 3 && "Building ATS schema & mapping skills..."}
+              </h3>
+              <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Please keep this modal open. This will take a few seconds.</p>
+            </div>
+          </div>
+        )}
+
+        {parsingStep === 4 && parsedData && (
+          <div className="space-y-6 py-4">
+            <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900 rounded-lg p-4 text-[var(--text-sm)] text-emerald-800 dark:text-emerald-300" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <strong>LinkedIn import ready!</strong> We parsed {parsedData.experiences.length} Experiences, {parsedData.educations.length} Education items, {parsedData.projects.length} Projects, and {parsedData.skills.length} Skills. Review them below before merging.
+            </div>
+
+            <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-2 border border-border p-3 rounded-lg bg-muted/20">
+              <div className="space-y-1">
+                <span className="text-xs uppercase font-bold text-muted-foreground tracking-wider" style={{ fontFamily: "'Inter', sans-serif" }}>Summary / About</span>
+                <p className="text-[var(--text-sm)] line-clamp-2" style={{ fontFamily: "'Inter', sans-serif" }}>{parsedData.about}</p>
+              </div>
+              <hr className="border-border" />
+              <div className="space-y-2">
+                <span className="text-xs uppercase font-bold text-muted-foreground tracking-wider" style={{ fontFamily: "'Inter', sans-serif" }}>Experiences</span>
+                {parsedData.experiences.map((exp: any) => (
+                  <div key={exp.id} className="text-[var(--text-sm)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="font-semibold">{exp.role} at {exp.company}</div>
+                    <div className="text-xs text-muted-foreground">{exp.startDate} - Present | {exp.locationType}</div>
+                  </div>
+                ))}
+              </div>
+              <hr className="border-border" />
+              <div className="space-y-2">
+                <span className="text-xs uppercase font-bold text-muted-foreground tracking-wider" style={{ fontFamily: "'Inter', sans-serif" }}>Educations</span>
+                {parsedData.educations.map((edu: any) => (
+                  <div key={edu.id} className="text-[var(--text-sm)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="font-semibold">{edu.degree} in {edu.fieldOfStudy}</div>
+                    <div className="text-xs text-muted-foreground">{edu.school} ({edu.grade})</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <DialogFooter className="pt-4 gap-2">
+              <Button variant="outline" onClick={() => setParsingStep(0)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Back</Button>
+              <Button className="rounded-[var(--radius-button)] bg-emerald-600 hover:bg-emerald-700 text-white" onClick={handleFinish} style={{ fontFamily: "'Inter', sans-serif" }}>Merge & Sync Profile</Button>
+            </DialogFooter>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
