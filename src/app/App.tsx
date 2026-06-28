@@ -23,6 +23,7 @@ import { ConfirmDialog } from './components/ConfirmDialog';
 import { useArabicDomTranslation } from '@/lib/useArabicDomTranslation';
 import { useTheme } from '@/lib/useTheme';
 import { DirectionProvider } from '@radix-ui/react-direction';
+import { EmployeeService, LeaveService, MissionService } from '@/lib/services/dbServices';
 
 export type AppTab =
   | 'dashboard'
@@ -178,37 +179,97 @@ export default function App() {
     setConfirmMissionOpen(true);
   };
 
-  const handleConfirmLeave = () => {
+  const handleConfirmLeave = async () => {
     if (pendingLeaveData) {
-      const type = pendingLeaveData.leaveType || 'annual';
-      const fromStr = pendingLeaveData.fromDate ? format(parseISO(pendingLeaveData.fromDate), 'dd MMMM yyyy') : '—';
-      const toStr = pendingLeaveData.toDate ? format(parseISO(pendingLeaveData.toDate), 'dd MMMM yyyy') : '—';
-      const days = pendingLeaveData.daysRequested || 0;
-      if (type === 'Sick') {
-        toast.success(
-          `Your sick leave request (${days} day${days !== 1 ? 's' : ''}) has been submitted. Take care! 🤗`,
-          { duration: 5000 }
-        );
-      } else {
-        toast.success(
-          `Got it! Your ${type.toLowerCase()} from ${fromStr} to ${toStr} (${days} day${days !== 1 ? 's' : ''}) has been submitted. Enjoy your time off 🎉`,
-          { duration: 5000 }
-        );
+      try {
+        const allEmployees = await EmployeeService.getAll();
+        const matchingEmployee = allEmployees.find(
+          emp => 
+            emp.email.toLowerCase() === currentUser?.email?.toLowerCase() ||
+            (typeof emp.name === 'string' ? emp.name : emp.name.nameEn).toLowerCase() === currentUser?.name?.toLowerCase()
+        ) || allEmployees[0];
+
+        if (!matchingEmployee) {
+          toast.error('Could not find logged-in employee record');
+          return;
+        }
+
+        const type = pendingLeaveData.leaveType || 'Annual Leave';
+        const fromStr = pendingLeaveData.fromDate ? format(parseISO(pendingLeaveData.fromDate), 'dd MMMM yyyy') : '—';
+        const toStr = pendingLeaveData.toDate ? format(parseISO(pendingLeaveData.toDate), 'dd MMMM yyyy') : '—';
+        const days = pendingLeaveData.daysRequested || 0;
+
+        await LeaveService.create({
+          name: typeof matchingEmployee.name === 'string' ? matchingEmployee.name : matchingEmployee.name.nameEn,
+          img: matchingEmployee.img || '',
+          type: type,
+          range: `${pendingLeaveData.fromDate} - ${pendingLeaveData.toDate}`,
+          duration: `${days} day${days !== 1 ? 's' : ''}`,
+          notes: pendingLeaveData.notes || '',
+          employeeNumber: matchingEmployee.employeeNumber,
+          employeeId: matchingEmployee.id,
+          status: 'pending'
+        });
+
+        if (type === 'Sick') {
+          toast.success(
+            `Your sick leave request (${days} day${days !== 1 ? 's' : ''}) has been submitted. Take care! 🤗`,
+            { duration: 5000 }
+          );
+        } else {
+          toast.success(
+            `Got it! Your ${type.toLowerCase()} from ${fromStr} to ${toStr} (${days} day${days !== 1 ? 's' : ''}) has been submitted. Enjoy your time off 🎉`,
+            { duration: 5000 }
+          );
+        }
+      } catch (e) {
+        console.error(e);
+        toast.error('Failed to submit leave request');
       }
     }
     setPendingLeaveData(null);
   };
 
-  const handleConfirmMission = () => {
+  const handleConfirmMission = async () => {
     if (pendingMissionData) {
-      const mType = pendingMissionData.missionType || t('mission.workFromHome');
-      const fromStr = pendingMissionData.fromDate ? format(parseISO(pendingMissionData.fromDate), 'dd MMMM yyyy') : '—';
-      const toStr = pendingMissionData.toDate ? format(parseISO(pendingMissionData.toDate), 'dd MMMM yyyy') : '—';
-      const days = pendingMissionData.daysRequested || 0;
-      toast.success(
-        `${mType} from ${fromStr} to ${toStr} (${days} day${days !== 1 ? 's' : ''}) submitted successfully.`,
-        { duration: 5000 }
-      );
+      try {
+        const allEmployees = await EmployeeService.getAll();
+        const matchingEmployee = allEmployees.find(
+          emp => 
+            emp.email.toLowerCase() === currentUser?.email?.toLowerCase() ||
+            (typeof emp.name === 'string' ? emp.name : emp.name.nameEn).toLowerCase() === currentUser?.name?.toLowerCase()
+        ) || allEmployees[0];
+
+        if (!matchingEmployee) {
+          toast.error('Could not find logged-in employee record');
+          return;
+        }
+
+        const mType = pendingMissionData.missionType || t('mission.workFromHome');
+        const fromStr = pendingMissionData.fromDate ? format(parseISO(pendingMissionData.fromDate), 'dd MMMM yyyy') : '—';
+        const toStr = pendingMissionData.toDate ? format(parseISO(pendingMissionData.toDate), 'dd MMMM yyyy') : '—';
+        const days = pendingMissionData.daysRequested || 0;
+
+        await MissionService.create({
+          name: typeof matchingEmployee.name === 'string' ? matchingEmployee.name : matchingEmployee.name.nameEn,
+          img: matchingEmployee.img || '',
+          type: mType,
+          range: `${pendingMissionData.fromDate} - ${pendingMissionData.toDate}`,
+          duration: `${days} day${days !== 1 ? 's' : ''}`,
+          notes: pendingMissionData.notes || '',
+          employeeNumber: matchingEmployee.employeeNumber,
+          employeeId: matchingEmployee.id,
+          status: 'pending'
+        });
+
+        toast.success(
+          `${mType} from ${fromStr} to ${toStr} (${days} day${days !== 1 ? 's' : ''}) submitted successfully.`,
+          { duration: 5000 }
+        );
+      } catch (e) {
+        console.error(e);
+        toast.error('Failed to submit mission request');
+      }
     }
     setPendingMissionData(null);
   };
