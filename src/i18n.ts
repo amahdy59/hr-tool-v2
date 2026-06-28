@@ -42,6 +42,7 @@ const en = {
       errors: {
         invalidWorkEmail: 'Enter a valid work email address, for example name@company.com.',
         invalidResetEmail: 'Enter the email address for your account, for example name@company.com.',
+        invalidPasswordLength: 'Password must be at least 6 characters.',
         incorrectPassword: 'The password is incorrect. Use demo access, show the password to check it, or reset your password.',
         goToField: 'Go to {{field}} field',
         emailField: 'email',
@@ -250,6 +251,7 @@ const ar = {
   errors: {
     invalidWorkEmail: 'أدخل بريدًا إلكترونيًا صالحًا للعمل، مثل الاسم@company.com.',
     invalidResetEmail: 'أدخل البريد الإلكتروني الخاص بحسابك، مثل الاسم@company.com.',
+    invalidPasswordLength: 'يجب أن تكون كلمة المرور 6 أحرف على الأقل.',
     incorrectPassword: 'كلمة المرور غير صحيحة. استخدم الدخول التجريبي، أو أظهر كلمة المرور للتحقق منها، أو أعد تعيين كلمة المرور.',
     goToField: 'الانتقال إلى حقل {{field}}',
     emailField: 'البريد الإلكتروني',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Info, KeyRound, Zap } from 'lucide-react';
+import { Eye, EyeOff, Info, KeyRound, Zap, CheckCircle2, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 import { RedesignInfoPage } from './RedesignInfoPage';
@@ -17,38 +17,63 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   const passwordId = React.useId();
   const rememberMeId = React.useId();
   const loginErrorId = React.useId();
-  const usernameHintId = React.useId();
-  const passwordHintId = React.useId();
+  const usernameErrorTextId = React.useId();
+  const passwordErrorTextId = React.useId();
   const resetEmailId = React.useId();
   const resetErrorId = React.useId();
-  const resetHintId = React.useId();
+  const resetEmailErrorTextId = React.useId();
   const [username, setUsername] = useState('');
+  const [usernameTouched, setUsernameTouched] = useState(false);
   const [password, setPassword] = useState('');
+  const [passwordTouched, setPasswordTouched] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [errorField, setErrorField] = useState<'username' | 'password' | 'resetEmail' | ''>('');
   const [isLoading, setIsLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
+  const [resetEmailTouched, setResetEmailTouched] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
   const [showInfoPage, setShowInfoPage] = useState(false);
   const showTempLogin = true;
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isUsernameValid = emailRegex.test(username);
+  const showUsernameError = usernameTouched && !isUsernameValid;
+  const showUsernameSuccess = usernameTouched && isUsernameValid;
+
+  const isPasswordValid = password.length >= 6;
+  const showPasswordError = passwordTouched && !isPasswordValid;
+  const showPasswordSuccess = passwordTouched && isPasswordValid;
+
+  const isResetEmailValid = emailRegex.test(resetEmail);
+  const showResetEmailError = resetEmailTouched && !isResetEmailValid;
+  const showResetEmailSuccess = resetEmailTouched && isResetEmailValid;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setUsernameTouched(true);
+    setPasswordTouched(true);
+
+    if (!isUsernameValid) {
+      setError(t('login.errors.invalidWorkEmail'));
+      setErrorField('username');
+      return;
+    }
+
+    if (!isPasswordValid) {
+      setError(t('login.errors.invalidPasswordLength'));
+      setErrorField('password');
+      return;
+    }
+
     setError('');
     setErrorField('');
     setIsLoading(true);
 
     // Simulate a small delay for better UX
     setTimeout(() => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      
-      if (!emailRegex.test(username)) {
-        setError(t('login.errors.invalidWorkEmail'));
-        setErrorField('username');
-        setIsLoading(false);
-      } else if (password === '123456') {
+      if (password === '123456') {
         onLogin(username);
       } else {
         setError(t('login.errors.incorrectPassword'));
@@ -60,22 +85,22 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
   const handleForgotPassword = (e: React.FormEvent) => {
     e.preventDefault();
+    setResetEmailTouched(true);
+
+    if (!isResetEmailValid) {
+      setError(t('login.errors.invalidResetEmail'));
+      setErrorField('resetEmail');
+      return;
+    }
+
     setError('');
     setErrorField('');
     setIsLoading(true);
 
     // Simulate a small delay for better UX
     setTimeout(() => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      
-      if (emailRegex.test(resetEmail)) {
-        setResetSuccess(true);
-        setIsLoading(false);
-      } else {
-        setError(t('login.errors.invalidResetEmail'));
-        setErrorField('resetEmail');
-        setIsLoading(false);
-      }
+      setResetSuccess(true);
+      setIsLoading(false);
     }, 600);
   };
 
@@ -205,35 +230,59 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               >
                 {t('login.email')}
               </label>
-              <input
-                id={usernameId}
-                type="email"
-                value={username}
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                  setError('');
-                  setErrorField('');
-                }}
-                placeholder={t('login.emailPlaceholder')}
-                required
-                aria-required="true"
-                aria-invalid={errorField === 'username'}
-                aria-describedby={[usernameHintId, errorField === 'username' ? loginErrorId : undefined].filter(Boolean).join(' ') || undefined}
-                autoComplete="email"
-                inputMode="email"
-                className={cn(
-                  'w-full min-h-[44px] px-3 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
-                  errorField === 'username' ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30' : 'border-border focus:ring-4 focus:ring-ring/40 focus:border-ring'
+              <div className="relative">
+                <input
+                  id={usernameId}
+                  type="email"
+                  value={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                    setError('');
+                    setErrorField('');
+                  }}
+                  onBlur={() => setUsernameTouched(true)}
+                  required
+                  aria-required="true"
+                  aria-invalid={showUsernameError || errorField === 'username'}
+                  aria-describedby={showUsernameError ? usernameErrorTextId : undefined}
+                  autoComplete="email"
+                  inputMode="email"
+                  className={cn(
+                    'w-full min-h-[44px] ps-3 pe-10 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                    showUsernameError || errorField === 'username'
+                      ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30'
+                      : showUsernameSuccess
+                      ? 'border-[#059669] focus:border-[#059669] focus:ring-4 focus:ring-[#059669]/30'
+                      : 'border-border focus:ring-4 focus:ring-ring/40 focus:border-ring'
+                  )}
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: 'var(--font-weight-normal)',
+                  }}
+                />
+                {showUsernameSuccess && (
+                  <span className="absolute end-3 top-1/2 -translate-y-1/2 text-[#059669] pointer-events-none">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </span>
                 )}
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-sm)',
-                  fontWeight: 'var(--font-weight-normal)',
-                }}
-              />
-              <p id={usernameHintId} className="text-[var(--text-xs)] text-muted-foreground">
-                {t('login.emailHint')}
-              </p>
+                {(showUsernameError || errorField === 'username') && (
+                  <span className="absolute end-3 top-1/2 -translate-y-1/2 text-[#B91C1C] pointer-events-none">
+                    <AlertCircle className="w-5 h-5" />
+                  </span>
+                )}
+              </div>
+              {showUsernameError && (
+                <p
+                  id={usernameErrorTextId}
+                  role="alert"
+                  className="text-[var(--text-xs)] text-[#B91C1C] flex items-center gap-1 mt-1"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  {t('login.errors.invalidWorkEmail')}
+                </p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -259,15 +308,19 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     setError('');
                     setErrorField('');
                   }}
-                  placeholder={t('login.passwordPlaceholder')}
+                  onBlur={() => setPasswordTouched(true)}
                   required
                   aria-required="true"
-                  aria-invalid={errorField === 'password'}
-                  aria-describedby={[passwordHintId, errorField === 'password' ? loginErrorId : undefined].filter(Boolean).join(' ') || undefined}
+                  aria-invalid={showPasswordError || errorField === 'password'}
+                  aria-describedby={showPasswordError ? passwordErrorTextId : undefined}
                   autoComplete="current-password"
                   className={cn(
-                    'w-full min-h-[44px] px-3 pe-12 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
-                    errorField === 'password' ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30' : 'border-border focus:ring-4 focus:ring-ring/40 focus:border-ring'
+                    'w-full min-h-[44px] ps-3 pe-20 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                    showPasswordError || errorField === 'password'
+                      ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30'
+                      : showPasswordSuccess
+                      ? 'border-[#059669] focus:border-[#059669] focus:ring-4 focus:ring-[#059669]/30'
+                      : 'border-border focus:ring-4 focus:ring-ring/40 focus:border-ring'
                   )}
                   style={{
                     fontFamily: "'Inter', sans-serif",
@@ -275,22 +328,42 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     fontWeight: 'var(--font-weight-normal)',
                   }}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? t('login.hidePassword') : t('login.showPassword')}
-                  className="absolute end-1 top-1/2 min-h-11 min-w-11 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
+                <div className="absolute end-1 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                  {showPasswordSuccess && (
+                    <span className="text-[#059669] pointer-events-none">
+                      <CheckCircle2 className="w-5 h-5" />
+                    </span>
                   )}
-                </button>
+                  {(showPasswordError || errorField === 'password') && (
+                    <span className="text-[#B91C1C] pointer-events-none">
+                      <AlertCircle className="w-5 h-5" />
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? t('login.hidePassword') : t('login.showPassword')}
+                    className="min-h-11 min-w-11 text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
               </div>
-              <p id={passwordHintId} className="text-[var(--text-xs)] text-muted-foreground">
-                {t('login.passwordHint')}
-              </p>
+              {showPasswordError && (
+                <p
+                  id={passwordErrorTextId}
+                  role="alert"
+                  className="text-[var(--text-xs)] text-[#B91C1C] flex items-center gap-1 mt-1"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  {t('login.errors.invalidPasswordLength')}
+                </p>
+              )}
             </div>
 
             {/* Remember Me & Forgot Password */}
@@ -452,35 +525,59 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 >
                   {t('login.email')}
                 </label>
-                <input
-                  id={resetEmailId}
-                  type="email"
-                  value={resetEmail}
-                  onChange={(e) => {
-                    setResetEmail(e.target.value);
-                    setError('');
-                    setErrorField('');
-                  }}
-                  placeholder={t('login.resetEmailPlaceholder')}
-                  required
-                  aria-required="true"
-                  aria-invalid={errorField === 'resetEmail'}
-                  aria-describedby={[resetHintId, errorField === 'resetEmail' ? resetErrorId : undefined].filter(Boolean).join(' ') || undefined}
-                  autoComplete="email"
-                  inputMode="email"
-                  className={cn(
-                    'w-full min-h-[44px] px-3 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
-                    errorField === 'resetEmail' ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30' : 'border-border focus:ring-4 focus:ring-ring/40 focus:border-ring'
+                <div className="relative">
+                  <input
+                    id={resetEmailId}
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => {
+                      setResetEmail(e.target.value);
+                      setError('');
+                      setErrorField('');
+                    }}
+                    onBlur={() => setResetEmailTouched(true)}
+                    required
+                    aria-required="true"
+                    aria-invalid={showResetEmailError || errorField === 'resetEmail'}
+                    aria-describedby={showResetEmailError ? resetEmailErrorTextId : undefined}
+                    autoComplete="email"
+                    inputMode="email"
+                    className={cn(
+                      'w-full min-h-[44px] ps-3 pe-10 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                      showResetEmailError || errorField === 'resetEmail'
+                        ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30'
+                        : showResetEmailSuccess
+                        ? 'border-[#059669] focus:border-[#059669] focus:ring-4 focus:ring-[#059669]/30'
+                        : 'border-border focus:ring-4 focus:ring-ring/40 focus:border-ring'
+                    )}
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 'var(--text-sm)',
+                      fontWeight: 'var(--font-weight-normal)',
+                    }}
+                  />
+                  {showResetEmailSuccess && (
+                    <span className="absolute end-3 top-1/2 -translate-y-1/2 text-[#059669] pointer-events-none">
+                      <CheckCircle2 className="w-5 h-5" />
+                    </span>
                   )}
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 'var(--text-sm)',
-                    fontWeight: 'var(--font-weight-normal)',
-                  }}
-                />
-                <p id={resetHintId} className="text-[var(--text-xs)] text-muted-foreground">
-                  {t('login.resetEmailHint')}
-                </p>
+                  {(showResetEmailError || errorField === 'resetEmail') && (
+                    <span className="absolute end-3 top-1/2 -translate-y-1/2 text-[#B91C1C] pointer-events-none">
+                      <AlertCircle className="w-5 h-5" />
+                    </span>
+                  )}
+                </div>
+                {showResetEmailError && (
+                  <p
+                    id={resetEmailErrorTextId}
+                    role="alert"
+                    className="text-[var(--text-xs)] text-[#B91C1C] flex items-center gap-1 mt-1"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    {t('login.errors.invalidResetEmail')}
+                  </p>
+                )}
               </div>
 
               {/* Reset Button */}

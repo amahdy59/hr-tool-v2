@@ -145,6 +145,21 @@ const severityHoursClass = (severity: 'positive' | 'neutral' | 'negative' | 'war
   }
 };
 
+const getCategoryName = (name: string, lang: string) => {
+  if (lang === 'ar') {
+    switch (name) {
+      case 'In-office': return 'من المكتب';
+      case 'Missions': return 'المأموريات';
+      case 'Leaves': return 'الإجازات';
+      case 'No Show': return 'غياب دون إشعار';
+      case 'Unfilled': return 'غير معبأ';
+      default: return name;
+    }
+  }
+  return name;
+};
+
+
 // ── Mock day rows ──
 type DayStatus =
   | 'In-office'
@@ -243,6 +258,14 @@ const CustomBarTooltip = ({ active, payload }: any) => {
 export const Attendance: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
+
+  const translatedSummaryData = useMemo(() => {
+    return summaryData.map((item) => ({
+      ...item,
+      name: getCategoryName(item.name, language)
+    }));
+  }, [language]);
+
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('11');
@@ -564,49 +587,6 @@ export const Attendance: React.FC = () => {
         </div>
       </div>
 
-      {/* ── Matching Employees Selection Bar ── */}
-      {filteredEmployees.length > 1 && (
-        <div className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] space-y-2">
-          <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-muted-foreground uppercase tracking-wider">
-            {language === 'ar' ? 'الموظفون المطابقون' : 'Matching Employees'} ({filteredEmployees.length})
-          </p>
-          <div className="flex items-center gap-3 overflow-x-auto pb-1 scrollbar-thin">
-            {filteredEmployees.map((emp) => {
-              const empName = typeof emp.name === 'string' ? emp.name : emp.name.nameEn;
-              const isSelected = empName === selectedEmployee;
-              return (
-                <button
-                  key={emp.id}
-                  onClick={() => setSelectedEmployee(empName)}
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all text-xs font-[var(--font-weight-medium)] cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-ring outline-none min-h-[36px]",
-                    isSelected
-                      ? "bg-primary border-primary text-primary-foreground shadow-[var(--elevation-sm)]"
-                      : "bg-background border-border text-foreground hover:bg-muted hover:border-muted-foreground/30"
-                  )}
-                  aria-pressed={isSelected}
-                >
-                  {emp.img ? (
-                    <img
-                      src={emp.img}
-                      alt=""
-                      className="w-5 h-5 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className={cn(
-                      "w-5 h-5 rounded-full flex items-center justify-center text-[10px] uppercase font-bold",
-                      isSelected ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
-                    )}>
-                      {empName.charAt(0)}
-                    </div>
-                  )}
-                  <span>{localizePersonName(empName, language)}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {filteredEmployees.length === 0 ? (
         <div className="bg-card border border-border rounded-[var(--radius-card)] p-8 text-center shadow-[var(--elevation-sm)]">
@@ -714,14 +694,14 @@ export const Attendance: React.FC = () => {
 
         <div className="grid grid-cols-1 gap-6 items-start xl:grid-cols-[minmax(430px,1fr)_minmax(340px,0.9fr)] xl:gap-8">
           {/* Left: summary table */}
-          <div className="hidden w-full overflow-x-auto sm:block">
-            <table className="min-w-[430px] w-full text-start border-collapse cursor-default" aria-label={`Attendance summary for ${monthLabel} ${selectedYear}`}>
+          <div className="hidden w-full overflow-x-auto sm:block bg-card border border-border rounded-[var(--radius-card)] shadow-[var(--elevation-sm)] overflow-hidden">
+            <table className="w-full text-start border-collapse cursor-default text-[var(--text-sm)]" aria-label={`Attendance summary for ${monthLabel} ${selectedYear}`}>
               <caption className="sr-only">Attendance summary by category, hours, and percentage</caption>
               <thead>
-                <tr className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground border-b border-border">
-                  <th scope="col" className="text-start pb-3 pe-6 font-medium min-w-[180px]">Category</th>
-                  <th scope="col" className="text-end pb-3 px-6 font-medium min-w-[150px]">
-                    <span className="inline-flex items-center justify-end gap-1.5">
+                <tr className="bg-muted/50 border-b border-border">
+                  <th scope="col" className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start min-w-[180px]">Category</th>
+                  <th scope="col" className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end min-w-[150px]">
+                    <span className="inline-flex items-center justify-end gap-1.5 w-full">
                       Hours
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -735,16 +715,16 @@ export const Attendance: React.FC = () => {
                       </Tooltip>
                     </span>
                   </th>
-                  <th scope="col" className="text-end pb-3 ps-6 font-medium min-w-[120px]">Percentage</th>
+                  <th scope="col" className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end min-w-[120px]">Percentage</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
-                {summaryData.map((item) => (
+                {translatedSummaryData.map((item) => (
                   <tr
                     key={item.id}
-                    className="text-[var(--text-sm)] hover:bg-muted/30 transition-colors"
+                    className="hover:bg-muted/30 transition-colors"
                   >
-                    <th scope="row" className="py-3 pe-6 text-start font-[var(--font-weight-normal)]">
+                    <th scope="row" className="px-4 py-3 text-start font-[var(--font-weight-normal)]">
                       <div className="flex items-center gap-2.5">
                         <div
                           className="w-3 h-3 rounded-sm shrink-0"
@@ -753,25 +733,17 @@ export const Attendance: React.FC = () => {
                         <span className="text-foreground">{item.name}</span>
                       </div>
                     </th>
-                    <td className={cn('py-3 px-6 text-end font-[var(--font-weight-medium)]', severityHoursClass(item.severity))}>
-                      <div className="ms-auto max-w-[120px] space-y-1">
-                        <span>{item.hours}h</span>
-                        <span className="block h-1.5 overflow-hidden rounded-full bg-muted" aria-hidden="true">
-                          <span
-                            className="block h-full rounded-full"
-                            style={{ width: `${Math.max(4, (item.hours / maxSummaryHours) * 100)}%`, backgroundColor: item.cssColor }}
-                          />
-                        </span>
-                      </div>
+                    <td className={cn('px-4 py-3 text-end font-[var(--font-weight-medium)]', severityHoursClass(item.severity))}>
+                      {item.hours}h
                     </td>
-                    <td className="py-3 ps-6 text-end text-muted-foreground">{item.percentage}%</td>
+                    <td className="px-4 py-3 text-end text-muted-foreground">{item.percentage}%</td>
                   </tr>
                 ))}
                 {/* Total */}
-                <tr className="font-[var(--font-weight-semibold)] text-[var(--text-sm)] text-foreground border-t border-border">
-                  <th scope="row" className="py-4 pe-6 text-start font-semibold">Total Hours</th>
-                  <td className="py-4 px-6 text-end font-semibold">{totalHours}h</td>
-                  <td className="py-4 ps-6 text-end font-semibold">100%</td>
+                <tr className="font-[var(--font-weight-semibold)] text-foreground bg-muted/10 border-t border-border">
+                  <th scope="row" className="px-4 py-4 text-start font-semibold">Total Hours</th>
+                  <td className="px-4 py-4 text-end font-semibold">{totalHours}h</td>
+                  <td className="px-4 py-4 text-end font-semibold">100%</td>
                 </tr>
               </tbody>
             </table>
@@ -788,7 +760,7 @@ export const Attendance: React.FC = () => {
                 <p className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">{totalHours}h</p>
               </div>
             </div>
-            {summaryData.map((item) => (
+            {translatedSummaryData.map((item) => (
               <div
                 key={item.id}
                 className="rounded-[var(--radius-card)] border border-border bg-card p-3 shadow-[var(--elevation-sm)]"
@@ -812,13 +784,13 @@ export const Attendance: React.FC = () => {
           <div className="h-[280px] xl:hidden">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={summaryData}
+                data={translatedSummaryData}
                 layout="vertical"
                 margin={i18n.language === 'ar' ? { top: 4, right: 30, left: 10, bottom: 4 } : { top: 4, right: 10, left: 20, bottom: 4 }}
                 barCategoryGap="24%"
               >
                 <defs>
-                  {summaryData.map((entry) => (
+                  {translatedSummaryData.map((entry) => (
                     <pattern key={entry.id} id={`summary-mobile-${entry.id}`} width="8" height="8" patternUnits="userSpaceOnUse">
                       <rect width="8" height="8" fill={entry.color} />
                       <path d="M0 8L8 0" stroke="rgba(255,255,255,0.45)" strokeWidth="1" />
@@ -852,7 +824,7 @@ export const Attendance: React.FC = () => {
                   label={{ value: 'Min. Office Target', fill: 'var(--foreground)', fontSize: 11, position: 'insideTop' }}
                 />
                 <Bar dataKey="hours" radius={i18n.language === 'ar' ? [4, 0, 0, 4] : [0, 4, 4, 0]} maxBarSize={28}>
-                  {summaryData.map((entry) => (
+                  {translatedSummaryData.map((entry) => (
                     <Cell key={entry.id} fill={`url(#summary-mobile-${entry.id})`} />
                   ))}
                 </Bar>
@@ -860,37 +832,37 @@ export const Attendance: React.FC = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* Desktop: Donut Chart representing breakdown of logged hours */}
-          <div className="hidden h-[280px] min-w-0 xl:block relative">
+          {/* Desktop: Bar Chart representing breakdown of logged hours */}
+          <div className="hidden h-[280px] min-w-0 xl:block">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={summaryData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={65}
-                  outerRadius={95}
-                  paddingAngle={3}
-                  dataKey="hours"
-                  nameKey="name"
-                >
-                  {summaryData.map((entry) => (
+              <BarChart
+                data={translatedSummaryData}
+                margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 11, fontFamily: 'Inter, sans-serif' }}
+                  unit="h"
+                  orientation={language === 'ar' ? 'right' : 'left'}
+                />
+                <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.15 }} />
+                <Bar dataKey="hours" radius={[4, 4, 0, 0]} maxBarSize={45}>
+                  {translatedSummaryData.map((entry) => (
                     <Cell key={entry.id} fill={entry.cssColor} />
                   ))}
-                </Pie>
-                <RechartsTooltip content={<CustomBarTooltip />} />
-              </PieChart>
+                </Bar>
+              </BarChart>
             </ResponsiveContainer>
-            {/* Center Text for Donut Chart */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-[var(--text-2xl)] font-[var(--font-weight-semibold)] text-foreground">
-                {totalHours}h
-              </span>
-              <span className="text-[var(--text-xs)] font-[var(--font-weight-medium)] text-muted-foreground mt-0.5">
-                {i18n.language === 'ar' ? 'ساعة مسجلة' : 'Logged'}
-              </span>
-            </div>
           </div>
+
         </div>
       </section>
 
