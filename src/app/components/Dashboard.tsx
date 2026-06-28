@@ -34,6 +34,9 @@ import {
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { format, parseISO, isValid } from 'date-fns';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from './ui/select';
 import { useTranslation } from 'react-i18next';
 import { localizeFirstName } from '@/lib/localizedNames';
 import { calculateAnnualEntitlement } from '@/lib/leaveCalculations';
@@ -416,19 +419,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               <PopoverContent className="p-4 space-y-4 w-72">
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-leave-type">Leave Type</label>
-                  <select
-                    id="mobile-history-leave-type"
-                    aria-label="Filter by Leave Type"
+                  <Select
                     value={historyLeaveType}
-                    onChange={(event) => setHistoryLeaveType(event.target.value)}
-                    className="field-control min-h-[44px] w-full rounded-[var(--radius-input)] px-3 text-[var(--text-sm)]"
+                    onValueChange={setHistoryLeaveType}
                   >
-                    <option value="vacation">Vacation</option>
-                    <option value="sick">Sick</option>
-                    <option value="annual">Annual Leave</option>
-                    <option value="maternity">Maternity</option>
-                    <option value="paternity">Paternity</option>
-                  </select>
+                    <SelectTrigger id="mobile-history-leave-type" aria-label="Filter by Leave Type" className="min-h-[44px] w-full rounded-[var(--radius-input)]">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="vacation">Vacation</SelectItem>
+                      <SelectItem value="sick">Sick</SelectItem>
+                      <SelectItem value="annual">Annual Leave</SelectItem>
+                      <SelectItem value="maternity">Maternity</SelectItem>
+                      <SelectItem value="paternity">Paternity</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
@@ -445,19 +450,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             <div className="hidden xl:flex items-center gap-3 flex-wrap">
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-leave-type">Leave Type</label>
-                  <select
-                    id="desktop-history-leave-type"
-                    aria-label="Filter by Leave Type"
+                  <Select
                     value={historyLeaveType}
-                    onChange={(event) => setHistoryLeaveType(event.target.value)}
-                    className="field-control min-h-[44px] w-44 rounded-[var(--radius-input)] px-3 text-[var(--text-sm)]"
+                    onValueChange={setHistoryLeaveType}
                   >
-                    <option value="vacation">Vacation</option>
-                    <option value="sick">Sick</option>
-                    <option value="annual">Annual Leave</option>
-                    <option value="maternity">Maternity</option>
-                    <option value="paternity">Paternity</option>
-                  </select>
+                    <SelectTrigger id="desktop-history-leave-type" aria-label="Filter by Leave Type" className="min-h-[44px] w-44 rounded-[var(--radius-input)]">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="vacation">Vacation</SelectItem>
+                      <SelectItem value="sick">Sick</SelectItem>
+                      <SelectItem value="annual">Annual Leave</SelectItem>
+                      <SelectItem value="maternity">Maternity</SelectItem>
+                      <SelectItem value="paternity">Paternity</SelectItem>
+                    </SelectContent>
+                  </Select>
               </div>
               <div className="space-y-1">
                 <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
