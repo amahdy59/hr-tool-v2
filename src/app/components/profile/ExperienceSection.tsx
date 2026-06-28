@@ -329,8 +329,8 @@ const EditExperienceModal: React.FC<{
             <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>e.g., Figma, Accessibility, UX Research</p>
           </div>
           <div className="md:col-span-2 space-y-1">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
-            <textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
+            <label htmlFor="experience-description-textarea" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
+            <textarea id="experience-description-textarea" dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
         </div>
         <DialogFooter className="mt-6 flex gap-2 justify-end">

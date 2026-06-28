@@ -436,12 +436,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                   </Select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
-                  <DatePicker value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" />
+                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-start-date">Start Date</label>
+                  <DatePicker id="mobile-history-start-date" value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" aria-label="History start date" />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">End Date</label>
-                  <DatePicker value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" />
+                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-end-date">End Date</label>
+                  <DatePicker id="mobile-history-end-date" value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" aria-label="History end date" />
                 </div>
               </PopoverContent>
             </Popover>
@@ -467,12 +467,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                   </Select>
               </div>
               <div className="space-y-1">
-                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
-                <DatePicker value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" />
+                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-start-date">Start Date</label>
+                <DatePicker id="desktop-history-start-date" value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" aria-label="History start date" />
               </div>
               <div className="space-y-1">
-                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">End Date</label>
-                <DatePicker value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" />
+                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-end-date">End Date</label>
+                <DatePicker id="desktop-history-end-date" value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" aria-label="History end date" />
               </div>
             </div>
           </div>

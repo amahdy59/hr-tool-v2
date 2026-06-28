@@ -277,9 +277,9 @@ const EditProjectModal: React.FC<{
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="md:col-span-2"><FormField label="Project Title *" value={title} onChange={setTitle} /></div>
           <div className="space-y-1">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
+            <label htmlFor="project-category-select" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger id="project-category-select" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="UX Projects">UX Projects</SelectItem>
                 <SelectItem value="Data Analysis & Visualization Projects">Data Analysis & Visualization Projects</SelectItem>
@@ -322,8 +322,8 @@ const EditProjectModal: React.FC<{
             <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>e.g., Figma, Adobe XD, User Research</p>
           </div>
           <div className="md:col-span-2 space-y-1">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
-            <textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
+            <label htmlFor="project-description-textarea" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
+            <textarea id="project-description-textarea" dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
           <div className="md:col-span-2 mt-2">
             <label className="flex items-center gap-2 cursor-pointer">

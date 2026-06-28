@@ -683,8 +683,9 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
           position: absolute;
           left: -9999px;
           top: -9999px;
-          opacity: 0;
           pointer-events: none;
+          width: 8.5in;
+          background: white;
         }
         @media print {
           body * {
@@ -700,7 +701,6 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
             width: 100%;
             margin: 0;
             padding: 0;
-            opacity: 1;
             pointer-events: auto;
           }
         }
