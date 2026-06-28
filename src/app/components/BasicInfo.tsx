@@ -146,6 +146,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
   const personalInfoFields = [
     { label: 'Full Name (English)', value: personalInfo.nameEn || '' },
     { label: 'Full Name (Arabic)', value: personalInfo.nameAr || '' },
+    { label: 'Job Title', value: currentUser?.position || 'Employee' },
     { label: 'Date of Birth', value: new Date(personalInfo.dateOfBirth).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) },
     { label: 'Gender', value: personalInfo.gender },
     { label: 'Email', value: personalInfo.email },
@@ -221,40 +222,6 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
 
   return (
     <div className="space-y-6">
-      {/* Profile Header */}
-      <div className="flex flex-col items-center text-center">
-        <div className="relative group">
-          <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-card shadow-[var(--elevation-sm)] mb-3">
-            {currentUser?.image ? (
-              <img src={currentUser.image} alt={currentUser.name} className="w-full h-full object-cover" />
-            ) : (
-              <div 
-                className="w-full h-full bg-primary/10 flex items-center justify-center"
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '2rem',
-                  fontWeight: 'var(--font-weight-bold)',
-                }}
-              >
-                <span className="text-primary">
-                  {currentUser ? getInitials(currentUser.name) : 'U'}
-                </span>
-              </div>
-            )}
-          </div>
-          {/* Change Image Button */}
-          <button
-            onClick={() => setChangeImageOpen(true)}
-            className="absolute bottom-3 end-0 w-9 h-9 rounded-full bg-chart-3 hover:bg-chart-3/90 text-white flex items-center justify-center shadow-[var(--elevation-md)] transition-all cursor-pointer border-2 border-card"
-            aria-label="Change profile picture"
-          >
-            <Camera className="w-4 h-4" />
-          </button>
-        </div>
-        <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">{displayName || 'User'}</h3>
-        <p className="text-[var(--text-sm)] text-muted-foreground font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>{currentUser?.position || 'Employee'}</p>
-      </div>
-
       {/* Personal Information */}
       <ProfileCard title="Personal Information" onEdit={() => setEditPersonalOpen(true)} icon={<Shield className="w-4 h-4 text-muted-foreground" />}>
         <div className="grid grid-cols-1 gap-y-3">
@@ -615,7 +582,7 @@ const EditPersonalInfoModal: React.FC<{
           <FormField label="Email" value={email} onChange={setEmail} type="email" inputMode="email" autoComplete="email" />
           <FormField label="Mobile *" value={mobile} onChange={setMobile} type="tel" inputMode="tel" placeholder="01XXXXXXXXX" autoComplete="tel" />
           <FormField label="Landline" value={landline} onChange={setLandline} type="tel" inputMode="tel" />
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label htmlFor="basic-gender" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Gender *</label>
             <Select value={gender} onValueChange={setGender}>
               <SelectTrigger id="basic-gender" className="h-10 rounded-[var(--radius-input)] border-border" aria-label="Gender" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
@@ -625,7 +592,7 @@ const EditPersonalInfoModal: React.FC<{
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label htmlFor="basic-nationality" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Nationality *</label>
             <Select value={nationality} onValueChange={setNationality}>
               <SelectTrigger id="basic-nationality" className="h-10 rounded-[var(--radius-input)] border-border" aria-label="Nationality" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
@@ -637,7 +604,7 @@ const EditPersonalInfoModal: React.FC<{
               </SelectContent>
             </Select>
           </div>
-          <div className="md:col-span-2 space-y-1.5">
+          <div className="md:col-span-2 space-y-1">
             <label htmlFor="basic-address" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Address</label>
             <textarea id="basic-address" dir="auto" value={address} onChange={e => setAddress(e.target.value)} rows={2} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
@@ -687,7 +654,7 @@ const EditEmergencyModal: React.FC<{
         </DialogHeader>
         <div className="space-y-4">
           <FormField label="Contact Name *" value={name} onChange={setName} />
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Relationship *</label>
             <Select value={relationship} onValueChange={setRelationship}>
               <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
@@ -774,7 +741,7 @@ const ChangeImageModal: React.FC<{
               )}
             </div>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1">
             <label className="block">
               <input 
                 type="file" 
@@ -831,7 +798,7 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <span className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>This request will be reviewed and approved by HR before the changes take effect.</span>
         </div>
         <div className="space-y-4">
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label htmlFor="bank-currency" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Currency *</label>
             <Select value={currency} onValueChange={setCurrency}>
               <SelectTrigger id="bank-currency" className="h-10 rounded-[var(--radius-input)] border-border" aria-label="Currency" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
@@ -845,7 +812,7 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <FormField label="Account Number *" value={accountNumber} onChange={setAccountNumber} />
           <FormField label="Bank Name *" value={bankName} onChange={setBankName} />
           <FormField label="IBAN (Optional)" value={iban} onChange={setIban} />
-          <div className="space-y-2">
+          <div className="space-y-1">
             <label htmlFor="bank-statement-upload" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Upload Bank Statement</label>
             <input 
               id="bank-statement-upload"
@@ -899,7 +866,7 @@ const EmploymentUpdateModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label htmlFor="employment-update-issue" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Issue Description *</label>
             <textarea dir="auto" 
               id="employment-update-issue"
@@ -948,7 +915,7 @@ const FormField: React.FC<{
 }> = ({ label, value, onChange, type = 'text', inputMode, autoComplete, placeholder, maxLength, required }) => {
   const id = React.useId();
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1">
       <label htmlFor={id} className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>
         {label} {required && <span className="text-destructive" aria-hidden="true">*</span>}
       </label>

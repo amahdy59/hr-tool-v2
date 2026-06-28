@@ -276,7 +276,7 @@ const EditProjectModal: React.FC<{
         </DialogHeader>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="md:col-span-2"><FormField label="Project Title *" value={title} onChange={setTitle} /></div>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
             <Select value={category} onValueChange={setCategory}>
               <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
@@ -288,7 +288,7 @@ const EditProjectModal: React.FC<{
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label id="project-associated-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Associated With</label>
             <Select value={associatedWith || 'none'} onValueChange={setAssociatedWith}>
               <SelectTrigger aria-labelledby="project-associated-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
@@ -316,12 +316,12 @@ const EditProjectModal: React.FC<{
           <FormField label="Your Role" value={role} onChange={setRole} placeholder="e.g., UX Designer" />
           <FormField label="Issue Date" value={issueDate} onChange={setIssueDate} placeholder="e.g., 2024" />
           <FormField label="Project URL" value={url} onChange={setUrl} placeholder="https://" />
-          <div className="md:col-span-2 space-y-1.5">
+          <div className="md:col-span-2 space-y-1">
             <label htmlFor="tools-used-input" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Tools Used</label>
             <input id="tools-used-input" type="text" value={toolsUsed} onChange={e => setToolsUsed(e.target.value)} className={inputClass} placeholder="Separate with commas" style={{ fontFamily: "'Inter', sans-serif" }} />
             <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>e.g., Figma, Adobe XD, User Research</p>
           </div>
-          <div className="md:col-span-2 space-y-1.5">
+          <div className="md:col-span-2 space-y-1">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
             <textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>

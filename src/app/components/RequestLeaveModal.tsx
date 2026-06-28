@@ -215,7 +215,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
 
         <div className="space-y-5">
           {/* Leave Type Select */}
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label
               style={{
                 fontFamily: "'Inter', sans-serif",
@@ -243,7 +243,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
 
           {/* Date Inputs with DatePicker */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -270,7 +270,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 disabledDays={isEgyptianWeekend}
               />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -317,7 +317,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
           </p>
 
           {/* Notes */}
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label
               style={{
                 fontFamily: "'Inter', sans-serif",

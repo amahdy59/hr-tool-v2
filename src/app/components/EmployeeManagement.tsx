@@ -219,7 +219,6 @@ export const EmployeeManagement: React.FC = () => {
 
       return matchesSearch && matchesDepartment && matchesTitle && matchesHireDate && matchesActivity && matchesEmployment;
     });
-    console.log('Filtered Employees:', result.length, 'out of', employees.length);
     return result;
   }, [filterActivityTypes, filterDept, filterEmploymentTypes, filterHiredAfter, filterTitle, searchQuery, employees]);
 
@@ -332,7 +331,7 @@ export const EmployeeManagement: React.FC = () => {
         <TabsContent value="directory" className={tabContentClass}>
           {/* Search row */}
           <div className="flex flex-wrap items-end gap-3">
-            <div className="flex-1 min-w-[280px] space-y-1.5">
+            <div className="flex-1 min-w-[280px] space-y-1">
               <div className="flex items-center gap-2">
                 <label htmlFor="employee-directory-search" className={cn(labelClass, 'sr-only md:not-sr-only md:inline-block')}>Search Employees</label>
                 <Tooltip>
@@ -455,12 +454,14 @@ export const EmployeeManagement: React.FC = () => {
 
         {/* ── Activity Log Tab ── */}
         <TabsContent value="activity" className={tabContentClass}>
-          <div className={searchRowClass}>
-            <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
-              <label htmlFor="employee-activity-search" className="sr-only">Search activity log</label>
-              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="employee-activity-search" type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search activity log..." className={cn(inputClass, 'ps-10')} aria-label="Search activity log" autoComplete="search" />
-            </form>
+          <div className="space-y-1 w-full max-w-md mb-4">
+            <label htmlFor="employee-activity-search" className={labelClass}>Search Activity Log</label>
+            <div className={searchRowClass}>
+              <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
+                <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                <input id="employee-activity-search" type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search activity log..." className={cn(inputClass, 'ps-10')} aria-label="Search activity log" autoComplete="search" />
+              </form>
+            </div>
           </div>
           <div className={tableCardClass}>
             <div className={tableScrollClass}>
@@ -506,12 +507,14 @@ export const EmployeeManagement: React.FC = () => {
 
         {/* ── Departments Tab ── */}
         <TabsContent value="departments" className={tabContentClass}>
-          <div className={searchRowClass}>
-            <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
-              <label htmlFor="employee-department-search" className="sr-only">Search departments</label>
-              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="employee-department-search" type="search" value={deptSearch} onChange={(e) => setDeptSearch(e.target.value)} placeholder="Search departments..." className={cn(inputClass, 'ps-10')} aria-label="Search departments" autoComplete="search" />
-            </form>
+          <div className="space-y-1 w-full max-w-md mb-4">
+            <label htmlFor="employee-department-search" className={labelClass}>Search Departments</label>
+            <div className={searchRowClass}>
+              <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
+                <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                <input id="employee-department-search" type="search" value={deptSearch} onChange={(e) => setDeptSearch(e.target.value)} placeholder="Search departments..." className={cn(inputClass, 'ps-10')} aria-label="Search departments" autoComplete="search" />
+              </form>
+            </div>
           </div>
           <div className={tableCardClass}>
             <div className={tableScrollClass}>
@@ -558,12 +561,14 @@ export const EmployeeManagement: React.FC = () => {
 
         {/* ── Job Titles Tab ── */}
         <TabsContent value="jobtitles" className={tabContentClass}>
-          <div className={searchRowClass}>
-            <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
-              <label htmlFor="employee-job-title-search" className="sr-only">Search job titles</label>
-              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="employee-job-title-search" type="search" value={jtSearch} onChange={(e) => setJtSearch(e.target.value)} placeholder="Search job titles..." className={cn(inputClass, 'ps-10')} aria-label="Search job titles" autoComplete="search" />
-            </form>
+          <div className="space-y-1 w-full max-w-md mb-4">
+            <label htmlFor="employee-job-title-search" className={labelClass}>Search Job Titles</label>
+            <div className={searchRowClass}>
+              <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
+                <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                <input id="employee-job-title-search" type="search" value={jtSearch} onChange={(e) => setJtSearch(e.target.value)} placeholder="Search job titles..." className={cn(inputClass, 'ps-10')} aria-label="Search job titles" autoComplete="search" />
+              </form>
+            </div>
           </div>
           <div className={tableCardClass}>
             <div className={tableScrollClass}>
@@ -808,7 +813,6 @@ const TablePagination: React.FC<{ page: number; setPage: (p: number) => void; to
       totalPages={totalPages}
       itemsPerPage={15}
       onPageChange={setPage}
-      onItemsPerPageChange={() => setPage(1)}
       totalItems={totalItems}
     />
   );
@@ -846,11 +850,11 @@ const EmployeeFilterPanel: React.FC<{
       </div>
       <FilterSelect label="Department" value={dept} onChange={setDept} options={['All', ...departmentsList]} />
       <FilterSelect label="Job Title" value={title} onChange={setTitle} options={['All', ...jobTitlesList]} />
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         <label htmlFor={gradYearId} className={labelClass}>Graduation Year</label>
         <input id={gradYearId} type="text" inputMode="numeric" value={gradYear} onChange={(e) => setGradYear(e.target.value)} placeholder="e.g. 2013" className={inputClass} />
       </div>
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         <label htmlFor={hiredAfterId} className={labelClass}>Hired After</label>
         <DatePicker id={hiredAfterId} value={hiredAfter} onChange={setHiredAfter} placeholder="Select date" />
       </div>
@@ -868,7 +872,7 @@ const EmployeeFilterPanel: React.FC<{
 const FilterSelect: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => {
   const selectId = React.useId();
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1">
       <label htmlFor={selectId} className={labelClass}>{label}</label>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger id={selectId} className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
@@ -947,7 +951,7 @@ const EmployeeFormModal: React.FC<{
             <FormField label="Employee Number" value={employeeNumber} onChange={setEmployeeNumber} placeholder="XXXXX" />
             <FormField label="Email" value={email} onChange={setEmail} placeholder="email@acme.com" type="email" />
             <FormField label="Phone" value={phone} onChange={setPhone} placeholder="+972(0) XXXX-XXXX" />
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label className={labelClass}>Gender</label>
               <Select value={gender} onValueChange={setGender}>
                 <SelectTrigger className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
@@ -967,7 +971,7 @@ const EmployeeFormModal: React.FC<{
             <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Job Related</p>
             <FilterSelect label="Department" value={dept} onChange={setDept} options={departmentsList} />
             <FilterSelect label="Job Title" value={jobTitle} onChange={setJobTitle} options={jobTitlesList} />
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label className={labelClass}>Contract Type</label>
               <Select value={contractType} onValueChange={setContractType}>
                 <SelectTrigger className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
@@ -979,7 +983,7 @@ const EmployeeFormModal: React.FC<{
               </Select>
             </div>
             <FormField label="Hire Date" value={hireDate} onChange={setHireDate} type="date" />
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label className={labelClass}>Activity Type</label>
               <Select value={activityType} onValueChange={setActivityType}>
                 <SelectTrigger className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
@@ -1041,7 +1045,7 @@ const FormerEmployeeModal: React.FC<{
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label htmlFor="former-employee-search" className={labelClass}>Search Former Employees</label>
             <form role="search" onSubmit={(e) => e.preventDefault()} className="relative">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
@@ -1138,19 +1142,19 @@ const AccessCardsModal: React.FC<{
             <div className="space-y-3">
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Add Card</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label className={labelClass}>Card Number</label>
                   <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} placeholder="CDXXXXXXXX" className={inputClass} />
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label className={labelClass}>Start Date</label>
                   <DatePicker value={startDate} onChange={setStartDate} placeholder="Select start date" />
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label className={labelClass}>End Date</label>
                   <DatePicker value={endDate} onChange={setEndDate} placeholder="Select end date" />
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label className={labelClass}>Card Type</label>
                   <Select value={cardType} onValueChange={setCardType}>
                     <SelectTrigger className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
@@ -1441,7 +1445,7 @@ const FormField: React.FC<{
 }> = ({ label, value, onChange, placeholder, type = 'text', inputMode, autoComplete }) => {
   const id = React.useId();
   return (
-  <div className="space-y-1.5">
+  <div className="space-y-1">
     <label htmlFor={id} className={labelClass}>{label}</label>
     {type === 'date' ? (
       <DatePicker id={id} value={value} onChange={onChange} placeholder={placeholder} aria-label={label} />

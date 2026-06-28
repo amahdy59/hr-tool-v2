@@ -95,6 +95,9 @@
   /* The border radius for input fields. */
   --radius-input: 8px;
   
+  /* Spacing Tokens */
+  --spacing-label-input: 4px;
+  
   /* Button styles: desktop defaults stay compact; mobile rules below enforce 44px tap targets. */
   --button-height-sm: 44px;
   --button-height-default: 44px;

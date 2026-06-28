@@ -49,7 +49,7 @@ const FormField: React.FC<{
 }> = ({ label, value, onChange, placeholder }) => {
   const id = React.useId();
   return (
-  <div className="space-y-1.5">
+  <div className="space-y-1">
     <label htmlFor={id} className={labelClass}>{label}</label>
     <input
       id={id}
@@ -74,7 +74,7 @@ const SelectField: React.FC<{
 }> = ({ label, value, onChange, options, placeholder }) => {
   const id = React.useId();
   return (
-  <div className="space-y-1.5">
+  <div className="space-y-1">
     <label htmlFor={id} className={labelClass}>{label}</label>
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger id={id} className="h-10 rounded-[var(--radius-input)]" aria-label={label}>
@@ -224,7 +224,7 @@ export const RolesManagement: React.FC = () => {
       {/* ── Filters & Actions Row ── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         {/* Department Filter */}
-        <div className="flex-1 max-w-md space-y-1.5">
+        <div className="flex-1 max-w-md space-y-1">
           <label htmlFor="roles-department-filter" className={labelClass}>Department</label>
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
             <SelectTrigger id="roles-department-filter" className="h-10 rounded-[var(--radius-input)]" aria-label="Department">

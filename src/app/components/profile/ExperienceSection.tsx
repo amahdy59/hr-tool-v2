@@ -290,7 +290,7 @@ const EditExperienceModal: React.FC<{
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="md:col-span-2"><FormField label="Company *" value={company} onChange={setCompany} /></div>
           <div className="md:col-span-2"><FormField label="Job Title *" value={role} onChange={setRole} /></div>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label id="employment-type-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Employment Type</label>
             <Select value={employmentType} onValueChange={setEmploymentType}>
               <SelectTrigger aria-labelledby="employment-type-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
@@ -303,7 +303,7 @@ const EditExperienceModal: React.FC<{
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label id="location-type-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Location Type</label>
             <Select value={locationType} onValueChange={setLocationType}>
               <SelectTrigger aria-labelledby="location-type-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
@@ -323,12 +323,12 @@ const EditExperienceModal: React.FC<{
               <span className="text-[var(--text-base)] text-foreground font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>I currently work here</span>
             </label>
           </div>
-          <div className="md:col-span-2 space-y-1.5">
+          <div className="md:col-span-2 space-y-1">
             <label htmlFor="experience-skills-used-input" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Skills Used</label>
             <input id="experience-skills-used-input" type="text" value={skillsUsed} onChange={e => setSkillsUsed(e.target.value)} className={inputClass} placeholder="Separate with commas" style={{ fontFamily: "'Inter', sans-serif" }} />
             <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>e.g., Figma, Accessibility, UX Research</p>
           </div>
-          <div className="md:col-span-2 space-y-1.5">
+          <div className="md:col-span-2 space-y-1">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
             <textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={4} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>

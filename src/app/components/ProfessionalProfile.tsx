@@ -10,6 +10,8 @@ import {
 import { toast } from 'sonner';
 import { Resume } from './Resume';
 import { ConfirmDialog } from './ConfirmDialog';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 // Shared types and FormField
 import {
@@ -677,6 +679,13 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       </div>
 
       <style>{`
+        .print-resume-wrapper {
+          position: absolute;
+          left: -9999px;
+          top: -9999px;
+          opacity: 0;
+          pointer-events: none;
+        }
         @media print {
           body * {
             visibility: hidden;
@@ -691,6 +700,8 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
             width: 100%;
             margin: 0;
             padding: 0;
+            opacity: 1;
+            pointer-events: auto;
           }
         }
       `}</style>
@@ -709,14 +720,14 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
         open={deleteTarget !== null}
         onOpenChange={(open) => !open && setDeleteTarget(null)}
         title="Confirm Deletion"
-        description={
+        message={
           <>
             Are you sure you want to delete <span className="font-[var(--font-weight-semibold)] text-foreground">"{deleteTarget?.name}"</span>? This action cannot be undone.
           </>
         }
         onConfirm={confirmDeletion}
-        confirmText="Delete"
-        cancelText="Cancel"
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
       />
     </section>
   );
@@ -736,7 +747,7 @@ const EditAboutModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>Edit About</DialogTitle><DialogDescription className="sr-only">Edit about section</DialogDescription></DialogHeader>
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <label htmlFor="edit-about-textarea" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>About</label>
           <textarea id="edit-about-textarea" dir="auto" value={text} onChange={e => setText(e.target.value.slice(0, maxChars))} rows={5} className={cn(inputClass, 'h-auto py-3 text-[var(--text-base)]')} style={{ fontFamily: "'Inter', sans-serif" }} />
           <p className="text-[var(--text-sm)] text-muted-foreground text-end" style={{ fontFamily: "'Inter', sans-serif" }}>

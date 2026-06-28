@@ -370,7 +370,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Quick Payslip Generator</span>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <label className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             Month
           </label>
@@ -388,7 +388,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
             </SelectContent>
           </Select>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <label className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             Year
           </label>

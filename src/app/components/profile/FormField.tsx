@@ -14,7 +14,7 @@ export const FormField: React.FC<{
 }> = ({ id, label, value, onChange, type = 'text', placeholder, disabled }) => {
   const generatedId = id || `form-field-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
-    <div className="space-y-1.5 w-full text-start">
+    <div className="space-y-1 w-full text-start">
       <label htmlFor={generatedId} className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>
         {label}
       </label>

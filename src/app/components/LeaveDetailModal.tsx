@@ -112,7 +112,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[480px] max-h-[90vh] overflow-y-auto gap-6 p-6 scrollbar-thin">
         {/* Modal Header */}
-        <DialogHeader className="text-start pe-8 space-y-1.5">
+        <DialogHeader className="text-start pe-8 space-y-1">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <DialogTitle
               style={{

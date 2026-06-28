@@ -134,7 +134,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
                   const levelSkills = filtered.filter(s => s.category === 'Core UX & Design' && s.level === lvl);
                   if (levelSkills.length === 0) return null;
                   return (
-                    <div key={lvl} className="space-y-1.5">
+                    <div key={lvl} className="space-y-1">
                       <span className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-widest block">
                         {lvl}
                       </span>
@@ -157,7 +157,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
                   const levelSkills = filtered.filter(s => s.category === 'Data Analysis & Visualization' && s.level === lvl);
                   if (levelSkills.length === 0) return null;
                   return (
-                    <div key={lvl} className="space-y-1.5">
+                    <div key={lvl} className="space-y-1">
                       <span className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-widest block">
                         {lvl}
                       </span>
@@ -220,7 +220,7 @@ const EditSkillModal: React.FC<{
         </DialogHeader>
         <div className="space-y-4">
           <FormField label="Skill Name *" value={name} onChange={setName} placeholder="e.g., Figma" />
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label id="skill-category-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
             {isCustomCategory ? (
               <div className="flex gap-2">
@@ -246,7 +246,7 @@ const EditSkillModal: React.FC<{
               </Select>
             )}
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label id="skill-level-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Proficiency Level</label>
             <Select value={level} onValueChange={setLevel}>
               <SelectTrigger aria-labelledby="skill-level-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>

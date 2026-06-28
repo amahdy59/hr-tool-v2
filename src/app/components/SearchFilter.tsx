@@ -20,7 +20,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   const resolvedLabel = label || 'Search';
 
   return (
-    <div className={cn('flex-1 space-y-1.5 cursor-default', className)}>
+    <div className={cn('flex-1 space-y-1 cursor-default', className)}>
       {label && (
         <div className="flex items-center gap-2">
           <label htmlFor={searchId} className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground">{label}</label>

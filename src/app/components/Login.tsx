@@ -189,7 +189,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             )}
 
             {/* Username Field */}
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label
                 htmlFor={usernameId}
                 style={{
@@ -233,7 +233,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             </div>
 
             {/* Password Field */}
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label
                 htmlFor={passwordId}
                 style={{
@@ -436,7 +436,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               )}
 
               {/* Reset Email Field */}
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <label
                   htmlFor={resetEmailId}
                   style={{

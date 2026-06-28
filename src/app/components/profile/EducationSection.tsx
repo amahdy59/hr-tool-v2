@@ -251,11 +251,11 @@ const EditEducationModal: React.FC<{
               <span className="text-[var(--text-base)] text-foreground font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>I currently study here</span>
             </label>
           </div>
-          <div className="md:col-span-2 space-y-1.5">
+          <div className="md:col-span-2 space-y-1">
             <label htmlFor="education-activities-input" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Activities and Societies</label>
             <input id="education-activities-input" type="text" value={activities} onChange={e => setActivities(e.target.value)} className={inputClass} placeholder="e.g., Debate Club, Design Committee" style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
-          <div className="md:col-span-2 space-y-1.5">
+          <div className="md:col-span-2 space-y-1">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description (Optional)</label>
             <textarea dir="auto" value={desc} onChange={e => setDesc(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>

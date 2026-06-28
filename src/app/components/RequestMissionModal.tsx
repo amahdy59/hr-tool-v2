@@ -101,7 +101,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
         </DialogHeader>
 
         <div className="space-y-5">
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label
               style={{
                 fontFamily: "'Inter', sans-serif",
@@ -128,7 +128,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -153,7 +153,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
                 placeholder="Start date"
               />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -188,7 +188,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
             {dateLabel}
           </p>
 
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label
               style={{
                 fontFamily: "'Inter', sans-serif",

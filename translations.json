@@ -2521,7 +2521,7 @@
   {
     "Source Index": 490,
     "English Text": "Gender",
-    "Arabic Translation": "الجنس",
+    "Arabic Translation": "النوع",
     "UI Category": "Label"
   },
   {
@@ -4200,7 +4200,7 @@
   {
     "Source Index": 770,
     "English Text": "Request a mission",
-    "Arabic Translation": "حجز المامورية",
+    "Arabic Translation": "طلب مأمورية",
     "UI Category": "Label"
   },
   {
@@ -4224,13 +4224,13 @@
   {
     "Source Index": 774,
     "English Text": "Request Leave",
-    "Arabic Translation": "طلب اجازة",
+    "Arabic Translation": "طلب أجازة",
     "UI Category": "Label"
   },
   {
     "Source Index": 775,
     "English Text": "Request Mission",
-    "Arabic Translation": "حجز المامورية",
+    "Arabic Translation": "طلب مأمورية",
     "UI Category": "Label"
   },
   {
@@ -5575,12 +5575,666 @@
   },
   {
     "English Text": "Book mission",
-    "Arabic Translation": "حجز المامورية",
+    "Arabic Translation": "تقديم طلب مأمورية",
     "UI Category": "Action / button"
   },
   {
     "English Text": "✈ Book mission",
-    "Arabic Translation": "✈ حجز المامورية",
+    "Arabic Translation": "✈ تقديم طلب مأمورية",
     "UI Category": "Action / button"
+  },
+  {
+    "Source Index": 10945,
+    "English Text": "Request leave",
+    "Arabic Translation": "طلب أجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10890,
+    "English Text": "Edit request",
+    "Arabic Translation": "تعديل الطلب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10692,
+    "English Text": "Leave type",
+    "Arabic Translation": "نوع الأجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10945,
+    "English Text": "Mission type",
+    "Arabic Translation": "نوع المأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10790,
+    "English Text": "Attachment required",
+    "Arabic Translation": "المرفق مطلوب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10896,
+    "English Text": "Request mission",
+    "Arabic Translation": "طلب مأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10289,
+    "English Text": "Edit Role for",
+    "Arabic Translation": "تعديل دور",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10800,
+    "English Text": "All fields are required",
+    "Arabic Translation": "جميع الحقول مطلوبة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10207,
+    "English Text": "Elementary",
+    "Arabic Translation": "مبتدئ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10406,
+    "English Text": "Limited Working",
+    "Arabic Translation": "عمل محدود",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10596,
+    "English Text": "Professional Working",
+    "Arabic Translation": "عمل احترافي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10318,
+    "English Text": "Full Professional",
+    "Arabic Translation": "احترافي كامل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10237,
+    "English Text": "Native or Bilingual",
+    "Arabic Translation": "اللغة الأم أو ثنائي اللغة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10699,
+    "English Text": "Invalid date range selected.",
+    "Arabic Translation": "نطاق التواريخ المحدد غير صالح.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10189,
+    "English Text": "Leaves cannot start on Egyptian weekends (Fridays or Saturdays).",
+    "Arabic Translation": "لا يمكن أن تبدأ الأجازة في عطلة نهاية الأسبوع المصرية (الجمعة أو السبت).",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10612,
+    "English Text": "Leaves cannot end on Egyptian weekends (Fridays or Saturdays).",
+    "Arabic Translation": "لا يمكن أن تنتهي الأجازة في عطلة نهاية الأسبوع المصرية (الجمعة أو السبت).",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10636,
+    "English Text": "The selected date range only contains weekend days.",
+    "Arabic Translation": "نطاق التواريخ المحدد يحتوي فقط على أيام عطلة نهاية الأسبوع.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10358,
+    "English Text": "Newly hired employees cannot request vacation during the first 3 months of work.",
+    "Arabic Translation": "لا يمكن للموظفين الجدد طلب أجازة خلال أول ٣ أشهر من العمل.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10130,
+    "English Text": "Cannot request vacation for the previous month after the 5th of the current month.",
+    "Arabic Translation": "لا يمكن طلب أجازة للشهر السابق بعد اليوم الخامس من الشهر الحالي.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10614,
+    "English Text": "Vacation requests cannot be made from next year's balance.",
+    "Arabic Translation": "لا يمكن تقديم طلبات الأجازة من رصيد العام القادم.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10377,
+    "English Text": "Personal information updated successfully",
+    "Arabic Translation": "تم تحديث المعلومات الشخصية بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10292,
+    "English Text": "Emergency contact added successfully",
+    "Arabic Translation": "تم إضافة جهة اتصال الطوارئ بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10640,
+    "English Text": "Emergency contact updated successfully",
+    "Arabic Translation": "تم تحديث جهة اتصال الطوارئ بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10347,
+    "English Text": "Emergency contact deleted",
+    "Arabic Translation": "تم حذف جهة اتصال الطوارئ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10283,
+    "English Text": "Please fill in all required fields",
+    "Arabic Translation": "يرجى ملء جميع الحقول المطلوبة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10604,
+    "English Text": "Date of birth cannot be in the future",
+    "Arabic Translation": "لا يمكن أن يكون تاريخ الميلاد في المستقبل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10657,
+    "English Text": "National ID must be 14 digits",
+    "Arabic Translation": "يجب أن يتكون الرقم القومي من ١٤ رقمًا",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10192,
+    "English Text": "Please enter a valid Egyptian mobile number",
+    "Arabic Translation": "يرجى إدخال رقم هاتف محمول مصري صالح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10362,
+    "English Text": "Please upload JPG or PNG files only",
+    "Arabic Translation": "يرجى تحميل ملفات JPG أو PNG فقط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10303,
+    "English Text": "File size must be less than 2MB",
+    "Arabic Translation": "يجب أن يكون حجم الملف أقل من ٢ ميجابايت",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10382,
+    "English Text": "Bank update request submitted successfully. HR will review your request.",
+    "Arabic Translation": "تم تقديم طلب تحديث البيانات البنكية بنجاح. ستقوم إدارة الموارد البشرية بمراجعة طلبك.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10503,
+    "English Text": "Please describe the issue or correction needed",
+    "Arabic Translation": "يرجى وصف المشكلة أو التصحيح المطلوب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10762,
+    "English Text": "Request submitted successfully. HR will review and respond via email within 5 business days.",
+    "Arabic Translation": "تم تقديم الطلب بنجاح. ستقوم إدارة الموارد البشرية بالمراجعة والرد عبر البريد الإلكتروني في غضون ٥ أيام عمل.",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10837,
+    "English Text": "Failed to load data from database",
+    "Arabic Translation": "فشل تحميل البيانات من قاعدة البيانات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10191,
+    "English Text": "Employee added successfully",
+    "Arabic Translation": "تم إضافة الموظف بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10036,
+    "English Text": "Failed to save employee to database",
+    "Arabic Translation": "فشل حفظ الموظف في قاعدة البيانات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10976,
+    "English Text": "Employee updated successfully",
+    "Arabic Translation": "تم تحديث بيانات الموظف بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10884,
+    "English Text": "Failed to update employee details",
+    "Arabic Translation": "فشل تحديث تفاصيل الموظف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10577,
+    "English Text": "Failed to terminate employee",
+    "Arabic Translation": "فشل إنهاء خدمة الموظف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10679,
+    "English Text": "Department added successfully",
+    "Arabic Translation": "تم إضافة القسم بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10365,
+    "English Text": "Failed to add department to database",
+    "Arabic Translation": "فشل إضافة القسم إلى قاعدة البيانات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10483,
+    "English Text": "Department updated successfully",
+    "Arabic Translation": "تم تحديث القسم بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10195,
+    "English Text": "Failed to update department",
+    "Arabic Translation": "فشل تحديث القسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10615,
+    "English Text": "Failed to delete department",
+    "Arabic Translation": "فشل حذف القسم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10161,
+    "English Text": "Job title added successfully",
+    "Arabic Translation": "تم إضافة المسمى الوظيفي بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10750,
+    "English Text": "Failed to add job title to database",
+    "Arabic Translation": "فشل إضافة المسمى الوظيفي إلى قاعدة البيانات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10168,
+    "English Text": "Job title updated successfully",
+    "Arabic Translation": "تم تحديث المسمى الوظيفي بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10698,
+    "English Text": "Failed to update job title",
+    "Arabic Translation": "فشل تحديث المسمى الوظيفي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10737,
+    "English Text": "Failed to delete job title",
+    "Arabic Translation": "فشل حذف المسمى الوظيفي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10343,
+    "English Text": "Card number is required",
+    "Arabic Translation": "رقم البطاقة مطلوب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10242,
+    "English Text": "Access card assigned successfully",
+    "Arabic Translation": "تم تعيين بطاقة الدخول بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10388,
+    "English Text": "Common Egyptian Holidays",
+    "Arabic Translation": "العطلات المصرية الرسمية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10049,
+    "English Text": "Failed to load leave requests",
+    "Arabic Translation": "فشل تحميل طلبات الأجازات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10911,
+    "English Text": "Select at least one request",
+    "Arabic Translation": "يرجى تحديد طلب واحد على الأقل",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10271,
+    "English Text": "Details sent to employee",
+    "Arabic Translation": "تم إرسال التفاصيل إلى الموظف",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10908,
+    "English Text": "Employee number, start date, and end date are required",
+    "Arabic Translation": "رقم الموظف وتاريخ البدء وتاريخ الانتهاء مطلوبة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10667,
+    "English Text": "Leave created successfully",
+    "Arabic Translation": "تم إنشاء طلب الأجازة بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10927,
+    "English Text": "Failed to approve selected leaves",
+    "Arabic Translation": "فشل الموافقة على الأجازات المحددة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10279,
+    "English Text": "Failed to decline leave request",
+    "Arabic Translation": "فشل رفض طلب الأجازة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10127,
+    "English Text": "Holiday added successfully",
+    "Arabic Translation": "تم إضافة العطلة بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10738,
+    "English Text": "Holiday updated successfully",
+    "Arabic Translation": "تم تحديث العطلة بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10117,
+    "English Text": "End date must be after start date",
+    "Arabic Translation": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10732,
+    "English Text": "Failed to load mission requests",
+    "Arabic Translation": "فشل تحميل طلبات المأموريات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10117,
+    "English Text": "Mission request created successfully",
+    "Arabic Translation": "تم إنشاء طلب المأمورية بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10997,
+    "English Text": "Failed to approve selected mission requests",
+    "Arabic Translation": "فشل الموافقة على طلبات المأموريات المحددة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10972,
+    "English Text": "Failed to decline mission",
+    "Arabic Translation": "فشل رفض المأمورية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10929,
+    "English Text": "Payslip downloaded successfully",
+    "Arabic Translation": "تم تنزيل مفردات المرتب بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10541,
+    "English Text": "Successfully exported resume as PDF!",
+    "Arabic Translation": "تم تصدير السيرة الذاتية كملف PDF بنجاح!",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10242,
+    "English Text": "Failed to export PDF",
+    "Arabic Translation": "فشل تصدير ملف PDF",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10801,
+    "English Text": "Work experience saved successfully",
+    "Arabic Translation": "تم حفظ خبرة العمل بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10615,
+    "English Text": "Education record saved successfully",
+    "Arabic Translation": "تم حفظ سجل التعليم بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10150,
+    "English Text": "Project saved successfully",
+    "Arabic Translation": "تم حفظ المشروع بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10012,
+    "English Text": "Certification saved successfully",
+    "Arabic Translation": "تم حفظ الشهادة بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10074,
+    "English Text": "Skill saved successfully",
+    "Arabic Translation": "تم حفظ المهارة بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10733,
+    "English Text": "Language saved successfully",
+    "Arabic Translation": "تم حفظ اللغة بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10401,
+    "English Text": "Deleted item successfully",
+    "Arabic Translation": "تم حذف العنصر بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10210,
+    "English Text": "About section updated successfully",
+    "Arabic Translation": "تم تحديث قسم النبذة التعريفية بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10106,
+    "English Text": "Email and phone are required",
+    "Arabic Translation": "البريد الإلكتروني والهاتف مطلوبان",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10225,
+    "English Text": "Contact information updated successfully",
+    "Arabic Translation": "تم تحديث معلومات الاتصال بنجاح",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10187,
+    "English Text": "Title, issuer, and issue date are required",
+    "Arabic Translation": "العنوان والجهة المانحة وتاريخ الإصدار مطلوبة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10510,
+    "English Text": "School, degree, and start date are required",
+    "Arabic Translation": "المدرسة/الجامعة والدرجة العلمية وتاريخ البدء مطلوبة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10823,
+    "English Text": "Company, role, and start date are required",
+    "Arabic Translation": "الشركة والدور وتاريخ البدء مطلوبة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10289,
+    "English Text": "Language name is required",
+    "Arabic Translation": "اسم اللغة مطلوب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10489,
+    "English Text": "Please enter a valid LinkedIn profile URL",
+    "Arabic Translation": "يرجى إدخال رابط ملف شخصي صالح على LinkedIn",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10253,
+    "English Text": "Please choose a LinkedIn PDF resume export first",
+    "Arabic Translation": "يرجى اختيار ملف تصدير السيرة الذاتية من LinkedIn أولاً",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10762,
+    "English Text": "Successfully synchronized profile with LinkedIn data!",
+    "Arabic Translation": "تم مزامنة الملف الشخصي بنجاح مع بيانات LinkedIn!",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10727,
+    "English Text": "Title and category are required",
+    "Arabic Translation": "العنوان والفئة مطلوبان",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10582,
+    "English Text": "Skill name and category are required",
+    "Arabic Translation": "اسم المهارة والفئة مطلوبان",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10480,
+    "English Text": "About section updated",
+    "Arabic Translation": "تم تحديث قسم النبذة التعريفية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10582,
+    "English Text": "Experience updated",
+    "Arabic Translation": "تم تحديث الخبرات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10876,
+    "English Text": "Education updated",
+    "Arabic Translation": "تم تحديث التعليم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10441,
+    "English Text": "Certification updated",
+    "Arabic Translation": "تم تحديث الشهادات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10747,
+    "English Text": "Skills updated",
+    "Arabic Translation": "تم تحديث المهارات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10659,
+    "English Text": "Project updated",
+    "Arabic Translation": "تم تحديث المشاريع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10557,
+    "English Text": "Profile picture updated",
+    "Arabic Translation": "تم تحديث صورة الملف الشخصي",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10323,
+    "English Text": "Emergency contacts updated",
+    "Arabic Translation": "تم تحديث جهات اتصال الطوارئ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10667,
+    "English Text": "Select type",
+    "Arabic Translation": "اختر النوع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10498,
+    "English Text": "Select a common holiday...",
+    "Arabic Translation": "اختر عطلة رسمية...",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10000,
+    "English Text": "e.g. عيد الفطر",
+    "Arabic Translation": "مثال: عيد الفطر",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10353,
+    "English Text": "e.g., Bachelor's",
+    "Arabic Translation": "مثال: بكالوريوس",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10666,
+    "English Text": "e.g., Debate Club, Design Committee",
+    "Arabic Translation": "مثال: نادي المناظرة، لجنة التصميم",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10798,
+    "English Text": "e.g., Arabic, English, German",
+    "Arabic Translation": "مثال: العربية، الإنجليزية، الألمانية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10422,
+    "English Text": "e.g. 10,000",
+    "Arabic Translation": "مثال: 10,000",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10995,
+    "English Text": "Search activity log",
+    "Arabic Translation": "البحث في سجل النشاط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10822,
+    "English Text": "Search departments",
+    "Arabic Translation": "البحث في الأقسام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 10147,
+    "English Text": "Search job titles",
+    "Arabic Translation": "البحث في المسميات الوظيفية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 12286,
+    "English Text": "Search Activity Log",
+    "Arabic Translation": "البحث في سجل النشاط",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 12660,
+    "English Text": "Search Departments",
+    "Arabic Translation": "البحث في الأقسام",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 12883,
+    "English Text": "Search Job Titles",
+    "Arabic Translation": "البحث في المسميات الوظيفية",
+    "UI Category": "Label"
   }
 ]

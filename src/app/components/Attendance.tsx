@@ -422,7 +422,7 @@ export const Attendance: React.FC = () => {
       {/* ── Search & Filters Row ── */}
       <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:flex-wrap sm:items-end">
         {/* Search + filter button */}
-        <div className="w-full flex-1 space-y-1.5 sm:min-w-[280px]">
+        <div className="w-full flex-1 space-y-1 sm:min-w-[280px]">
           <div className="flex items-center gap-2">
             <label htmlFor="attendance-employee-search" className="text-foreground">Search Employees</label>
             <Tooltip>
@@ -501,7 +501,7 @@ export const Attendance: React.FC = () => {
         </div>
 
         {/* Employee */}
-        <div className="w-full space-y-1.5 sm:w-52">
+        <div className="w-full space-y-1 sm:w-52">
           <label htmlFor="attendance-employee-select" className="text-foreground">Employee</label>
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
             <SelectTrigger id="attendance-employee-select" className="min-h-[44px] rounded-[var(--radius-input)]" aria-label="Employee">
@@ -516,7 +516,7 @@ export const Attendance: React.FC = () => {
         </div>
 
         {/* Period */}
-        <div className="w-full space-y-1.5 sm:w-56">
+        <div className="w-full space-y-1 sm:w-56">
           <label htmlFor="attendance-period" className="text-foreground">Attendance Period</label>
           <DatePicker
             id="attendance-period"
@@ -991,7 +991,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       </div>
 
       {/* Department */}
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         <label htmlFor="attendance-filter-department" className="text-foreground">Department</label>
         <Select value={department} onValueChange={setDepartment}>
           <SelectTrigger id="attendance-filter-department" className="min-h-[44px] rounded-[var(--radius-input)]" aria-label="Department">
@@ -1006,7 +1006,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       </div>
 
       {/* Job Title */}
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         <label htmlFor="attendance-filter-job-title" className="text-foreground">Job Title</label>
         <Select value={jobTitle} onValueChange={setJobTitle}>
           <SelectTrigger id="attendance-filter-job-title" className="min-h-[44px] rounded-[var(--radius-input)]" aria-label="Job title">
@@ -1021,7 +1021,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       </div>
 
       {/* Graduation Year */}
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         <label htmlFor="attendance-filter-grad-year" className="text-foreground">Graduation Year</label>
         <input
           id="attendance-filter-grad-year"
@@ -1035,7 +1035,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       </div>
 
       {/* Hired After */}
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         <label htmlFor="attendance-filter-hired-after" className="text-foreground">Hired After</label>
         <DatePicker id="attendance-filter-hired-after" value={hiredAfter} onChange={setHiredAfter} placeholder="Select date" aria-label="Hired after" />
       </div>

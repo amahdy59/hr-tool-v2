@@ -53,6 +53,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   totalItems,
 }) => {
   const { t, i18n } = useTranslation();
+  const pageSizeLabelId = React.useId();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const PreviousIcon = isArabic ? ChevronRight : ChevronLeft;
   const NextIcon = isArabic ? ChevronLeft : ChevronRight;
@@ -84,10 +85,10 @@ export const Pagination: React.FC<PaginationProps> = ({
       <div className="flex w-full flex-col items-center justify-center gap-3 text-[var(--text-sm)] text-muted-foreground sm:w-auto sm:flex-row sm:justify-start">
         {onItemsPerPageChange && (
           <label className="flex shrink-0 items-center gap-2.5 whitespace-nowrap">
-            <span id="pagination-page-size-label">{t('pagination.itemsPerPage', 'Items Per Page')}</span>
+            <span id={pageSizeLabelId}>{t('pagination.itemsPerPage', 'Items Per Page')}</span>
             <Select value={itemsPerPage.toString()} onValueChange={(value) => onItemsPerPageChange(Number(value))}>
               <SelectTrigger
-                aria-labelledby="pagination-page-size-label"
+                aria-labelledby={pageSizeLabelId}
                 className="h-11 w-[88px] font-[var(--font-weight-medium)]"
               >
                 <SelectValue />

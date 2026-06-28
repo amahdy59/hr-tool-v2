@@ -152,7 +152,7 @@ const EditLanguageModal: React.FC<{
         </DialogHeader>
         <div className="space-y-4">
           <FormField label="Language Name *" value={name} onChange={setName} placeholder="e.g., Arabic, English, German" />
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label id="language-proficiency-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Proficiency Level</label>
             <Select value={proficiency} onValueChange={setProficiency}>
               <SelectTrigger aria-labelledby="language-proficiency-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>

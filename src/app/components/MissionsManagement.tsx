@@ -170,7 +170,7 @@ export const MissionsManagement: React.FC = () => {
       <section className="space-y-6">
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Missions Pending Approval</h2>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="flex-1 max-w-md space-y-1.5">
+          <div className="flex-1 max-w-md space-y-1">
             <div className="flex items-center gap-2">
               <label htmlFor="pending-missions-search" className={labelClass}>Search Employee</label>
               <Tooltip><TooltipTrigger asChild><button type="button" aria-label="Search help" className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
@@ -251,7 +251,7 @@ export const MissionsManagement: React.FC = () => {
       <section className="space-y-4">
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Missions History</h2>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="flex-1 max-w-md space-y-1.5">
+          <div className="flex-1 max-w-md space-y-1">
             <label htmlFor="mission-history-search" className={labelClass}>Search Employee</label>
             <div className="flex items-center gap-2">
               <form role="search" onSubmit={(e) => e.preventDefault()} className="relative flex-1">
@@ -472,8 +472,8 @@ const FilterPanel: React.FC<{
       </div>
       <SelectField label="Department" value={dept} onChange={setDept} options={departmentOptions} />
       <SelectField label="Mission Type" value={missionType} onChange={setMissionType} options={missionTypeOptions.length > 1 ? missionTypeOptions : ['All', ...MISSION_TYPES]} />
-      <div className="space-y-1.5"><label htmlFor={fromId} className={labelClass}>From</label><DatePicker id={fromId} value={from} onChange={setFrom} placeholder="Select from date" /></div>
-      <div className="space-y-1.5"><label htmlFor={toId} className={labelClass}>To</label><DatePicker id={toId} value={to} onChange={setTo} placeholder="Select to date" /></div>
+      <div className="space-y-1"><label htmlFor={fromId} className={labelClass}>From</label><DatePicker id={fromId} value={from} onChange={setFrom} placeholder="Select from date" /></div>
+      <div className="space-y-1"><label htmlFor={toId} className={labelClass}>To</label><DatePicker id={toId} value={to} onChange={setTo} placeholder="Select to date" /></div>
       <CheckboxGroup label="Activity Type" items={activityTypeOptions.length ? activityTypeOptions : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
       <CheckboxGroup label="Employment Type" items={employmentTypeOptions.length ? employmentTypeOptions : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
       <div className="space-y-2 pt-2">
@@ -487,7 +487,7 @@ const FilterPanel: React.FC<{
 const SelectField: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => {
   const id = React.useId();
   return (
-  <div className="space-y-1.5">
+  <div className="space-y-1">
     <label htmlFor={id} className={labelClass}>{label}</label>
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger id={id} className="h-10 rounded-[var(--radius-input)] border-border" aria-label={label}><SelectValue /></SelectTrigger>
@@ -642,7 +642,7 @@ const CreateMissionModal: React.FC<{
             <FormField label="Start Date" value={startDate} onChange={setStartDate} type="date" />
             <FormField label="End Date" value={endDate} onChange={setEndDate} type="date" />
           </div>
-          <div className="space-y-1.5"><label className={labelClass}>Reason</label><textarea dir="auto" value={reason} onChange={e => setReason(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Describe the reason..." /></div>
+          <div className="space-y-1"><label className={labelClass}>Reason</label><textarea dir="auto" value={reason} onChange={e => setReason(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Describe the reason..." /></div>
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
@@ -771,7 +771,7 @@ const ConfirmDialog: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
 const FormField: React.FC<{ label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }> = ({ label, value, onChange, placeholder, type = 'text' }) => {
   const id = React.useId();
   return (
-    <div className="space-y-1.5"><label htmlFor={id} className={labelClass}>{label}</label>{type === 'date' ? <DatePicker id={id} value={value} onChange={onChange} placeholder={placeholder} aria-label={label} /> : <input id={id} type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} autoComplete="off" />}</div>
+    <div className="space-y-1"><label htmlFor={id} className={labelClass}>{label}</label>{type === 'date' ? <DatePicker id={id} value={value} onChange={onChange} placeholder={placeholder} aria-label={label} /> : <input id={id} type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} autoComplete="off" />}</div>
   );
 };
 const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (

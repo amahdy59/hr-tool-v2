@@ -417,7 +417,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="p-4 space-y-4 w-72">
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-leave-type">Leave Type</label>
                   <Select
                     value={historyLeaveType}
@@ -435,11 +435,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Start Date</label>
                   <DatePicker value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" />
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">End Date</label>
                   <DatePicker value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" />
                 </div>
