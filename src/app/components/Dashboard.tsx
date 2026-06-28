@@ -600,13 +600,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           <div className="flex gap-3 p-4 bg-primary/5 rounded-[var(--radius)] border border-primary/15">
             <Info className="w-5 h-5 text-primary shrink-0" />
             <p className="text-[var(--text-sm)] font-[var(--font-weight-normal)] text-foreground">
-              {"Please ensure all carried-over vacation days from last year are used before"}
+              {isArabic ? 'يرجى التأكد من استخدام جميع أيام الإجازة المرحلة من العام الماضي قبل' : 'Please ensure all carried-over vacation days from last year are used before'}
               <strong style={{ fontWeight: 'var(--font-weight-semibold)' }} className="mx-1">
-                {"March 31st this year"}
+                {isArabic ? '31 مارس من هذا العام' : 'March 31st this year'}
               </strong>
               {"."}
               <br />
-              {"Carried over days are deducted automatically before this year's vacation."}
+              {isArabic ? 'تُخصم الأيام المرحلة تلقائيًا قبل رصيد إجازات هذا العام.' : "Carried over days are deducted automatically before this year's vacation."}
             </p>
           </div>
         </section>
@@ -621,14 +621,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             }}
             className="text-foreground"
           >
-            Other Leaves
+            {isArabic ? 'إجازات أخرى' : 'Other Leaves'}
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
-              <caption className="sr-only">Other leave balances</caption>
+              <caption className="sr-only">{isArabic ? 'أرصدة الإجازات الأخرى' : 'Other leave balances'}</caption>
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
-                  {['Leave Type', 'Balance'].map((h) => (
+                  {(isArabic ? ['نوع الإجازة', 'الرصيد'] : ['Leave Type', 'Balance']).map((h) => (
                     <th
                       key={h}
                       className="px-4 py-3"
@@ -646,12 +646,30 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               <tbody className="divide-y divide-border">
                 {[
                   // Show Paternity for male user, Maternity for female user
-                  { type: 'Paternity Leave', balance: '4 weeks (20 working days)' },
-                  { type: 'Family Care', balance: '2 weeks (10 working days)' },
-                  { type: 'Hajj', balance: '4 weeks (20 working days)' },
-                  { type: 'Marriage', balance: '1 week (5 working days)' },
-                  { type: 'Bereavement', balance: '1 week (5 working days)' },
-                  { type: 'Unpaid', balance: 'Case-by-case / No limit' },
+                  {
+                    type: isArabic ? 'إجازة أبوة' : 'Paternity Leave',
+                    balance: isArabic ? '4 أسابيع (20 يوم عمل)' : '4 weeks (20 working days)',
+                  },
+                  {
+                    type: isArabic ? 'رعاية الأسرة' : 'Family Care',
+                    balance: isArabic ? 'أسبوعان (10 أيام عمل)' : '2 weeks (10 working days)',
+                  },
+                  {
+                    type: isArabic ? 'الحج' : 'Hajj',
+                    balance: isArabic ? '4 أسابيع (20 يوم عمل)' : '4 weeks (20 working days)',
+                  },
+                  {
+                    type: isArabic ? 'زواج' : 'Marriage',
+                    balance: isArabic ? 'أسبوع واحد (5 أيام عمل)' : '1 week (5 working days)',
+                  },
+                  {
+                    type: isArabic ? 'وفاة قريب' : 'Bereavement',
+                    balance: isArabic ? 'أسبوع واحد (5 أيام عمل)' : '1 week (5 working days)',
+                  },
+                  {
+                    type: isArabic ? 'غير مدفوعة' : 'Unpaid',
+                    balance: isArabic ? 'حسب الحالة / بدون حد أقصى' : 'Case-by-case / No limit',
+                  },
                 ].map((row) => (
                   <tr key={row.type}>
                     <td className="px-4 py-3" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>

@@ -34,6 +34,9 @@ const curatedTranslations = {
   'Request Mission': 'طلب مأمورية',
   'Create Leave': 'إنشاء طلب إجازة',
   'Create a new leave request': 'إنشاء طلب إجازة جديد',
+  'Other leave balances': 'أرصدة الإجازات الأخرى',
+  'Paternity Leave': 'إجازة أبوة',
+  'Hajj': 'الحج',
   'Annual Leave': 'إجازة سنوية',
   'Annual leave': 'إجازة سنوية',
   'Sick Leave': 'إجازة مرضية',
@@ -55,6 +58,13 @@ const curatedTranslations = {
   'Approve Leaves': 'الموافقة على الإجازات',
   'Approve Mission': 'الموافقة على المأمورية',
   'Approve Missions': 'الموافقة على المأموريات',
+  '4 weeks (20 working days)': '4 أسابيع (20 يوم عمل)',
+  '2 weeks (10 working days)': 'أسبوعان (10 أيام عمل)',
+  '1 week (5 working days)': 'أسبوع واحد (5 أيام عمل)',
+  'Case-by-case / No limit': 'حسب الحالة / بدون حد أقصى',
+  'Please ensure all carried-over vacation days from last year are used before': 'يرجى التأكد من استخدام جميع أيام الإجازة المرحلة من العام الماضي قبل',
+  'March 31st this year': '31 مارس من هذا العام',
+  "Carried over days are deducted automatically before this year's vacation.": 'تُخصم الأيام المرحلة تلقائيًا قبل رصيد إجازات هذا العام.',
 };
 
 data.forEach(row => {

@@ -1039,7 +1039,14 @@ const dictionary: Record<string, string> = {
   "Search Activity Log": "البحث في سجل النشاط",
   "Search Departments": "البحث في الأقسام",
   "Search Job Titles": "البحث في المسميات الوظيفية",
-  "Leave Management": "إدارة الإجازات"
+  "Leave Management": "إدارة الإجازات",
+  "Other leave balances": "أرصدة الإجازات الأخرى",
+  "Paternity Leave": "إجازة أبوة",
+  "4 weeks (20 working days)": "4 أسابيع (20 يوم عمل)",
+  "2 weeks (10 working days)": "أسبوعان (10 أيام عمل)",
+  "1 week (5 working days)": "أسبوع واحد (5 أيام عمل)",
+  "Case-by-case / No limit": "حسب الحالة / بدون حد أقصى",
+  "Please ensure all carried-over vacation days from last year are used before": "يرجى التأكد من استخدام جميع أيام الإجازة المرحلة من العام الماضي قبل"
 };
 
 const phraseDictionary: Array<[RegExp, string]> = [
