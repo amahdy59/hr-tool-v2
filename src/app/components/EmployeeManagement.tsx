@@ -94,6 +94,15 @@ const uniqueOptions = (values: Array<string | undefined>) =>
 // ── Shared input style ──
 const inputClass = "w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow";
 const labelClass = "block text-start text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground";
+const pageShellClass = "w-full max-w-7xl mx-auto px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 space-y-6";
+const tabHeaderClass = "flex w-full min-w-0 flex-col gap-4 md:flex-row md:items-center md:justify-between";
+const tabActionsClass = "flex min-h-[44px] w-full flex-col items-stretch gap-2 md:w-auto md:flex-row md:items-center md:justify-end md:shrink-0";
+const tabContentClass = "mt-4 w-full min-w-0 space-y-4";
+const searchRowClass = "flex w-full items-center gap-3";
+const searchFieldClass = "relative w-full sm:max-w-sm";
+const tableCardClass = "w-full min-w-0 overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-[var(--elevation-sm)]";
+const tableScrollClass = "w-full overflow-x-auto";
+const dataTableClass = "w-full text-start text-[var(--text-sm)] md:min-w-[720px]";
 const includesQuery = (values: Array<string | number>, query: string) => {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return true;
@@ -276,23 +285,23 @@ export const EmployeeManagement: React.FC = () => {
   };
 
   return (
-    <div className="px-1 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
+    <div className={pageShellClass}>
       {/* Header */}
       <div>
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Manage Employees</h2>
       </div>
 
       {/* Tabs */}
-      <Tabs value={activeSubTab} onValueChange={setActiveSubTab}>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <TabsList>
+      <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="w-full min-w-0">
+        <div className={tabHeaderClass}>
+          <TabsList className="min-w-0 md:flex-1">
             <TabsTrigger value="directory" className="text-[var(--text-sm)]">Directory</TabsTrigger>
             <TabsTrigger value="departments" className="text-[var(--text-sm)]">Departments</TabsTrigger>
             <TabsTrigger value="jobtitles" className="text-[var(--text-sm)]">Job Titles</TabsTrigger>
             <TabsTrigger value="activity" className="text-[var(--text-sm)]">Activity Log</TabsTrigger>
           </TabsList>
 
-          <div className="flex flex-col md:flex-row w-full md:w-auto items-stretch md:items-center gap-2 min-h-[44px]">
+          <div className={tabActionsClass}>
             {activeSubTab === 'directory' && (
               <>
                 <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
@@ -320,12 +329,12 @@ export const EmployeeManagement: React.FC = () => {
         </div>
 
         {/* ── Directory Tab ── */}
-        <TabsContent value="directory" className="space-y-4 mt-4">
+        <TabsContent value="directory" className={tabContentClass}>
           {/* Search row */}
           <div className="flex flex-wrap items-end gap-3">
             <div className="flex-1 min-w-[280px] space-y-1.5">
               <div className="flex items-center gap-2 hidden md:flex">
-                <label className={labelClass}>Search Employees</label>
+                <label htmlFor="employee-directory-search" className={labelClass}>Search Employees</label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button type="button" aria-label="Search help" className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button>
@@ -337,8 +346,8 @@ export const EmployeeManagement: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <div className="relative flex-1">
-                  <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <input type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Enter Employee# or Name..." className={cn(inputClass, 'ps-10')} aria-label="Search employees" />
+                  <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                  <input id="employee-directory-search" type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Enter Employee# or Name..." className={cn(inputClass, 'ps-10')} aria-label="Search employees" autoComplete="off" />
                 </div>
                 <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                   <PopoverTrigger asChild>
@@ -384,8 +393,8 @@ export const EmployeeManagement: React.FC = () => {
           </div>
 
           {/* Employee table */}
-          <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
-            <div className="overflow-x-auto">
+          <div className={tableCardClass}>
+            <div className={tableScrollClass}>
               {filteredEmployees.length === 0 ? (
                 <EmptyState 
                   icon={Users} 
@@ -394,7 +403,7 @@ export const EmployeeManagement: React.FC = () => {
                   className="py-16"
                 />
               ) : (
-                <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+                <table className={dataTableClass}>
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
                       <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
@@ -445,15 +454,15 @@ export const EmployeeManagement: React.FC = () => {
         </TabsContent>
 
         {/* ── Activity Log Tab ── */}
-        <TabsContent value="activity" className="space-y-4 mt-4">
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search activity log..." className={cn(inputClass, 'ps-10')} />
+        <TabsContent value="activity" className={tabContentClass}>
+          <div className={searchRowClass}>
+            <div className={searchFieldClass}>
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+              <input id="employee-activity-search" type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search activity log..." className={cn(inputClass, 'ps-10')} aria-label="Search activity log" autoComplete="off" />
             </div>
           </div>
-          <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
-            <div className="overflow-x-auto">
+          <div className={tableCardClass}>
+            <div className={tableScrollClass}>
               {filteredActivityLog.length === 0 ? (
                 <EmptyState 
                   icon={FileText} 
@@ -462,7 +471,7 @@ export const EmployeeManagement: React.FC = () => {
                   className="py-16"
                 />
               ) : (
-                <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+                <table className={dataTableClass}>
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
                       <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Admin</th>
@@ -495,15 +504,15 @@ export const EmployeeManagement: React.FC = () => {
         </TabsContent>
 
         {/* ── Departments Tab ── */}
-        <TabsContent value="departments" className="space-y-4 mt-4">
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={deptSearch} onChange={(e) => setDeptSearch(e.target.value)} placeholder="Search departments..." className={cn(inputClass, 'ps-10')} />
+        <TabsContent value="departments" className={tabContentClass}>
+          <div className={searchRowClass}>
+            <div className={searchFieldClass}>
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+              <input id="employee-department-search" type="search" value={deptSearch} onChange={(e) => setDeptSearch(e.target.value)} placeholder="Search departments..." className={cn(inputClass, 'ps-10')} aria-label="Search departments" autoComplete="off" />
             </div>
           </div>
-          <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
-            <div className="overflow-x-auto">
+          <div className={tableCardClass}>
+            <div className={tableScrollClass}>
               {filteredDepartments.length === 0 ? (
                 <EmptyState 
                   icon={Users} 
@@ -512,7 +521,7 @@ export const EmployeeManagement: React.FC = () => {
                   className="py-16"
                 />
               ) : (
-                <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+                <table className={dataTableClass}>
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
                       <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
@@ -546,16 +555,16 @@ export const EmployeeManagement: React.FC = () => {
         </TabsContent>
 
         {/* ── Job Titles Tab ── */}
-        <TabsContent value="jobtitles" className="space-y-4 mt-4">
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={jtSearch} onChange={(e) => setJtSearch(e.target.value)} placeholder="Search job titles..." className={cn(inputClass, 'ps-10')} />
+        <TabsContent value="jobtitles" className={tabContentClass}>
+          <div className={searchRowClass}>
+            <div className={searchFieldClass}>
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+              <input id="employee-job-title-search" type="search" value={jtSearch} onChange={(e) => setJtSearch(e.target.value)} placeholder="Search job titles..." className={cn(inputClass, 'ps-10')} aria-label="Search job titles" autoComplete="off" />
             </div>
           </div>
-          <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
-            <div className="overflow-x-auto">
-              <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+          <div className={tableCardClass}>
+            <div className={tableScrollClass}>
+              <table className={dataTableClass}>
                 <thead>
                   <tr className="bg-muted border-b border-border">
                     <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
@@ -1022,10 +1031,10 @@ const FormerEmployeeModal: React.FC<{
 
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className={labelClass}>Search Former Employees</label>
+            <label htmlFor="former-employee-search" className={labelClass}>Search Former Employees</label>
             <div className="relative">
-              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={searchFormer} onChange={(e) => setSearchFormer(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+              <input id="former-employee-search" type="search" value={searchFormer} onChange={(e) => setSearchFormer(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="off" />
             </div>
           </div>
 
@@ -1418,16 +1427,19 @@ const FormField: React.FC<{
   type?: string;
   inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
   autoComplete?: string;
-}> = ({ label, value, onChange, placeholder, type = 'text', inputMode, autoComplete }) => (
+}> = ({ label, value, onChange, placeholder, type = 'text', inputMode, autoComplete }) => {
+  const id = React.useId();
+  return (
   <div className="space-y-1.5">
-    <label className={labelClass}>{label}</label>
+    <label htmlFor={id} className={labelClass}>{label}</label>
     {type === 'date' ? (
-      <DatePicker value={value} onChange={onChange} placeholder={placeholder} />
+      <DatePicker id={id} value={value} onChange={onChange} placeholder={placeholder} aria-label={label} />
     ) : (
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={inputClass} inputMode={inputMode} autoComplete={autoComplete} />
+      <input id={id} type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={inputClass} inputMode={inputMode} autoComplete={autoComplete || 'off'} />
     )}
   </div>
-);
+  );
+};
 
 // ── Info Row ──
 const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (

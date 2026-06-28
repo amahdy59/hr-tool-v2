@@ -7,17 +7,8 @@ import { Button } from './ui/button';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from './ui/dialog';
-import React, { useEffect, useState, useRef } from 'react';
 import {
-  Pencil, Phone, Globe, Plus, ExternalLink, Download, X, Trash2, ChevronUp, ChevronDown, Star, Calendar, MapPin, Briefcase, GripVertical, ChevronRight,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
-} from './ui/dialog';
-import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue,
 } from './ui/select';
 import { toast } from 'sonner';
 import { Resume } from './Resume';
@@ -170,10 +161,12 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       role: 'User Experience Designer',
       employmentType: 'Full-time',
       location: 'Cairo, Egypt',
+      locationType: 'Hybrid',
       startDate: 'Jan 2023',
       endDate: '',
       currentlyWorking: true,
       desc: 'Led UX/UI design for complex B2B and enterprise SaaS platforms, driving user-centric solutions. Established scalable design systems utilizing Figma, Adobe Creative Suite, and modern methodologies. Leveraged AI-powered design tools to accelerate rapid prototyping and UX research synthesis.',
+      skillsUsed: ['Figma', 'Design Systems', 'User Research', 'Accessibility'],
       orderIndex: 0,
       createdAt: '2023-01-15T00:00:00Z',
       updatedAt: new Date().toISOString(),
@@ -184,10 +177,12 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       role: 'Instructional Designer',
       employmentType: 'Full-time',
       location: 'Cairo Governorate, Egypt',
+      locationType: 'On-site',
       startDate: 'Jul 2018',
       endDate: 'Jan 2023',
       currentlyWorking: false,
       desc: 'Redesigned enterprise learning platforms and interfaces, increasing user engagement and training completion rates by 30%. Translated complex technical requirements into accessible, intuitive B2B e-learning experiences.',
+      skillsUsed: ['Instructional Design', 'User Research', 'Adobe Creative Suite'],
       orderIndex: 1,
       createdAt: '2018-07-01T00:00:00Z',
       updatedAt: new Date().toISOString(),
@@ -204,6 +199,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       endDate: 'Jun 2017',
       currentlyStudying: false,
       grade: 'Excellent',
+      activities: '',
       desc: '',
       orderIndex: 0,
       createdAt: '2016-09-01T00:00:00Z',
@@ -218,6 +214,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       endDate: 'Jun 2013',
       currentlyStudying: false,
       grade: 'Good',
+      activities: '',
       desc: '',
       orderIndex: 1,
       createdAt: '2009-09-01T00:00:00Z',
@@ -235,6 +232,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       desc: 'An intuitive, accessible e-commerce experience designed with responsive layouts and seamless navigation to maximize user conversion and engagement.',
       toolsUsed: ['Figma', 'UI/UX Design'],
       url: 'https://amahdy59.github.io/Hajarafaapp/',
+      associatedWith: '',
       featured: true,
       orderIndex: 0,
       createdAt: '2024-01-01T00:00:00Z',
@@ -249,6 +247,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       desc: 'A high-fidelity operational command dashboard focusing on real-time data visualization, clear information hierarchy, and responsive performance.',
       toolsUsed: ['Figma', 'Dashboard Design'],
       url: 'https://amahdy59.github.io/Cairo-International-Airpot-CIA-Dashboard/',
+      associatedWith: '',
       featured: true,
       orderIndex: 1,
       createdAt: '2023-01-01T00:00:00Z',
@@ -263,6 +262,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       desc: 'A responsive, privacy-centric HR SaaS application optimizing leave requests and role management through modern, user-friendly interfaces.',
       toolsUsed: ['Figma', 'React', 'Tailwind'],
       url: 'https://amahdy59.github.io/hr-tool-v2/',
+      associatedWith: '',
       featured: false,
       orderIndex: 2,
       createdAt: '2023-03-01T00:00:00Z',
@@ -277,6 +277,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       desc: 'An interactive Tableau visualization experience that helps users explore LEGO sets by theme, age, price, and set count.',
       toolsUsed: ['Tableau', 'Data Analysis'],
       url: 'https://mavenshowcase.com/project/24967',
+      associatedWith: '',
       featured: true,
       orderIndex: 3,
       createdAt: '2024-01-01T00:00:00Z',
@@ -291,6 +292,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       desc: 'CRM sales dashboard built in Google Sheets for tracking quarterly team performance through chart-based visualization.',
       toolsUsed: ['Google Sheets', 'Data Visualization'],
       url: 'https://mavenshowcase.com/project/26891',
+      associatedWith: '',
       featured: false,
       orderIndex: 4,
       createdAt: '2023-06-01T00:00:00Z',
@@ -372,10 +374,12 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       role: '',
       employmentType: 'Full-time',
       location: '',
+      locationType: 'On-site',
       startDate: '',
       endDate: '',
       currentlyWorking: false,
       desc: '',
+      skillsUsed: [],
       orderIndex: experiences.length,
       createdAt: now,
       updatedAt: now,
@@ -435,6 +439,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       endDate: '',
       currentlyStudying: false,
       grade: '',
+      activities: '',
       desc: '',
       orderIndex: educations.length,
       createdAt: now,
@@ -495,6 +500,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
       desc: '',
       toolsUsed: [],
       url: '',
+      associatedWith: '',
       featured: false,
       orderIndex: projects.length,
       createdAt: now,

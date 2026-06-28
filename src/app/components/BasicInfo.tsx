@@ -616,9 +616,9 @@ const EditPersonalInfoModal: React.FC<{
           <FormField label="Mobile *" value={mobile} onChange={setMobile} type="tel" inputMode="tel" placeholder="01XXXXXXXXX" autoComplete="tel" />
           <FormField label="Landline" value={landline} onChange={setLandline} type="tel" inputMode="tel" />
           <div className="space-y-1.5">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Gender *</label>
+            <label htmlFor="basic-gender" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Gender *</label>
             <Select value={gender} onValueChange={setGender}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger id="basic-gender" className="h-10 rounded-[var(--radius-input)] border-border" aria-label="Gender" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Male">Male</SelectItem>
                 <SelectItem value="Female">Female</SelectItem>
@@ -626,9 +626,9 @@ const EditPersonalInfoModal: React.FC<{
             </Select>
           </div>
           <div className="space-y-1.5">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Nationality *</label>
+            <label htmlFor="basic-nationality" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Nationality *</label>
             <Select value={nationality} onValueChange={setNationality}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger id="basic-nationality" className="h-10 rounded-[var(--radius-input)] border-border" aria-label="Nationality" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Egyptian">Egyptian</SelectItem>
                 <SelectItem value="Saudi">Saudi</SelectItem>
@@ -638,8 +638,8 @@ const EditPersonalInfoModal: React.FC<{
             </Select>
           </div>
           <div className="md:col-span-2 space-y-1.5">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Address</label>
-            <textarea dir="auto" value={address} onChange={e => setAddress(e.target.value)} rows={2} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
+            <label htmlFor="basic-address" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Address</label>
+            <textarea id="basic-address" dir="auto" value={address} onChange={e => setAddress(e.target.value)} rows={2} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
@@ -832,9 +832,9 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
         </div>
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Currency *</label>
+            <label htmlFor="bank-currency" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Currency *</label>
             <Select value={currency} onValueChange={setCurrency}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger id="bank-currency" className="h-10 rounded-[var(--radius-input)] border-border" aria-label="Currency" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="EGP">EGP</SelectItem>
                 <SelectItem value="USD">USD</SelectItem>
@@ -846,8 +846,9 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <FormField label="Bank Name *" value={bankName} onChange={setBankName} />
           <FormField label="IBAN (Optional)" value={iban} onChange={setIban} />
           <div className="space-y-2">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Upload Bank Statement</label>
+            <label htmlFor="bank-statement-upload" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Upload Bank Statement</label>
             <input 
+              id="bank-statement-upload"
               type="file" 
               accept="application/pdf,image/*"
               className="block w-full text-[var(--text-sm)] file:me-4 file:py-2 file:px-4 file:rounded-[var(--radius-button)] file:border-0 file:text-[var(--text-sm)] file:font-[var(--font-weight-medium)] file:bg-muted file:text-foreground hover:file:bg-muted/80 file:cursor-pointer cursor-pointer"
@@ -899,8 +900,9 @@ const EmploymentUpdateModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Issue Description *</label>
+            <label htmlFor="employment-update-issue" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Issue Description *</label>
             <textarea dir="auto" 
+              id="employment-update-issue"
               value={issue} 
               onChange={e => setIssue(e.target.value)} 
               rows={5} 
@@ -944,7 +946,7 @@ const FormField: React.FC<{
   maxLength?: number;
   required?: boolean;
 }> = ({ label, value, onChange, type = 'text', inputMode, autoComplete, placeholder, maxLength, required }) => {
-  const id = `field-${label.replace(/\s+/g, '-').toLowerCase()}`;
+  const id = React.useId();
   return (
     <div className="space-y-1.5">
       <label htmlFor={id} className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>

@@ -2,6 +2,14 @@ import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
 
 interface PaginationProps {
   currentPage: number;
@@ -11,6 +19,30 @@ interface PaginationProps {
   onItemsPerPageChange?: (items: number) => void;
   totalItems?: number;
 }
+
+const PAGE_SIZE_OPTIONS = [10, 15, 30, 50];
+
+const getVisiblePageItems = (currentPage: number, totalPages: number) => {
+  const pages: Array<number | 'ellipsis-start' | 'ellipsis-end'> = [];
+  const maxVisiblePages = 5;
+
+  if (totalPages <= maxVisiblePages) {
+    for (let page = 1; page <= totalPages; page += 1) {
+      pages.push(page);
+    }
+    return pages;
+  }
+
+  if (currentPage <= 3) {
+    pages.push(1, 2, 3, 4, 'ellipsis-end', totalPages);
+  } else if (currentPage >= totalPages - 2) {
+    pages.push(1, 'ellipsis-start', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+  } else {
+    pages.push(1, 'ellipsis-start', currentPage - 1, currentPage, currentPage + 1, 'ellipsis-end', totalPages);
+  }
+
+  return pages;
+};
 
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
@@ -24,158 +56,131 @@ export const Pagination: React.FC<PaginationProps> = ({
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const PreviousIcon = isArabic ? ChevronRight : ChevronLeft;
   const NextIcon = isArabic ? ChevronLeft : ChevronRight;
+  const pageCount = Math.max(1, totalPages);
+  const normalizedCurrentPage = Math.min(Math.max(currentPage, 1), pageCount);
+  const hasResults = totalItems === undefined || totalItems > 0;
+  const hasPageNavigation = pageCount > 1 && hasResults;
 
-  // Handle empty state (0 results or only 1 page)
-  if (totalPages <= 1 || (totalItems !== undefined && totalItems === 0)) {
+  if (!hasPageNavigation && !onItemsPerPageChange && totalItems === undefined) {
     return null;
   }
 
   const handlePageClick = (page: number) => {
-    if (page >= 1 && page <= totalPages && page !== currentPage) {
+    if (page >= 1 && page <= pageCount && page !== normalizedCurrentPage) {
       onPageChange(page);
     }
   };
 
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = [];
-    const maxVisiblePages = 5;
-
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if (currentPage <= 3) {
-        pages.push(1, 2, 3, 4, 'ellipsis-end', totalPages);
-      } else if (currentPage >= totalPages - 2) {
-        pages.push(1, 'ellipsis-start', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-      } else {
-        pages.push(
-          1,
-          'ellipsis-start',
-          currentPage - 1,
-          currentPage,
-          currentPage + 1,
-          'ellipsis-end',
-          totalPages
-        );
-      }
-    }
-
-    return pages;
-  };
-
-  const pageNumbers = getPageNumbers();
-
-  // Contextual info details
-  const startItem = totalItems !== undefined ? (currentPage - 1) * itemsPerPage + 1 : 0;
-  const endItem = totalItems !== undefined ? Math.min(currentPage * itemsPerPage, totalItems) : 0;
+  const pageNumbers = getVisiblePageItems(normalizedCurrentPage, pageCount);
+  const startItem = totalItems !== undefined && totalItems > 0 ? (normalizedCurrentPage - 1) * itemsPerPage + 1 : 0;
+  const endItem = totalItems !== undefined ? Math.min(normalizedCurrentPage * itemsPerPage, totalItems) : 0;
 
   return (
-    <nav 
+    <nav
       aria-label={t('pagination.label', 'Pagination')}
-      className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4 border-t border-border/60 bg-muted/10 rounded-b-[var(--radius)]"
+      className="flex flex-col gap-4 border-t border-border/60 bg-muted/10 px-3 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-4"
       dir={isArabic ? 'rtl' : 'ltr'}
     >
-      {/* Left section: Items per page selector & contextual info summary */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 text-[var(--text-sm)] text-muted-foreground w-full sm:w-auto justify-center sm:justify-start">
+      <div className="flex w-full flex-col items-center justify-center gap-3 text-[var(--text-sm)] text-muted-foreground sm:w-auto sm:flex-row sm:justify-start">
         {onItemsPerPageChange && (
-          <div className="flex items-center gap-2.5 whitespace-nowrap shrink-0">
-            <span>{t('pagination.itemsPerPage', 'Items Per Page')}</span>
-            <select
-              value={itemsPerPage.toString()}
-              onChange={(event) => onItemsPerPageChange(Number(event.target.value))}
-              className="field-control min-h-[44px] h-[44px] px-3 w-[75px] rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] font-medium"
-              aria-label={t('pagination.itemsPerPage', 'Items Per Page')}
-            >
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="30">30</option>
-              <option value="50">50</option>
-            </select>
-          </div>
+          <label className="flex shrink-0 items-center gap-2.5 whitespace-nowrap">
+            <span id="pagination-page-size-label">{t('pagination.itemsPerPage', 'Items Per Page')}</span>
+            <Select value={itemsPerPage.toString()} onValueChange={(value) => onItemsPerPageChange(Number(value))}>
+              <SelectTrigger
+                aria-labelledby="pagination-page-size-label"
+                className="h-11 w-[88px] font-[var(--font-weight-medium)]"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="end">
+                {PAGE_SIZE_OPTIONS.map((option) => (
+                  <SelectItem key={option} value={String(option)}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </label>
         )}
 
         {totalItems !== undefined && (
-          <div className="text-[var(--text-sm)] text-muted-foreground font-medium text-center sm:text-start" aria-live="polite">
-            {t('pagination.info', {
-              defaultValue: 'Showing {{start}} to {{end}} of {{total}} entries',
-              start: startItem,
-              end: endItem,
-              total: totalItems,
-            })}
+          <div className="text-center text-[var(--text-sm)] font-medium text-muted-foreground sm:text-start" aria-live="polite">
+            {totalItems === 0
+              ? t('pagination.empty', 'No entries found')
+              : t('pagination.info', {
+                  defaultValue: 'Showing {{start}} to {{end}} of {{total}} entries',
+                  start: startItem,
+                  end: endItem,
+                  total: totalItems,
+                })}
           </div>
         )}
       </div>
 
-      {/* Right section: Page navigation controls using list structure */}
-      <ul className="flex items-center justify-center sm:justify-end gap-1.5 pt-1 sm:pt-0 w-full sm:w-auto list-none m-0 p-0">
-        {/* Previous Button */}
-        <li>
-          <button
-            onClick={() => handlePageClick(currentPage - 1)}
-            disabled={currentPage <= 1}
-            aria-disabled={currentPage <= 1 ? "true" : undefined}
-            className={cn(
-              "w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
-            )}
-            aria-label={t('pagination.previous', 'Previous Page')}
-          >
-            <PreviousIcon className="pagination-nav-icon w-4.5 h-4.5 text-foreground" />
-          </button>
-        </li>
+      {hasPageNavigation && (
+        <ul className="m-0 flex w-full list-none flex-wrap items-center justify-center gap-1.5 p-0 sm:w-auto sm:justify-end">
+          <li>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handlePageClick(normalizedCurrentPage - 1)}
+              disabled={normalizedCurrentPage <= 1}
+              aria-label={t('pagination.previous', 'Previous Page')}
+              className="h-11 w-11 bg-card shadow-sm"
+            >
+              <PreviousIcon className="pagination-nav-icon h-4.5 w-4.5" aria-hidden="true" />
+            </Button>
+          </li>
 
-        {/* Page numbers */}
-        {pageNumbers.map((page, index) => {
-          if (typeof page === 'string') {
+          {pageNumbers.map((page, index) => {
+            if (typeof page === 'string') {
+              return (
+                <li key={`ellipsis-${index}`} className="hidden min-[380px]:list-item">
+                  <span
+                    className="flex h-11 w-9 items-center justify-center text-[var(--text-sm)] font-medium text-muted-foreground/70"
+                    aria-hidden="true"
+                  >
+                    ...
+                  </span>
+                  <span className="sr-only">{t('pagination.skippedPages', 'Skipped pages')}</span>
+                </li>
+              );
+            }
+
+            const isActive = page === normalizedCurrentPage;
             return (
-              <li key={`ellipsis-${index}`}>
-                <span
-                  className="w-11 h-11 flex items-center justify-center text-muted-foreground/60 select-none text-[var(--text-sm)] font-medium"
-                  aria-hidden="true"
+              <li
+                key={`page-${page}`}
+                className={cn(!isActive && page !== 1 && page !== pageCount ? 'hidden min-[380px]:list-item' : undefined)}
+              >
+                <Button
+                  variant={isActive ? 'default' : 'outline'}
+                  size="icon"
+                  onClick={() => handlePageClick(page)}
+                  aria-current={isActive ? 'page' : undefined}
+                  aria-label={t('pagination.page', { defaultValue: 'Page {{page}}', page })}
+                  className={cn('h-11 w-11 text-[var(--text-sm)] shadow-sm', !isActive && 'bg-card')}
                 >
-                  •••
-                </span>
-                <span className="sr-only">Skipped pages</span>
+                  {page}
+                </Button>
               </li>
             );
-          }
+          })}
 
-          const isActive = page === currentPage;
-          return (
-            <li key={`page-${page}`}>
-              <button
-                onClick={() => handlePageClick(page)}
-                aria-current={isActive ? 'page' : undefined}
-                aria-label={t('pagination.page', { defaultValue: 'Page {{page}}', page })}
-                className={cn(
-                  "w-11 h-11 flex items-center justify-center rounded-[var(--radius-button)] text-[var(--text-sm)] font-medium transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary",
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/95"
-                    : "border border-border bg-card text-foreground hover:bg-muted shadow-sm"
-                )}
-              >
-                {page}
-              </button>
-            </li>
-          );
-        })}
-
-        {/* Next Button */}
-        <li>
-          <button
-            onClick={() => handlePageClick(currentPage + 1)}
-            disabled={currentPage >= totalPages}
-            aria-disabled={currentPage >= totalPages ? "true" : undefined}
-            className={cn(
-              "w-11 h-11 flex items-center justify-center border border-border rounded-[var(--radius-button)] bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
-            )}
-            aria-label={t('pagination.next', 'Next Page')}
-          >
-            <NextIcon className="pagination-nav-icon w-4.5 h-4.5 text-foreground" />
-          </button>
-        </li>
-      </ul>
+          <li>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handlePageClick(normalizedCurrentPage + 1)}
+              disabled={normalizedCurrentPage >= pageCount}
+              aria-label={t('pagination.next', 'Next Page')}
+              className="h-11 w-11 bg-card shadow-sm"
+            >
+              <NextIcon className="pagination-nav-icon h-4.5 w-4.5" aria-hidden="true" />
+            </Button>
+          </li>
+        </ul>
+      )}
     </nav>
   );
 };

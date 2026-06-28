@@ -15,27 +15,40 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   showInfo = false,
   className,
 }) => {
+  const searchId = React.useId();
+  const helpId = React.useId();
+  const resolvedLabel = label || 'Search';
+
   return (
     <div className={cn('flex-1 space-y-1.5 cursor-default', className)}>
       {label && (
         <div className="flex items-center gap-2">
-          <label className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground">{label}</label>
+          <label htmlFor={searchId} className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground">{label}</label>
           {showInfo && <Info className="w-4 h-4 text-primary" />}
         </div>
       )}
-      <div className="relative flex items-center gap-2 cursor-default">
+      {showInfo && (
+        <p id={helpId} className="sr-only">
+          Search results update as you type. Use the filter button to refine the results.
+        </p>
+      )}
+      <form role="search" className="relative flex items-center gap-2 cursor-default">
         <div className="relative flex-1">
-          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
           <input
-            type="text"
+            id={searchId}
+            type="search"
             placeholder={placeholder}
-            className="w-full h-10 ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none text-[var(--text-sm)] text-foreground transition-shadow cursor-text"
+            aria-label={resolvedLabel}
+            aria-describedby={showInfo ? helpId : undefined}
+            autoComplete="off"
+            className="w-full min-h-[44px] ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background focus:ring-4 focus:ring-ring/40 focus:border-ring outline-none text-[var(--text-sm)] text-foreground transition-shadow cursor-text"
           />
         </div>
-        <button className="h-10 px-3 border border-border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center">
-          <Filter className="w-4 h-4 text-muted-foreground" />
+        <button type="button" aria-label={`Open filters for ${resolvedLabel.toLowerCase()}`} className="min-h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center">
+          <Filter className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
         </button>
-      </div>
+      </form>
     </div>
   );
 };

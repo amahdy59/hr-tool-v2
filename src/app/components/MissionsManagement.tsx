@@ -172,12 +172,12 @@ export const MissionsManagement: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex-1 max-w-md space-y-1.5">
             <div className="flex items-center gap-2">
-              <label className={labelClass}>Search Employee</label>
+              <label htmlFor="pending-missions-search" className={labelClass}>Search Employee</label>
               <Tooltip><TooltipTrigger asChild><button className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
             </div>
             <div className="relative">
-              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+              <input id="pending-missions-search" type="search" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="off" />
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
@@ -252,11 +252,11 @@ export const MissionsManagement: React.FC = () => {
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Missions History</h2>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex-1 max-w-md space-y-1.5">
-            <label className={labelClass}>Search Employee</label>
+            <label htmlFor="mission-history-search" className={labelClass}>Search Employee</label>
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
-                <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input type="text" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} />
+                <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                <input id="mission-history-search" type="search" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="off" />
               </div>
               <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                 <PopoverTrigger asChild>
@@ -479,15 +479,18 @@ const FilterPanel: React.FC<{
   </div>
 );
 
-const SelectField: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => (
+const SelectField: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => {
+  const id = React.useId();
+  return (
   <div className="space-y-1.5">
-    <label className={labelClass}>{label}</label>
+    <label htmlFor={id} className={labelClass}>{label}</label>
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
+      <SelectTrigger id={id} className="h-10 rounded-[var(--radius-input)] border-border" aria-label={label}><SelectValue /></SelectTrigger>
       <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
     </Select>
   </div>
-);
+  );
+};
 
 const CheckboxGroup: React.FC<{ label: string; items: string[]; selected: string[]; toggle: (v: string) => void }> = ({ label, items, selected, toggle }) => (
   <div className="space-y-2">
@@ -760,9 +763,12 @@ const ConfirmDialog: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
   </Dialog>
 );
 
-const FormField: React.FC<{ label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }> = ({ label, value, onChange, placeholder, type = 'text' }) => (
-  <div className="space-y-1.5"><label className={labelClass}>{label}</label>{type === 'date' ? <DatePicker value={value} onChange={onChange} placeholder={placeholder} /> : <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} />}</div>
-);
+const FormField: React.FC<{ label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }> = ({ label, value, onChange, placeholder, type = 'text' }) => {
+  const id = React.useId();
+  return (
+    <div className="space-y-1.5"><label htmlFor={id} className={labelClass}>{label}</label>{type === 'date' ? <DatePicker id={id} value={value} onChange={onChange} placeholder={placeholder} aria-label={label} /> : <input id={id} type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} autoComplete="off" />}</div>
+  );
+};
 const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="flex gap-3"><span className="text-muted-foreground w-28 shrink-0 font-[var(--font-weight-medium)]">{label}:</span><span className="text-foreground">{value}</span></div>
 );

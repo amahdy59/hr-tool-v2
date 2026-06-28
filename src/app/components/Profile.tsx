@@ -156,8 +156,8 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
       {/* Search */}
       <div>
         <div className="relative">
-          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search this profile area..." className={cn(inputClass, 'ps-10 cursor-text')} style={{ fontFamily: "'Inter', sans-serif" }} />
+          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+          <input type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search this profile area..." className={cn(inputClass, 'ps-10 cursor-text')} aria-label="Search this profile area" autoComplete="off" style={{ fontFamily: "'Inter', sans-serif" }} />
         </div>
       </div>
 
@@ -817,19 +817,25 @@ const EditEmergencyContactsModal: React.FC<{ open: boolean; onOpenChange: (v: bo
 };
 
 // ── Shared helpers ──
-const FormField: React.FC<{ label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }> = ({ label, value, onChange, placeholder, type = 'text' }) => (
-  <div className="space-y-1.5"><label className={labelClass}>{label}</label>{type === 'date' ? <DatePicker value={value} onChange={onChange} placeholder={placeholder} /> : <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} />}</div>
-);
+const FormField: React.FC<{ label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }> = ({ label, value, onChange, placeholder, type = 'text' }) => {
+  const id = React.useId();
+  return (
+    <div className="space-y-1.5"><label htmlFor={id} className={labelClass}>{label}</label>{type === 'date' ? <DatePicker id={id} value={value} onChange={onChange} placeholder={placeholder} aria-label={label} /> : <input id={id} type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={inputClass} autoComplete="off" />}</div>
+  );
+};
 
-const SelectField: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => (
+const SelectField: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => {
+  const id = React.useId();
+  return (
   <div className="space-y-1.5">
-    <label className={labelClass}>{label}</label>
+    <label htmlFor={id} className={labelClass}>{label}</label>
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
+      <SelectTrigger id={id} className="h-10 rounded-[var(--radius-input)] border-border" aria-label={label}><SelectValue /></SelectTrigger>
       <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
     </Select>
   </div>
-);
+  );
+};
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const YEARS = ['2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1998'];

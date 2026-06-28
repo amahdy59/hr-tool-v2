@@ -108,12 +108,13 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
                 fontSize: 'var(--text-sm)',
                 fontWeight: 'var(--font-weight-medium)',
               }}
+              htmlFor="mission-type"
               className="text-foreground block text-start w-full"
             >
               Mission type
             </label>
             <Select value={missionType} onValueChange={setMissionType}>
-              <SelectTrigger className="h-10 w-full rounded-[var(--radius-input)]">
+              <SelectTrigger id="mission-type" className="h-10 w-full rounded-[var(--radius-input)]" aria-label="Mission type">
                 <SelectValue placeholder="Select mission type" />
               </SelectTrigger>
               <SelectContent>
@@ -134,12 +135,15 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
                   fontSize: 'var(--text-sm)',
                   fontWeight: 'var(--font-weight-medium)',
                 }}
+                htmlFor="mission-from-date"
                 className="text-foreground block text-start w-full"
               >
                 From
               </label>
               <DatePicker
                 value={fromDate}
+                id="mission-from-date"
+                aria-label="Mission start date"
                 onChange={(date) => {
                   setFromDate(date);
                   if (!toDate || (date && toDate && date > toDate)) {
@@ -156,12 +160,15 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
                   fontSize: 'var(--text-sm)',
                   fontWeight: 'var(--font-weight-medium)',
                 }}
+                htmlFor="mission-to-date"
                 className="text-foreground block text-start w-full"
               >
                 To
               </label>
               <DatePicker
                 value={toDate}
+                id="mission-to-date"
+                aria-label="Mission end date"
                 onChange={setToDate}
                 placeholder="End date"
               />
@@ -175,6 +182,8 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
               fontWeight: 'var(--font-weight-normal)',
             }}
             className="text-muted-foreground -mt-3"
+            id="mission-date-help"
+            aria-live="polite"
           >
             {dateLabel}
           </p>
@@ -186,11 +195,13 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
                 fontSize: 'var(--text-sm)',
                 fontWeight: 'var(--font-weight-medium)',
               }}
+              htmlFor="mission-notes"
               className="text-foreground block text-start w-full"
             >
               Notes (optional)
             </label>
             <textarea
+              id="mission-notes"
               dir="auto"
               value={notes}
               onChange={(event) => setNotes(event.target.value)}

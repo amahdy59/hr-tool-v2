@@ -348,6 +348,10 @@
     cursor: default;
   }
 
+  .app-main-scroll {
+    scrollbar-gutter: stable;
+  }
+
   input,
   textarea,
   select,
@@ -461,10 +465,16 @@
   
   /* Global high-contrast focus-visible ring for accessibility */
   :focus-visible {
-    outline: 3px solid var(--ring);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 2px var(--background), 0 0 0 5px var(--ring);
+    outline: 4px solid var(--ring);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px var(--background), 0 0 0 7px var(--ring);
     border-radius: var(--radius-sm, 4px);
+    scroll-margin: 96px;
+  }
+
+  ::placeholder {
+    color: var(--muted-foreground);
+    opacity: 1;
   }
   
   /* Ensure smooth scrolling */
@@ -577,7 +587,17 @@
   .field-control:focus-visible,
   [data-state="open"].field-control {
     border-color: var(--ring);
-    box-shadow: inset 0 0 0 1px var(--ring), 0 0 0 3px color-mix(in srgb, var(--ring) 28%, transparent);
+    box-shadow: inset 0 0 0 2px var(--ring), 0 0 0 4px color-mix(in srgb, var(--ring) 34%, transparent);
+  }
+
+  .field-control[aria-invalid="true"],
+  input[aria-invalid="true"]:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  textarea[aria-invalid="true"],
+  select[aria-invalid="true"],
+  [data-slot="select-trigger"][aria-invalid="true"],
+  [data-slot="date-picker-trigger"][aria-invalid="true"] {
+    border-color: var(--destructive);
+    box-shadow: inset 0 0 0 2px var(--destructive);
   }
 }
 
@@ -1030,5 +1050,5 @@ select:focus,
 [data-state="open"].field-control,
 [data-state="open"][data-slot="select-trigger"] {
   border-color: var(--ring);
-  box-shadow: inset 0 0 0 1px var(--ring), 0 0 0 3px color-mix(in srgb, var(--ring) 28%, transparent);
+  box-shadow: inset 0 0 0 2px var(--ring), 0 0 0 4px color-mix(in srgb, var(--ring) 34%, transparent);
 }

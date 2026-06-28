@@ -20,6 +20,10 @@ interface DatePickerProps {
   className?: string;
   disabled?: boolean;
   disabledDays?: (date: Date) => boolean;
+  id?: string;
+  "aria-label"?: string;
+  "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
 }
 
 export function DatePicker({
@@ -29,6 +33,10 @@ export function DatePicker({
   className,
   disabled = false,
   disabledDays,
+  id,
+  "aria-label": ariaLabel,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -57,9 +65,13 @@ export function DatePicker({
     <Popover open={open} onOpenChange={disabled ? undefined : setOpen}>
       <PopoverTrigger asChild>
         <Button
+          id={id}
           variant="outline"
           disabled={disabled}
           data-slot="date-picker-trigger"
+          aria-label={ariaLabel || placeholder}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid}
           className={cn(
             fieldControlClassName,
             "w-full justify-start text-start min-h-[44px] h-[44px] px-3 font-normal text-[var(--text-sm)] hover:bg-input-background focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",

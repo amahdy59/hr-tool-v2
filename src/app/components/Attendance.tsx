@@ -46,7 +46,12 @@ import { DatePicker } from './ui/date-picker';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { localizePersonName } from '@/lib/localizedNames';
-import { AttendanceService } from '../../lib/services/dbServices';
+import {
+  AttendanceService,
+  DepartmentService,
+  EmployeeService,
+  JobTitleService,
+} from '../../lib/services/dbServices';
 
 // ── CSS variable colors for charts ──
 const CHART_COLORS = {
@@ -177,10 +182,10 @@ const mockDays: DayRecord[] = [
 ];
 
 // ── Filter options ──
-const departments = ['All', 'Oil and Gas', 'IT', 'Finance', 'Human Resources', 'Operations', 'Engineering'];
-const jobTitles = ['All', 'Engineer', 'Lead Engineer', 'Application Consultant', 'Project Manager', 'Senior Engineer', 'Analyst'];
-const activityTypes = ['My team', 'Lead Engineer', 'Application Consultant', 'Project Manager'];
-const employmentTypes = ['Full-Time', 'Part-Time', 'Contractor', 'Intern'];
+const ALL_FILTER_VALUE = 'All';
+const uniqueSorted = (values: Array<string | undefined | null>) =>
+  Array.from(new Set(values.map((value) => value?.trim()).filter(Boolean) as string[]))
+    .sort((a, b) => a.localeCompare(b));
 const months = [
   { value: 'all', label: 'All' },
   { value: '1', label: 'January' },
@@ -244,13 +249,17 @@ export const Attendance: React.FC = () => {
   const [selectedEmployee, setSelectedEmployee] = useState('Mohamed Shalaby');
 
   // Advanced filter state
-  const [filterDepartment, setFilterDepartment] = useState('All');
-  const [filterJobTitle, setFilterJobTitle] = useState('All');
+  const [filterDepartment, setFilterDepartment] = useState(ALL_FILTER_VALUE);
+  const [filterJobTitle, setFilterJobTitle] = useState(ALL_FILTER_VALUE);
   const [filterGradYear, setFilterGradYear] = useState('');
   const [filterHiredAfter, setFilterHiredAfter] = useState('');
   const [filterActivityTypes, setFilterActivityTypes] = useState<string[]>([]);
   const [filterEmploymentTypes, setFilterEmploymentTypes] = useState<string[]>([]);
   const [activeFiltersCount, setActiveFiltersCount] = useState(0);
+  const [departmentOptions, setDepartmentOptions] = useState<string[]>([ALL_FILTER_VALUE]);
+  const [jobTitleOptions, setJobTitleOptions] = useState<string[]>([ALL_FILTER_VALUE]);
+  const [activityTypeOptions, setActivityTypeOptions] = useState<string[]>([]);
+  const [employmentTypeOptions, setEmploymentTypeOptions] = useState<string[]>([]);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -259,6 +268,46 @@ export const Attendance: React.FC = () => {
 
   // State for days
   const [days, setDays] = useState<DayRecord[]>(mockDays);
+
+  React.useEffect(() => {
+    let isMounted = true;
+
+    const loadFilterOptions = async () => {
+      try {
+        const [departmentList, jobTitleList, employeeList] = await Promise.all([
+          DepartmentService.getAll(),
+          JobTitleService.getAll(),
+          EmployeeService.getAll(),
+        ]);
+
+        if (!isMounted) return;
+
+        const nextDepartments = [ALL_FILTER_VALUE, ...uniqueSorted(departmentList.map((department) => department.name))];
+        const nextJobTitles = [ALL_FILTER_VALUE, ...uniqueSorted(jobTitleList.map((jobTitle) => jobTitle.title))];
+        const nextActivityTypes = uniqueSorted(employeeList.map((employee) => employee.activityType));
+        const nextEmploymentTypes = uniqueSorted(employeeList.map((employee) => employee.contractType));
+
+        setDepartmentOptions(nextDepartments);
+        setJobTitleOptions(nextJobTitles);
+        setActivityTypeOptions(nextActivityTypes);
+        setEmploymentTypeOptions(nextEmploymentTypes);
+
+        setFilterDepartment((current) => nextDepartments.includes(current) ? current : ALL_FILTER_VALUE);
+        setFilterJobTitle((current) => nextJobTitles.includes(current) ? current : ALL_FILTER_VALUE);
+        setFilterActivityTypes((current) => current.filter((type) => nextActivityTypes.includes(type)));
+        setFilterEmploymentTypes((current) => current.filter((type) => nextEmploymentTypes.includes(type)));
+      } catch (err) {
+        console.error('Failed to load attendance filter options:', err);
+        toast.error('Unable to load filter options from the database');
+      }
+    };
+
+    loadFilterOptions();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   React.useEffect(() => {
     const fetchAttendance = async () => {
@@ -307,8 +356,8 @@ export const Attendance: React.FC = () => {
 
   const applyFilters = () => {
     let count = 0;
-    if (filterDepartment !== 'All') count++;
-    if (filterJobTitle !== 'All') count++;
+    if (filterDepartment !== ALL_FILTER_VALUE) count++;
+    if (filterJobTitle !== ALL_FILTER_VALUE) count++;
     if (filterGradYear) count++;
     if (filterHiredAfter) count++;
     if (filterActivityTypes.length > 0) count++;
@@ -321,8 +370,8 @@ export const Attendance: React.FC = () => {
   };
 
   const clearFilters = () => {
-    setFilterDepartment('All');
-    setFilterJobTitle('All');
+    setFilterDepartment(ALL_FILTER_VALUE);
+    setFilterJobTitle(ALL_FILTER_VALUE);
     setFilterGradYear('');
     setFilterHiredAfter('');
     setFilterActivityTypes([]);
@@ -375,7 +424,7 @@ export const Attendance: React.FC = () => {
         {/* Search + filter button */}
         <div className="w-full flex-1 space-y-1.5 sm:min-w-[280px]">
           <div className="flex items-center gap-2">
-            <label className="text-foreground">Search Employees</label>
+            <label htmlFor="attendance-employee-search" className="text-foreground">Search Employees</label>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button className="h-11 w-11 cursor-pointer rounded-[var(--radius-sm)] hover:bg-muted" aria-label="Show employee search tips">
@@ -394,12 +443,14 @@ export const Attendance: React.FC = () => {
 
           <div className="relative flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
               <input
-                type="text"
+                id="attendance-employee-search"
+                type="search"
                 placeholder="Search by name, email, or Employee#..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                autoComplete="off"
                 className="w-full h-[44px] ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow text-[var(--text-sm)]"
               />
             </div>
@@ -436,6 +487,10 @@ export const Attendance: React.FC = () => {
                   toggleActivityType={toggleActivityType}
                   employmentTypes={filterEmploymentTypes}
                   toggleEmploymentType={toggleEmploymentType}
+                  departmentOptions={departmentOptions}
+                  jobTitleOptions={jobTitleOptions}
+                  activityTypeOptions={activityTypeOptions}
+                  employmentTypeOptions={employmentTypeOptions}
                   onApply={applyFilters}
                   onClear={clearFilters}
                   onClose={() => setFilterOpen(false)}
@@ -447,9 +502,9 @@ export const Attendance: React.FC = () => {
 
         {/* Employee */}
         <div className="w-full space-y-1.5 sm:w-52">
-          <label className="text-foreground">Employee</label>
+          <label htmlFor="attendance-employee-select" className="text-foreground">Employee</label>
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-            <SelectTrigger className="min-h-[44px] rounded-[var(--radius-input)]">
+            <SelectTrigger id="attendance-employee-select" className="min-h-[44px] rounded-[var(--radius-input)]" aria-label="Employee">
               <SelectValue placeholder="Select employee" />
             </SelectTrigger>
             <SelectContent>
@@ -462,11 +517,13 @@ export const Attendance: React.FC = () => {
 
         {/* Period */}
         <div className="w-full space-y-1.5 sm:w-56">
-          <label className="text-foreground">Attendance Period</label>
+          <label htmlFor="attendance-period" className="text-foreground">Attendance Period</label>
           <DatePicker
+            id="attendance-period"
             value={selectedPeriodDate}
             onChange={handlePeriodChange}
             placeholder="Select date"
+            aria-label="Attendance period"
           />
         </div>
       </div>
@@ -893,6 +950,10 @@ interface FilterPanelProps {
   toggleActivityType: (v: string) => void;
   employmentTypes: string[];
   toggleEmploymentType: (v: string) => void;
+  departmentOptions: string[];
+  jobTitleOptions: string[];
+  activityTypeOptions: string[];
+  employmentTypeOptions: string[];
   onApply: () => void;
   onClear: () => void;
   onClose: () => void;
@@ -911,6 +972,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   toggleActivityType,
   employmentTypes: selectedEmployment,
   toggleEmploymentType,
+  departmentOptions,
+  jobTitleOptions,
+  activityTypeOptions,
+  employmentTypeOptions,
   onApply,
   onClear,
   onClose,
@@ -927,13 +992,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* Department */}
       <div className="space-y-1.5">
-        <label className="text-foreground">Department</label>
+        <label htmlFor="attendance-filter-department" className="text-foreground">Department</label>
         <Select value={department} onValueChange={setDepartment}>
-          <SelectTrigger className="min-h-[44px] rounded-[var(--radius-input)]">
+          <SelectTrigger id="attendance-filter-department" className="min-h-[44px] rounded-[var(--radius-input)]" aria-label="Department">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {departments.map((d) => (
+            {departmentOptions.map((d) => (
               <SelectItem key={d} value={d}>{d}</SelectItem>
             ))}
           </SelectContent>
@@ -942,13 +1007,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* Job Title */}
       <div className="space-y-1.5">
-        <label className="text-foreground">Job Title</label>
+        <label htmlFor="attendance-filter-job-title" className="text-foreground">Job Title</label>
         <Select value={jobTitle} onValueChange={setJobTitle}>
-          <SelectTrigger className="min-h-[44px] rounded-[var(--radius-input)]">
+          <SelectTrigger id="attendance-filter-job-title" className="min-h-[44px] rounded-[var(--radius-input)]" aria-label="Job title">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {jobTitles.map((j) => (
+            {jobTitleOptions.map((j) => (
               <SelectItem key={j} value={j}>{j}</SelectItem>
             ))}
           </SelectContent>
@@ -957,9 +1022,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* Graduation Year */}
       <div className="space-y-1.5">
-        <label className="text-foreground">Graduation Year</label>
+        <label htmlFor="attendance-filter-grad-year" className="text-foreground">Graduation Year</label>
         <input
+          id="attendance-filter-grad-year"
           type="text"
+          inputMode="numeric"
           value={gradYear}
           onChange={(e) => setGradYear(e.target.value)}
           placeholder="e.g. 2013"
@@ -969,15 +1036,15 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* Hired After */}
       <div className="space-y-1.5">
-        <label className="text-foreground">Hired After</label>
-        <DatePicker value={hiredAfter} onChange={setHiredAfter} placeholder="Select date" />
+        <label htmlFor="attendance-filter-hired-after" className="text-foreground">Hired After</label>
+        <DatePicker id="attendance-filter-hired-after" value={hiredAfter} onChange={setHiredAfter} placeholder="Select date" aria-label="Hired after" />
       </div>
 
       {/* Activity Type */}
-      <div className="space-y-2">
-        <label className="text-foreground">Activity Type</label>
+      <fieldset className="space-y-2">
+        <legend className="text-foreground">Activity Type</legend>
         <div className="space-y-2">
-          {activityTypes.map((type) => (
+          {activityTypeOptions.map((type) => (
             <label key={type} className="flex items-center gap-2.5 cursor-pointer group">
               <Checkbox
                 checked={selectedActivity.includes(type)}
@@ -989,13 +1056,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             </label>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {/* Employment Type */}
-      <div className="space-y-2">
-        <label className="text-foreground">Employment Type</label>
+      <fieldset className="space-y-2">
+        <legend className="text-foreground">Employment Type</legend>
         <div className="space-y-2">
-          {employmentTypes.map((type) => (
+          {employmentTypeOptions.map((type) => (
             <label key={type} className="flex items-center gap-2.5 cursor-pointer group">
               <Checkbox
                 checked={selectedEmployment.includes(type)}
@@ -1007,7 +1074,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             </label>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {/* Actions */}
       <div className="space-y-2 pt-2">

@@ -46,18 +46,23 @@ const FormField: React.FC<{
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
-}> = ({ label, value, onChange, placeholder }) => (
+}> = ({ label, value, onChange, placeholder }) => {
+  const id = React.useId();
+  return (
   <div className="space-y-1.5">
-    <label className={labelClass}>{label}</label>
+    <label htmlFor={id} className={labelClass}>{label}</label>
     <input
+      id={id}
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
+      autoComplete="off"
       className={inputClass}
     />
   </div>
-);
+  );
+};
 
 // ── Select Field Component ──
 const SelectField: React.FC<{
@@ -66,11 +71,13 @@ const SelectField: React.FC<{
   onChange: (v: string) => void;
   options: string[];
   placeholder?: string;
-}> = ({ label, value, onChange, options, placeholder }) => (
+}> = ({ label, value, onChange, options, placeholder }) => {
+  const id = React.useId();
+  return (
   <div className="space-y-1.5">
-    <label className={labelClass}>{label}</label>
+    <label htmlFor={id} className={labelClass}>{label}</label>
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="h-10 rounded-[var(--radius-input)]">
+      <SelectTrigger id={id} className="h-10 rounded-[var(--radius-input)]" aria-label={label}>
         <SelectValue placeholder={placeholder || 'Select...'} />
       </SelectTrigger>
       <SelectContent>
@@ -82,7 +89,8 @@ const SelectField: React.FC<{
       </SelectContent>
     </Select>
   </div>
-);
+  );
+};
 
 // ── Main Component ──
 export const RolesManagement: React.FC = () => {
@@ -217,9 +225,9 @@ export const RolesManagement: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         {/* Department Filter */}
         <div className="flex-1 max-w-md space-y-1.5">
-          <label className={labelClass}>Department</label>
+          <label htmlFor="roles-department-filter" className={labelClass}>Department</label>
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-            <SelectTrigger className="h-10 rounded-[var(--radius-input)]">
+            <SelectTrigger id="roles-department-filter" className="h-10 rounded-[var(--radius-input)]" aria-label="Department">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

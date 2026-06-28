@@ -10,10 +10,21 @@ interface LoginProps {
 }
 
 export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
+  const loginHeadingId = React.useId();
+  const usernameId = React.useId();
+  const passwordId = React.useId();
+  const rememberMeId = React.useId();
+  const loginErrorId = React.useId();
+  const usernameHintId = React.useId();
+  const passwordHintId = React.useId();
+  const resetEmailId = React.useId();
+  const resetErrorId = React.useId();
+  const resetHintId = React.useId();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [errorField, setErrorField] = useState<'username' | 'password' | 'resetEmail' | ''>('');
   const [isLoading, setIsLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
@@ -24,6 +35,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setErrorField('');
     setIsLoading(true);
 
     // Simulate a small delay for better UX
@@ -31,12 +43,14 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       
       if (!emailRegex.test(username)) {
-        setError('Invalid email address.');
+        setError('Enter a valid work email address, for example name@company.com.');
+        setErrorField('username');
         setIsLoading(false);
       } else if (password === '123456') {
         onLogin(username);
       } else {
-        setError('Invalid password.');
+        setError('The password is incorrect. Use demo access, show the password to check it, or reset your password.');
+        setErrorField('password');
         setIsLoading(false);
       }
     }, 600);
@@ -45,6 +59,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   const handleForgotPassword = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setErrorField('');
     setIsLoading(true);
 
     // Simulate a small delay for better UX
@@ -55,7 +70,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
         setResetSuccess(true);
         setIsLoading(false);
       } else {
-        setError('Invalid email address.');
+        setError('Enter the email address for your account, for example name@company.com.');
+        setErrorField('resetEmail');
         setIsLoading(false);
       }
     }, 600);
@@ -145,28 +161,37 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
           </div>
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5" aria-labelledby={loginHeadingId} noValidate>
+            <h1 id={loginHeadingId} className="sr-only">Sign in to HR Tool</h1>
             {/* Error Message */}
             {error && (
               <div
-                id="login-error"
+                id={loginErrorId}
                 role="alert"
                 aria-live="assertive"
-                className="rounded-[var(--radius)] border border-[#B91C1C] bg-[#FDECEC] p-3 text-center text-[#7F1D1D]"
+                className="rounded-[var(--radius)] border-2 border-[#B91C1C] bg-[#FDECEC] p-3 text-start text-[#7F1D1D]"
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',
                   fontWeight: 'var(--font-weight-medium)',
                 }}
               >
-                {error}
+                <p>{error}</p>
+                {errorField && errorField !== 'resetEmail' && (
+                  <a
+                    href={`#${errorField === 'username' ? usernameId : passwordId}`}
+                    className="mt-2 inline-flex min-h-11 items-center text-[#7F1D1D] underline"
+                  >
+                    Go to {errorField === 'username' ? 'email' : 'password'} field
+                  </a>
+                )}
               </div>
             )}
 
             {/* Username Field */}
             <div className="space-y-1.5">
               <label
-                htmlFor="username"
+                htmlFor={usernameId}
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',
@@ -174,26 +199,27 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 }}
                 className="text-foreground block"
               >
-                Username
+                Email
               </label>
               <input
-                id="username"
+                id={usernameId}
                 type="email"
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
                   setError('');
+                  setErrorField('');
                 }}
-              placeholder="name@company.com"
-              required
-              aria-required="true"
-              aria-invalid={!!error}
-              aria-describedby={error ? "login-error" : undefined}
-              autoComplete="email"
-              inputMode="email"
+                placeholder="name@company.com"
+                required
+                aria-required="true"
+                aria-invalid={errorField === 'username'}
+                aria-describedby={[usernameHintId, errorField === 'username' ? loginErrorId : undefined].filter(Boolean).join(' ') || undefined}
+                autoComplete="email"
+                inputMode="email"
                 className={cn(
-                  'w-full h-10 px-3 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
-                  error ? 'border-destructive focus:border-destructive focus:ring-2 focus:ring-destructive/50' : 'border-border focus:ring-2 focus:ring-ring/50 focus:border-ring'
+                  'w-full min-h-[44px] px-3 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                  errorField === 'username' ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30' : 'border-border focus:ring-4 focus:ring-ring/40 focus:border-ring'
                 )}
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -201,12 +227,15 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   fontWeight: 'var(--font-weight-normal)',
                 }}
               />
+              <p id={usernameHintId} className="text-[var(--text-xs)] text-muted-foreground">
+                Use the email address connected to your HR account.
+              </p>
             </div>
 
             {/* Password Field */}
             <div className="space-y-1.5">
               <label
-                htmlFor="password"
+                htmlFor={passwordId}
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',
@@ -218,22 +247,23 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               </label>
               <div className="relative">
                 <input
-                  id="password"
+                  id={passwordId}
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
                     setError('');
+                    setErrorField('');
                   }}
                   placeholder="••••••••"
                   required
                   aria-required="true"
-                  aria-invalid={!!error}
-                  aria-describedby={error ? "login-error" : undefined}
+                  aria-invalid={errorField === 'password'}
+                  aria-describedby={[passwordHintId, errorField === 'password' ? loginErrorId : undefined].filter(Boolean).join(' ') || undefined}
                   autoComplete="current-password"
                   className={cn(
-                    'w-full h-10 px-3 pe-10 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
-                    error ? 'border-destructive focus:border-destructive focus:ring-2 focus:ring-destructive/50' : 'border-border focus:ring-2 focus:ring-ring/50 focus:border-ring'
+                    'w-full min-h-[44px] px-3 pe-12 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                    errorField === 'password' ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30' : 'border-border focus:ring-4 focus:ring-ring/40 focus:border-ring'
                   )}
                   style={{
                     fontFamily: "'Inter', sans-serif",
@@ -245,7 +275,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute end-1 top-1/2 min-h-11 min-w-11 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -254,6 +284,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   )}
                 </button>
               </div>
+              <p id={passwordHintId} className="text-[var(--text-xs)] text-muted-foreground">
+                You can show the password before submitting, or use demo access without memorizing credentials.
+              </p>
             </div>
 
             {/* Remember Me & Forgot Password */}
@@ -261,11 +294,11 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  id="rememberMe"
-                  className="w-4 h-4 rounded border-border accent-primary cursor-pointer"
+                  id={rememberMeId}
+                  className="h-5 w-5 rounded border-border accent-primary cursor-pointer"
                 />
                 <label
-                  htmlFor="rememberMe"
+                  htmlFor={rememberMeId}
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontSize: 'var(--text-sm)',
@@ -284,7 +317,12 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   fontWeight: 'var(--font-weight-medium)',
                 }}
                 className="text-primary hover:underline"
-                onClick={() => setShowForgotPassword(true)}
+                onClick={() => {
+                  setError('');
+                  setErrorField('');
+                  setResetSuccess(false);
+                  setShowForgotPassword(true);
+                }}
               >
                 Forgot password?
               </button>
@@ -295,7 +333,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               type="submit"
               disabled={isLoading}
               className={cn(
-                'w-full h-10 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white transition-colors shadow-sm',
+                'w-full min-h-[44px] rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white transition-colors shadow-sm',
                 isLoading && 'opacity-70 cursor-not-allowed'
               )}
               style={{
@@ -329,7 +367,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   onClick={handleQuickLogin}
                   aria-label="Continue to demo"
                   className={cn(
-                    'relative flex h-10 w-full items-center justify-center gap-2 overflow-hidden rounded-[var(--radius-button)] border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-sm transition-all hover:bg-[#FDECC8] group dark:border-[#FACC15] dark:bg-[#3A2608] dark:text-[#FEF3C7] dark:hover:bg-[#4A310A]'
+                    'relative flex min-h-[44px] w-full items-center justify-center gap-2 overflow-hidden rounded-[var(--radius-button)] border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-sm transition-all hover:bg-[#FDECC8] group dark:border-[#FACC15] dark:bg-[#3A2608] dark:text-[#FEF3C7] dark:hover:bg-[#4A310A]'
                   )}
                   style={{
                     fontFamily: "'Inter', sans-serif",
@@ -376,25 +414,31 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             >
               Reset Password
             </h2>
-            <form onSubmit={handleForgotPassword} className="space-y-5">
+            <form onSubmit={handleForgotPassword} className="space-y-5" noValidate>
               {/* Error Message */}
               {error && (
                 <div
-                  className="rounded-[var(--radius)] border border-[#B91C1C] bg-[#FDECEC] p-3 text-center text-[#7F1D1D]"
+                  id={resetErrorId}
+                  role="alert"
+                  aria-live="assertive"
+                  className="rounded-[var(--radius)] border-2 border-[#B91C1C] bg-[#FDECEC] p-3 text-start text-[#7F1D1D]"
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontSize: 'var(--text-sm)',
                     fontWeight: 'var(--font-weight-medium)',
                   }}
                 >
-                  {error}
+                  <p>{error}</p>
+                  <a href={`#${resetEmailId}`} className="mt-2 inline-flex min-h-11 items-center text-[#7F1D1D] underline">
+                    Go to email field
+                  </a>
                 </div>
               )}
 
               {/* Reset Email Field */}
               <div className="space-y-1.5">
                 <label
-                  htmlFor="resetEmail"
+                  htmlFor={resetEmailId}
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontSize: 'var(--text-sm)',
@@ -405,18 +449,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   Email
                 </label>
                 <input
-                  id="resetEmail"
+                  id={resetEmailId}
                   type="email"
                   value={resetEmail}
                   onChange={(e) => {
                     setResetEmail(e.target.value);
                     setError('');
+                    setErrorField('');
                   }}
                   placeholder="Enter your email"
                   required
+                  aria-required="true"
+                  aria-invalid={errorField === 'resetEmail'}
+                  aria-describedby={[resetHintId, errorField === 'resetEmail' ? resetErrorId : undefined].filter(Boolean).join(' ') || undefined}
+                  autoComplete="email"
+                  inputMode="email"
                   className={cn(
-                    'w-full h-10 px-3 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
-                    error ? 'border-destructive focus:border-destructive focus:ring-2 focus:ring-destructive/50' : 'border-border focus:ring-2 focus:ring-ring/50 focus:border-ring'
+                    'w-full min-h-[44px] px-3 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                    errorField === 'resetEmail' ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30' : 'border-border focus:ring-4 focus:ring-ring/40 focus:border-ring'
                   )}
                   style={{
                     fontFamily: "'Inter', sans-serif",
@@ -424,6 +474,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     fontWeight: 'var(--font-weight-normal)',
                   }}
                 />
+                <p id={resetHintId} className="text-[var(--text-xs)] text-muted-foreground">
+                  Enter the email address associated with your HR Tool account.
+                </p>
               </div>
 
               {/* Reset Button */}
@@ -431,7 +484,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 type="submit"
                 disabled={isLoading}
                 className={cn(
-                  'w-full h-10 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white transition-colors shadow-sm',
+                  'w-full min-h-[44px] rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white transition-colors shadow-sm',
                   isLoading && 'opacity-70 cursor-not-allowed'
                 )}
                 style={{
@@ -468,7 +521,11 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   fontWeight: 'var(--font-weight-medium)',
                 }}
                 className="text-primary hover:underline"
-                onClick={() => setShowForgotPassword(false)}
+                onClick={() => {
+                  setError('');
+                  setErrorField('');
+                  setShowForgotPassword(false);
+                }}
               >
                 Back to Login
               </button>

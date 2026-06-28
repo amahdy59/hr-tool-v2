@@ -181,6 +181,20 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
     return 'Select both dates';
   }, [fromDate, toDate, daysRequested]);
 
+  const balanceSummaryItems = [
+    { label: 'Current balance', value: currentBalance, className: 'text-foreground' },
+    {
+      label: 'Requesting',
+      value: daysRequested > 0 ? `-${daysRequested}` : '0',
+      className: daysRequested > 0 ? 'text-[var(--chart-4)]' : 'text-muted-foreground',
+    },
+    {
+      label: 'Remaining when approved',
+      value: remainingBalance,
+      className: remainingBalance < 0 ? 'text-destructive' : 'text-[var(--chart-3)]',
+    },
+  ];
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[420px] max-h-[90vh] overflow-y-auto">
@@ -208,12 +222,13 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 fontSize: 'var(--text-sm)',
                 fontWeight: 'var(--font-weight-medium)',
               }}
+              htmlFor="leave-type"
               className="text-foreground block text-start w-full"
             >
               Leave type
             </label>
             <Select value={leaveType} onValueChange={setLeaveType}>
-              <SelectTrigger className="h-10 w-full rounded-[var(--radius-input)]">
+              <SelectTrigger id="leave-type" className="h-10 w-full rounded-[var(--radius-input)]" aria-label="Leave type">
                 <SelectValue placeholder="Select leave type" />
               </SelectTrigger>
               <SelectContent>
@@ -235,12 +250,15 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                   fontSize: 'var(--text-sm)',
                   fontWeight: 'var(--font-weight-medium)',
                 }}
+                htmlFor="leave-from-date"
                 className="text-foreground block text-start w-full"
               >
                 From
               </label>
               <DatePicker
                 value={fromDate}
+                id="leave-from-date"
+                aria-label="Leave start date"
                 onChange={(d) => {
                   setFromDate(d);
                   // Auto-set toDate if empty or if toDate < fromDate
@@ -259,12 +277,15 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                   fontSize: 'var(--text-sm)',
                   fontWeight: 'var(--font-weight-medium)',
                 }}
+                htmlFor="leave-to-date"
                 className="text-foreground block text-start w-full"
               >
                 To
               </label>
               <DatePicker
                 value={toDate}
+                id="leave-to-date"
+                aria-label="Leave end date"
                 onChange={setToDate}
                 placeholder="End date"
                 disabledDays={isEgyptianWeekend}
@@ -282,6 +303,8 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               'text-muted-foreground -mt-3',
               ((isVacationRequest && daysRequested > currentBalance) || !!validationError) && 'text-destructive font-medium'
             )}
+            id="leave-date-help"
+            aria-live="polite"
           >
             {validationError ? (
               <span className="flex items-center gap-1 text-red-600 dark:text-red-400">⚠️ {validationError}</span>
@@ -301,11 +324,13 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 fontSize: 'var(--text-sm)',
                 fontWeight: 'var(--font-weight-medium)',
               }}
+              htmlFor="leave-notes"
               className="text-foreground block text-start w-full"
             >
               Notes (optional)
             </label>
             <textarea dir="auto"
+              id="leave-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
@@ -328,6 +353,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                     fontSize: 'var(--text-sm)',
                     fontWeight: 'var(--font-weight-medium)',
                   }}
+                  htmlFor="leave-attachments"
                   className="text-foreground"
                 >
                   Attachment required
@@ -341,6 +367,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <input
+                  id="leave-attachments"
                   type="file"
                   className="sr-only"
                   multiple
@@ -382,39 +409,30 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
           )}
 
           {isVacationRequest && (
-            <dl className="grid grid-cols-3 rounded-[var(--radius-lg)] border border-border bg-muted/30 px-3 py-3">
-              {[
-                { label: 'Current balance', value: currentBalance, className: 'text-foreground' },
-                { label: 'Requesting', value: daysRequested > 0 ? `-${daysRequested}` : '0', className: daysRequested > 0 ? 'text-[var(--chart-4)]' : 'text-muted-foreground' },
-                { label: 'Remaining when approved', value: remainingBalance, className: remainingBalance < 0 ? 'text-destructive' : 'text-[var(--chart-3)]' },
-              ].map((item, index) => (
+            <dl
+              className="grid grid-cols-3 overflow-hidden rounded-[var(--radius-lg)] border border-border bg-muted/30 shadow-sm"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+              aria-label="Leave balance summary"
+            >
+              {balanceSummaryItems.map((item, index) => (
                 <div
                   key={item.label}
                   className={cn(
-                    'flex min-h-[74px] flex-col justify-between gap-2 px-2 text-center',
+                    'flex min-h-[92px] flex-col items-center justify-center gap-2 px-2.5 py-3 text-center',
                     index > 0 && 'border-s border-border'
                   )}
                 >
-                  <dt
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: '11px',
-                      fontWeight: 'var(--font-weight-medium)',
-                    }}
-                    className="min-h-[30px] text-balance text-muted-foreground"
-                  >
-                    {item.label}
-                  </dt>
                   <dd
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: 'var(--text-xl)',
-                      fontWeight: 'var(--font-weight-bold)',
-                    }}
-                    className={cn('tabular-nums leading-none', item.className)}
+                    className={cn(
+                      'order-1 w-full text-center text-[30px] font-[var(--font-weight-bold)] leading-none tabular-nums',
+                      item.className
+                    )}
                   >
                     {item.value}
                   </dd>
+                  <dt className="order-2 flex min-h-[32px] w-full items-start justify-center text-center text-[11px] font-[var(--font-weight-medium)] leading-tight text-muted-foreground [text-wrap:balance]">
+                    {item.label}
+                  </dt>
                 </div>
               ))}
             </dl>
