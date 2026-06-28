@@ -87,7 +87,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             <Select value={itemsPerPage.toString()} onValueChange={(value) => onItemsPerPageChange(Number(value))}>
               <SelectTrigger
                 aria-labelledby={pageSizeLabelId}
-                className="h-11 w-[88px] font-[var(--font-weight-medium)]"
+                className="h-11 min-h-[44px] w-[88px] bg-background dark:bg-card border-border text-foreground hover:bg-muted/50 data-[state=open]:border-border data-[state=open]:ring-0 focus:ring-0 focus-visible:ring-0 rounded-md transition-colors shadow-none font-[var(--font-weight-medium)]"
               >
                 <SelectValue />
               </SelectTrigger>

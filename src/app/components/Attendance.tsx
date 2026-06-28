@@ -775,7 +775,6 @@ export const Attendance: React.FC = () => {
                 </tr>
               </tbody>
             </table>
-            <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
           </div>
 
           <div className="space-y-3 sm:hidden" aria-label={`Attendance summary cards for ${monthLabel} ${selectedYear}`}>
@@ -940,7 +939,6 @@ export const Attendance: React.FC = () => {
               </tbody>
             </table>
           </div>
-          <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
         </div>
       </section>
 

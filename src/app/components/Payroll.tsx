@@ -327,17 +327,16 @@ export const Payroll: React.FC = () => {
 
       {activeTab === 'overview' && <OverviewTab selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} selectedYear={selectedYear} setSelectedYear={setSelectedYear} months={months} years={years} employees={employees} />}
       {activeTab === 'employees' && (
-        <>
-          <EmployeesTab filteredEmployees={paginatedEmployees} handleGeneratePayslip={handleGeneratePayslip} />
-          <Pagination
-            currentPage={payrollPage}
-            totalPages={payrollTotalPages}
-            itemsPerPage={payrollPerPage}
-            onPageChange={setPayrollPage}
-            onItemsPerPageChange={(n) => { setPayrollPerPage(n); setPayrollPage(1); }}
-            totalItems={filteredEmployees.length}
-          />
-        </>
+        <EmployeesTab 
+          filteredEmployees={paginatedEmployees} 
+          handleGeneratePayslip={handleGeneratePayslip} 
+          currentPage={payrollPage}
+          totalPages={payrollTotalPages}
+          itemsPerPage={payrollPerPage}
+          onPageChange={setPayrollPage}
+          onItemsPerPageChange={(n: number) => { setPayrollPerPage(n); setPayrollPage(1); }}
+          totalItems={filteredEmployees.length}
+        />
       )}
       {activeTab === 'compensation' && <CompensationTab />}
       {activeTab === 'deductions' && <DeductionsTab />}
@@ -447,7 +446,18 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
 // ════════════════════════════════════
 // ── Employees Tab ──
 // ════════════════════════════════════
-const EmployeesTab = ({ filteredEmployees, handleGeneratePayslip }: any) => (
+
+
+const EmployeesTab = ({
+  filteredEmployees,
+  handleGeneratePayslip,
+  currentPage,
+  totalPages,
+  itemsPerPage,
+  onPageChange,
+  onItemsPerPageChange,
+  totalItems
+}: any) => (
   <div className="space-y-6 max-w-6xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Employee Payroll</h3>
 
@@ -494,6 +504,14 @@ const EmployeesTab = ({ filteredEmployees, handleGeneratePayslip }: any) => (
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        itemsPerPage={itemsPerPage}
+        onPageChange={onPageChange}
+        onItemsPerPageChange={onItemsPerPageChange}
+        totalItems={totalItems}
+      />
     </div>
   </div>
 );

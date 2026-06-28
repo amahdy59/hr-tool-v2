@@ -478,59 +478,60 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </div>
         </div>
 
-        <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card shadow-[var(--elevation-sm)]">
-          <table className="w-full min-w-[760px] text-[var(--text-sm)] text-start">
-            <caption className="sr-only">Leaves and mission history requests</caption>
-            <thead className="bg-muted/50 border-b border-border">
-              <tr>
-                {[
-                  'Leave Type',
-                  'Request Date',
-                  'Date Range',
-                  'Duration',
-                  'Notes',
-                  'Status',
-                  'Actions',
-                ].map((header) => (
-                  <th
-                    key={header}
-                    className={cn(
-                      'px-4 py-3',
-                      header === 'Actions' && 'text-end'
-                    )}
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: 'var(--text-sm)',
-                      fontWeight: 'var(--font-weight-medium)',
-                    }}
-                  >
-                    {header}
-                  </th>
+        <div className="border border-border rounded-[var(--radius)] bg-card shadow-[var(--elevation-sm)] overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[760px] text-[var(--text-sm)] text-start">
+              <caption className="sr-only">Leaves and mission history requests</caption>
+              <thead className="bg-muted/50 border-b border-border">
+                <tr>
+                  {[
+                    'Leave Type',
+                    'Request Date',
+                    'Date Range',
+                    'Duration',
+                    'Notes',
+                    'Status',
+                    'Actions',
+                  ].map((header) => (
+                    <th
+                      key={header}
+                      className={cn(
+                        'px-4 py-3',
+                        header === 'Actions' && 'text-end'
+                      )}
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: 'var(--text-sm)',
+                        fontWeight: 'var(--font-weight-medium)',
+                      }}
+                    >
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {paginatedHistory.map((item) => (
+                  <HistoryRow
+                    key={item.id}
+                    item={item}
+                    onView={() => handleViewRequest(item)}
+                    onCancel={() => handleCancelRequest(item.id)}
+                    onEdit={() => handleEditRequest(item.id)}
+                  />
                 ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {paginatedHistory.map((item) => (
-                <HistoryRow
-                  key={item.id}
-                  item={item}
-                  onView={() => handleViewRequest(item)}
-                  onCancel={() => handleCancelRequest(item.id)}
-                  onEdit={() => handleEditRequest(item.id)}
-                />
-              ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            currentPage={historyPage}
+            totalPages={historyTotalPages}
+            itemsPerPage={historyPerPage}
+            onPageChange={setHistoryPage}
+            onItemsPerPageChange={(n) => { setHistoryPerPage(n); setHistoryPage(1); }}
+            totalItems={historyData.length}
+          />
         </div>
-
-        <Pagination
-          currentPage={historyPage}
-          totalPages={historyTotalPages}
-          itemsPerPage={historyPerPage}
-          onPageChange={setHistoryPage}
-          onItemsPerPageChange={(n) => { setHistoryPerPage(n); setHistoryPage(1); }}
-          totalItems={historyData.length}
-        />
       </section>
 
       {/* Balance Tables */}
@@ -596,7 +597,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </tbody>
             </table>
           </div>
-          <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
           <div className="flex gap-3 p-4 bg-primary/5 rounded-[var(--radius)] border border-primary/15">
             <Info className="w-5 h-5 text-primary shrink-0" />
             <p className="text-[var(--text-sm)] font-[var(--font-weight-normal)] text-foreground">
@@ -690,7 +690,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </tbody>
             </table>
           </div>
-          <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
         </section>
       </div>
 
