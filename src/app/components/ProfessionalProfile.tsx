@@ -917,21 +917,50 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
 
           {/* Skills */}
           <ProfileCard title="Skills" showAdd onAdd={handleAddSkill}>
-            <div className="space-y-3">
-              <div>
-                <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Core UX & Design</p>
-                <div className="flex flex-wrap gap-2">
-                  {filteredSkills.filter(s => s.category.includes('UX')).map(s => (
-                    <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
-                  ))}
+            <div className="space-y-5">
+              {/* Category 1 */}
+              <div className="space-y-3.5">
+                <h4 className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground border-b border-border pb-1.5" style={{ fontFamily: "'Inter', sans-serif" }}>Core UX & Design</h4>
+                <div className="space-y-3 ps-1">
+                  {['Expert', 'Advanced', 'Intermediate', 'Beginner'].map(lvl => {
+                    const levelSkills = filteredSkills.filter(s => s.category === 'Core UX & Design' && s.level === lvl);
+                    if (levelSkills.length === 0) return null;
+                    return (
+                      <div key={lvl} className="space-y-1.5">
+                        <span className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-widest block">
+                          {lvl}
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {levelSkills.map(s => (
+                            <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-              <div>
-                <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground mb-2 mt-4" style={{ fontFamily: "'Inter', sans-serif" }}>Data Analysis & Visualization</p>
-                <div className="flex flex-wrap gap-2">
-                  {filteredSkills.filter(s => s.category.includes('Data')).map(s => (
-                    <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
-                  ))}
+
+              {/* Category 2 */}
+              <div className="space-y-3.5 pt-1">
+                <h4 className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground border-b border-border pb-1.5" style={{ fontFamily: "'Inter', sans-serif" }}>Data Analysis & Visualization</h4>
+                <div className="space-y-3 ps-1">
+                  {['Expert', 'Advanced', 'Intermediate', 'Beginner'].map(lvl => {
+                    const levelSkills = filteredSkills.filter(s => s.category === 'Data Analysis & Visualization' && s.level === lvl);
+                    if (levelSkills.length === 0) return null;
+                    return (
+                      <div key={lvl} className="space-y-1.5">
+                        <span className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-widest block">
+                          {lvl}
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {levelSkills.map(s => (
+                            <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -1406,22 +1435,18 @@ const CertificationItem: React.FC<{
     <span
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }}
-      className={cn("group relative min-h-9 w-fit rounded-full border px-4 py-1.5 text-[var(--text-sm)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-2.5 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
+      className={cn("group relative min-h-8 w-fit rounded-full border px-3.5 py-1 text-xs sm:text-[var(--text-sm)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-2 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
       onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
-      <div className="flex items-center gap-1.5 leading-none">
-        <span className="font-[var(--font-weight-bold)]">{data.name}</span>
-        <span className="text-[10px] sm:text-xs font-[var(--font-weight-medium)] uppercase tracking-wider px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5">{data.level}</span>
-        <span className="text-[10px] sm:text-xs font-[var(--font-weight-normal)] opacity-75 border-s border-current/20 ps-1.5 leading-none">{data.category}</span>
-      </div>
+      <span className="font-[var(--font-weight-semibold)]">{data.name}</span>
       <button
         type="button"
         onClick={(e) => { e.stopPropagation(); onDelete(); }}
         aria-label={`Delete ${data.name} skill`}
-        className="flex h-4 w-4 items-center justify-center rounded-full opacity-60 transition-opacity hover:opacity-100 hover:scale-110 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1 shrink-0"
+        className="flex h-3.5 w-3.5 items-center justify-center rounded-full opacity-60 transition-opacity hover:opacity-100 hover:scale-110 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1 shrink-0"
       >
-        <X className="w-3.5 h-3.5" />
+        <X className="w-3 h-3" />
       </button>
     </span>
   );
