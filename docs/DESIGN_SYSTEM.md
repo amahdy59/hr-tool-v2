@@ -12,6 +12,7 @@ We adhere to a strict **4px/8px grid system** for layouts. All margins, paddings
 - **Token:** `--spacing-label-input`
 - **Value:** `4px` (Tailwind `space-y-1` or `gap-1` or `mb-1`)
 - **Rule:** The vertical spacing between a form `<label>` (or `<legend>`) and its corresponding input box, search field, or dropdown trigger must be exactly **4px**. This maintains a tight visual grouping between labels and inputs.
+- **Search fields:** Search inputs follow the same rule. The Manage Employees search groups use `space-y-1`, so labels such as **Search Employees**, **Search Departments**, **Search Job Titles**, and **Search Activity Log** sit exactly **4px** above their search boxes.
 
 ### 2. Field-to-Field Spacing
 - **Spacing:** `16px` (Tailwind `space-y-4` or `gap-4` or `mb-4`)
@@ -24,6 +25,11 @@ We adhere to a strict **4px/8px grid system** for layouts. All margins, paddings
 ### 4. Section-to-Section Spacing
 - **Spacing:** `24px` to `32px` (Tailwind `space-y-6` to `space-y-8` or `gap-6` to `gap-8`)
 - **Rule:** Spacing between large card layouts, tables, tab layouts, or page panels.
+
+### 5. Tabs-to-Panel Spacing
+- **Spacing:** `12px` (Tailwind `gap-3`)
+- **Rule:** The vertical spacing between a tab list and the first control inside the active tab panel must be **12px** for dense management screens.
+- **Manage Employees:** The tab root uses `gap-3`; tab panels must not add an extra top margin. This keeps the distance from the tab underline to the search/input group consistent across Directory, Departments, Job Titles, and Activity Log.
 
 ---
 

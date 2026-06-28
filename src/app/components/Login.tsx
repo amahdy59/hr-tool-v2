@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Info, KeyRound, ShieldCheck, Zap } from 'lucide-react';
+import { Eye, EyeOff, Info, KeyRound, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 import { RedesignInfoPage } from './RedesignInfoPage';
+import { useTranslation } from 'react-i18next';
 
 interface LoginProps {
   onLogin: (email: string) => void;
@@ -10,6 +11,7 @@ interface LoginProps {
 }
 
 export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
+  const { t } = useTranslation();
   const loginHeadingId = React.useId();
   const usernameId = React.useId();
   const passwordId = React.useId();
@@ -43,13 +45,13 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       
       if (!emailRegex.test(username)) {
-        setError('Enter a valid work email address, for example name@company.com.');
+        setError(t('login.errors.invalidWorkEmail'));
         setErrorField('username');
         setIsLoading(false);
       } else if (password === '123456') {
         onLogin(username);
       } else {
-        setError('The password is incorrect. Use demo access, show the password to check it, or reset your password.');
+        setError(t('login.errors.incorrectPassword'));
         setErrorField('password');
         setIsLoading(false);
       }
@@ -70,7 +72,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
         setResetSuccess(true);
         setIsLoading(false);
       } else {
-        setError('Enter the email address for your account, for example name@company.com.');
+        setError(t('login.errors.invalidResetEmail'));
         setErrorField('resetEmail');
         setIsLoading(false);
       }
@@ -132,7 +134,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               }}
               className="text-primary mb-1"
             >
-              HR Tool
+              {t('login.appName')}
             </div>
             <p
               style={{
@@ -142,7 +144,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               }}
               className="text-muted-foreground mb-5"
             >
-              Workforce management, simplified.
+              {t('login.tagline')}
             </p>
             <div className="grid grid-cols-[auto_auto] items-stretch justify-center gap-3">
               <button
@@ -152,7 +154,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <Info className="w-4 h-4" />
-                About this redesign
+                {t('login.aboutRedesign')}
               </button>
               <div className="inline-flex h-11 items-stretch">
                 <AccessibilityPanel settings={accessibility} />
@@ -162,7 +164,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-5" aria-labelledby={loginHeadingId} noValidate>
-            <h1 id={loginHeadingId} className="sr-only">Sign in to HR Tool</h1>
+            <h1 id={loginHeadingId} className="sr-only">{t('login.signInHeading')}</h1>
             {/* Error Message */}
             {error && (
               <div
@@ -182,7 +184,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     href={`#${errorField === 'username' ? usernameId : passwordId}`}
                     className="mt-2 inline-flex min-h-11 items-center text-[#7F1D1D] underline"
                   >
-                    Go to {errorField === 'username' ? 'email' : 'password'} field
+                    {t('login.errors.goToField', {
+                      field: errorField === 'username' ? t('login.errors.emailField') : t('login.errors.passwordField'),
+                    })}
                   </a>
                 )}
               </div>
@@ -199,7 +203,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 }}
                 className="text-foreground block"
               >
-                Email
+                {t('login.email')}
               </label>
               <input
                 id={usernameId}
@@ -210,7 +214,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   setError('');
                   setErrorField('');
                 }}
-                placeholder="name@company.com"
+                placeholder={t('login.emailPlaceholder')}
                 required
                 aria-required="true"
                 aria-invalid={errorField === 'username'}
@@ -228,7 +232,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 }}
               />
               <p id={usernameHintId} className="text-[var(--text-xs)] text-muted-foreground">
-                Use the email address connected to your HR account.
+                {t('login.emailHint')}
               </p>
             </div>
 
@@ -243,7 +247,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 }}
                 className="text-foreground block"
               >
-                Password
+                {t('login.password')}
               </label>
               <div className="relative">
                 <input
@@ -255,7 +259,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     setError('');
                     setErrorField('');
                   }}
-                  placeholder="••••••••"
+                  placeholder={t('login.passwordPlaceholder')}
                   required
                   aria-required="true"
                   aria-invalid={errorField === 'password'}
@@ -274,7 +278,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? t('login.hidePassword') : t('login.showPassword')}
                   className="absolute end-1 top-1/2 min-h-11 min-w-11 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {showPassword ? (
@@ -285,7 +289,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 </button>
               </div>
               <p id={passwordHintId} className="text-[var(--text-xs)] text-muted-foreground">
-                You can show the password before submitting, or use demo access without memorizing credentials.
+                {t('login.passwordHint')}
               </p>
             </div>
 
@@ -306,7 +310,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   }}
                   className="text-foreground cursor-pointer"
                 >
-                  Remember me
+                  {t('login.rememberMe')}
                 </label>
               </div>
               <button
@@ -324,7 +328,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   setShowForgotPassword(true);
                 }}
               >
-                Forgot password?
+                {t('login.forgotPassword')}
               </button>
             </div>
 
@@ -342,7 +346,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 fontWeight: 'var(--font-weight-semibold)',
               }}
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? t('login.signingIn') : t('login.signIn')}
             </button>
 
             {showTempLogin && (
@@ -358,14 +362,14 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-[#7C2D12] dark:text-[#FEF3C7]"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >
-                    Demo Access
+                    {t('login.demoAccess')}
                   </h2>
                 </div>
 
                 <button
                   type="button"
                   onClick={handleQuickLogin}
-                  aria-label="Continue to demo"
+                  aria-label={t('login.continueToDemo')}
                   className={cn(
                     'relative flex min-h-[44px] w-full items-center justify-center gap-2 overflow-hidden rounded-[var(--radius-button)] border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-sm transition-all hover:bg-[#FDECC8] group dark:border-[#FACC15] dark:bg-[#3A2608] dark:text-[#FEF3C7] dark:hover:bg-[#4A310A]'
                   )}
@@ -376,7 +380,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   }}
                 >
                   <Zap className="h-4 w-4 transition-transform group-hover:scale-110" aria-hidden="true" />
-                  <span>Quick Login</span>
+                  <span>{t('login.quickLogin')}</span>
                 </button>
               </div>
             )}
@@ -395,7 +399,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             }}
             className="text-white/70 drop-shadow-lg"
           >
-            All rights reserved. Ahmed Mahdy's redesign.
+            {t('login.footer')}
           </p>
         </div>
       </div>
@@ -412,7 +416,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               }}
               className="text-foreground mb-4"
             >
-              Reset Password
+              {t('login.resetPassword')}
             </h2>
             <form onSubmit={handleForgotPassword} className="space-y-5" noValidate>
               {/* Error Message */}
@@ -430,7 +434,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 >
                   <p>{error}</p>
                   <a href={`#${resetEmailId}`} className="mt-2 inline-flex min-h-11 items-center text-[#7F1D1D] underline">
-                    Go to email field
+                    {t('login.errors.goToField', { field: t('login.errors.emailField') })}
                   </a>
                 </div>
               )}
@@ -446,7 +450,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   }}
                   className="text-foreground block"
                 >
-                  Email
+                  {t('login.email')}
                 </label>
                 <input
                   id={resetEmailId}
@@ -457,7 +461,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     setError('');
                     setErrorField('');
                   }}
-                  placeholder="Enter your email"
+                  placeholder={t('login.resetEmailPlaceholder')}
                   required
                   aria-required="true"
                   aria-invalid={errorField === 'resetEmail'}
@@ -475,7 +479,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   }}
                 />
                 <p id={resetHintId} className="text-[var(--text-xs)] text-muted-foreground">
-                  Enter the email address associated with your HR Tool account.
+                  {t('login.resetEmailHint')}
                 </p>
               </div>
 
@@ -493,7 +497,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   fontWeight: 'var(--font-weight-semibold)',
                 }}
               >
-                {isLoading ? 'Resetting...' : 'Reset Password'}
+                {isLoading ? t('login.resetPasswordLoading') : t('login.resetPassword')}
               </button>
             </form>
 
@@ -507,7 +511,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   fontWeight: 'var(--font-weight-medium)',
                 }}
               >
-                A password reset link has been sent to your email.
+                {t('login.resetSuccess')}
               </div>
             )}
 
@@ -527,7 +531,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   setShowForgotPassword(false);
                 }}
               >
-                Back to Login
+                {t('login.backToLogin')}
               </button>
             </div>
           </div>

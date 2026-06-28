@@ -5,13 +5,67 @@ const data = JSON.parse(fs.readFileSync('translations.json', 'utf8'));
 // Build dictionary object from 'English Text' -> 'Arabic Translation'
 const dict = {};
 
+const normalizeArabic = (value) => value
+  .replace(/الأجازات/g, 'الإجازات')
+  .replace(/الأجازة/g, 'الإجازة')
+  .replace(/اجازات/g, 'إجازات')
+  .replace(/اجازة/g, 'إجازة')
+  .replace(/أجازات/g, 'إجازات')
+  .replace(/أجازة/g, 'إجازة')
+  .replace(/اجاز/g, 'إجاز')
+  .replace(/أجاز/g, 'إجاز')
+  .replace(/الفلاتر/g, 'عوامل التصفية')
+  .replace(/الفلتر/g, 'عامل التصفية')
+  .replace(/\bفلتر\b/g, 'تصفية')
+  .replace(/حجز المامورية/g, 'طلب مأمورية')
+  .replace(/المامورية/g, 'المأمورية');
+
+const curatedTranslations = {
+  'Dashboard': 'لوحة التحكم',
+  'Leaves Management': 'إدارة الإجازات',
+  'Leave Management': 'إدارة الإجازات',
+  'Leave': 'إجازة',
+  'Leaves': 'الإجازات',
+  'Leave Type': 'نوع الإجازة',
+  'Leave Details': 'تفاصيل الإجازة',
+  'Leave request details': 'تفاصيل طلب الإجازة',
+  'Request Leave': 'طلب إجازة',
+  'Request leave': 'طلب إجازة',
+  'Request Mission': 'طلب مأمورية',
+  'Create Leave': 'إنشاء طلب إجازة',
+  'Create a new leave request': 'إنشاء طلب إجازة جديد',
+  'Annual Leave': 'إجازة سنوية',
+  'Annual leave': 'إجازة سنوية',
+  'Sick Leave': 'إجازة مرضية',
+  'Casual Leave': 'إجازة عارضة',
+  'Maternity (appears only to females)': 'إجازة أمومة (تظهر للإناث فقط)',
+  'Paternity (appears only to males)': 'إجازة أبوة (تظهر للذكور فقط)',
+  'Vacation': 'إجازة',
+  'Filter': 'تصفية',
+  'Apply Filter': 'تطبيق التصفية',
+  'Clear Filter': 'مسح التصفية',
+  'clear all filters': 'مسح كل عوامل التصفية',
+  'Close filters': 'إغلاق عوامل التصفية',
+  'Filters applied': 'تم تطبيق عوامل التصفية',
+  'Filters applied successfully': 'تم تطبيق عوامل التصفية بنجاح',
+  'Filters cleared': 'تم مسح عوامل التصفية',
+  'Search results are based on selected filters.': 'تعتمد نتائج البحث على عوامل التصفية المحددة.',
+  'Approve': 'موافقة',
+  'Approve Leave': 'الموافقة على الإجازة',
+  'Approve Leaves': 'الموافقة على الإجازات',
+  'Approve Mission': 'الموافقة على المأمورية',
+  'Approve Missions': 'الموافقة على المأموريات',
+};
+
 data.forEach(row => {
   const eng = row['English Text'];
   const ar = row['Arabic Translation'];
   if (eng && ar) {
-    dict[eng.trim()] = ar.trim();
+    dict[eng.trim()] = normalizeArabic(ar.trim());
   }
 });
+
+Object.assign(dict, curatedTranslations);
 
 let fileContent = fs.readFileSync('src/lib/useArabicDomTranslation.ts', 'utf8');
 

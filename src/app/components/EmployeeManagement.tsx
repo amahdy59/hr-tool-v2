@@ -97,7 +97,9 @@ const labelClass = "block text-start text-[var(--text-sm)] font-[var(--font-weig
 const pageShellClass = "w-full max-w-7xl mx-auto px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 space-y-6";
 const tabHeaderClass = "flex w-full min-w-0 flex-col gap-4 md:flex-row md:items-center md:justify-between";
 const tabActionsClass = "flex min-h-[44px] w-full flex-col items-stretch gap-2 md:basis-[21rem] md:flex-row md:items-center md:justify-end md:shrink-0";
-const tabContentClass = "mt-4 w-full min-w-0 space-y-4";
+const employeeTabsClass = "w-full min-w-0 gap-3";
+const tabContentClass = "w-full min-w-0 space-y-4";
+const searchGroupClass = "w-full max-w-md space-y-1";
 const searchRowClass = "flex w-full items-center gap-3";
 const searchFieldClass = "relative w-full sm:max-w-sm";
 const tableCardClass = "w-full min-w-0 overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-[var(--elevation-sm)]";
@@ -291,7 +293,7 @@ export const EmployeeManagement: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="w-full min-w-0">
+      <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className={employeeTabsClass}>
         <div className={tabHeaderClass}>
           <TabsList className="min-w-0 md:flex-1">
             <TabsTrigger value="directory" className="text-[var(--text-sm)]">Directory</TabsTrigger>
@@ -331,12 +333,12 @@ export const EmployeeManagement: React.FC = () => {
         <TabsContent value="directory" className={tabContentClass}>
           {/* Search row */}
           <div className="flex flex-wrap items-end gap-3">
-            <div className="flex-1 min-w-[280px] space-y-1">
+            <div className="w-full min-w-[280px] space-y-1">
               <div className="flex items-center gap-2">
                 <label htmlFor="employee-directory-search" className={cn(labelClass, 'sr-only md:not-sr-only md:inline-block')}>Search Employees</label>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button type="button" aria-label="Search help" className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button>
+                    <button type="button" aria-label="Search help" className="inline-flex h-4 min-h-0 w-4 min-w-0 items-center justify-center p-0 cursor-pointer"><Info className="w-4 h-4 text-primary" /></button>
                   </TooltipTrigger>
                   <TooltipContent side="top" className="max-w-[240px] text-[var(--text-xs)]">
                     <p>Search by name, Employee number, or email.</p>
@@ -454,7 +456,7 @@ export const EmployeeManagement: React.FC = () => {
 
         {/* ── Activity Log Tab ── */}
         <TabsContent value="activity" className={tabContentClass}>
-          <div className="space-y-1 w-full max-w-md mb-4">
+          <div className={searchGroupClass}>
             <label htmlFor="employee-activity-search" className={labelClass}>Search Activity Log</label>
             <div className={searchRowClass}>
               <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
@@ -507,7 +509,7 @@ export const EmployeeManagement: React.FC = () => {
 
         {/* ── Departments Tab ── */}
         <TabsContent value="departments" className={tabContentClass}>
-          <div className="space-y-1 w-full max-w-md mb-4">
+          <div className={searchGroupClass}>
             <label htmlFor="employee-department-search" className={labelClass}>Search Departments</label>
             <div className={searchRowClass}>
               <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
@@ -561,7 +563,7 @@ export const EmployeeManagement: React.FC = () => {
 
         {/* ── Job Titles Tab ── */}
         <TabsContent value="jobtitles" className={tabContentClass}>
-          <div className="space-y-1 w-full max-w-md mb-4">
+          <div className={searchGroupClass}>
             <label htmlFor="employee-job-title-search" className={labelClass}>Search Job Titles</label>
             <div className={searchRowClass}>
               <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
