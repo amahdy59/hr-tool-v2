@@ -143,6 +143,25 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
     (acc.iban || '').toLowerCase().includes(query)
   );
 
+  const personalInfoFields = [
+    { label: 'Full Name (English)', value: personalInfo.nameEn || '' },
+    { label: 'Full Name (Arabic)', value: personalInfo.nameAr || '' },
+    { label: 'Date of Birth', value: new Date(personalInfo.dateOfBirth).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) },
+    { label: 'Gender', value: personalInfo.gender },
+    { label: 'Email', value: personalInfo.email },
+    { label: 'Mobile', value: maskPhoneNumber(personalInfo.mobile), sensitive: true },
+    { label: 'Landline', value: personalInfo.landline },
+    { label: 'National ID', value: maskPersonalId(personalInfo.nationalId), sensitive: true },
+    { label: 'Nationality', value: personalInfo.nationality },
+    { label: 'Address', value: personalInfo.address },
+  ];
+
+  const visiblePersonalInfoFields = personalInfoFields.filter(f =>
+    !query ||
+    f.label.toLowerCase().includes(query) ||
+    f.value.toLowerCase().includes(query)
+  );
+
   // Handlers - Personal Info
   const handleSavePersonalInfo = (data: PersonalInfoData) => {
     setPersonalInfo(data);
@@ -239,19 +258,19 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
       {/* Personal Information */}
       <ProfileCard title="Personal Information" onEdit={() => setEditPersonalOpen(true)} icon={<Shield className="w-4 h-4 text-muted-foreground" />}>
         <div className="grid grid-cols-1 gap-y-3">
-          <InfoItem label="Full Name (English)" value={personalInfo.nameEn} />
-          <InfoItem label="Full Name (Arabic)" value={personalInfo.nameAr} />
-          <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Arabic display names are shown from this Arabic name field or from HR-provided bilingual employee data.
-          </p>
-          <InfoItem label="Date of Birth" value={new Date(personalInfo.dateOfBirth).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} />
-          <InfoItem label="Gender" value={personalInfo.gender} />
-          <InfoItem label="Email" value={personalInfo.email} />
-          <InfoItem label="Mobile" value={maskPhoneNumber(personalInfo.mobile)} sensitive />
-          <InfoItem label="Landline" value={personalInfo.landline} />
-          <InfoItem label="National ID" value={maskPersonalId(personalInfo.nationalId)} sensitive />
-          <InfoItem label="Nationality" value={personalInfo.nationality} />
-          <InfoItem label="Address" value={personalInfo.address} />
+          {visiblePersonalInfoFields.map((f, idx) => (
+            <InfoItem key={idx} label={f.label} value={f.value} sensitive={f.sensitive} />
+          ))}
+          {visiblePersonalInfoFields.some(f => f.label.includes('Arabic')) && (
+            <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Arabic display names are shown from this Arabic name field or from HR-provided bilingual employee data.
+            </p>
+          )}
+          {visiblePersonalInfoFields.length === 0 && (
+            <p className="text-center text-muted-foreground text-[var(--text-sm)] py-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+              No personal details match your search.
+            </p>
+          )}
         </div>
       </ProfileCard>
 
