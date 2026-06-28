@@ -419,7 +419,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
     <div 
       className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)] focus-visible:outline-none"
       dir={isArabic ? 'rtl' : 'ltr'}
-      role="grid"
+      role="region"
       aria-label={isArabic ? 'جدول المواعيد والغياب' : 'Attendance and Leave Calendar'}
     >
       {/* Calendar Header with Navigation, Range Display, and View Toggles */}
@@ -501,7 +501,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
       {/* --- GRID VIEWS --- */}
       {calendarView === 'three-day' ? (
         /* 3-Day Layout (Optimized for Mobile/Compact) */
-        <div className="grid grid-cols-3 divide-x divide-border rtl:divide-x-reverse" style={{ minHeight: 380 }} role="row">
+        <div role="grid" aria-label={isArabic ? 'جدول المواعيد والغياب' : 'Attendance and Leave Calendar'} className="w-full">
+          <div className="grid grid-cols-3 divide-x divide-border rtl:divide-x-reverse" style={{ minHeight: 380 }} role="row">
           {threeDayCells.map((cell, idx) => {
             const isTodayHighlight = cell.isToday;
             const cellDate = new Date(cell.dateStr);
@@ -598,10 +599,11 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
               </div>
             );
           })}
+          </div>
         </div>
       ) : (
         /* 7-Column Grid Layout (Month and Week Views) */
-        <>
+        <div role="grid" aria-label={isArabic ? 'جدول المواعيد والغياب' : 'Attendance and Leave Calendar'} className="w-full">
           {/* Enhanced Day-of-Week Labels */}
           <div className="grid grid-cols-7 border-b border-border bg-muted/20" role="row">
             {dayLabels.map((day) => (
@@ -660,8 +662,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                       className={cn(
                         'w-6 h-6 flex items-center justify-center rounded-full text-xs shrink-0 font-bold',
                         cell.isToday && 'bg-primary text-primary-foreground font-extrabold shadow-sm scale-110',
-                        isWeekend && 'text-muted-foreground font-semibold',
-                        !cell.isCurrentMonth && 'text-muted-foreground',
+                        isWeekend && !cell.isToday && 'text-muted-foreground font-semibold',
+                        !cell.isCurrentMonth && !cell.isToday && 'text-muted-foreground',
                         cell.isCurrentMonth && !cell.isToday && !isWeekend && 'text-foreground'
                       )}
                     >
@@ -720,7 +722,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
 
       {/* Interactive Legend with toggle filter functionality */}

@@ -415,8 +415,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </PopoverTrigger>
               <PopoverContent className="p-4 space-y-4 w-72">
                 <div className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
+                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-leave-type">Leave Type</label>
                   <select
+                    id="mobile-history-leave-type"
+                    aria-label="Filter by Leave Type"
                     value={historyLeaveType}
                     onChange={(event) => setHistoryLeaveType(event.target.value)}
                     className="field-control min-h-[44px] w-full rounded-[var(--radius-input)] px-3 text-[var(--text-sm)]"
@@ -442,8 +444,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             {/* Desktop Inline Filters */}
             <div className="hidden xl:flex items-center gap-3 flex-wrap">
               <div className="space-y-1">
-                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]">Leave Type</label>
+                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-leave-type">Leave Type</label>
                   <select
+                    id="desktop-history-leave-type"
+                    aria-label="Filter by Leave Type"
                     value={historyLeaveType}
                     onChange={(event) => setHistoryLeaveType(event.target.value)}
                     className="field-control min-h-[44px] w-44 rounded-[var(--radius-input)] px-3 text-[var(--text-sm)]"

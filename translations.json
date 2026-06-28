@@ -3181,6 +3181,12 @@
     "UI Category": "Label"
   },
   {
+    "Source Index": 2000,
+    "English Text": "Manager Actions",
+    "Arabic Translation": "إجراءات الإدارة",
+    "UI Category": "Label"
+  },
+  {
     "Source Index": 601,
     "English Text": "Manager?",
     "Arabic Translation": "مدير؟",

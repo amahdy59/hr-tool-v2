@@ -323,8 +323,8 @@ export const EmployeeManagement: React.FC = () => {
         <TabsContent value="directory" className="space-y-4 mt-4">
           {/* Search row */}
           <div className="flex flex-wrap items-end gap-3">
-            <div className="flex-1 min-w-[280px] space-y-1.5 hidden md:block">
-              <div className="flex items-center gap-2">
+            <div className="flex-1 min-w-[280px] space-y-1.5">
+              <div className="flex items-center gap-2 hidden md:flex">
                 <label className={labelClass}>Search Employees</label>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -363,6 +363,22 @@ export const EmployeeManagement: React.FC = () => {
                     />
                   </PopoverContent>
                 </Popover>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button type="button" aria-label="Open manager actions" className="h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-card hover:bg-muted text-muted-foreground transition-colors cursor-pointer flex items-center justify-center gap-2">
+                      <MoreVertical className="w-4 h-4" />
+                      <span className="hidden sm:inline">Manager Actions</span>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem onClick={() => setAddFormerOpen(true)} className="cursor-pointer gap-2">
+                      <UserPlus className="w-4 h-4" /> Add Former Employee
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setActiveSubTab('activity')} className="cursor-pointer gap-2">
+                      <Eye className="w-4 h-4" /> View Activity Log
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </div>
@@ -410,12 +426,6 @@ export const EmployeeManagement: React.FC = () => {
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => { setAccessCardEmp(emp); setAccessCardsOpen(true); }} className="cursor-pointer gap-2">
                                 <CreditCard className="w-4 h-4" /> Manage Access Cards
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => { setActivityLogDetail(activityLog[0] || null); setActivityLogDetailOpen(true); }} className="cursor-pointer gap-2">
-                                <Eye className="w-4 h-4" /> View Activity Log
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => setAddFormerOpen(true)} className="cursor-pointer gap-2">
-                                <UserPlus className="w-4 h-4" /> Add Former Employee
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem variant="destructive" onClick={() => { setTerminateEmp(emp); setTerminateOpen(true); }} className="cursor-pointer gap-2">

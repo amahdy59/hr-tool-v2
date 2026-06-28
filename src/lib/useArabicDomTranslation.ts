@@ -538,6 +538,7 @@ const dictionary: Record<string, string> = {
   "Manage Employees": "إدارة الموظفين",
   "Managed by HR": "تديره الموارد البشرية",
   "Manager": "المدير",
+  "Manager Actions": "إجراءات الإدارة",
   "Manager?": "مدير؟",
   "Mar": "مارس",
   "March": "مارس",
