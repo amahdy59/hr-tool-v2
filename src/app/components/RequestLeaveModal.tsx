@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Dialog,
   DialogContent,
@@ -59,6 +60,14 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   initialData,
   mode = 'add',
 }) => {
+  const { i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+
+  const toEasternArabic = (val: number | string) => {
+    if (!isArabic) return val;
+    return String(val).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[parseInt(d)]);
+  };
+
   // Current user mock profile details (Ahmed Mahdy)
   const gender: string = 'Male';
   const graduationYear = 2013;
@@ -182,16 +191,16 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   }, [fromDate, toDate, daysRequested]);
 
   const balanceSummaryItems = [
-    { label: 'Current balance', value: currentBalance, className: 'text-foreground' },
+    { label: 'Current Balance', value: currentBalance, className: 'text-foreground' },
     {
       label: 'Requesting',
       value: daysRequested > 0 ? `-${daysRequested}` : '0',
-      className: daysRequested > 0 ? 'text-[var(--chart-4)]' : 'text-muted-foreground',
+      className: daysRequested > 0 ? 'text-orange-500 dark:text-orange-500 font-medium' : 'text-muted-foreground',
     },
     {
       label: 'Remaining when approved',
       value: remainingBalance,
-      className: remainingBalance < 0 ? 'text-destructive' : 'text-[var(--chart-3)]',
+      className: remainingBalance < 0 ? 'text-destructive' : 'text-emerald-600 dark:text-emerald-300 font-medium',
     },
   ];
 
@@ -410,27 +419,24 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
 
           {isVacationRequest && (
             <dl
-              className="grid grid-cols-3 overflow-hidden rounded-[var(--radius-lg)] border border-border bg-muted/30 shadow-sm"
+              className="grid grid-cols-3 gap-2 px-1 py-1"
               style={{ fontFamily: "'Inter', sans-serif" }}
               aria-label="Leave balance summary"
             >
-              {balanceSummaryItems.map((item, index) => (
+              {balanceSummaryItems.map((item) => (
                 <div
                   key={item.label}
-                  className={cn(
-                    'flex min-h-[92px] flex-col items-center justify-center gap-2 px-2.5 py-3 text-center',
-                    index > 0 && 'border-s border-border'
-                  )}
+                  className="flex flex-col items-center justify-center gap-1.5 py-1 text-center"
                 >
                   <dd
                     className={cn(
-                      'order-1 w-full text-center text-[30px] font-[var(--font-weight-bold)] leading-none tabular-nums',
+                      'order-1 w-full text-center text-[30px] font-bold leading-none tabular-nums',
                       item.className
                     )}
                   >
-                    {item.value}
+                    {toEasternArabic(item.value)}
                   </dd>
-                  <dt className="order-2 flex min-h-[32px] w-full items-start justify-center text-center text-[11px] font-[var(--font-weight-medium)] leading-tight text-muted-foreground [text-wrap:balance]">
+                  <dt className="order-2 flex min-h-[32px] w-full items-start justify-center text-center text-[11px] font-medium leading-tight text-muted-foreground [text-wrap:balance]">
                     {item.label}
                   </dt>
                 </div>
