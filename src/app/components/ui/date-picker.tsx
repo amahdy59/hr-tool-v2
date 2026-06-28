@@ -37,8 +37,12 @@ export function DatePicker({
   "aria-invalid": ariaInvalid,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+
+  const toEasternArabic = (val: number | string) => {
+    return String(val).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[parseInt(d)]);
+  };
 
   // Parse the value string (YYYY-MM-DD) to a Date object safely
   const selectedDate = React.useMemo(() => {
@@ -69,7 +73,8 @@ export function DatePicker({
           variant="outline"
           disabled={disabled}
           data-slot="date-picker-trigger"
-          aria-label={ariaLabel || placeholder}
+          data-no-auto-translate="true"
+          aria-label={ariaLabel || t(placeholder)}
           aria-describedby={ariaDescribedBy}
           aria-invalid={ariaInvalid}
           aria-haspopup="dialog"
@@ -89,10 +94,12 @@ export function DatePicker({
           <CalendarIcon className="me-2 h-4 w-4 shrink-0" />
           {selectedDate ? (
             <span className="text-foreground truncate">
-              {format(selectedDate, "dd MMMM yyyy", { locale: isArabic ? ar : undefined })}
+              {isArabic 
+                ? toEasternArabic(format(selectedDate, "dd MMMM yyyy", { locale: ar })) 
+                : format(selectedDate, "dd MMMM yyyy")}
             </span>
           ) : (
-            <span className="truncate">{placeholder}</span>
+            <span className="truncate">{t(placeholder)}</span>
           )}
         </Button>
       </PopoverTrigger>
