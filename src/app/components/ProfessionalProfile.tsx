@@ -1194,9 +1194,7 @@ const CertificationItem: React.FC<{
       </div>
     </div>
   );
-};
-
-const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () => void }> = ({ data, onEdit, onDelete }) => {
+};const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () => void }> = ({ data, onEdit, onDelete }) => {
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'Beginner': return 'bg-[#EEF2F7] text-[#334155] border-[#94A3B8]';
@@ -1222,7 +1220,7 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
         type="button"
         onClick={(e) => { e.stopPropagation(); onDelete(); }}
         aria-label={`Delete ${data.name} skill`}
-        className="flex h-4 w-4 items-center justify-center rounded-full opacity-0 transition-opacity hover:scale-110 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1"
+        className="flex h-4 w-4 items-center justify-center rounded-full opacity-60 transition-opacity hover:opacity-100 hover:scale-110 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1"
       >
         <X className="w-3.5 h-3.5" />
       </button>
