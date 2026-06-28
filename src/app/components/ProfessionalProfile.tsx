@@ -7,6 +7,15 @@ import { Button } from './ui/button';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from './ui/dialog';
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  Pencil, Phone, Globe, Plus, ExternalLink, Download, X, Trash2, ChevronUp, ChevronDown, Star, Calendar, MapPin, Briefcase, GripVertical, ChevronRight,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+} from './ui/dialog';
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from './ui/select';
@@ -14,8 +23,8 @@ import { toast } from 'sonner';
 import { Resume } from './Resume';
 
 // ── Shared styles ──
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
-const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
+const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const labelClass = 'block text-start w-full text-[var(--text-base)] font-[var(--font-weight-medium)] text-foreground';
 const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 const sectionIdFromTitle = (title: string) => `professional-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 const maskPhoneNumber = (phone: string): string => {
@@ -720,45 +729,45 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
     <section aria-labelledby="professional-profile-heading" className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 id="professional-profile-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Professional Profile</h3>
-        <p className="text-[var(--text-xs)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <p className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
           Last updated: {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.25fr)] gap-4 lg:gap-5 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(320px,380px)_1fr] xl:grid-cols-[380px_1fr] gap-6 items-start">
         {/* Top/First Column content */}
-        <div className="space-y-4 lg:space-y-5">
+        <div className="space-y-6">
           {/* Profile Strength */}
-          <div className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)]">
+          <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Profile Strength</span>
-              <span className="text-[var(--text-sm)] font-[var(--font-weight-bold)] text-chart-3" style={{ fontFamily: "'Inter', sans-serif" }}>{completionScore}%</span>
+              <span className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Profile Strength</span>
+              <span className="text-[var(--text-base)] font-[var(--font-weight-bold)] text-chart-3" style={{ fontFamily: "'Inter', sans-serif" }}>{completionScore}%</span>
             </div>
             <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
               <div className="bg-chart-3 h-full rounded-full transition-all duration-500" style={{ width: `${completionScore}%` }} />
             </div>
-            <p className="text-[var(--text-xs)] text-foreground mt-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <p className="text-[var(--text-sm)] text-foreground mt-2" style={{ fontFamily: "'Inter', sans-serif" }}>
               {completionScore === 100 ? 'Your profile is complete!' : 'Add more details to strengthen your profile'}
             </p>
           </div>
 
           {/* About */}
           <ProfileCard title="About Me" onEdit={() => setEditAboutOpen(true)}>
-            <p className="text-[var(--text-sm)] text-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{about}</p>
+            <p className="text-[var(--text-base)] text-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{about}</p>
           </ProfileCard>
 
           {/* Contact Information */}
           <ProfileCard title="Contact Information" onEdit={() => setEditContactOpen(true)}>
-            <div className="space-y-2.5 text-[var(--text-sm)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <div className="space-y-2.5 text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}>
               <div className="flex items-center gap-2.5 text-foreground">
                 <Phone className="w-4 h-4 text-muted-foreground" />
-                <span className="inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide">
+                <span className="inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2.5 py-1 font-mono tracking-wide text-[var(--text-base)]">
                   {maskPhoneNumber(contact.phone)}
                 </span>
               </div>
               <div className="flex items-center gap-2.5 text-foreground"><Globe className="w-4 h-4 text-primary" /> <a href={`https://${contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="font-medium underline decoration-primary underline-offset-4 hover:text-primary">{contact.linkedin}<span className="sr-only"> opens in a new tab</span></a></div>
               <div className="flex items-center gap-2.5 text-foreground"><Globe className="w-4 h-4 text-primary" /> <a href={`https://${contact.dribbble}`} target="_blank" rel="noopener noreferrer" className="font-medium underline decoration-primary underline-offset-4 hover:text-primary">{contact.dribbble}<span className="sr-only"> opens in a new tab</span></a></div>
-              <p className="text-[var(--text-xs)] text-foreground">Email is hidden from the public profile and PDF export.</p>
+              <p className="text-[var(--text-sm)] text-muted-foreground">Email is hidden from the public profile and PDF export.</p>
             </div>
           </ProfileCard>
 
@@ -783,7 +792,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
           <ProfileCard title="Skills" showAdd onAdd={handleAddSkill}>
             <div className="space-y-3">
               <div>
-                <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Core UX & Design</p>
+                <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Core UX & Design</p>
                 <div className="flex flex-wrap gap-2">
                   {skills.filter(s => s.category.includes('UX')).map(s => (
                     <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
@@ -791,7 +800,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
                 </div>
               </div>
               <div>
-                <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground mb-2 mt-4" style={{ fontFamily: "'Inter', sans-serif" }}>Data Analysis & Visualization</p>
+                <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground mb-2 mt-4" style={{ fontFamily: "'Inter', sans-serif" }}>Data Analysis & Visualization</p>
                 <div className="flex flex-wrap gap-2">
                   {skills.filter(s => s.category.includes('Data')).map(s => (
                     <SkillBadge key={s.id} data={s} onEdit={() => handleEditSkill(s)} onDelete={() => handleDeleteSkill(s.id)} />
@@ -803,7 +812,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
         </div>
 
         {/* Right Column */}
-        <div className="space-y-4 lg:space-y-5">
+        <div className="space-y-6">
           {/* Projects */}
           <ProfileCard title="Projects" showAdd onAdd={handleAddProject}>
             <div className="space-y-4">
@@ -871,8 +880,8 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
 
           {/* Export Resume Button */}
           <div className="flex justify-end pt-1">
-            <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2 whitespace-nowrap" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
-              <Download className="w-4 h-4" /> Download PDF Resume
+            <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2 whitespace-nowrap min-h-11 px-6 text-base font-semibold" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
+              <Download className="w-5 h-5" /> Download PDF Resume
             </Button>
           </div>
         </div>
@@ -952,11 +961,11 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any }> = ({ currentUse
 const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?: () => void; showAdd?: boolean; onAdd?: () => void }> = ({ title, children, onEdit, showAdd, onAdd }) => {
   const headingId = sectionIdFromTitle(title);
   return (
-  <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] space-y-3">
-    <div className="flex items-center justify-between border-b border-border pb-2">
-      <span id={headingId} className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
+  <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="flex items-center justify-between border-b border-border pb-3">
+      <span id={headingId} className="text-[var(--text-lg)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
       <div className="flex gap-1">
-        {showAdd && <button onClick={onAdd} className={iconButtonClass} aria-label={`Add ${title}`}><Plus className="w-4 h-4" /></button>}
+        {showAdd && <button onClick={onAdd} className={iconButtonClass} aria-label={`Add ${title}`}><Plus className="w-5 h-5" /></button>}
         {onEdit && <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${title}`}><Pencil className="w-4 h-4" /></button>}
       </div>
     </div>
@@ -1000,24 +1009,24 @@ const ExperienceItem: React.FC<{
         <div className="absolute -start-[5px] top-[6px] w-2.5 h-2.5 bg-muted-foreground rounded-full z-10" />
 
         <div className="space-y-2">
-          <p className="text-sm font-bold text-foreground pt-0.5">{data.role}</p>
+          <p className="text-base font-bold text-foreground pt-0.5">{data.role}</p>
 
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
               {data.currentlyWorking ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}
             </span>
             {data.location && (
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
                 {data.location}
               </span>
             )}
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
               {data.employmentType}
             </span>
           </div>
 
           {data.desc && (
-            <ul className="space-y-2 pt-2 list-disc ps-4 text-sm text-foreground/90 marker:text-primary">
+            <ul className="space-y-2 pt-2 list-disc ps-4 text-base text-foreground/90 marker:text-primary">
               {bullets.map((bullet, idx) => (
                 <li key={idx} className="leading-relaxed">
                   {bullet.replace(/^[-•]\s*/, '')}
@@ -1029,7 +1038,7 @@ const ExperienceItem: React.FC<{
           {data.desc.length > 150 && (
             <button
               onClick={onToggleExpand}
-              className="text-xs text-primary hover:underline mt-2 font-medium"
+              className="text-sm text-primary hover:underline mt-2 font-medium"
             >
               {expanded ? 'Show less' : 'Show more'}
             </button>
@@ -1037,7 +1046,7 @@ const ExperienceItem: React.FC<{
         </div>
       </div>
 
-      <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
         {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.company} experience up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
         {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.company} experience down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
         <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.company} experience`} title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -1072,14 +1081,14 @@ const EducationItem: React.FC<{
       <div className="absolute -start-[5px] top-[6px] w-2.5 h-2.5 bg-muted-foreground rounded-full z-10" />
 
       <div className="space-y-2">
-        <p className="text-sm font-bold text-foreground pt-0.5">{data.degree}{data.fieldOfStudy && `, ${data.fieldOfStudy}`}</p>
+        <p className="text-base font-bold text-foreground pt-0.5">{data.degree}{data.fieldOfStudy && `, ${data.fieldOfStudy}`}</p>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
             {data.currentlyStudying ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}
           </span>
           {data.grade && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-xs text-foreground whitespace-nowrap">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
               Grade: {data.grade}
             </span>
           )}
@@ -1087,7 +1096,7 @@ const EducationItem: React.FC<{
       </div>
     </div>
 
-    <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+    <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
       {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.school} education up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
       {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.school} education down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
       <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.school} education`} title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -1104,26 +1113,26 @@ const ProjectItem: React.FC<{
   onDelete: () => void;
   onMove: (dir: 'up' | 'down') => void;
 }> = ({ data, isFirst, isLast, onEdit, onDelete, onMove }) => (
-  <div className="relative group space-y-2 pb-6 border-b border-border last:border-b-0 last:pb-0">
+  <div className="relative group space-y-2.5 pb-6 border-b border-border last:border-b-0 last:pb-0">
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
       <div className="flex items-center gap-2 flex-1">
-        <h3 className="text-base font-bold text-foreground">{data.title}</h3>
-        {data.featured && <span title="Featured project"><Star className="w-4 h-4 text-[#0F766E] fill-[#0F766E] dark:text-[#2DD4BF] dark:fill-[#2DD4BF]" /></span>}
+        <h3 className="text-lg font-bold text-foreground">{data.title}</h3>
+        {data.featured && <span title="Featured project"><Star className="w-4.5 h-4.5 text-[#0F766E] fill-[#0F766E] dark:text-[#2DD4BF] dark:fill-[#2DD4BF]" /></span>}
       </div>
-      <span className="px-2 py-1 bg-muted/50 text-foreground rounded-full text-xs font-medium shrink-0 w-fit">
+      <span className="px-2.5 py-1 bg-muted/50 text-foreground rounded-full text-sm font-medium shrink-0 w-fit">
         {data.category}
       </span>
     </div>
-    <p className="text-sm text-foreground">
+    <p className="text-base text-foreground font-[var(--font-weight-medium)]">
       {data.role} - {data.issueDate}
     </p>
-    <p className="text-sm text-foreground/90 leading-relaxed pt-1">
+    <p className="text-base text-foreground/90 leading-relaxed pt-1">
       {data.desc}
     </p>
     {data.toolsUsed.length > 0 && (
       <div className="flex flex-wrap gap-2 pt-2">
         {data.toolsUsed.map((tool, idx) => (
-          <span key={idx} className="px-2 py-1 bg-[#EFF6FF] text-[#1D4ED8] dark:bg-[#1E3A8A]/30 dark:text-[#93C5FD] rounded text-xs font-medium">
+          <span key={idx} className="px-2.5 py-1 bg-[#EFF6FF] text-[#1D4ED8] dark:bg-[#1E3A8A]/30 dark:text-[#93C5FD] rounded text-sm font-medium">
             {tool}
           </span>
         ))}
@@ -1131,14 +1140,14 @@ const ProjectItem: React.FC<{
     )}
     {data.url && (
       <div className="pt-3">
-        <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
+        <Button variant="outline" size="default" asChild className="gap-2 text-base font-medium hover:bg-muted whitespace-nowrap min-h-11">
           <a href={/^https?:\/\//i.test(data.url) ? data.url : `https://${data.url}`} target="_blank" rel="noopener noreferrer">
-            View Project <ExternalLink className="w-3.5 h-3.5" /><span className="sr-only"> opens in a new tab</span>
+            View Project <ExternalLink className="w-4 h-4" /><span className="sr-only"> opens in a new tab</span>
           </a>
         </Button>
       </div>
     )}
-    <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+    <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
       {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.title} project up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
       {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.title} project down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
       <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.title} project`} title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -1161,23 +1170,23 @@ const CertificationItem: React.FC<{
     <div className="relative group space-y-1.5 pb-6 border-b border-border last:border-b-0 last:pb-0">
       <div className="flex items-center gap-2">
         <h3 className="text-base font-bold text-foreground">{data.title}</h3>
-        {isExpired && <span className="px-2 py-0.5 bg-[#FDECEC] text-[#7F1D1D] border border-[#B91C1C] rounded-full text-xs font-semibold">Expired</span>}
+        {isExpired && <span className="px-2 py-0.5 bg-[#FDECEC] text-[#7F1D1D] border border-[#B91C1C] rounded-full text-sm font-semibold">Expired</span>}
       </div>
-      <p className="text-sm text-foreground">{data.issuer}</p>
-      <p className="text-sm text-foreground pt-1">
+      <p className="text-base text-foreground">{data.issuer}</p>
+      <p className="text-base text-muted-foreground pt-1">
         Issued {data.issueDate}{data.expiryDate && ` - Expires ${data.expiryDate}`}
         {data.credentialId && ` - ID: ${data.credentialId}`}
       </p>
       {data.credentialUrl && (
         <div className="pt-3">
-          <Button variant="outline" size="sm" asChild className="gap-2 text-sm font-medium hover:bg-muted whitespace-nowrap">
+          <Button variant="outline" size="default" asChild className="gap-2 text-base font-medium hover:bg-muted whitespace-nowrap min-h-11">
             <a href={/^https?:\/\//i.test(data.credentialUrl) ? data.credentialUrl : `https://${data.credentialUrl}`} target="_blank" rel="noopener noreferrer">
-              Show Credential <ExternalLink className="w-3.5 h-3.5" /><span className="sr-only"> opens in a new tab</span>
+              Show Credential <ExternalLink className="w-4 h-4" /><span className="sr-only"> opens in a new tab</span>
             </a>
           </Button>
         </div>
       )}
-      <div className="absolute top-0 right-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
         {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.title} certification up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
         {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.title} certification down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
         <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.title} certification`} title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -1202,7 +1211,7 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
     <span
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdit(); } }}
-      className={cn("group relative min-h-8 w-fit rounded-full border px-3 py-1 text-[var(--text-xs)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-1.5 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
+      className={cn("group relative min-h-9 w-fit rounded-full border px-3.5 py-1.5 text-[var(--text-sm)] font-[var(--font-weight-semibold)] inline-flex items-center justify-center gap-1.5 text-center leading-none cursor-pointer transition-all hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary whitespace-nowrap", getLevelColor(data.level))}
       onClick={onEdit}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
@@ -1215,7 +1224,7 @@ const SkillBadge: React.FC<{ data: SkillData; onEdit: () => void; onDelete: () =
         aria-label={`Delete ${data.name} skill`}
         className="flex h-4 w-4 items-center justify-center rounded-full opacity-0 transition-opacity hover:scale-110 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive focus-visible:ring-offset-1"
       >
-        <X className="w-3 h-3" />
+        <X className="w-3.5 h-3.5" />
       </button>
     </span>
   );
@@ -1240,9 +1249,9 @@ const EditAboutModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
       <DialogContent className="sm:max-w-md">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>Edit About</DialogTitle><DialogDescription className="sr-only">Edit about section</DialogDescription></DialogHeader>
         <div className="space-y-1.5">
-          <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>About</label>
-          <textarea dir="auto" value={text} onChange={e => setText(e.target.value.slice(0, maxChars))} rows={5} className={cn(inputClass, 'h-auto py-2')} style={{ fontFamily: "'Inter', sans-serif" }} />
-          <p className="text-[var(--text-xs)] text-muted-foreground text-end" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <label htmlFor="edit-about-textarea" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>About</label>
+          <textarea id="edit-about-textarea" dir="auto" value={text} onChange={e => setText(e.target.value.slice(0, maxChars))} rows={5} className={cn(inputClass, 'h-auto py-3 text-[var(--text-base)]')} style={{ fontFamily: "'Inter', sans-serif" }} />
+          <p className="text-[var(--text-sm)] text-muted-foreground text-end" style={{ fontFamily: "'Inter', sans-serif" }}>
             {text.length}/{maxChars} characters
           </p>
         </div>
@@ -1348,9 +1357,9 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
           <div className="md:col-span-2"><FormField label="Company *" value={company} onChange={setCompany} /></div>
           <div className="md:col-span-2"><FormField label="Job Title *" value={role} onChange={setRole} /></div>
           <div className="space-y-1.5">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Employment Type</label>
+            <label id="employment-type-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Employment Type</label>
             <Select value={employmentType} onValueChange={setEmploymentType}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger aria-labelledby="employment-type-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Full-time">Full-time</SelectItem>
                 <SelectItem value="Part-time">Part-time</SelectItem>
@@ -1365,8 +1374,8 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
           <FormField label="End Date" value={endDate} onChange={setEndDate} placeholder="e.g., Dec 2024" disabled={currentlyWorking} />
           <div className="md:col-span-2">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={currentlyWorking} onChange={e => setCurrentlyWorking(e.target.checked)} className="w-4 h-4 rounded border-border text-chart-3 focus:ring-2 focus:ring-ring/50" />
-              <span className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>I currently work here</span>
+              <input id="currently-working-checkbox" type="checkbox" checked={currentlyWorking} onChange={e => setCurrentlyWorking(e.target.checked)} className="w-4.5 h-4.5 rounded border-border text-chart-3 focus:ring-2 focus:ring-ring/50" />
+              <span className="text-[var(--text-base)] text-foreground font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>I currently work here</span>
             </label>
           </div>
           <div className="md:col-span-2 space-y-1.5">
@@ -1437,8 +1446,8 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
           <FormField label="Grade" value={grade} onChange={setGrade} placeholder="e.g., Excellent, 3.8 GPA" />
           <div className="md:col-span-2">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={currentlyStudying} onChange={e => setCurrentlyStudying(e.target.checked)} className="w-4 h-4 rounded border-border text-chart-3 focus:ring-2 focus:ring-ring/50" />
-              <span className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>I currently study here</span>
+              <input id="currently-studying-checkbox" type="checkbox" checked={currentlyStudying} onChange={e => setCurrentlyStudying(e.target.checked)} className="w-4.5 h-4.5 rounded border-border text-chart-3 focus:ring-2 focus:ring-ring/50" />
+              <span className="text-[var(--text-base)] text-foreground font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>I currently study here</span>
             </label>
           </div>
           <div className="md:col-span-2 space-y-1.5">
@@ -1506,9 +1515,9 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <FormField label="Issue Date" value={issueDate} onChange={setIssueDate} placeholder="e.g., 2024" />
           <FormField label="Project URL" value={url} onChange={setUrl} placeholder="https://" />
           <div className="md:col-span-2 space-y-1.5">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Tools Used</label>
-            <input type="text" value={toolsUsed} onChange={e => setToolsUsed(e.target.value)} className={inputClass} placeholder="Separate with commas" style={{ fontFamily: "'Inter', sans-serif" }} />
-            <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>e.g., Figma, Adobe XD, User Research</p>
+            <label htmlFor="tools-used-input" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Tools Used</label>
+            <input id="tools-used-input" type="text" value={toolsUsed} onChange={e => setToolsUsed(e.target.value)} className={inputClass} placeholder="Separate with commas" style={{ fontFamily: "'Inter', sans-serif" }} />
+            <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>e.g., Figma, Adobe XD, User Research</p>
           </div>
           <div className="md:col-span-2 space-y-1.5">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
@@ -1516,8 +1525,8 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           </div>
           <div className="md:col-span-2">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={featured} onChange={e => setFeatured(e.target.checked)} className="w-4 h-4 rounded border-border text-chart-3 focus:ring-2 focus:ring-ring/50" />
-              <span className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Feature this project (pin to top)</span>
+              <input id="featured-checkbox" type="checkbox" checked={featured} onChange={e => setFeatured(e.target.checked)} className="w-4.5 h-4.5 rounded border-border text-chart-3 focus:ring-2 focus:ring-ring/50" />
+              <span className="text-[var(--text-base)] text-foreground font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>Feature this project (pin to top)</span>
             </label>
           </div>
         </div>
@@ -1591,10 +1600,10 @@ const EditSkillModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
         <div className="space-y-4">
           <FormField label="Skill Name *" value={name} onChange={setName} placeholder="e.g., Figma" />
           <div className="space-y-1.5">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
+            <label id="skill-category-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
             {isCustomCategory ? (
               <div className="flex gap-2">
-                <input type="text" value={category} onChange={e => setCategory(e.target.value)} className={inputClass} placeholder="e.g., Programming" style={{ fontFamily: "'Inter', sans-serif" }} />
+                <input id="custom-category-input" type="text" value={category} onChange={e => setCategory(e.target.value)} className={inputClass} placeholder="e.g., Programming" style={{ fontFamily: "'Inter', sans-serif" }} />
                 <Button variant="ghost" type="button" onClick={() => { setIsCustomCategory(false); setCategory(predefinedCategories[0]); }} className="rounded-[var(--radius-button)]">Cancel</Button>
               </div>
             ) : (
@@ -1606,7 +1615,7 @@ const EditSkillModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
                   setCategory(val);
                 }
               }}>
-                <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+                <SelectTrigger aria-labelledby="skill-category-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
                 <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                   {predefinedCategories.map(cat => (
                     <SelectItem key={cat} value={cat}>{cat}</SelectItem>
@@ -1617,9 +1626,9 @@ const EditSkillModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
             )}
           </div>
           <div className="space-y-1.5">
-            <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Proficiency Level</label>
+            <label id="proficiency-level-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Proficiency Level</label>
             <Select value={level} onValueChange={setLevel}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger aria-labelledby="proficiency-level-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Beginner">Beginner</SelectItem>
                 <SelectItem value="Intermediate">Intermediate</SelectItem>
@@ -1639,9 +1648,12 @@ const EditSkillModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
 };
 
 // Form field helper
-const FormField: React.FC<{ label: string; value: string; onChange: (v: string) => void; type?: string; placeholder?: string; disabled?: boolean }> = ({ label, value, onChange, type = 'text', placeholder, disabled }) => (
-  <div className="space-y-1.5">
-    <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>{label}</label>
-    <input type={type} value={value} onChange={e => onChange(e.target.value)} className={inputClass} placeholder={placeholder} disabled={disabled} style={{ fontFamily: "'Inter', sans-serif" }} />
-  </div>
-);
+const FormField: React.FC<{ id?: string; label: string; value: string; onChange: (v: string) => void; type?: string; placeholder?: string; disabled?: boolean }> = ({ id, label, value, onChange, type = 'text', placeholder, disabled }) => {
+  const inputId = id || `input-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Math.random().toString(36).substr(2, 9)}`;
+  return (
+    <div className="space-y-1.5">
+      <label htmlFor={inputId} className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>{label}</label>
+      <input id={inputId} type={type} value={value} onChange={e => onChange(e.target.value)} className={inputClass} placeholder={placeholder} disabled={disabled} style={{ fontFamily: "'Inter', sans-serif" }} />
+    </div>
+  );
+};
