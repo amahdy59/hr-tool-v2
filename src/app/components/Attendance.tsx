@@ -427,7 +427,7 @@ export const Attendance: React.FC = () => {
             <label htmlFor="attendance-employee-search" className="text-foreground">Search Employees</label>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button className="h-11 w-11 cursor-pointer rounded-[var(--radius-sm)] hover:bg-muted" aria-label="Show employee search tips">
+                <button type="button" className="h-11 w-11 cursor-pointer rounded-[var(--radius-sm)] hover:bg-muted" aria-label="Show employee search tips">
                   <Info className="w-4 h-4 text-primary" aria-hidden="true" />
                 </button>
               </TooltipTrigger>
@@ -442,7 +442,7 @@ export const Attendance: React.FC = () => {
           </div>
 
           <div className="relative flex items-center gap-2">
-            <div className="relative flex-1">
+            <form role="search" onSubmit={(e) => e.preventDefault()} className="relative flex-1">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
               <input
                 id="attendance-employee-search"
@@ -450,10 +450,10 @@ export const Attendance: React.FC = () => {
                 placeholder="Search by name, email, or Employee#..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                autoComplete="off"
+                autoComplete="search"
                 className="w-full h-[44px] ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow text-[var(--text-sm)]"
               />
-            </div>
+            </form>
 
             {/* Filter Popover */}
             <Popover open={filterOpen} onOpenChange={setFilterOpen}>

@@ -173,12 +173,12 @@ export const MissionsManagement: React.FC = () => {
           <div className="flex-1 max-w-md space-y-1.5">
             <div className="flex items-center gap-2">
               <label htmlFor="pending-missions-search" className={labelClass}>Search Employee</label>
-              <Tooltip><TooltipTrigger asChild><button className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
+              <Tooltip><TooltipTrigger asChild><button type="button" aria-label="Search help" className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
             </div>
-            <div className="relative">
+            <form role="search" onSubmit={(e) => e.preventDefault()} className="relative">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="pending-missions-search" type="search" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="off" />
-            </div>
+              <input id="pending-missions-search" type="search" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="search" />
+            </form>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button variant={selectedPending.length > 0 ? "default" : "outline"} size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center transition-all" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
@@ -254,13 +254,13 @@ export const MissionsManagement: React.FC = () => {
           <div className="flex-1 max-w-md space-y-1.5">
             <label htmlFor="mission-history-search" className={labelClass}>Search Employee</label>
             <div className="flex items-center gap-2">
-              <div className="relative flex-1">
+              <form role="search" onSubmit={(e) => e.preventDefault()} className="relative flex-1">
                 <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-                <input id="mission-history-search" type="search" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="off" />
-              </div>
+                <input id="mission-history-search" type="search" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="search" />
+              </form>
               <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                 <PopoverTrigger asChild>
-                  <button className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center', activeFilters > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
+                  <button type="button" aria-label="Open history filters" className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center', activeFilters > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
                     <Filter className="w-4 h-4" />
                     {activeFilters > 0 && <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFilters}</span>}
                   </button>
@@ -460,24 +460,29 @@ const FilterPanel: React.FC<{
   activityTypeOptions: string[];
   employmentTypeOptions: string[];
   onApply: () => void; onClear: () => void; onClose: () => void;
-}> = ({ dept, setDept, missionType, setMissionType, from, setFrom, to, setTo, activityTypes, toggleActivity, employmentTypes, toggleEmployment, departmentOptions, missionTypeOptions, activityTypeOptions, employmentTypeOptions, onApply, onClear, onClose }) => (
-  <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
-    <div className="flex items-center justify-between">
-      <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
-      <button onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
+}> = ({ dept, setDept, missionType, setMissionType, from, setFrom, to, setTo, activityTypes, toggleActivity, employmentTypes, toggleEmployment, departmentOptions, missionTypeOptions, activityTypeOptions, employmentTypeOptions, onApply, onClear, onClose }) => {
+  const fromId = React.useId();
+  const toId = React.useId();
+
+  return (
+    <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
+      <div className="flex items-center justify-between">
+        <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
+        <button type="button" aria-label="Close filters" onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
+      </div>
+      <SelectField label="Department" value={dept} onChange={setDept} options={departmentOptions} />
+      <SelectField label="Mission Type" value={missionType} onChange={setMissionType} options={missionTypeOptions.length > 1 ? missionTypeOptions : ['All', ...MISSION_TYPES]} />
+      <div className="space-y-1.5"><label htmlFor={fromId} className={labelClass}>From</label><DatePicker id={fromId} value={from} onChange={setFrom} placeholder="Select from date" /></div>
+      <div className="space-y-1.5"><label htmlFor={toId} className={labelClass}>To</label><DatePicker id={toId} value={to} onChange={setTo} placeholder="Select to date" /></div>
+      <CheckboxGroup label="Activity Type" items={activityTypeOptions.length ? activityTypeOptions : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
+      <CheckboxGroup label="Employment Type" items={employmentTypeOptions.length ? employmentTypeOptions : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
+      <div className="space-y-2 pt-2">
+        <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
+        <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)] border-border">Clear Filter</Button>
+      </div>
     </div>
-    <SelectField label="Department" value={dept} onChange={setDept} options={departmentOptions} />
-    <SelectField label="Mission Type" value={missionType} onChange={setMissionType} options={missionTypeOptions.length > 1 ? missionTypeOptions : ['All', ...MISSION_TYPES]} />
-    <div className="space-y-1.5"><label className={labelClass}>From</label><DatePicker value={from} onChange={setFrom} placeholder="Select from date" /></div>
-    <div className="space-y-1.5"><label className={labelClass}>To</label><DatePicker value={to} onChange={setTo} placeholder="Select to date" /></div>
-    <CheckboxGroup label="Activity Type" items={activityTypeOptions.length ? activityTypeOptions : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
-    <CheckboxGroup label="Employment Type" items={employmentTypeOptions.length ? employmentTypeOptions : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
-    <div className="space-y-2 pt-2">
-      <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
-      <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)] border-border">Clear Filter</Button>
-    </div>
-  </div>
-);
+  );
+};
 
 const SelectField: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => {
   const id = React.useId();
@@ -493,15 +498,15 @@ const SelectField: React.FC<{ label: string; value: string; onChange: (v: string
 };
 
 const CheckboxGroup: React.FC<{ label: string; items: string[]; selected: string[]; toggle: (v: string) => void }> = ({ label, items, selected, toggle }) => (
-  <div className="space-y-2">
-    <label className={labelClass}>{label}</label>
+  <fieldset className="space-y-2 border-0 p-0 m-0">
+    <legend className={labelClass}>{label}</legend>
     <div className="space-y-2">{items.map(item => (
       <label key={item} className="flex items-center gap-2.5 cursor-pointer group">
-        <Checkbox checked={selected.includes(item)} onCheckedChange={() => toggle(item)} />
+        <Checkbox aria-label={`${selected.includes(item) ? 'Remove' : 'Add'} ${item} filter`} checked={selected.includes(item)} onCheckedChange={() => toggle(item)} />
         <span className="text-[var(--text-sm)] text-foreground group-hover:text-primary transition-colors font-[var(--font-weight-normal)]">{item}</span>
       </label>
     ))}</div>
-  </div>
+  </fieldset>
 );
 
 const CreateMissionModal: React.FC<{ 

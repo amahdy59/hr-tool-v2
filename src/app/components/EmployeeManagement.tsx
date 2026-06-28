@@ -333,8 +333,8 @@ export const EmployeeManagement: React.FC = () => {
           {/* Search row */}
           <div className="flex flex-wrap items-end gap-3">
             <div className="flex-1 min-w-[280px] space-y-1.5">
-              <div className="flex items-center gap-2 hidden md:flex">
-                <label htmlFor="employee-directory-search" className={labelClass}>Search Employees</label>
+              <div className="flex items-center gap-2">
+                <label htmlFor="employee-directory-search" className={cn(labelClass, 'sr-only md:not-sr-only md:inline-block')}>Search Employees</label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button type="button" aria-label="Search help" className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button>
@@ -345,10 +345,10 @@ export const EmployeeManagement: React.FC = () => {
                 </Tooltip>
               </div>
               <div className="flex items-center gap-2">
-                <div className="relative flex-1">
+                <form role="search" onSubmit={(e) => e.preventDefault()} className="relative flex-1">
                   <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-                  <input id="employee-directory-search" type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Enter Employee# or Name..." className={cn(inputClass, 'ps-10')} aria-label="Search employees" autoComplete="off" />
-                </div>
+                  <input id="employee-directory-search" type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Enter Employee# or Name..." className={cn(inputClass, 'ps-10')} aria-label="Search employees" autoComplete="search" />
+                </form>
                 <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                   <PopoverTrigger asChild>
                     <button type="button" aria-label="Open employee filters" className={cn('relative h-[44px] px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center', activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
@@ -456,10 +456,11 @@ export const EmployeeManagement: React.FC = () => {
         {/* ── Activity Log Tab ── */}
         <TabsContent value="activity" className={tabContentClass}>
           <div className={searchRowClass}>
-            <div className={searchFieldClass}>
+            <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
+              <label htmlFor="employee-activity-search" className="sr-only">Search activity log</label>
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="employee-activity-search" type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search activity log..." className={cn(inputClass, 'ps-10')} aria-label="Search activity log" autoComplete="off" />
-            </div>
+              <input id="employee-activity-search" type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search activity log..." className={cn(inputClass, 'ps-10')} aria-label="Search activity log" autoComplete="search" />
+            </form>
           </div>
           <div className={tableCardClass}>
             <div className={tableScrollClass}>
@@ -506,10 +507,11 @@ export const EmployeeManagement: React.FC = () => {
         {/* ── Departments Tab ── */}
         <TabsContent value="departments" className={tabContentClass}>
           <div className={searchRowClass}>
-            <div className={searchFieldClass}>
+            <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
+              <label htmlFor="employee-department-search" className="sr-only">Search departments</label>
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="employee-department-search" type="search" value={deptSearch} onChange={(e) => setDeptSearch(e.target.value)} placeholder="Search departments..." className={cn(inputClass, 'ps-10')} aria-label="Search departments" autoComplete="off" />
-            </div>
+              <input id="employee-department-search" type="search" value={deptSearch} onChange={(e) => setDeptSearch(e.target.value)} placeholder="Search departments..." className={cn(inputClass, 'ps-10')} aria-label="Search departments" autoComplete="search" />
+            </form>
           </div>
           <div className={tableCardClass}>
             <div className={tableScrollClass}>
@@ -557,10 +559,11 @@ export const EmployeeManagement: React.FC = () => {
         {/* ── Job Titles Tab ── */}
         <TabsContent value="jobtitles" className={tabContentClass}>
           <div className={searchRowClass}>
-            <div className={searchFieldClass}>
+            <form role="search" onSubmit={(e) => e.preventDefault()} className={searchFieldClass}>
+              <label htmlFor="employee-job-title-search" className="sr-only">Search job titles</label>
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="employee-job-title-search" type="search" value={jtSearch} onChange={(e) => setJtSearch(e.target.value)} placeholder="Search job titles..." className={cn(inputClass, 'ps-10')} aria-label="Search job titles" autoComplete="off" />
-            </div>
+              <input id="employee-job-title-search" type="search" value={jtSearch} onChange={(e) => setJtSearch(e.target.value)} placeholder="Search job titles..." className={cn(inputClass, 'ps-10')} aria-label="Search job titles" autoComplete="search" />
+            </form>
           </div>
           <div className={tableCardClass}>
             <div className={tableScrollClass}>
@@ -824,53 +827,61 @@ const EmployeeFilterPanel: React.FC<{
   jobTitlesList: string[];
   activityTypesList: string[];
   employmentTypesList: string[];
-}> = ({ dept, setDept, title, setTitle, gradYear, setGradYear, hiredAfter, setHiredAfter, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose, departmentsList, jobTitlesList, activityTypesList, employmentTypesList }) => (
-  <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
-    <div className="flex items-center justify-between">
-      <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
-      <button type="button" aria-label="Close filters" onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
+}> = ({ dept, setDept, title, setTitle, gradYear, setGradYear, hiredAfter, setHiredAfter, activityTypes, toggleActivity, employmentTypes, toggleEmployment, onApply, onClear, onClose, departmentsList, jobTitlesList, activityTypesList, employmentTypesList }) => {
+  const gradYearId = React.useId();
+  const hiredAfterId = React.useId();
+
+  return (
+    <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
+      <div className="flex items-center justify-between">
+        <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
+        <button type="button" aria-label="Close filters" onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
+      </div>
+      <div className="p-3 bg-primary/5 rounded-[var(--radius)] border border-primary/20">
+        <ul className="space-y-1 text-[var(--text-xs)] text-foreground">
+          <li>Search results are based on selected filters.</li>
+          <li>To search all employees, <strong>clear all filters</strong>.</li>
+          <li>Search by <strong>name</strong>, <strong>email</strong>, or <strong>Employee#</strong>.</li>
+        </ul>
+      </div>
+      <FilterSelect label="Department" value={dept} onChange={setDept} options={['All', ...departmentsList]} />
+      <FilterSelect label="Job Title" value={title} onChange={setTitle} options={['All', ...jobTitlesList]} />
+      <div className="space-y-1.5">
+        <label htmlFor={gradYearId} className={labelClass}>Graduation Year</label>
+        <input id={gradYearId} type="text" inputMode="numeric" value={gradYear} onChange={(e) => setGradYear(e.target.value)} placeholder="e.g. 2013" className={inputClass} />
+      </div>
+      <div className="space-y-1.5">
+        <label htmlFor={hiredAfterId} className={labelClass}>Hired After</label>
+        <DatePicker id={hiredAfterId} value={hiredAfter} onChange={setHiredAfter} placeholder="Select date" />
+      </div>
+      <CheckboxGroup label="Activity Type" items={activityTypesList.length ? activityTypesList : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
+      <CheckboxGroup label="Employment Type" items={employmentTypesList.length ? employmentTypesList : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
+      <div className="space-y-2 pt-2">
+        <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
+        <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)]">Clear Filter</Button>
+      </div>
     </div>
-    <div className="p-3 bg-primary/5 rounded-[var(--radius)] border border-primary/20">
-      <ul className="space-y-1 text-[var(--text-xs)] text-foreground">
-        <li>Search results are based on selected filters.</li>
-        <li>To search all employees, <strong>clear all filters</strong>.</li>
-        <li>Search by <strong>name</strong>, <strong>email</strong>, or <strong>Employee#</strong>.</li>
-      </ul>
-    </div>
-    <FilterSelect label="Department" value={dept} onChange={setDept} options={['All', ...departmentsList]} />
-    <FilterSelect label="Job Title" value={title} onChange={setTitle} options={['All', ...jobTitlesList]} />
-    <div className="space-y-1.5">
-      <label className={labelClass}>Graduation Year</label>
-      <input type="text" inputMode="numeric" value={gradYear} onChange={(e) => setGradYear(e.target.value)} placeholder="e.g. 2013" className={inputClass} />
-    </div>
-    <div className="space-y-1.5">
-      <label className={labelClass}>Hired After</label>
-      <DatePicker value={hiredAfter} onChange={setHiredAfter} placeholder="Select date" />
-    </div>
-    <CheckboxGroup label="Activity Type" items={activityTypesList.length ? activityTypesList : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
-    <CheckboxGroup label="Employment Type" items={employmentTypesList.length ? employmentTypesList : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
-    <div className="space-y-2 pt-2">
-      <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
-      <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)]">Clear Filter</Button>
-    </div>
-  </div>
-);
+  );
+};
 
 // ── Filter Select ──
-const FilterSelect: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => (
-  <div className="space-y-1.5">
-    <label className={labelClass}>{label}</label>
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
-      <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-    </Select>
-  </div>
-);
+const FilterSelect: React.FC<{ label: string; value: string; onChange: (v: string) => void; options: string[] }> = ({ label, value, onChange, options }) => {
+  const selectId = React.useId();
+  return (
+    <div className="space-y-1.5">
+      <label htmlFor={selectId} className={labelClass}>{label}</label>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger id={selectId} className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
+        <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+      </Select>
+    </div>
+  );
+};
 
 // ── Checkbox Group ──
 const CheckboxGroup: React.FC<{ label: string; items: string[]; selected: string[]; toggle: (v: string) => void }> = ({ label, items, selected, toggle }) => (
-  <div className="space-y-2">
-    <label className={labelClass}>{label}</label>
+  <fieldset className="space-y-2 border-0 p-0 m-0">
+    <legend className={labelClass}>{label}</legend>
     <div className="space-y-2">
       {items.map(item => (
         <label key={item} className="flex items-center gap-2.5 cursor-pointer group">
@@ -879,7 +890,7 @@ const CheckboxGroup: React.FC<{ label: string; items: string[]; selected: string
         </label>
       ))}
     </div>
-  </div>
+  </fieldset>
 );
 
 // ── Employee Form Modal ──
@@ -1032,10 +1043,10 @@ const FormerEmployeeModal: React.FC<{
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label htmlFor="former-employee-search" className={labelClass}>Search Former Employees</label>
-            <div className="relative">
+            <form role="search" onSubmit={(e) => e.preventDefault()} className="relative">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="former-employee-search" type="search" value={searchFormer} onChange={(e) => setSearchFormer(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="off" />
-            </div>
+              <input id="former-employee-search" type="search" value={searchFormer} onChange={(e) => setSearchFormer(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="search" />
+            </form>
           </div>
 
           <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Former Employees</p>

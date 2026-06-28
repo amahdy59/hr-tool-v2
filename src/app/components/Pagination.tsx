@@ -92,7 +92,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               >
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent align="end">
+              <SelectContent align="start">
                 {PAGE_SIZE_OPTIONS.map((option) => (
                   <SelectItem key={option} value={String(option)}>
                     {option}

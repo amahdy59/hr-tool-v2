@@ -32,7 +32,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
           Search results update as you type. Use the filter button to refine the results.
         </p>
       )}
-      <form role="search" className="relative flex items-center gap-2 cursor-default">
+      <form role="search" onSubmit={(e) => e.preventDefault()} className="relative flex items-center gap-2 cursor-default">
         <div className="relative flex-1">
           <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
           <input
@@ -41,7 +41,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
             placeholder={placeholder}
             aria-label={resolvedLabel}
             aria-describedby={showInfo ? helpId : undefined}
-            autoComplete="off"
+            autoComplete="search"
             className="w-full min-h-[44px] ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background focus:ring-4 focus:ring-ring/40 focus:border-ring outline-none text-[var(--text-sm)] text-foreground transition-shadow cursor-text"
           />
         </div>

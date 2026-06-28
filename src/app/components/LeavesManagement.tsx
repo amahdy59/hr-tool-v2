@@ -225,12 +225,12 @@ export const LeavesManagement: React.FC = () => {
           <div className="flex-1 max-w-md space-y-1.5">
             <div className="flex items-center gap-2">
               <label htmlFor="pending-leaves-search" className={labelClass}>Search Employee</label>
-              <Tooltip><TooltipTrigger asChild><button className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
+              <Tooltip><TooltipTrigger asChild><button type="button" aria-label="Search help" className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
             </div>
-            <div className="relative">
+            <form role="search" onSubmit={(e) => e.preventDefault()} className="relative">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="pending-leaves-search" type="search" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="off" />
-            </div>
+              <input id="pending-leaves-search" type="search" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="search" />
+            </form>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
@@ -387,13 +387,13 @@ export const LeavesManagement: React.FC = () => {
           <div className="flex-1 max-w-md space-y-1.5">
             <label htmlFor="leave-history-search" className={labelClass}>Search Employee</label>
             <div className="flex items-center gap-2">
-              <div className="relative flex-1">
+              <form role="search" onSubmit={(e) => e.preventDefault()} className="relative flex-1">
                 <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-                <input id="leave-history-search" type="search" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="off" />
-              </div>
+                <input id="leave-history-search" type="search" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="search" />
+              </form>
               <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                 <PopoverTrigger asChild>
-                  <button className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center', activeFilters > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
+                  <button type="button" aria-label="Open history filters" className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center', activeFilters > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
                     <Filter className="w-4 h-4" />
                     {activeFilters > 0 && <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFilters}</span>}
                   </button>
@@ -609,7 +609,7 @@ const FilterPanel: React.FC<{
   <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
     <div className="flex items-center justify-between">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
-      <button onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
+      <button type="button" aria-label="Close filters" onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
     </div>
     <SelectField label="Department" value={dept} onChange={setDept} options={departmentOptions} />
     <SelectField label="Leave Type" value={leaveType} onChange={setLeaveType} options={leaveTypeOptions.length > 1 ? leaveTypeOptions : LEAVE_TYPES} />
