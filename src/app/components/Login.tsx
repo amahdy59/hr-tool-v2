@@ -230,7 +230,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               >
                 {t('login.email')}
               </label>
-              <div className="relative">
+              <div className="relative" dir="ltr">
                 <input
                   id={usernameId}
                   type="email"
@@ -298,7 +298,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               >
                 {t('login.password')}
               </label>
-              <div className="relative">
+              <div className="relative" dir="ltr">
                 <input
                   id={passwordId}
                   type={showPassword ? 'text' : 'password'}
@@ -525,7 +525,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 >
                   {t('login.email')}
                 </label>
-                <div className="relative">
+                <div className="relative" dir="ltr">
                   <input
                     id={resetEmailId}
                     type="email"

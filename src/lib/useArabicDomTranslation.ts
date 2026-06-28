@@ -1151,6 +1151,10 @@ const translateValue = (value: string) => {
   return value.replace(trimmed, translated);
 };
 
+const convertDigitsToEasternArabic = (text: string) => {
+  return text.replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[parseInt(d)]);
+};
+
 const translateTextNode = (node: Text, enabled: boolean) => {
   const current = node.nodeValue ?? '';
   const cachedSource = originalText.get(node);
@@ -1170,7 +1174,8 @@ const translateTextNode = (node: Text, enabled: boolean) => {
 
   const source = originalText.get(node) ?? current;
   const translated = translateValue(source);
-  if (current !== translated) node.nodeValue = translated;
+  const finalValue = convertDigitsToEasternArabic(translated);
+  if (current !== finalValue) node.nodeValue = finalValue;
 };
 
 const translateElementAttributes = (element: Element, enabled: boolean) => {
@@ -1200,8 +1205,9 @@ const translateElementAttributes = (element: Element, enabled: boolean) => {
 
     const source = originals.get(attribute) ?? current;
     const nextValue = translateValue(source);
-    if (current !== nextValue) {
-      element.setAttribute(attribute, nextValue);
+    const finalValue = convertDigitsToEasternArabic(nextValue);
+    if (current !== finalValue) {
+      element.setAttribute(attribute, finalValue);
     }
   });
 };

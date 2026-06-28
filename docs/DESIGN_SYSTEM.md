@@ -61,6 +61,10 @@ We follow strict accessibility color rules:
 - **Directionality:** Dynamic mirroring is managed by `useArabicDomTranslation` and `DirectionProvider` dynamically via `document.documentElement.dir = 'rtl'`.
 - **Text Alignment:** Labels and fields must align to the *start* of the viewport (`text-start` or logical properties like `margin-inline-start`).
 - **Icons:** Directional arrows and navigation controls mirror in RTL, while non-directional branding icons do not.
+- **Eastern Arabic (Hindi) Numerals:** In Arabic mode, all numerical digits (`0-9`) rendered in text nodes (such as numbers inside paragraphs, tables, lists, and pagination controls) are dynamically converted to Eastern Arabic numerals (`٠-٩`) by the global DOM translation hook. To preserve interactivity and avoid React click handling issues:
+  1. The `<Calendar>` component is marked with `data-no-auto-translate="true"` to bypass dynamic DOM translation.
+  2. Calendar day numbers and select options are translated natively using React-level formatters (`formatters.formatDay` and customized year/month dropdown text).
+  3. LTR text inputs (e.g., email, password, and reset email fields) enforce `dir="ltr"` on their wrappers to ensure their logical CSS paddings (`ps-*`, `pe-*`) and icon placements align correctly and do not overlap with typed values.
 
 ---
 
