@@ -135,7 +135,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           {pageNumbers.map((page, index) => {
             if (typeof page === 'string') {
               return (
-                <li key={`ellipsis-${index}`} className="hidden min-[380px]:list-item">
+                <li key={`ellipsis-${index}`}>
                   <span
                     className="flex h-11 w-9 items-center justify-center text-[var(--text-sm)] font-medium text-muted-foreground/70"
                     aria-hidden="true"
