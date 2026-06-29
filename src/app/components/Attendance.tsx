@@ -41,6 +41,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from './ui/tooltip';
+import { InfoTooltip } from './ui/info-tooltip';
 import { Checkbox } from './ui/checkbox';
 import { Pagination } from './Pagination';
 import { Button } from './ui/button';
@@ -150,7 +151,7 @@ const getCategoryName = (name: string, lang: string) => {
     switch (name) {
       case 'In-office': return 'من المكتب';
       case 'Missions': return 'المأموريات';
-      case 'Leaves': return 'الإجازات';
+      case 'Leaves': return 'الاجازات';
       case 'No Show': return 'غياب دون إشعار';
       case 'Unfilled': return 'غير معبأ';
       default: return name;
@@ -258,6 +259,7 @@ const CustomBarTooltip = ({ active, payload }: any) => {
 export const Attendance: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
+  const isArabic = language.startsWith('ar');
 
   const translatedSummaryData = useMemo(() => {
     return summaryData.map((item) => ({
@@ -509,22 +511,15 @@ export const Attendance: React.FC = () => {
       <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:flex-wrap sm:items-end">
         {/* Search + filter button */}
         <div className="w-full flex-1 space-y-1 sm:min-w-[280px]">
-          <div className="flex items-center gap-2">
+          <div className="inline-flex items-center gap-1.5">
             <label htmlFor="attendance-employee-search" className="text-foreground">Search Employees</label>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button type="button" className="h-11 w-11 cursor-pointer rounded-[var(--radius-sm)] hover:bg-muted" aria-label="Show employee search tips">
-                  <Info className="w-4 h-4 text-primary" aria-hidden="true" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="top" className="max-w-[260px]">
-                <ul className="space-y-1 text-[var(--text-xs)]">
-                  <li>Search results are based on selected filters.</li>
-                  <li>To search all employees, <strong>clear all filters</strong>.</li>
-                  <li>Search by <strong>name</strong>, <strong>email</strong>, or <strong>Employee#</strong>.</li>
-                </ul>
-              </TooltipContent>
-            </Tooltip>
+            <InfoTooltip ariaLabel="Show employee search tips">
+              <ul className="space-y-1">
+                <li>Search results are based on selected filters.</li>
+                <li>To search all employees, <strong>clear all filters</strong>.</li>
+                <li>Search by <strong>name</strong>, <strong>email</strong>, or <strong>Employee#</strong>.</li>
+              </ul>
+            </InfoTooltip>
           </div>
 
           <div className="relative flex items-center gap-2">
@@ -667,10 +662,14 @@ export const Attendance: React.FC = () => {
           <div className="flex items-start">
             <div>
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">
-                Office Attendance: {officePercent}%
+                {isArabic ? `العمل من المكتب: ${officePercent}%` : `Office Attendance: ${officePercent}%`}
               </p>
               <p className={cn('text-[var(--text-xs)] font-[var(--font-weight-medium)]', meetsOfficeGoal ? 'text-[var(--chart-3)]' : 'text-destructive')}>
-                {meetsOfficeGoal ? '▲' : '▼'} {Math.abs(officeGoalDelta)}% {meetsOfficeGoal ? 'above' : 'below'} the {OFFICE_GOAL_PERCENT}% company goal
+                {isArabic ? (
+                  `${meetsOfficeGoal ? '▲' : '▼'} ${Math.abs(officeGoalDelta)}% ${meetsOfficeGoal ? 'أعلى من' : 'أقل من'} هدف الشركة (${OFFICE_GOAL_PERCENT}%)`
+                ) : (
+                  `${meetsOfficeGoal ? '▲' : '▼'} {Math.abs(officeGoalDelta)}% {meetsOfficeGoal ? 'above' : 'below'} the {OFFICE_GOAL_PERCENT}% company goal`
+                )}
               </p>
             </div>
           </div>
@@ -692,7 +691,7 @@ export const Attendance: React.FC = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 items-start xl:grid-cols-[minmax(430px,1fr)_minmax(340px,0.9fr)] xl:gap-8">
+        <div className="grid grid-cols-1 gap-6 items-start xl:grid-cols-[minmax(430px,1fr)_minmax(340px,0.9fr)] xl:items-stretch xl:gap-8">
           {/* Left: summary table */}
           <div className="hidden w-full overflow-x-auto sm:block bg-card border border-border rounded-[var(--radius-card)] shadow-[var(--elevation-sm)] overflow-hidden">
             <table className="w-full text-start border-collapse cursor-default text-[var(--text-sm)]" aria-label={`Attendance summary for ${monthLabel} ${selectedYear}`}>
@@ -700,8 +699,8 @@ export const Attendance: React.FC = () => {
               <thead>
                 <tr className="bg-muted/50 border-b border-border">
                   <th scope="col" className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start min-w-[180px]">Category</th>
-                  <th scope="col" className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end min-w-[150px]">
-                    <span className="inline-flex items-center justify-end gap-1.5 w-full">
+                  <th scope="col" className={cn('px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground min-w-[150px]', isArabic ? 'text-start' : 'text-end')}>
+                    <span className={cn('inline-flex items-center gap-1.5 w-full', isArabic ? 'justify-start' : 'justify-end')}>
                       Hours
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -715,7 +714,7 @@ export const Attendance: React.FC = () => {
                       </Tooltip>
                     </span>
                   </th>
-                  <th scope="col" className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end min-w-[120px]">Percentage</th>
+                  <th scope="col" className={cn('px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground min-w-[120px]', isArabic ? 'text-start' : 'text-end')}>Percentage</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
@@ -733,17 +732,17 @@ export const Attendance: React.FC = () => {
                         <span className="text-foreground">{item.name}</span>
                       </div>
                     </th>
-                    <td className={cn('px-4 py-3 text-end font-[var(--font-weight-medium)]', severityHoursClass(item.severity))}>
-                      {item.hours}h
+                    <td className={cn('px-4 py-3 font-[var(--font-weight-medium)]', isArabic ? 'text-start' : 'text-end', severityHoursClass(item.severity))}>
+                      {item.hours}{isArabic ? 'س' : 'h'}
                     </td>
-                    <td className="px-4 py-3 text-end text-muted-foreground">{item.percentage}%</td>
+                    <td className={cn('px-4 py-3 text-muted-foreground', isArabic ? 'text-start' : 'text-end')}>{item.percentage}%</td>
                   </tr>
                 ))}
                 {/* Total */}
                 <tr className="font-[var(--font-weight-semibold)] text-foreground bg-muted/10 border-t border-border">
-                  <th scope="row" className="px-4 py-4 text-start font-semibold">Total Hours</th>
-                  <td className="px-4 py-4 text-end font-semibold">{totalHours}h</td>
-                  <td className="px-4 py-4 text-end font-semibold">100%</td>
+                  <th scope="row" className="px-4 py-4 text-start font-semibold">{isArabic ? 'إجمالي الساعات' : 'Total Hours'}</th>
+                  <td className={cn('px-4 py-4 font-semibold', isArabic ? 'text-start' : 'text-end')}>{totalHours}{isArabic ? 'س' : 'h'}</td>
+                  <td className={cn('px-4 py-4 font-semibold', isArabic ? 'text-start' : 'text-end')}>100%</td>
                 </tr>
               </tbody>
             </table>
@@ -752,12 +751,12 @@ export const Attendance: React.FC = () => {
           <div className="space-y-3 sm:hidden" aria-label={`Attendance summary cards for ${monthLabel} ${selectedYear}`}>
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-[var(--radius-card)] border border-border bg-muted/20 p-3">
-                <p className="text-[var(--text-xs)] text-muted-foreground">Expected</p>
-                <p className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">{EXPECTED_WORKING_HOURS}h</p>
+                <p className="text-[var(--text-xs)] text-muted-foreground">{isArabic ? 'المتوقع' : 'Expected'}</p>
+                <p className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">{EXPECTED_WORKING_HOURS}{isArabic ? 'س' : 'h'}</p>
               </div>
               <div className="rounded-[var(--radius-card)] border border-border bg-muted/20 p-3">
-                <p className="text-[var(--text-xs)] text-muted-foreground">Actual</p>
-                <p className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">{totalHours}h</p>
+                <p className="text-[var(--text-xs)] text-muted-foreground">{isArabic ? 'الفعلي' : 'Actual'}</p>
+                <p className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">{totalHours}{isArabic ? 'س' : 'h'}</p>
               </div>
             </div>
             {translatedSummaryData.map((item) => (
@@ -768,7 +767,7 @@ export const Attendance: React.FC = () => {
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground">{item.name}</span>
-                  <span className={cn('text-[var(--text-sm)] font-[var(--font-weight-semibold)]', severityHoursClass(item.severity))}>{item.hours}h</span>
+                  <span className={cn('text-[var(--text-sm)] font-[var(--font-weight-semibold)]', severityHoursClass(item.severity))}>{item.hours}{isArabic ? 'س' : 'h'}</span>
                 </div>
                 <div className="mt-2 flex items-center gap-3">
                   <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted" aria-hidden="true">
@@ -833,7 +832,7 @@ export const Attendance: React.FC = () => {
           </div>
 
           {/* Desktop: Bar Chart representing breakdown of logged hours */}
-          <div className="hidden h-[280px] min-w-0 xl:block">
+          <div className="hidden min-w-0 xl:block bg-card border border-border rounded-[var(--radius-card)] shadow-[var(--elevation-sm)] p-5 h-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={translatedSummaryData}
@@ -875,7 +874,7 @@ export const Attendance: React.FC = () => {
               <caption className="sr-only">Annual and sick leave balance details</caption>
               <thead>
                 <tr className="bg-muted border-b border-border">
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Leave Type</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Leave Type</th>
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Total Balance</th>
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Bridge</th>
                   <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">From Last Year</th>
@@ -942,12 +941,12 @@ export const Attendance: React.FC = () => {
               <caption className="sr-only">Daily attendance records for the selected employee and period</caption>
               <thead>
                 <tr className="bg-muted border-b border-border">
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Day</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Date</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Time In</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Time Out</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Total Hours</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Day Status</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Day</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Date</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Time In</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Time Out</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Total Hours</th>
+                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Day Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">

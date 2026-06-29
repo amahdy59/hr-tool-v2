@@ -16,6 +16,8 @@ import { toast } from 'sonner';
 import { Pagination } from './Pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { PayrollService } from '../../lib/services/dbServices';
+import { useTranslation } from 'react-i18next';
+import { localizeDepartmentName, localizeJobTitle, localizePersonName } from '@/lib/localizedNames';
 
 // Mock employee data with sample names
 const INITIAL_EMPLOYEES = [
@@ -207,6 +209,8 @@ const DEDUCTION_ITEMS = [
 ];
 
 export const Payroll: React.FC = () => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedMonth, setSelectedMonth] = useState('October');
   const [selectedYear, setSelectedYear] = useState('2024');
@@ -336,6 +340,7 @@ export const Payroll: React.FC = () => {
           onPageChange={setPayrollPage}
           onItemsPerPageChange={(n: number) => { setPayrollPerPage(n); setPayrollPage(1); }}
           totalItems={filteredEmployees.length}
+          language={language}
         />
       )}
       {activeTab === 'compensation' && <CompensationTab />}
@@ -343,7 +348,7 @@ export const Payroll: React.FC = () => {
 
       {/* Payslip Modal */}
       {showPayslipModal && selectedEmployee && (
-        <PayslipModal employee={selectedEmployee} onClose={() => setShowPayslipModal(false)} onDownload={handleDownloadPayslip} selectedMonth={selectedMonth} selectedYear={selectedYear} />
+        <PayslipModal employee={selectedEmployee} onClose={() => setShowPayslipModal(false)} onDownload={handleDownloadPayslip} selectedMonth={selectedMonth} selectedYear={selectedYear} language={language} />
       )}
     </div>
   );
@@ -456,7 +461,8 @@ const EmployeesTab = ({
   itemsPerPage,
   onPageChange,
   onItemsPerPageChange,
-  totalItems
+  totalItems,
+  language
 }: any) => (
   <div className="space-y-6 max-w-6xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Employee Payroll</h3>
@@ -484,9 +490,9 @@ const EmployeesTab = ({
                   index % 2 === 0 ? 'bg-card' : 'bg-muted/20'
                 )}
               >
-                <TableCell>{employee.sesaId}</TableCell>
-                <TableCell weight="medium">{employee.name}</TableCell>
-                <TableCell>{employee.department}</TableCell>
+                <TableCell><span data-no-auto-translate>{employee.sesaId}</span></TableCell>
+                <TableCell weight="medium">{localizePersonName(employee.name, language)}</TableCell>
+                <TableCell>{localizeDepartmentName(employee.department, language)}</TableCell>
                 <TableCell>${employee.grossSalary.toLocaleString()}</TableCell>
                 <TableCell>${employee.totalDeductions.toLocaleString()}</TableCell>
                 <TableCell weight="semibold" color="text-chart-3">${employee.netPay.toLocaleString()}</TableCell>
@@ -624,7 +630,7 @@ const TableCell = ({ children, weight = 'normal', color = 'text-foreground' }: {
 // ════════════════════════════════════
 // ── Payslip Modal ──
 // ════════════════════════════════════
-const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYear }: any) => (
+const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYear, language }: any) => (
   <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div className="bg-card border border-border rounded-[var(--radius-card)] shadow-[var(--elevation-lg)] max-w-2xl w-full max-h-[90vh] overflow-y-auto">
       {/* Header */}
@@ -634,7 +640,7 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
             Payslip - {selectedMonth} {selectedYear}
           </h2>
           <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-            {employee.name}
+            {localizePersonName(employee.name, language)}
           </p>
         </div>
         <button onClick={onClose} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
@@ -646,10 +652,10 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
       <div className="p-6 space-y-6">
         {/* Employee Info */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-[var(--radius)] border border-border">
-          <InfoRow label="SESA ID" value={employee.sesaId} />
-          <InfoRow label="Position" value={employee.position} />
-          <InfoRow label="Department" value={employee.department} />
-          <InfoRow label="Employee ID" value={employee.id} />
+          <InfoRow label="SESA ID" value={employee.sesaId} noAutoTranslateValue />
+          <InfoRow label="Position" value={localizeJobTitle(employee.position, language)} />
+          <InfoRow label="Department" value={localizeDepartmentName(employee.department, language)} />
+          <InfoRow label="Employee ID" value={String(employee.id)} noAutoTranslateValue />
         </div>
 
         {/* Earnings */}
@@ -705,12 +711,12 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
   </div>
 );
 
-const InfoRow = ({ label, value }: { label: string; value: string }) => (
+const InfoRow = ({ label, value, noAutoTranslateValue }: { label: string; value: string; noAutoTranslateValue?: boolean }) => (
   <div>
     <p className="text-[var(--text-xs)] text-muted-foreground mb-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>
       {label}
     </p>
-    <p className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <p className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }} {...(noAutoTranslateValue ? { 'data-no-auto-translate': true } : {})}>
       {value}
     </p>
   </div>

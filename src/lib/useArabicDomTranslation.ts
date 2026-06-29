@@ -301,7 +301,7 @@ const dictionary: Record<string, string> = {
   "Demo Access": "الدخول إلى العرض التجريبي",
   "Department": "القسم",
   "Department budget allocation code": "رمز تخصيص ميزانية القسم",
-  "Department ID": "معرّف القسم",
+  "Department ID": "Department ID",
   "Department name": "اسم القسم",
   "Department:": "القسم:",
   "Departments": "الأقسام",

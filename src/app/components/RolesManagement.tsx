@@ -1,13 +1,18 @@
 import React, { useState, useMemo } from 'react';
-import { Trash2, Plus, Upload, ChevronLeft, ChevronRight, Pencil, X, AlertCircle, Info } from 'lucide-react';
+import { Trash2, Plus, Upload, ChevronLeft, ChevronRight, Pencil, X, AlertCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { InfoTooltip } from './ui/info-tooltip';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
-import { localizePersonName } from '@/lib/localizedNames';
+import {
+  formatLocalizedDate,
+  localizeDepartmentName,
+  localizeJobTitle,
+  localizePersonName,
+} from '@/lib/localizedNames';
 import { Pagination } from './Pagination';
 
 // ── Interfaces ──
@@ -71,7 +76,8 @@ const SelectField: React.FC<{
   onChange: (v: string) => void;
   options: string[];
   placeholder?: string;
-}> = ({ label, value, onChange, options, placeholder }) => {
+  formatOption?: (option: string) => string;
+}> = ({ label, value, onChange, options, placeholder, formatOption }) => {
   const id = React.useId();
   return (
   <div className="space-y-1">
@@ -83,7 +89,7 @@ const SelectField: React.FC<{
       <SelectContent>
         {options.map((opt) => (
           <SelectItem key={opt} value={opt}>
-            {opt}
+            {formatOption ? formatOption(opt) : opt}
           </SelectItem>
         ))}
       </SelectContent>
@@ -205,6 +211,8 @@ export const RolesManagement: React.FC = () => {
     });
   };
 
+  const displayDate = (date: string) => (date === '---' ? date : formatLocalizedDate(date, language));
+
   return (
     <div className="px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 space-y-6 max-w-7xl mx-auto">
       {/* ── Page Title ── */}
@@ -233,7 +241,7 @@ export const RolesManagement: React.FC = () => {
             <SelectContent>
               {DEPARTMENTS.map((dept) => (
                 <SelectItem key={dept} value={dept}>
-                  {dept}
+                  {dept === 'All' ? dept : localizeDepartmentName(dept, language)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -264,16 +272,9 @@ export const RolesManagement: React.FC = () => {
           >
             Roles List
           </h3>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className="cursor-pointer">
-                <Info className="w-4 h-4 text-primary" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="top" className="text-[var(--text-xs)]">
-              <p>Manage employee role assignments and permissions</p>
-            </TooltipContent>
-          </Tooltip>
+          <InfoTooltip ariaLabel="Roles list help">
+            <p>Manage employee role assignments and permissions</p>
+          </InfoTooltip>
         </div>
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
@@ -307,15 +308,15 @@ export const RolesManagement: React.FC = () => {
                     </td>
                     <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Enrolled:</span>
-                      <span>{role.dateEnrolled}</span>
+                      <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'}>{displayDate(role.dateEnrolled)}</span>
                     </td>
                     <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground flex justify-between md:table-cell">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Left:</span>
-                      <span>{role.dateLeft}</span>
+                      <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'}>{displayDate(role.dateLeft)}</span>
                     </td>
                     <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Title:</span>
-                      <span>{role.jobTitle}</span>
+                      <span>{localizeJobTitle(role.jobTitle, language)}</span>
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                       <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 w-full md:w-auto">

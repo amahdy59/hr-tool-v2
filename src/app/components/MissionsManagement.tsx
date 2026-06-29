@@ -16,7 +16,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { InfoTooltip } from './ui/info-tooltip';
 import { Checkbox } from './ui/checkbox';
 import { StatusBadge } from './StatusBadge';
 import { toast } from 'sonner';
@@ -24,7 +24,7 @@ import { EmptyState } from './EmptyState';
 import { exportToCSV } from '../../lib/export';
 import { Pagination } from './Pagination';
 import { useTranslation } from 'react-i18next';
-import { localizePersonName } from '@/lib/localizedNames';
+import { formatLocalizedDate, localizePersonName } from '@/lib/localizedNames';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -54,6 +54,12 @@ export const MissionsManagement: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const displayEmployeeName = (name?: string) => localizePersonName(name, language);
+  const displayDateRange = (request: Pick<MissionRequest, 'startDate' | 'endDate' | 'range'>) => {
+    const start = getRequestDate(request, 'start');
+    const end = getRequestDate(request, 'end');
+    if (!start || !end) return request.range;
+    return `${formatLocalizedDate(start, language)} - ${formatLocalizedDate(end, language)}`;
+  };
 
   const [allMissions, setAllMissions] = useState<MissionRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -171,9 +177,11 @@ export const MissionsManagement: React.FC = () => {
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Missions Pending Approval</h2>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex-1 max-w-md space-y-1">
-            <div className="flex items-center gap-2">
+            <div className="inline-flex items-center gap-1.5">
               <label htmlFor="pending-missions-search" className={labelClass}>Search Employee</label>
-              <Tooltip><TooltipTrigger asChild><button type="button" aria-label="Search help" className="cursor-pointer"><Info className="w-4 h-4 text-primary" /></button></TooltipTrigger><TooltipContent side="top" className="text-[var(--text-xs)]"><p>Search by name or Employee number</p></TooltipContent></Tooltip>
+              <InfoTooltip ariaLabel="Search help">
+                <p>Search by name or Employee number</p>
+              </InfoTooltip>
             </div>
             <form role="search" onSubmit={(e) => e.preventDefault()} className="relative">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
@@ -223,7 +231,7 @@ export const MissionsManagement: React.FC = () => {
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{m.type}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{m.range}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{m.duration}</td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{m.notes}</td>
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
@@ -319,7 +327,7 @@ export const MissionsManagement: React.FC = () => {
                         <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(m.name)}</span>
                       </td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{m.type}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span>{m.range}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{m.duration}</td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{m.notes}</td>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">Status:</span><StatusBadge variant={m.status as any}>{m.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
@@ -591,7 +599,7 @@ const CreateMissionModal: React.FC<{
                       }}
                     >
                       <span className="font-medium truncate">{displayName}</span>
-                      <span className="text-xs text-muted-foreground font-mono">#{emp.employeeNumber}</span>
+                      <span className="text-xs text-muted-foreground font-mono" data-no-auto-translate>#{emp.employeeNumber}</span>
                     </button>
                   );
                 })}
@@ -629,7 +637,7 @@ const CreateMissionModal: React.FC<{
                       }}
                     >
                       <span className="font-medium truncate">{displayName}</span>
-                      <span className="text-xs text-muted-foreground font-mono">#{emp.employeeNumber}</span>
+                      <span className="text-xs text-muted-foreground font-mono" data-no-auto-translate>#{emp.employeeNumber}</span>
                     </button>
                   );
                 })}
@@ -677,6 +685,12 @@ const CreateMissionModal: React.FC<{
 const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => void; items: MissionRequest[]; onApprove: () => void }> = ({ open, onOpenChange, items, onApprove }) => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
+  const displayDateRange = (request: Pick<MissionRequest, 'startDate' | 'endDate' | 'range'>) => {
+    const start = getRequestDate(request, 'start');
+    const end = getRequestDate(request, 'end');
+    if (!start || !end) return request.range;
+    return `${formatLocalizedDate(start, language)} - ${formatLocalizedDate(end, language)}`;
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -692,7 +706,7 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
                 <tr key={m.id} className="hover:bg-muted/30">
                   <td className="whitespace-nowrap px-4 py-3"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(m.name, language)}</span></td>
                   <td className="whitespace-nowrap px-4 py-3 text-foreground">{m.type}</td>
-                  <td className="whitespace-nowrap px-4 py-3 text-foreground">{m.range}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground"><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
                   <td className="whitespace-nowrap px-4 py-3 text-foreground">{m.duration}</td>
                   <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{m.notes}</td>
                 </tr>
@@ -714,6 +728,12 @@ const ViewMissionDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const [detailTab, setDetailTab] = useState<'details' | 'history'>('details');
+  const displayDateRange = (request: Pick<MissionRequest, 'startDate' | 'endDate' | 'range'>) => {
+    const start = getRequestDate(request, 'start');
+    const end = getRequestDate(request, 'end');
+    if (!start || !end) return request.range;
+    return `${formatLocalizedDate(start, language)} - ${formatLocalizedDate(end, language)}`;
+  };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
@@ -721,7 +741,7 @@ const ViewMissionDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
         {mission && (
           <div className="space-y-4">
             <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
-              <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{localizePersonName(mission.name, language)}</p><p className="text-[var(--text-xs)] text-muted-foreground">{mission.employeeNumber || '00000'}</p></div>
+              <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{localizePersonName(mission.name, language)}</p><p className="text-[var(--text-xs)] text-muted-foreground" data-no-auto-translate>{mission.employeeNumber || '00000'}</p></div>
             </div>
             <div className="flex border-b border-border gap-4">
               <button onClick={() => setDetailTab('details')} className={cn('border-b-2 border-transparent pb-2 text-[var(--text-sm)] cursor-pointer transition-colors', detailTab === 'details' ? 'border-accent text-accent font-[var(--font-weight-semibold)]' : 'text-muted-foreground hover:text-foreground')}>Details</button>
@@ -730,7 +750,7 @@ const ViewMissionDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
             {detailTab === 'details' && (
               <div className="space-y-3 text-[var(--text-sm)]">
                 <InfoRow label="Mission Type" value={mission.type} />
-                <InfoRow label="Date Range" value={mission.range} />
+                <InfoRow label="Date Range" value={displayDateRange(mission)} />
                 <InfoRow label="Duration" value={mission.duration} />
                 <InfoRow label="Reason" value={mission.reason || mission.notes} />
                 {mission.status && <InfoRow label="Status" value={mission.status.charAt(0).toUpperCase() + mission.status.slice(1)} />}
@@ -738,10 +758,10 @@ const ViewMissionDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
             )}
             {detailTab === 'history' && (
               <div className="space-y-3 text-[var(--text-sm)]">
-                <InfoRow label="Submitted" value="January 4, 2026" />
+                <InfoRow label="Submitted" value={formatLocalizedDate('January 4, 2026', language)} />
                 <InfoRow label="Reviewed by" value="Muhammed Habib" />
                 <InfoRow label="Decision" value={mission.status === 'approved' ? 'Approved' : 'Pending'} />
-                <InfoRow label="Decision Date" value="January 5, 2026" />
+                <InfoRow label="Decision Date" value={formatLocalizedDate('January 5, 2026', language)} />
               </div>
             )}
           </div>

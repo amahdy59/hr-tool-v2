@@ -6,14 +6,14 @@ const data = JSON.parse(fs.readFileSync('translations.json', 'utf8'));
 const dict = {};
 
 const normalizeArabic = (value) => value
-  .replace(/الأجازات/g, 'الإجازات')
-  .replace(/الأجازة/g, 'الإجازة')
-  .replace(/اجازات/g, 'إجازات')
-  .replace(/اجازة/g, 'إجازة')
-  .replace(/أجازات/g, 'إجازات')
-  .replace(/أجازة/g, 'إجازة')
-  .replace(/اجاز/g, 'إجاز')
-  .replace(/أجاز/g, 'إجاز')
+  .replace(/الأجازات/g, 'الاجازات')
+  .replace(/الأجازة/g, 'الاجازة')
+  .replace(/اجازات/g, 'اجازات')
+  .replace(/اجازة/g, 'اجازة')
+  .replace(/أجازات/g, 'اجازات')
+  .replace(/أجازة/g, 'اجازة')
+  .replace(/اجاز/g, 'اجاز')
+  .replace(/أجاز/g, 'اجاز')
   .replace(/الفلاتر/g, 'عوامل التصفية')
   .replace(/الفلتر/g, 'عامل التصفية')
   .replace(/\bفلتر\b/g, 'تصفية')
@@ -22,28 +22,28 @@ const normalizeArabic = (value) => value
 
 const curatedTranslations = {
   'Dashboard': 'لوحة التحكم',
-  'Leaves Management': 'إدارة الإجازات',
-  'Leave Management': 'إدارة الإجازات',
-  'Leave': 'إجازة',
-  'Leaves': 'الإجازات',
-  'Leave Type': 'نوع الإجازة',
-  'Leave Details': 'تفاصيل الإجازة',
-  'Leave request details': 'تفاصيل طلب الإجازة',
-  'Request Leave': 'طلب إجازة',
-  'Request leave': 'طلب إجازة',
+  'Leaves Management': 'إدارة الاجازات',
+  'Leave Management': 'إدارة الاجازات',
+  'Leave': 'اجازة',
+  'Leaves': 'الاجازات',
+  'Leave Type': 'نوع الاجازة',
+  'Leave Details': 'تفاصيل الاجازة',
+  'Leave request details': 'تفاصيل طلب الاجازة',
+  'Request Leave': 'طلب اجازة',
+  'Request leave': 'طلب اجازة',
   'Request Mission': 'طلب مأمورية',
-  'Create Leave': 'إنشاء طلب إجازة',
-  'Create a new leave request': 'إنشاء طلب إجازة جديد',
-  'Other leave balances': 'أرصدة الإجازات الأخرى',
-  'Paternity Leave': 'إجازة أبوة',
+  'Create Leave': 'إنشاء طلب اجازة',
+  'Create a new leave request': 'إنشاء طلب اجازة جديد',
+  'Other leave balances': 'أرصدة الاجازات الأخرى',
+  'Paternity Leave': 'اجازة أبوة',
   'Hajj': 'الحج',
-  'Annual Leave': 'إجازة سنوية',
-  'Annual leave': 'إجازة سنوية',
-  'Sick Leave': 'إجازة مرضية',
-  'Casual Leave': 'إجازة عارضة',
-  'Maternity (appears only to females)': 'إجازة أمومة (تظهر للإناث فقط)',
-  'Paternity (appears only to males)': 'إجازة أبوة (تظهر للذكور فقط)',
-  'Vacation': 'إجازة',
+  'Annual Leave': 'اجازة سنوية',
+  'Annual leave': 'اجازة سنوية',
+  'Sick Leave': 'اجازة مرضية',
+  'Casual Leave': 'اجازة عارضة',
+  'Maternity (appears only to females)': 'اجازة أمومة (تظهر للإناث فقط)',
+  'Paternity (appears only to males)': 'اجازة أبوة (تظهر للذكور فقط)',
+  'Vacation': 'اجازة',
   'Filter': 'تصفية',
   'Apply Filter': 'تطبيق التصفية',
   'Clear Filter': 'مسح التصفية',
@@ -54,17 +54,17 @@ const curatedTranslations = {
   'Filters cleared': 'تم مسح عوامل التصفية',
   'Search results are based on selected filters.': 'تعتمد نتائج البحث على عوامل التصفية المحددة.',
   'Approve': 'موافقة',
-  'Approve Leave': 'الموافقة على الإجازة',
-  'Approve Leaves': 'الموافقة على الإجازات',
+  'Approve Leave': 'الموافقة على الاجازة',
+  'Approve Leaves': 'الموافقة على الاجازات',
   'Approve Mission': 'الموافقة على المأمورية',
   'Approve Missions': 'الموافقة على المأموريات',
   '4 weeks (20 working days)': '4 أسابيع (20 يوم عمل)',
   '2 weeks (10 working days)': 'أسبوعان (10 أيام عمل)',
   '1 week (5 working days)': 'أسبوع واحد (5 أيام عمل)',
   'Case-by-case / No limit': 'حسب الحالة / بدون حد أقصى',
-  'Please ensure all carried-over vacation days from last year are used before': 'يرجى التأكد من استخدام جميع أيام الإجازة المرحلة من العام الماضي قبل',
+  'Please ensure all carried-over vacation days from last year are used before': 'يرجى التأكد من استخدام جميع أيام الاجازة المرحلة من العام الماضي قبل',
   'March 31st this year': '31 مارس من هذا العام',
-  "Carried over days are deducted automatically before this year's vacation.": 'تُخصم الأيام المرحلة تلقائيًا قبل رصيد إجازات هذا العام.',
+  "Carried over days are deducted automatically before this year's vacation.": 'تُخصم الأيام المرحلة تلقائيًا قبل رصيد اجازات هذا العام.',
   'Export monthly summary to CSV': 'تصدير ملخص الشهر إلى ملف CSV',
   'Hours are calculated based on clock-in/clock-out records. Lunch breaks are excluded. Minimum day threshold is 4 hours.': 'تُحتسب الساعات بناءً على سجلات الحضور والانصراف. لا تُحتسب استراحات الغداء. الحد الأدنى لليوم هو 4 ساعات.',
   'Show employee search tips': 'عرض إرشادات البحث عن الموظفين',
@@ -77,24 +77,24 @@ const curatedTranslations = {
   'Holiday month': 'شهر العطلة',
   'Holiday year': 'سنة العطلة',
   'Open history filters': 'فتح عوامل تصفية السجل',
-  'Leave filter from date': 'تصفية الإجازات من تاريخ',
-  'Leave filter to date': 'تصفية الإجازات حتى تاريخ',
+  'Leave filter from date': 'تصفية الاجازات من تاريخ',
+  'Leave filter to date': 'تصفية الاجازات حتى تاريخ',
   'Profile sections': 'أقسام الملف الشخصي',
   'Pause upload': 'إيقاف الرفع مؤقتًا',
   'Cancel upload': 'إلغاء الرفع',
-  'Leave balance summary': 'ملخص رصيد الإجازة',
+  'Leave balance summary': 'ملخص رصيد الاجازة',
   'Select a request type to continue': 'اختر نوع الطلب للمتابعة',
   'Information about this action': 'معلومات عن هذا الإجراء',
-  'Book time off': 'حجز إجازة',
+  'Book time off': 'حجز اجازة',
   'PDF, PNG, JPG up to 10MB': 'PDF أو PNG أو JPG حتى 10 ميجابايت',
   'Upload file or drag and drop': 'رفع ملف أو السحب والإفلات',
   'Required for family care requests': 'مطلوب لطلبات رعاية الأسرة',
-  'Required for sick requests': 'مطلوب لطلبات الإجازة المرضية',
-  'Required for maternity requests': 'مطلوب لطلبات إجازة الأمومة',
-  'Required for paternity requests': 'مطلوب لطلبات إجازة الأبوة',
-  'Required for hajj requests': 'مطلوب لطلبات إجازة الحج',
-  'Required for marriage requests': 'مطلوب لطلبات إجازة الزواج',
-  'Required for bereavement requests': 'مطلوب لطلبات إجازة الوفاة',
+  'Required for sick requests': 'مطلوب لطلبات الاجازة المرضية',
+  'Required for maternity requests': 'مطلوب لطلبات اجازة الأمومة',
+  'Required for paternity requests': 'مطلوب لطلبات اجازة الأبوة',
+  'Required for hajj requests': 'مطلوب لطلبات اجازة الحج',
+  'Required for marriage requests': 'مطلوب لطلبات اجازة الزواج',
+  'Required for bereavement requests': 'مطلوب لطلبات اجازة الوفاة',
   'Import Profile from LinkedIn': 'استيراد الملف الشخصي من LinkedIn',
   'Sync your profile with LinkedIn to maintain ATS compatibility and avoid manual data entry.': 'قم بمزامنة ملفك الشخصي مع LinkedIn للحفاظ على التوافق مع أنظمة التوظيف وتجنب إدخال البيانات يدويًا.',
   'LinkedIn PDF Export / Resume': 'تصدير ملف LinkedIn PDF / السيرة الذاتية',

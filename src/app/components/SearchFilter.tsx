@@ -1,6 +1,7 @@
 import React from 'react';
-import { Search, Filter, Info } from 'lucide-react';
+import { Search, Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { InfoTooltip } from './ui/info-tooltip';
 
 interface SearchFilterProps {
   placeholder?: string;
@@ -22,9 +23,13 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   return (
     <div className={cn('flex-1 space-y-1 cursor-default', className)}>
       {label && (
-        <div className="flex items-center gap-2">
+        <div className="inline-flex items-center gap-1.5">
           <label htmlFor={searchId} className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground">{label}</label>
-          {showInfo && <Info className="w-4 h-4 text-primary" />}
+          {showInfo && (
+            <InfoTooltip ariaLabel={`Information about ${resolvedLabel}`}>
+              Search results update as you type. Use the filter button to refine the results.
+            </InfoTooltip>
+          )}
         </div>
       )}
       {showInfo && (

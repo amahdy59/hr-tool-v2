@@ -477,7 +477,11 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             {mode === 'edit' ? 'Save changes' : 'Book time off'}
             {daysRequested > 0 && mode === 'add' && (
               <span className="ms-1 opacity-80">
-                ({daysRequested} day{daysRequested !== 1 ? 's' : ''})
+                {isArabic ? (
+                  `(${toEasternArabic(daysRequested)} ${daysRequested === 1 ? 'يوم' : daysRequested === 2 ? 'يومين' : daysRequested >= 3 && daysRequested <= 10 ? 'أيام' : 'يوم'})`
+                ) : (
+                  `(${daysRequested} day${daysRequested !== 1 ? 's' : ''})`
+                )}
               </span>
             )}
           </Button>

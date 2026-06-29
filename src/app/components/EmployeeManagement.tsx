@@ -50,18 +50,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from './ui/popover';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from './ui/tooltip';
+import { InfoTooltip } from './ui/info-tooltip';
 import { Checkbox } from './ui/checkbox';
 import { toast } from 'sonner';
 import { EmptyState } from './EmptyState';
 import { Pagination } from './Pagination';
 import { exportToCSV } from '../../lib/export';
 import { useTranslation } from 'react-i18next';
-import { localizePersonName } from '@/lib/localizedNames';
+import {
+  formatLocalizedDate,
+  localizeDepartmentName,
+  localizeJobTitle,
+  localizePersonName,
+} from '@/lib/localizedNames';
 
 import {
   Employee,
@@ -334,16 +335,11 @@ export const EmployeeManagement: React.FC = () => {
           {/* Search row */}
           <div className="flex flex-wrap items-end gap-3">
             <div className="w-full min-w-[280px] space-y-1">
-              <div className="flex items-center gap-2">
+              <div className="inline-flex items-center gap-1.5">
                 <label htmlFor="employee-directory-search" className={cn(labelClass, 'sr-only md:not-sr-only md:inline-block')}>Search Employees</label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button type="button" aria-label="Search help" className="inline-flex h-4 min-h-0 w-4 min-w-0 items-center justify-center p-0 cursor-pointer"><Info className="w-4 h-4 text-primary" /></button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" className="max-w-[240px] text-[var(--text-xs)]">
-                    <p>Search by name, Employee number, or email.</p>
-                  </TooltipContent>
-                </Tooltip>
+                <InfoTooltip ariaLabel="Search help" contentClassName="max-w-[240px]">
+                  <p>Search by name, Employee number, or email.</p>
+                </InfoTooltip>
               </div>
               <div className="flex items-center gap-2">
                 <form role="search" onSubmit={(e) => e.preventDefault()} className="relative flex-1">
@@ -422,9 +418,9 @@ export const EmployeeManagement: React.FC = () => {
                             <span className="text-primary font-[var(--font-weight-medium)]">{localizePersonName(emp.name, language)}</span>
                           </div>
                         </td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span>{emp.employeeNumber}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Department:</span>{emp.department}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Title:</span>{emp.jobTitle}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span><span data-no-auto-translate>{emp.employeeNumber}</span></td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Department:</span>{localizeDepartmentName(emp.department, language)}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Title:</span>{localizeJobTitle(emp.jobTitle, language)}</td>
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -492,7 +488,7 @@ export const EmployeeManagement: React.FC = () => {
                           <span className="font-[var(--font-weight-medium)] text-foreground">{log.admin}</span>
                         </td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Action:</span>{log.action}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Date:</span>{log.date}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Date:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{formatLocalizedDate(log.date, language)}</span></td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Affected:</span>{log.affectedCount}</td>
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <Button variant="outline" size="sm" onClick={() => { setActivityLogDetail(log); setActivityLogDetailOpen(true); }} className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">View Details</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
@@ -532,7 +528,7 @@ export const EmployeeManagement: React.FC = () => {
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
                       <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department ID</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground"><span data-no-auto-translate>Department ID</span></th>
                       <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Total Number</th>
                       <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
                     </tr>
@@ -540,8 +536,8 @@ export const EmployeeManagement: React.FC = () => {
                   <tbody className="divide-y divide-border">
                     {paginatedDepartments.map((dept) => (
                       <tr key={dept.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)]">{dept.name}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">ID:</span>{dept.deptId}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)]">{localizeDepartmentName(dept.name, language)}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium" data-no-auto-translate>Department ID:</span><span data-no-auto-translate>{dept.deptId}</span></td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Total:</span>{dept.totalNumber}</td>
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
@@ -585,7 +581,7 @@ export const EmployeeManagement: React.FC = () => {
                 <tbody className="divide-y divide-border">
                   {paginatedJobTitles.map((jt) => (
                     <tr key={jt.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{jt.title}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{localizeJobTitle(jt.title, language)}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums">{jt.count}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-end">
                         <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
@@ -1071,9 +1067,9 @@ const FormerEmployeeModal: React.FC<{
                 {formerEmployees.map((fe, i) => (
                   <tr key={i} className="hover:bg-muted/30">
                     <td className="whitespace-nowrap px-4 py-3 text-foreground">{localizePersonName(fe.name, language)}</td>
-                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground uppercase tabular-nums">{fe.employeeNumber}</td>
-                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{fe.dept}</td>
-                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{fe.title}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground uppercase tabular-nums"><span data-no-auto-translate>{fe.employeeNumber}</span></td>
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{localizeDepartmentName(fe.dept, language)}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{localizeJobTitle(fe.title, language)}</td>
                     <td className="whitespace-nowrap px-4 py-3 text-end">
                       <Button size="sm" variant="outline" className="gap-1.5 rounded-[var(--radius-button)]" onClick={() => { onOpenChange(false); toast.success(`${localizePersonName(fe.name, language)} added back as an employee`); }}>
                         <Plus className="w-3 h-3" /> Add
@@ -1135,8 +1131,8 @@ const AccessCardsModal: React.FC<{
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Employee Info</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[var(--text-sm)]">
                 <div><span className="text-muted-foreground">Name:</span> <span className="text-foreground ms-1">{localizePersonName(employee.name, language)}</span></div>
-                <div><span className="text-muted-foreground">Employee#:</span> <span className="text-foreground ms-1 uppercase">{employee.employeeNumber}</span></div>
-                <div><span className="text-muted-foreground">Department:</span> <span className="text-foreground ms-1">{employee.department}</span></div>
+                <div><span className="text-muted-foreground">Employee#:</span> <span className="text-foreground ms-1 uppercase" data-no-auto-translate>{employee.employeeNumber}</span></div>
+                <div><span className="text-muted-foreground">Department:</span> <span className="text-foreground ms-1">{localizeDepartmentName(employee.department, language)}</span></div>
               </div>
             </div>
 
@@ -1276,6 +1272,8 @@ const ActivityLogDetailModal: React.FC<{
   onOpenChange: (v: boolean) => void;
   entry: ActivityEntry | null;
 }> = ({ open, onOpenChange, entry }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || i18n.language;
   const [detailTab, setDetailTab] = useState<'admin' | 'affected'>('admin');
 
   return (
@@ -1304,16 +1302,16 @@ const ActivityLogDetailModal: React.FC<{
             {detailTab === 'admin' && (
               <div className="space-y-3 text-[var(--text-sm)]">
                 <InfoRow label="Admin" value={entry.admin} />
-                <InfoRow label="Department" value="Company HR Management" />
+                <InfoRow label="Department" value={localizeDepartmentName('Company HR Management', language)} />
                 <InfoRow label="Action" value={entry.action} />
-                <InfoRow label="Date" value={entry.date} />
+                <InfoRow label="Date" value={formatLocalizedDate(entry.date, language)} />
                 <InfoRow label="Details" value="A user action's past will not be modified. This action is recorded for auditing purposes." />
               </div>
             )}
 
             {detailTab === 'affected' && (
               <div className="space-y-3 text-[var(--text-sm)]">
-                <InfoRow label="Employee Number" value={entry.affectedEmployeeNumber} />
+                <InfoRow label="Employee Number" value={entry.affectedEmployeeNumber} noAutoTranslateValue />
                 <InfoRow label="Affected Count" value={String(entry.affectedCount)} />
                 <InfoRow label="Status" value="Completed" />
               </div>
@@ -1358,7 +1356,7 @@ const DepartmentFormModal: React.FC<{
         </DialogHeader>
         <div className="space-y-4">
           <FormField label="Department" value={name} onChange={setName} placeholder="Department name" />
-          <FormField label="Department ID" value={deptId} onChange={setDeptId} placeholder="e.g. D1006" />
+          <FormField label="Department ID" value={deptId} onChange={setDeptId} placeholder="e.g. D1006" noAutoTranslateLabel />
           <FormField label="Lead Count" value={leadCount} onChange={setLeadCount} placeholder="Number of employees" type="number" />
         </div>
         <DialogFooter className="pt-4 gap-2">
@@ -1444,11 +1442,12 @@ const FormField: React.FC<{
   type?: string;
   inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
   autoComplete?: string;
-}> = ({ label, value, onChange, placeholder, type = 'text', inputMode, autoComplete }) => {
+  noAutoTranslateLabel?: boolean;
+}> = ({ label, value, onChange, placeholder, type = 'text', inputMode, autoComplete, noAutoTranslateLabel }) => {
   const id = React.useId();
   return (
   <div className="space-y-1">
-    <label htmlFor={id} className={labelClass}>{label}</label>
+    <label htmlFor={id} className={labelClass} {...(noAutoTranslateLabel ? { 'data-no-auto-translate': true } : {})}>{label}</label>
     {type === 'date' ? (
       <DatePicker id={id} value={value} onChange={onChange} placeholder={placeholder} aria-label={label} />
     ) : (
@@ -1459,9 +1458,9 @@ const FormField: React.FC<{
 };
 
 // ── Info Row ──
-const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+const InfoRow: React.FC<{ label: string; value: string; noAutoTranslateValue?: boolean }> = ({ label, value, noAutoTranslateValue }) => (
   <div className="flex gap-3">
     <span className="text-muted-foreground w-24 shrink-0 font-[var(--font-weight-medium)]">{label}:</span>
-    <span className="text-foreground">{value}</span>
+    <span className="text-foreground" {...(noAutoTranslateValue ? { 'data-no-auto-translate': true } : {})}>{value}</span>
   </div>
 );

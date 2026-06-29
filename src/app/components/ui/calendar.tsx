@@ -137,6 +137,14 @@ function Calendar({
             const day = date.getDate();
             return isArabic ? toEasternArabic(day) : String(day);
           },
+          formatWeekdayName: (day, options) => {
+            if (isArabic) {
+              const dayIndex = day.getDay();
+              const arabicDays = ['أحد', 'اثن', 'ثلا', 'أرب', 'خمي', 'جمع', 'سبت'];
+              return arabicDays[dayIndex];
+            }
+            return format(day, "ccc", options);
+          },
         }}
         classNames={{
           months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
@@ -158,7 +166,7 @@ function Calendar({
           table: "w-full border-collapse space-y-1",
           head_row: "flex w-full mb-1",
           head_cell:
-            "text-muted-foreground rounded-[var(--radius)] w-9 h-9 font-[var(--font-weight-normal)] text-[var(--text-sm)] flex items-center justify-start ps-[12px] text-start",
+            "text-muted-foreground rounded-[var(--radius)] w-9 h-9 font-[var(--font-weight-normal)] text-[var(--text-sm)] flex items-center justify-center text-center",
           row: "flex w-full mt-1",
           cell: "h-9 w-9 text-center p-0 relative [&:has([aria-selected].day-range-end)]:rounded-e-[var(--radius)] [&:has([aria-selected].day-outside)]:bg-muted/50 [&:has([aria-selected])]:bg-muted first:[&:has([aria-selected])]:rounded-s-[var(--radius)] last:[&:has([aria-selected])]:rounded-e-[var(--radius)] focus-within:relative focus-within:z-20",
           day: cn(

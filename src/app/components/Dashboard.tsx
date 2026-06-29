@@ -600,13 +600,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           <div className="flex gap-3 p-4 bg-primary/5 rounded-[var(--radius)] border border-primary/15">
             <Info className="w-5 h-5 text-primary shrink-0" />
             <p className="text-[var(--text-sm)] font-[var(--font-weight-normal)] text-foreground">
-              {isArabic ? 'يرجى التأكد من استخدام جميع أيام الإجازة المرحلة من العام الماضي قبل' : 'Please ensure all carried-over vacation days from last year are used before'}
+              {isArabic ? 'يرجى التأكد من استخدام جميع أيام الاجازة المرحلة من العام الماضي قبل' : 'Please ensure all carried-over vacation days from last year are used before'}
               <strong style={{ fontWeight: 'var(--font-weight-semibold)' }} className="mx-1">
                 {isArabic ? '31 مارس من هذا العام' : 'March 31st this year'}
               </strong>
               {"."}
               <br />
-              {isArabic ? 'تُخصم الأيام المرحلة تلقائيًا قبل رصيد إجازات هذا العام.' : "Carried over days are deducted automatically before this year's vacation."}
+              {isArabic ? 'تُخصم الأيام المرحلة تلقائيًا قبل رصيد اجازات هذا العام.' : "Carried over days are deducted automatically before this year's vacation."}
             </p>
           </div>
         </section>
@@ -621,14 +621,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             }}
             className="text-foreground"
           >
-            {isArabic ? 'إجازات أخرى' : 'Other Leaves'}
+            {isArabic ? 'اجازات أخرى' : 'Other Leaves'}
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
-              <caption className="sr-only">{isArabic ? 'أرصدة الإجازات الأخرى' : 'Other leave balances'}</caption>
+              <caption className="sr-only">{isArabic ? 'أرصدة الاجازات الأخرى' : 'Other leave balances'}</caption>
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
-                  {(isArabic ? ['نوع الإجازة', 'الرصيد'] : ['Leave Type', 'Balance']).map((h) => (
+                  {(isArabic ? ['نوع الاجازة', 'الرصيد'] : ['Leave Type', 'Balance']).map((h) => (
                     <th
                       key={h}
                       className="px-4 py-3"
@@ -647,7 +647,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                 {[
                   // Show Paternity for male user, Maternity for female user
                   {
-                    type: isArabic ? 'إجازة أبوة' : 'Paternity Leave',
+                    type: isArabic ? 'اجازة أبوة' : 'Paternity Leave',
                     balance: isArabic ? '4 أسابيع (20 يوم عمل)' : '4 weeks (20 working days)',
                   },
                   {
@@ -793,7 +793,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                 <div className="flex items-center gap-3">
                   <Umbrella className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
                   <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
-                    {isArabic ? 'طلب إجازة / عطلة' : 'Request Leave (Vacation)'}
+                    {isArabic ? 'طلب اجازة / عطلة' : 'Request Leave (Vacation)'}
                   </span>
                 </div>
                 {isArabic ? (
