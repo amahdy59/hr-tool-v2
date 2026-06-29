@@ -55,6 +55,8 @@ export const Pagination: React.FC<PaginationProps> = ({
   const { t, i18n } = useTranslation();
   const pageSizeLabelId = React.useId();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+  const PreviousIcon = isArabic ? ChevronRight : ChevronLeft;
+  const NextIcon = isArabic ? ChevronLeft : ChevronRight;
   const pageCount = Math.max(1, totalPages);
   const normalizedCurrentPage = Math.min(Math.max(currentPage, 1), pageCount);
   const hasResults = totalItems === undefined || totalItems > 0;
@@ -128,7 +130,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                 "h-11 px-4 bg-background dark:bg-card border border-border text-foreground hover:bg-muted/50 rounded-s-md rounded-e-none z-0 hover:z-10 focus:z-10 disabled:opacity-50 disabled:pointer-events-none disabled:bg-background disabled:text-muted-foreground/50 transition-colors flex items-center gap-1.5 shadow-none"
               )}
             >
-              <ChevronLeft className="pagination-nav-icon h-4.5 w-4.5" aria-hidden="true" />
+              <PreviousIcon className="pagination-nav-icon h-4.5 w-4.5" aria-hidden="true" />
               <span className="hidden sm:inline">{t('pagination.previousText', 'Previous')}</span>
             </Button>
           </li>
@@ -186,7 +188,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               )}
             >
               <span className="hidden sm:inline">{t('pagination.nextText', 'Next')}</span>
-              <ChevronRight className="pagination-nav-icon h-4.5 w-4.5" aria-hidden="true" />
+              <NextIcon className="pagination-nav-icon h-4.5 w-4.5" aria-hidden="true" />
             </Button>
           </li>
         </ul>

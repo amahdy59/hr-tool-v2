@@ -176,6 +176,12 @@
     "UI Category": "Label"
   },
   {
+    "Source Index": 99,
+    "English Text": "Accountant",
+    "Arabic Translation": "محاسب",
+    "UI Category": "Label"
+  },
+  {
     "Source Index": 100,
     "English Text": "Action",
     "Arabic Translation": "الإجراء",
@@ -2434,6 +2440,18 @@
     "UI Category": "Label"
   },
   {
+    "Source Index": 475,
+    "English Text": "Finance Manager",
+    "Arabic Translation": "مدير المالية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 475,
+    "English Text": "Financial Manager",
+    "Arabic Translation": "مدير المالية",
+    "UI Category": "Label"
+  },
+  {
     "Source Index": 476,
     "English Text": "First and last name",
     "Arabic Translation": "الاسم الأول واسم العائلة",
@@ -2698,6 +2716,24 @@
     "English Text": "HR",
     "Arabic Translation": "الموارد البشرية",
     "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 519,
+    "English Text": "HR Manager",
+    "Arabic Translation": "مدير الموارد البشرية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 519,
+    "English Text": "HR Operations Manager",
+    "Arabic Translation": "مدير عمليات الموارد البشرية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 519,
+    "English Text": "HR Specialist",
+    "Arabic Translation": "أخصائي موارد بشرية",
+    "UI Category": "Label"
   },
   {
     "Source Index": 520,
@@ -4720,6 +4756,24 @@
     "UI Category": "Label"
   },
   {
+    "Source Index": 856,
+    "English Text": "Senior Cybersecurity Specialist",
+    "Arabic Translation": "أخصائي أمن سيبراني أول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 856,
+    "English Text": "Senior Financial Controller",
+    "Arabic Translation": "مراقب مالي أول",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 856,
+    "English Text": "Senior UX Designer & Data Analyst",
+    "Arabic Translation": "مصمم تجربة مستخدم ومحلل بيانات أول",
+    "UI Category": "Label"
+  },
+  {
     "Source Index": 857,
     "English Text": "Senior Solutions Architect",
     "Arabic Translation": "مهندس حلول أول",
@@ -4849,6 +4903,30 @@
     "Source Index": 878,
     "English Text": "Software Developer",
     "Arabic Translation": "مطور برمجيات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 878,
+    "English Text": "Talent Acquisition Specialist",
+    "Arabic Translation": "أخصائي استقطاب المواهب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 878,
+    "English Text": "Learning & Development Specialist",
+    "Arabic Translation": "أخصائي التعلم والتطوير",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 878,
+    "English Text": "Frontend Intern",
+    "Arabic Translation": "متدرب واجهة أمامية",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 878,
+    "English Text": "Lead DevOps Engineer",
+    "Arabic Translation": "مهندس ديف أوبس قائد",
     "UI Category": "Label"
   },
   {

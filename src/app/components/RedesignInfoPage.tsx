@@ -1,30 +1,28 @@
 import React, { useState } from 'react';
 import {
+  Accessibility,
   ArrowLeft,
   ArrowRight,
-  Accessibility,
-  Calendar,
+  BadgeCheck,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
   Clock,
+  Database,
   Eye,
+  Globe2,
   Layers,
   Rocket,
+  Shield,
   Smartphone,
   Sparkles,
   Target,
-  Users,
-  Zap,
-  ChevronLeft,
-  ChevronRight,
-  Database,
-  Shield,
   Terminal,
+  Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
-
-// --- DATA ---
 
 const comparisons = [
   {
@@ -32,11 +30,11 @@ const comparisons = [
     label: 'Employee Management',
     before: {
       src: asset('old-system/add-employee.png'),
-      caption: 'Dense forms, no hierarchy',
+      caption: 'Dense forms with limited visual hierarchy',
     },
     after: {
       src: asset('new-system/employee-profile.png'),
-      caption: 'Scannable table, clear status badges',
+      caption: 'Scannable profile data with clear status patterns',
     },
   },
   {
@@ -44,11 +42,11 @@ const comparisons = [
     label: 'Leave Requests',
     before: {
       src: asset('old-system/search-vacations.png'),
-      caption: 'Scattered across multiple screens',
+      caption: 'Leave details scattered across separate screens',
     },
     after: {
       src: asset('images/transform-leave.png'),
-      caption: 'One-screen submission with status',
+      caption: 'Focused request flow with validation and status context',
     },
   },
   {
@@ -56,33 +54,37 @@ const comparisons = [
     label: 'Missions & Approvals',
     before: {
       src: asset('old-system/mission-form.png'),
-      caption: 'Cluttered form, disconnected approval',
+      caption: 'Disconnected form and approval experience',
     },
     after: {
       src: asset('images/transform-mission.png'),
-      caption: 'Card-based flow, inline approve/reject',
+      caption: 'Inline review flow with clear approve and decline actions',
     },
   },
 ];
 
 const outcomes = [
-  { icon: Zap, label: 'Fewer steps', desc: 'Key actions in one screen' },
-  { icon: Eye, label: 'Clear status', desc: 'Readable badges everywhere' },
-  { icon: Accessibility, label: 'AAA accessible', desc: 'High-contrast, large targets' },
-  { icon: Smartphone, label: 'Mobile-first', desc: 'Works on any device' },
+  { icon: Zap, label: 'Fewer steps', desc: 'Common HR tasks stay on one focused path.' },
+  { icon: Eye, label: 'Clear status', desc: 'Requests, employees, and approvals use readable states.' },
+  { icon: Accessibility, label: 'AAA-ready access', desc: 'Contrast, focus, target size, and motion are product requirements.' },
+  { icon: Smartphone, label: 'Responsive workflows', desc: 'Tables, filters, cards, and forms stay usable on smaller screens.' },
 ];
 
 const improvements = [
-  { label: 'Accessibility', detail: 'High contrast, large targets, dyslexia font, focus highlights' },
-  { label: 'Navigation', detail: 'Consistent affordances across tabs, links, and buttons' },
-  { label: 'Profiles & Modals', detail: 'Contextual edit modals, privacy-safe demo data' },
-  { label: 'Deployment', detail: 'Vercel + GitHub Pages with automated CI/CD' },
-  { label: 'Supabase Backend Planning', detail: 'Relational PostgreSQL schemas designed for departments, jobs, employees, leaves, attendance, and payroll.' },
-  { label: 'Cybersecurity Measures', detail: 'Strict Row Level Security (RLS), protected secrets, short-lived JWT validation, and secure storage policies.' },
-  { label: 'Maintainability Blueprint', detail: 'Version-controlled database migrations, auto-generated TypeScript DB types, and layered data services.' },
+  { label: 'Bilingual translation quality', detail: 'Arabic mode preserves fully translated Arabic content and only repairs mixed Arabic/English fragments when an English token remains.' },
+  { label: 'RTL interaction design', detail: 'Logical spacing, mirrored layouts, and language-aware pagination arrows keep Arabic navigation predictable.' },
+  { label: 'Accessible controls', detail: 'Forms, tabs, filters, and pagination expose labels, focus states, and 44px minimum targets.' },
+  { label: 'Profile and request workflows', detail: 'Contextual edit modals, privacy-safe demo data, and clear request states reduce ambiguity for employees and managers.' },
+  { label: 'Supabase backend planning', detail: 'Relational PostgreSQL schemas cover departments, jobs, employees, leaves, attendance, payroll, and audit-ready workflows.' },
+  { label: 'Security posture', detail: 'Row Level Security, protected secrets, short-lived JWT validation, and storage policies are documented before production rollout.' },
+  { label: 'Maintainability blueprint', detail: 'Version-controlled migrations, generated TypeScript database types, and layered data services keep the system easier to change.' },
 ];
 
-// --- COMPONENTS ---
+const proofPoints = [
+  { icon: Globe2, value: '2 languages', label: 'English and Arabic switching with RTL mirroring' },
+  { icon: BadgeCheck, value: 'WCAG-led', label: 'Contrast, focus, and touch target rules baked into shared components' },
+  { icon: Database, value: 'HRIS schema', label: 'Employees, titles, departments, requests, attendance, and payroll' },
+];
 
 const ScreenshotCard: React.FC<{
   src: string;
@@ -98,9 +100,7 @@ const ScreenshotCard: React.FC<{
       <div
         className={cn(
           'inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold',
-          isAfter
-            ? 'bg-[#E7F6EF] text-[#064E3B]'
-            : 'bg-muted text-muted-foreground'
+          isAfter ? 'bg-[#E7F6EF] text-[#064E3B]' : 'bg-muted text-muted-foreground'
         )}
       >
         {isAfter ? (
@@ -112,15 +112,12 @@ const ScreenshotCard: React.FC<{
       </div>
       <div
         className={cn(
-          'relative overflow-hidden rounded-[var(--radius-card)] border aspect-[16/10] w-full',
+          'relative aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-card)] border bg-card',
           isAfter ? 'border-[#047857]/30 shadow-md' : 'border-border'
         )}
       >
         {!loaded && !failed && (
-          <div
-            className="absolute inset-0 z-10 animate-pulse bg-muted"
-            aria-hidden="true"
-          />
+          <div className="absolute inset-0 z-10 animate-pulse bg-muted" aria-hidden="true" />
         )}
         {failed ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-muted/50 p-6 text-center">
@@ -141,7 +138,7 @@ const ScreenshotCard: React.FC<{
           />
         )}
       </div>
-      <p className="text-xs text-muted-foreground">{caption}</p>
+      <p className="text-xs leading-5 text-muted-foreground">{caption}</p>
     </div>
   );
 };
@@ -155,13 +152,12 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* ── HEADER ── */}
       <header className="sticky top-0 z-20 border-b border-border bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Back to login"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
@@ -174,67 +170,49 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl space-y-12 px-4 py-8 sm:px-6 lg:space-y-16 lg:py-12">
-
-        {/* ── HERO ── */}
-        <section aria-labelledby="hero-heading">
-          <div className="relative overflow-hidden rounded-[var(--radius-card)] border border-border bg-gradient-to-br from-primary/10 via-card to-accent/10 px-6 py-10 shadow-[var(--elevation-lg)] sm:px-10 sm:py-14">
-            {/* decorative blobs */}
-            <div className="pointer-events-none absolute -end-16 -top-16 h-64 w-64 rounded-full bg-accent/15 blur-3xl" aria-hidden="true" />
-            <div className="pointer-events-none absolute -bottom-10 -start-10 h-48 w-48 rounded-full bg-primary/10 blur-3xl" aria-hidden="true" />
-
-            <div className="relative space-y-5 max-w-3xl">
-              <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent">
-                <Target className="h-3.5 w-3.5" aria-hidden="true" />
-                Employee self-service redesign
-              </p>
-              <h1
-                id="hero-heading"
-                className="font-semibold text-foreground leading-tight"
-                style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)' }}
+      <main className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6 lg:space-y-14 lg:py-12">
+        <section aria-labelledby="hero-heading" className="space-y-6">
+          <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent">
+            <Target className="h-3.5 w-3.5" aria-hidden="true" />
+            Employee self-service redesign
+          </p>
+          <div className="max-w-4xl space-y-5">
+            <h1 id="hero-heading" className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl lg:text-5xl">
+              HR workflows, translation, and controls <span className="text-accent">redesigned for clarity.</span>
+            </h1>
+            <p className="max-w-3xl text-base leading-7 text-muted-foreground">
+              A privacy-safe case study for modernizing an internal HR tool. The redesign turns scattered legacy screens into a responsive, bilingual experience for employees, managers, and HR teams.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {[
+              { label: 'Fewer steps', icon: Zap },
+              { label: 'Clear status', icon: Eye },
+              { label: 'Arabic-ready', icon: Globe2 },
+              { label: 'Accessible controls', icon: Accessibility },
+            ].map(({ label, icon: Icon }) => (
+              <div
+                key={label}
+                className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 py-2 text-sm font-medium shadow-[var(--elevation-sm)]"
               >
-                Leave, mission &amp; document workflows —{' '}
-                <span className="text-accent">redesigned for clarity.</span>
-              </h1>
-              <p className="max-w-xl text-base leading-7 text-muted-foreground">
-                A privacy-safe demo of a real HR upgrade. Scattered legacy screens become an accessible, responsive experience for employees, managers, and HR teams.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {[
-                  { label: 'Fewer steps', icon: Zap },
-                  { label: 'Clear status', icon: Eye },
-                  { label: 'AAA accessible', icon: Accessibility },
-                  { label: 'Fully responsive', icon: Smartphone },
-                ].map(({ label, icon: Icon }) => (
-                  <div
-                    key={label}
-                    className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1.5 text-sm font-medium shadow-[var(--elevation-sm)]"
-                  >
-                    <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
-                    {label}
-                  </div>
-                ))}
+                <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
+                {label}
               </div>
-              <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-                    <Users className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                  </div>
-                  <p className="text-sm text-muted-foreground"><strong className="text-foreground">Audience:</strong> Employees, managers &amp; HR teams</p>
+            ))}
+          </div>
+          <div className="grid gap-3 md:grid-cols-3">
+            {proofPoints.map(({ icon: Icon, value, label }) => (
+              <div key={value} className="border border-border bg-card p-4 shadow-[var(--elevation-sm)]">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
+                  <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
-                <div className="hidden h-4 w-px bg-border sm:block" aria-hidden="true" />
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#E7F6EF]">
-                    <CheckCircle2 className="h-4 w-4 text-[#047857]" aria-hidden="true" />
-                  </div>
-                  <p className="text-sm text-muted-foreground"><strong className="text-foreground">Result:</strong> Less navigation, clearer statuses</p>
-                </div>
+                <p className="text-sm font-semibold text-foreground">{value}</p>
+                <p className="mt-1 text-xs leading-5 text-muted-foreground">{label}</p>
               </div>
-            </div>
+            ))}
           </div>
         </section>
 
-        {/* ── BEFORE / AFTER ── */}
         <section aria-labelledby="comparison-heading">
           <div className="mb-6 space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
@@ -242,16 +220,14 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
               Before &amp; After
             </p>
             <h2 id="comparison-heading" className="text-2xl font-semibold">
-              See the transformation
+              Compare the legacy flow with the redesigned experience
             </h2>
+            <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
+              Each comparison shows how the redesign improves scanability, decision-making, and flow continuity without exposing real employee data.
+            </p>
           </div>
 
-          {/* Tab nav */}
-          <div
-            role="tablist"
-            aria-label="Comparison screens"
-            className="mb-6 flex gap-2 overflow-x-auto pb-1"
-          >
+          <div role="tablist" aria-label="Comparison screens" className="mb-6 flex gap-2 overflow-x-auto pb-1">
             {comparisons.map((c, i) => (
               <button
                 key={c.id}
@@ -287,13 +263,12 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
             </div>
           ))}
 
-          {/* Mobile navigation */}
           <div className="mt-4 flex items-center justify-between sm:hidden">
             <button
               type="button"
               onClick={() => setActiveTab((p) => Math.max(0, p - 1))}
               disabled={activeTab === 0}
-              className="inline-flex items-center gap-1.5 rounded-[var(--radius-button)] border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-button)] border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
               aria-label="Previous comparison"
             >
               <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -306,7 +281,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
               type="button"
               onClick={() => setActiveTab((p) => Math.min(comparisons.length - 1, p + 1))}
               disabled={activeTab === comparisons.length - 1}
-              className="inline-flex items-center gap-1.5 rounded-[var(--radius-button)] border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-button)] border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
               aria-label="Next comparison"
             >
               Next
@@ -315,7 +290,6 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
           </div>
         </section>
 
-        {/* ── OUTCOMES ── */}
         <section aria-labelledby="outcomes-heading">
           <div className="mb-6 space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
@@ -323,15 +297,12 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
               Outcomes
             </p>
             <h2 id="outcomes-heading" className="text-2xl font-semibold">
-              What changed for users
+              What changed for users and HR admins
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {outcomes.map(({ icon: Icon, label, desc }) => (
-              <div
-                key={label}
-                className="rounded-[var(--radius-card)] border border-border bg-card p-5 shadow-[var(--elevation-sm)] transition-shadow hover:shadow-md"
-              >
+              <div key={label} className="border border-border bg-card p-5 shadow-[var(--elevation-sm)]">
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
@@ -342,7 +313,6 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
           </div>
         </section>
 
-        {/* ── IMPROVEMENTS ── */}
         <section aria-labelledby="improvements-heading">
           <div className="mb-6 space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
@@ -350,15 +320,12 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
               Redesign Notes
             </p>
             <h2 id="improvements-heading" className="text-2xl font-semibold">
-              Key improvements
+              Product decisions behind the interface
             </h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {improvements.map(({ label, detail }) => (
-              <div
-                key={label}
-                className="flex gap-3 rounded-[var(--radius-card)] border border-border bg-card p-4"
-              >
+              <div key={label} className="flex gap-3 border border-border bg-card p-4">
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                 <div>
                   <p className="text-sm font-semibold">{label}</p>
@@ -369,97 +336,90 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
           </div>
         </section>
 
-        {/* ── DATABASE & SECURITY ROADMAP ── */}
         <section aria-labelledby="database-roadmap-heading" className="space-y-6">
-          <div className="mb-6 space-y-2">
+          <div className="space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
               <Database className="h-4 w-4" aria-hidden="true" />
               Backend &amp; Security Roadmap
             </p>
             <h2 id="database-roadmap-heading" className="text-2xl font-semibold">
-              Live Supabase Integration &amp; Security Blueprint
+              Live Supabase integration and security blueprint
             </h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">
-              We have designed a robust PostgreSQL schema and defined a 10-point cybersecurity and maintainability strategy to evolve this mockup into a fully operational application.
+            <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
+              The UI is backed by an implementation plan for production data, permissions, auditability, and maintainable deployment workflows.
             </p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Database Card */}
-            <div className="rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-[var(--elevation-sm)] space-y-4">
+            <div className="space-y-4 border border-border bg-card p-6 shadow-[var(--elevation-sm)]">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Database className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
-                <h3 className="text-lg font-semibold">Relational Database Schemas</h3>
+                <h3 className="text-lg font-semibold">Relational database schemas</h3>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Structured for high-performance indexing, foreign key constraints, and relational integrity.
+              <p className="text-xs leading-5 text-muted-foreground">
+                Structured around real HRIS relationships: people, roles, titles, departments, leave, missions, attendance, and payroll.
               </p>
               <div className="space-y-2.5 text-xs text-muted-foreground">
-                <div className="flex justify-between border-b border-border pb-1.5">
+                <div className="flex justify-between gap-4 border-b border-border pb-1.5">
                   <span className="font-semibold text-foreground">public.employees</span>
-                  <span>Auth integration, roles, contract types</span>
+                  <span className="text-end">Auth, roles, contracts</span>
                 </div>
-                <div className="flex justify-between border-b border-border pb-1.5">
+                <div className="flex justify-between gap-4 border-b border-border pb-1.5">
                   <span className="font-semibold text-foreground">public.leaves &amp; missions</span>
-                  <span>Request management with validation constraints</span>
+                  <span className="text-end">Requests with validation</span>
                 </div>
-                <div className="flex justify-between border-b border-border pb-1.5">
+                <div className="flex justify-between gap-4 border-b border-border pb-1.5">
                   <span className="font-semibold text-foreground">public.attendance</span>
-                  <span>Daily clock in/out tracking (unique per date)</span>
+                  <span className="text-end">Clock in/out by date</span>
                 </div>
-                <div className="flex justify-between border-b border-border pb-1.5">
+                <div className="flex justify-between gap-4 border-b border-border pb-1.5">
                   <span className="font-semibold text-foreground">public.payroll</span>
-                  <span>Autocalculated net salary columns</span>
+                  <span className="text-end">Net salary calculations</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-xs text-accent">
-                <Terminal className="h-4 w-4" />
+                <Terminal className="h-4 w-4" aria-hidden="true" />
                 <span>Full schema definitions are documented in the README</span>
               </div>
             </div>
 
-            {/* Security & Maintainability Card */}
-            <div className="rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-[var(--elevation-sm)] space-y-4">
+            <div className="space-y-4 border border-border bg-card p-6 shadow-[var(--elevation-sm)]">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Shield className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
-                <h3 className="text-lg font-semibold">Cybersecurity &amp; Maintenance</h3>
+                <h3 className="text-lg font-semibold">Cybersecurity and maintenance</h3>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Critical measures to safeguard sensitive employee data and ensure seamless system upkeep.
+              <p className="text-xs leading-5 text-muted-foreground">
+                Sensitive HR data requires clear boundaries before the product becomes operational.
               </p>
-              <ul className="space-y-2 text-xs text-muted-foreground list-disc list-inside">
-                <li><strong className="text-foreground">Row Level Security (RLS)</strong>: Prevent unauthorized cross-user reading or editing.</li>
-                <li><strong className="text-foreground">Credential Isolation</strong>: Keep Supabase service_role keys private at all times.</li>
-                <li><strong className="text-foreground">Type Safety</strong>: Dynamic compilation code synced via CLI command generation.</li>
-                <li><strong className="text-foreground">Migrations</strong>: Fully track all SQL scheme tweaks through Git versioning.</li>
+              <ul className="list-inside list-disc space-y-2 text-xs leading-5 text-muted-foreground">
+                <li><strong className="text-foreground">Row Level Security (RLS)</strong>: Prevent unauthorized cross-user reads and edits.</li>
+                <li><strong className="text-foreground">Credential isolation</strong>: Keep Supabase service_role keys private at all times.</li>
+                <li><strong className="text-foreground">Type safety</strong>: Keep generated database types synchronized with migrations.</li>
+                <li><strong className="text-foreground">Migrations</strong>: Track schema changes through Git versioning.</li>
               </ul>
               <div className="flex items-center gap-2 text-xs text-accent">
-                <CheckCircle2 className="h-4 w-4" />
-                <span>Follows modern OWASP &amp; Supabase best practices</span>
+                <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                <span>Follows modern OWASP and Supabase best practices</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── CTA ── */}
-        <section
-          className="rounded-[var(--radius-card)] border border-primary/20 bg-primary/5 px-6 py-10 text-center sm:px-10"
-          aria-labelledby="cta-heading"
-        >
+        <section className="border border-primary/20 bg-primary/5 px-6 py-10 text-center sm:px-10" aria-labelledby="cta-heading">
           <h2 id="cta-heading" className="text-xl font-semibold">
             Ready to explore the demo?
           </h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-            Use the demo access on the login screen to walk through all the redesigned flows — no credentials needed.
+          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+            Use the demo access on the login screen to walk through the redesigned flows with no credentials needed.
           </p>
           <button
             type="button"
             onClick={onBack}
-            className="mt-6 inline-flex items-center gap-2 rounded-[var(--radius-button)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to login

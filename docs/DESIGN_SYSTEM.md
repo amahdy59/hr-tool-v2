@@ -1,120 +1,141 @@
 # HR Tool - Design System Guidelines
 
-This document outlines the design system specifications, spacing tokens, layout guidelines, and typography scales used in the HR Tool. Following these guidelines ensures design consistency, responsiveness, accessibility, and high performance across all views.
+This document defines the layout, typography, accessibility, bilingual, and shared component rules used across the HR Tool. Follow these standards to keep the product consistent, responsive, and maintainable.
 
 ---
 
-## 📐 Layout & Spacing System
+## Layout And Spacing System
 
-We adhere to a strict **4px/8px grid system** for layouts. All margins, paddings, and flex/grid gaps must align with this spacing scale:
+The application uses a strict 4px/8px spacing scale.
 
-### 1. Label-to-Input Spacing (Standardized)
+### Label-To-Input Spacing
+
 - **Token:** `--spacing-label-input`
-- **Value:** `4px` (Tailwind `space-y-1` or `gap-1` or `mb-1`)
-- **Rule:** The vertical spacing between a form `<label>` (or `<legend>`) and its corresponding input box, search field, or dropdown trigger must be exactly **4px**. This maintains a tight visual grouping between labels and inputs.
-- **Search fields:** Search inputs follow the same rule. The Manage Employees search groups use `space-y-1`, so labels such as **Search Employees**, **Search Departments**, **Search Job Titles**, and **Search Activity Log** sit exactly **4px** above their search boxes.
+- **Value:** `4px` (`space-y-1`, `gap-1`, or `mb-1`)
+- **Rule:** The vertical space between a visible label and its field, search input, or dropdown trigger must be exactly `4px`.
+- **Search fields:** Search groups such as **Search Employees**, **Search Departments**, **Search Job Titles**, and **Search Activity Log** follow the same `4px` label spacing.
 
-### 2. Field-to-Field Spacing
-- **Spacing:** `16px` (Tailwind `space-y-4` or `gap-4` or `mb-4`)
-- **Rule:** Spacing between adjacent form groups or input fields in a form column.
+### Field-To-Field Spacing
 
-### 3. Element Spacing inside Rows
-- **Spacing:** `8px` to `12px` (Tailwind `gap-2` to `gap-3`)
-- **Rule:** Spacing between buttons, pills, tags, or inline controls (e.g., search box next to a filter button).
+- **Spacing:** `16px` (`space-y-4`, `gap-4`, or `mb-4`)
+- **Rule:** Use this spacing between adjacent form groups or stacked controls.
 
-### 4. Section-to-Section Spacing
-- **Spacing:** `24px` to `32px` (Tailwind `space-y-6` to `space-y-8` or `gap-6` to `gap-8`)
-- **Rule:** Spacing between large card layouts, tables, tab layouts, or page panels.
+### Row Control Spacing
 
-### 5. Tabs-to-Panel Spacing
-- **Spacing:** `12px` (Tailwind `gap-3`)
-- **Rule:** The vertical spacing between a tab list and the first control inside the active tab panel must be **12px** for dense management screens.
-- **Manage Employees:** The tab root uses `gap-3`; tab panels must not add an extra top margin. This keeps the distance from the tab underline to the search/input group consistent across Directory, Departments, Job Titles, and Activity Log.
+- **Spacing:** `8px` to `12px` (`gap-2` to `gap-3`)
+- **Rule:** Use this spacing between buttons, pills, tags, and inline controls.
 
----
+### Section Spacing
 
-## 🎨 Color Tokens & Contrast (WCAG 2.2 AAA)
+- **Spacing:** `24px` to `32px` (`space-y-6`, `space-y-8`, `gap-6`, or `gap-8`)
+- **Rule:** Use this spacing between large panels, tables, tab groups, and page sections.
 
-We follow strict accessibility color rules:
-- **Light Mode Background:** `#F8FAFC`
-- **Dark Mode Background:** `#0F172A`
-- **Standard Text Color:** `#0F172A` (Light Mode), `#EEF2F7` (Dark Mode)
-- **Focus Ring Color:** `#2563EB` (Tailwind `ring-ring` / `focus:ring-2`)
-- **Contract Ratio:** Must exceed `7:1` for normal text and `4.5:1` for large text.
+### Tabs-To-Panel Spacing
+
+- **Spacing:** `12px` (`gap-3`)
+- **Rule:** The vertical space between a tab list and the first control inside the active tab panel must be `12px`.
+- **Manage Employees:** Tab panels must not add extra top margin. This keeps Directory, Departments, Job Titles, and Activity Log aligned.
 
 ---
 
-## 🔤 Typography
+## Color Tokens And Contrast
 
-- **Primary Typeface:** `Inter, sans-serif` for English and numerical layouts.
-- **Font Scale:**
-  - **Body text:** `16px` (`--text-base`)
-  - **Small text/Labels:** `14px` (`--text-sm`)
-  - **Extra small text/Helper text:** `12px` (`--text-xs`)
-  - **Section Titles:** `18px` (`--text-lg`, semi-bold)
-  - **Page Headers:** `24px` (`--text-xl`, bold)
+- **Light background:** `#F8FAFC`
+- **Dark background:** `#0B1220`
+- **Light text:** `#0F172A`
+- **Dark text:** `#F1F5F9`
+- **Focus ring:** `#2563EB`
+- **Normal text contrast:** Target `7:1` or better.
+- **Large text contrast:** Target `4.5:1` or better.
+
+Avoid one-note palettes. Product surfaces should feel quiet, operational, and easy to scan rather than decorative.
 
 ---
 
-## 🌍 Arabic & English (Bilingual / RTL Mirroring)
+## Typography
 
-- **Directionality:** Dynamic mirroring is managed by `useArabicDomTranslation` and `DirectionProvider` dynamically via `document.documentElement.dir = 'rtl'`.
-- **Text Alignment:** Labels and fields must align to the *start* of the viewport (`text-start` or logical properties like `margin-inline-start`).
-- **Icons:** Directional arrows and navigation controls mirror in RTL, while non-directional branding icons do not.
-- **Eastern Arabic (Hindi) Numerals:** In Arabic mode, all numerical digits (`0-9`) rendered in text nodes (such as numbers inside paragraphs, tables, lists, and pagination controls) are dynamically converted to Eastern Arabic numerals (`٠-٩`) by the global DOM translation hook. To preserve interactivity and avoid React click handling issues:
-  1. The `<Calendar>` component is marked with `data-no-auto-translate="true"` to bypass dynamic DOM translation.
-  2. Calendar day numbers and select options are translated natively using React-level formatters (`formatters.formatDay` and customized year/month dropdown text).
-  3. LTR text inputs (e.g., email, password, and reset email fields) enforce `dir="ltr"` on their wrappers to ensure their logical CSS paddings (`ps-*`, `pe-*`) and icon placements align correctly and do not overlap with typed values.
+- **English and numeric layouts:** `Inter, sans-serif`
+- **Arabic layouts:** `"Noto Sans Arabic", "Tahoma", sans-serif`
+- **Body text:** `16px` (`--text-base`)
+- **Labels and small text:** `14px` (`--text-sm`)
+- **Helper text:** `12px` (`--text-xs`)
+- **Section titles:** `18px` (`--text-lg`, semibold)
+- **Page headers:** `24px` (`--text-xl`, semibold)
+
+Do not scale font size with viewport width. Keep letter spacing at `0` for normal interface text.
+
+---
+
+## Arabic And English Localization
+
+Arabic support must be treated as a product requirement, not a visual afterthought.
+
+- **Directionality:** `DirectionProvider` sets `document.documentElement.dir` dynamically.
+- **Alignment:** Use logical utilities such as `text-start`, `ms-*`, `me-*`, `ps-*`, and `pe-*`.
+- **Fully Arabic content:** Do not change strings that are already fully translated into Arabic.
+- **Mixed Arabic/English content:** Fix strings only when both Arabic and Latin characters appear in the same visible value, such as a translated Arabic title with an untranslated English department acronym.
+- **Job titles:** Add exact dictionary entries for job titles before relying on partial word replacement. Exact entries prevent mixed output such as `HR المدير`.
+- **Attributes:** Translate `placeholder`, `title`, and `aria-label` with the same rules used for visible text.
+- **Eastern Arabic numerals:** In Arabic mode, ordinary text-node digits are converted to Eastern Arabic numerals by `useArabicDomTranslation`.
+- **Interactive exceptions:** Components with React-managed numbers or complex interactions can opt out with `data-no-auto-translate`, then render Arabic formatting natively.
+- **LTR fields:** Email, URL, telephone, and password-like fields that contain LTR data must keep `dir="ltr"` and left text alignment.
 
 ---
 
 ## Component Standards
 
-### Dropdowns and Select Menus
-- Use the shared Radix-based components in `src/app/components/ui/select.tsx` for all select/dropdown field controls.
-- Use `src/app/components/ui/dropdown-menu.tsx` for action menus and overflow menus.
-- Do not use native `<select>` controls for app UI unless there is a documented browser/platform reason. This keeps styling, keyboard behavior, focus states, and selected states consistent.
-- Triggers and menu items must keep a minimum touch target of `44px` height.
-- Selected menu items should use the shared selected state treatment: subtle primary background, primary text, and a check indicator where applicable.
-- Menu content should use the shared popover surface: `bg-popover`, `border-border`, `rounded-[var(--radius-input)]`, and constrained max height with vertical scrolling.
+### Dropdowns And Select Menus
+
+- Use `src/app/components/ui/select.tsx` for field selects.
+- Use `src/app/components/ui/dropdown-menu.tsx` for action menus.
+- Avoid native `<select>` controls unless a platform reason is documented.
+- Triggers and menu items must keep a minimum `44px` touch target.
+- Selected menu items should use subtle primary background, primary text, and a check indicator where applicable.
+- Menu content should use `bg-popover`, `border-border`, `rounded-[var(--radius-input)]`, and a constrained max height with scrolling.
 
 ### Pagination
-- **Shared Component**: Use the shared [Pagination.tsx](file:///c:/Users/AhmedMahdy/OneDrive%20-%20Advansys%20IS/Documents/Antigravity/HR%20Tool/src/app/components/Pagination.tsx) component for all tables and lists across the site to guarantee a unified experience.
-- **Visual Style (GitHub / Primer CSS inspired)**:
-  - **Structure**: Group the page navigation buttons into a single, contiguous flex-group wrapper without horizontal gaps.
-  - **Border Overlapping**: Buttons use `-ms-[1px]` logical margin with a z-index management (`hover:z-10 focus:z-10`) to overlap adjacent borders, avoiding double-thick borders.
-  - **Border Radius**: Round only the outer corners of the pagination bar (start of the first element `rounded-s-md` and end of the last element `rounded-e-md`), leaving all inner corners square.
-  - **Interactive States**:
-    - *Default/Inactive*: Transparent/default background with standard border (`--border`) and a light background hover transition.
-    - *Active*: GitHub-style accent blue (`#0969da` in light mode, `#1f6feb` in dark mode) with matching border and white text. Exposes `z-10` to sit on top of adjacent borders.
-    - *Disabled*: Muted text, transparent background, and `pointer-events-none` with reduced opacity.
-  - **Textual Indicators**: The "Previous" and "Next" buttons include visible text labels accompanied by directional chevrons for improved usability.
-- **Accessibility & i18n (WCAG 2.2 AAA)**:
-  - Must expose a semantic `<nav>` landmark with a translated `aria-label`.
-  - Active page button requires `aria-current="page"`.
-  - Buttons keep a minimum touch target height of `44px` (`h-11`) to meet accessibility standards.
-  - Directional mirroring is handled automatically in RTL (Arabic script layout) via CSS logical properties and Flexbox flow direction.
-  - Page-size drop-down menu must be labeled dynamically using `React.useId()`.
 
-### Form Labels and Field Accessibility
-- Every visible label must be programmatically associated with its field using `htmlFor` and a matching `id`, or by using a component that provides equivalent ARIA labeling.
-- For reusable or repeated component instances, generate ids with `React.useId()` to avoid duplicate ids.
+- Use the shared [Pagination.tsx](file:///c:/Users/AhmedMahdy/OneDrive%20-%20Advansys%20IS/Documents/Antigravity/HR%20Tool/src/app/components/Pagination.tsx) component for tables and list views.
+- Page buttons should be grouped into one contiguous control without horizontal gaps.
+- Adjacent borders should overlap with `-ms-[1px]`, plus `hover:z-10` and `focus:z-10`.
+- Only the outer corners of the pagination bar should be rounded.
+- Active page buttons use GitHub-style blue: `#0969da` in light mode and `#1f6feb` in dark mode.
+- Previous and Next buttons must include text labels plus directional chevrons.
+- In Arabic mode, Previous must point toward the right and Next must point toward the left. Use language-aware icon selection in the component for pagination icons instead of relying only on global RTL icon flipping.
+- The pagination `<nav>` must expose a translated `aria-label`.
+- Active page buttons require `aria-current="page"`.
+- Buttons must keep a minimum `44px` touch target (`h-11`).
+- Page-size selects must be programmatically labeled, preferably with `React.useId()`.
+
+### Form Labels And Field Accessibility
+
+- Every visible label must be associated with its field using `htmlFor` and `id`, or an equivalent ARIA pattern.
+- Repeated component instances should generate ids with `React.useId()`.
 - `DatePicker` supports `id`, `aria-label`, `aria-describedby`, and `aria-invalid`; use these props instead of visual-only labels.
-- Search inputs should use `type="search"`, a clear accessible name, and `role="search"` on the form wrapper where appropriate.
+- Search inputs should use `type="search"`, a clear accessible name, and `role="search"` on the wrapper where appropriate.
 
-### Buttons and Icon-Only Controls
-- Use the shared `Button` component in `src/app/components/ui/button.tsx` for interactive buttons.
+### Buttons And Icon-Only Controls
+
+- Use `src/app/components/ui/button.tsx` for buttons.
 - Icon-only buttons must have an `aria-label`.
-- Decorative icons inside controls must include `aria-hidden="true"`.
-- Prefer logical spacing classes (`ms`, `me`, `ps`, `pe`, `text-start`) so layouts mirror cleanly in RTL.
+- Decorative icons inside controls must use `aria-hidden="true"`.
+- Prefer lucide icons when a matching symbol exists.
+- Use logical spacing classes so layouts mirror cleanly in RTL.
 
 ---
 
 ## Verification Checklist
 
-Before pushing UI changes:
+Before pushing UI or localization changes:
+
 - Run `npm run typecheck`.
 - Run `npm run build`.
-- Check at least one desktop viewport and one mobile viewport for no unexpected horizontal page scroll, visible focus states, and 44px minimum touch targets.
-- Open representative dropdowns and pagination menus to verify selected states, keyboard focus, and scroll behavior.
+- Check at least one desktop viewport and one mobile viewport.
+- Confirm there is no unexpected horizontal page scroll.
+- Confirm focus states are visible.
+- Confirm interactive controls keep 44px minimum targets.
+- Open representative dropdowns and pagination controls.
+- Switch between English and Arabic and check for mixed Arabic/English strings.
+- Confirm fully Arabic content remains unchanged.
+- Confirm pagination arrows point in the correct direction in Arabic and English.
 - Do not commit generated `dist/` preview/build output unless the release process explicitly requires it.
