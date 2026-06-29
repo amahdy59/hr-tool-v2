@@ -135,6 +135,8 @@ const dictionary: Record<string, string> = {
   "Cancel request": "إلغاء الطلب",
   "Cancel Request": "إلغاء الطلب",
   "Cancelled": "ملغى",
+  "Cairo, Egypt": "القاهرة، مصر",
+  "Cairo Governorate, Egypt": "محافظة القاهرة، مصر",
   "Card Number": "رقم البطاقة",
   "Card Type": "نوع البطاقة",
   "Carried over days are deducted automatically before this year's vacation.": "تُخصم الأيام المرحلة تلقائيًا قبل رصيد اجازات هذا العام.",
@@ -663,6 +665,7 @@ const dictionary: Record<string, string> = {
   "Please ensure all carried-over vacation days from last year are used before 31st this March. Carried over days are deducted automatically before this year\\'s vacation.": "يرجى التأكد من استخدام جميع أيام الاجازة المرحلة من العام الماضي قبل 31 مارس من هذا العام. تُخصم الأيام المرحلة تلقائيًا قبل رصيد اجازات هذا العام.",
   "Portfolio": "معرض الأعمال",
   "Position": "المنصب",
+  "Present": "الآن",
   "Press": "اضغط",
   "Previous": "السابق",
   "Previous comparison": "المقارنة السابقة",
@@ -1045,7 +1048,6 @@ const dictionary: Record<string, string> = {
   "e.g., Bachelor's": "مثال: بكالوريوس",
   "e.g., Debate Club, Design Committee": "مثال: نادي المناظرة، لجنة التصميم",
   "e.g., Arabic, English, German": "مثال: العربية، الإنجليزية، الألمانية",
-  "e.g. 10,000": "مثال: 10,000",
   "Search activity log": "البحث في سجل النشاط",
   "Search departments": "البحث في الأقسام",
   "Search job titles": "البحث في المسميات الوظيفية",
@@ -1240,7 +1242,7 @@ const translateValue = (value: string) => {
   }
 
   for (const [english, arabic] of sortedDictionaryEntries) {
-    if (english.length < 4 && !['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].includes(english)) continue; // Avoid replacing very short partial words blindly unless they are specific short abbreviations
+    if (english.length < 4 && !['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].includes(english)) continue;
     const regex = new RegExp('(?<=\\b|\\s|^)' + escapeRegExp(english) + '(?=\\b|\\s|$)', 'g');
     translated = translated.replace(regex, arabic);
   }
@@ -1251,6 +1253,12 @@ const translateValue = (value: string) => {
 
 const convertDigitsToEasternArabic = (text: string) => {
   return text.replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[parseInt(d)]);
+};
+
+export const translateText = (value: string, enabled: boolean): string => {
+  if (!enabled) return value;
+  const translated = translateValue(value);
+  return convertDigitsToEasternArabic(translated);
 };
 
 const translateTextNode = (node: Text, enabled: boolean) => {
