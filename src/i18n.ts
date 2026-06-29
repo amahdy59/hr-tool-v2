@@ -11,6 +11,9 @@ const en = {
       collapse: 'Collapse',
       underDevelopment: 'Under development',
       mainContent: 'Main content',
+      startDate: 'Start date',
+      endDate: 'End date',
+      pickDate: 'Pick a date',
     },
     login: {
       appName: 'HR Tool',
@@ -136,6 +139,9 @@ const ar = {
       cancel: 'إلغاء',
       collapse: 'طي القائمة',
       underDevelopment: 'قيد التطوير',
+      startDate: 'تاريخ البدء',
+      endDate: 'تاريخ الانتهاء',
+      pickDate: 'اختر تاريخًا',
     },
     sidebar: {
       dashboard: 'لوحة التحكم',

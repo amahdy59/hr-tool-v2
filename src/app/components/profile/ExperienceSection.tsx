@@ -13,6 +13,8 @@ import {
 import { toast } from 'sonner';
 import { ExperienceData } from './Types';
 import { FormField } from './FormField';
+import { useTranslation } from 'react-i18next';
+import { translateText } from '@/lib/useArabicDomTranslation';
 
 const labelClass = 'block text-start w-full text-[var(--text-base)] font-[var(--font-weight-medium)] text-foreground';
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -56,9 +58,12 @@ const ExperienceItem: React.FC<{
   onDelete: () => void;
   onMove: (dir: 'up' | 'down') => void;
 }> = React.memo(({ data, isFirst, isLast, expanded, onToggleExpand, onEdit, onDelete, onMove }) => {
-  const descPreview = data.desc.length > 150 ? data.desc.substring(0, 150) + '...' : data.desc;
+  const { i18n } = useTranslation();
+  const isArabic = i18n.language === 'ar';
+  const translatedDesc = translateText(data.desc, isArabic);
+  const descPreview = translatedDesc.length > 150 ? translatedDesc.substring(0, 150) + '...' : translatedDesc;
   const bullets = expanded
-    ? data.desc.split('\n').filter(b => b.trim() !== '')
+    ? translatedDesc.split('\n').filter(b => b.trim() !== '')
     : [descPreview];
 
   return (
@@ -100,7 +105,7 @@ const ExperienceItem: React.FC<{
             </ul>
           )}
 
-          {data.desc.length > 150 && (
+          {translatedDesc.length > 150 && (
             <button
               onClick={onToggleExpand}
               className="text-sm text-primary hover:underline mt-2 font-medium cursor-pointer"

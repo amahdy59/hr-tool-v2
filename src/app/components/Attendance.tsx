@@ -668,7 +668,7 @@ export const Attendance: React.FC = () => {
                 {isArabic ? (
                   `${meetsOfficeGoal ? '▲' : '▼'} ${Math.abs(officeGoalDelta)}% ${meetsOfficeGoal ? 'أعلى من' : 'أقل من'} هدف الشركة (${OFFICE_GOAL_PERCENT}%)`
                 ) : (
-                  `${meetsOfficeGoal ? '▲' : '▼'} {Math.abs(officeGoalDelta)}% {meetsOfficeGoal ? 'above' : 'below'} the {OFFICE_GOAL_PERCENT}% company goal`
+                  `${meetsOfficeGoal ? '▲' : '▼'} ${Math.abs(officeGoalDelta)}% ${meetsOfficeGoal ? 'above' : 'below'} the ${OFFICE_GOAL_PERCENT}% company goal`
                 )}
               </p>
             </div>
