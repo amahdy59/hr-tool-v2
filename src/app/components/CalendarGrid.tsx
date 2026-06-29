@@ -131,6 +131,22 @@ const arabicMonthNames = [
   'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر',
 ];
 
+const getLocalizedEventLabel = (label: string, type: string, isArabic: boolean) => {
+  if (!isArabic) return label;
+
+  const normalizedLabel = label.toLowerCase();
+  const normalizedType = type.toLowerCase();
+
+  if (normalizedLabel.includes('in-office') || normalizedLabel.includes('in office') || normalizedType.includes('office')) return 'من المكتب';
+  if (normalizedLabel.includes('work from home') || normalizedLabel.includes('home') || normalizedType === 'wfh') return 'العمل من المنزل';
+  if (normalizedLabel.includes('sick') || normalizedType.includes('sick')) return 'إجازة مرضية';
+  if (normalizedLabel.includes('annual') || normalizedType.includes('annual')) return 'إجازة سنوية';
+  if (normalizedLabel.includes('mission') || normalizedType.includes('mission')) return 'مأمورية';
+  if (normalizedLabel.includes('weekend') || normalizedType.includes('weekend')) return 'عطلة نهاية الأسبوع';
+
+  return label;
+};
+
 // Map event types to Lucide Icons
 const getEventIcon = (type: string) => {
   const t = type.toLowerCase();
@@ -395,7 +411,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
 
   // Clean, premium design variables for Legend items
   const legendItems = [
-    { key: 'inoffice', color: 'bg-blue-600 dark:bg-blue-400', label: isArabic ? 'في المكتب' : 'In-Office' },
+    { key: 'inoffice', color: 'bg-blue-600 dark:bg-blue-400', label: isArabic ? 'من المكتب' : 'In-Office' },
     { key: 'wfh', color: 'bg-emerald-600 dark:bg-emerald-400', label: isArabic ? 'العمل من المنزل' : 'Work From Home' },
     { key: 'sick', color: 'bg-red-600 dark:bg-red-400', label: isArabic ? 'إجازة مرضية' : 'Sick Leave' },
     { key: 'annual', color: 'bg-amber-600 dark:bg-amber-400', label: isArabic ? 'إجازة سنوية' : 'Annual Leave' },
@@ -561,6 +577,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                       const isDimmed = isEventDimmed(ev.type);
                       const isInteractive = !!ev.id && !!onViewRequest && ev.status === 'pending';
                       const IconComponent = getEventIcon(ev.type);
+                      const eventLabel = getLocalizedEventLabel(ev.label, ev.type, isArabic);
                       
                       const eventClassName = cn(
                         'text-[10px] leading-tight py-2 px-2.5 rounded-[var(--radius-sm)] font-semibold w-full text-start flex items-center gap-2 border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
@@ -585,17 +602,17 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                               });
                             }
                           }}
-                          title={ev.label}
+                          title={eventLabel}
                           className={eventClassName}
-                          aria-label={`${ev.label} - ${ev.status ?? 'no status'}`}
+                          aria-label={`${eventLabel} - ${ev.status ?? 'no status'}`}
                         >
                           <IconComponent className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate">{ev.label}</span>
+                          <span className="truncate">{eventLabel}</span>
                         </button>
                       ) : (
-                        <span key={eIdx} title={ev.label} className={eventClassName}>
+                        <span key={eIdx} title={eventLabel} className={eventClassName}>
                           <IconComponent className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate">{ev.label}</span>
+                          <span className="truncate">{eventLabel}</span>
                         </span>
                       );
                     })
@@ -682,6 +699,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                       const isDimmed = isEventDimmed(ev.type);
                       const isInteractive = !!ev.id && !!onViewRequest && ev.status === 'pending';
                       const IconComponent = getEventIcon(ev.type);
+                      const eventLabel = getLocalizedEventLabel(ev.label, ev.type, isArabic);
                       
                       const eventClassName = cn(
                         'text-[10px] leading-tight py-1.5 px-2 rounded-[var(--radius-sm)] font-semibold w-full text-start flex items-center gap-1.5 border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
@@ -706,17 +724,17 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                               });
                             }
                           }}
-                          title={ev.label}
+                          title={eventLabel}
                           className={eventClassName}
-                          aria-label={`${ev.label} - ${ev.status ?? 'no status'}`}
+                          aria-label={`${eventLabel} - ${ev.status ?? 'no status'}`}
                         >
                           <IconComponent className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate">{ev.label}</span>
+                          <span className="truncate">{eventLabel}</span>
                         </button>
                       ) : (
-                        <span key={eIdx} title={ev.label} className={eventClassName}>
+                        <span key={eIdx} title={eventLabel} className={eventClassName}>
                           <IconComponent className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate">{ev.label}</span>
+                          <span className="truncate">{eventLabel}</span>
                         </span>
                       );
                     })}
