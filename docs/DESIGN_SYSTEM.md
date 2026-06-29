@@ -82,6 +82,20 @@ Arabic support must be treated as a product requirement, not a visual afterthoug
 
 ---
 
+## Translation Dictionary Management
+
+To prevent duplication and maintain consistent wording across components, we follow a single-source dictionary pattern:
+
+- **Single Source of Truth:** [translations.json](file:///c:/Users/AhmedMahdy/OneDrive%20-%20Advansys%20IS/Documents/Antigravity/HR%20Tool/translations.json) at the project root is the master dictionary. All new UI strings, translations, and notes must be added here first.
+- **Code Reference:** Runtime translations are read dynamically from components or DOM translation hooks. 
+- **Automated Compilation:** Run `node scripts/update_dictionary.cjs` to compile updates from `translations.json` into the code-level dictionary ([useArabicDomTranslation.ts](file:///c:/Users/AhmedMahdy/OneDrive%20-%20Advansys%20IS/Documents/Antigravity/HR%20Tool/src/lib/useArabicDomTranslation.ts)) and synchronize key translations inside `i18n.ts`. Do not manually modify translations inside `useArabicDomTranslation.ts` directly.
+- **Adding New Keys:**
+  1. Add the text entry object to the array in `translations.json`.
+  2. Run `node scripts/update_dictionary.cjs` to compile it.
+  3. (Optional) Reference the compiled key in `i18n.ts` if dynamic interpolation is needed.
+
+---
+
 ## Component Standards
 
 ### Dropdowns And Select Menus

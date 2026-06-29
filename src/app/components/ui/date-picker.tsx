@@ -74,7 +74,7 @@ export function DatePicker({
           disabled={disabled}
           data-slot="date-picker-trigger"
           data-no-auto-translate="true"
-          aria-label={ariaLabel || t(placeholder)}
+          aria-label={ariaLabel || (placeholder === "Start date" ? t("common.startDate") : placeholder === "End date" ? t("common.endDate") : placeholder === "Pick a date" ? t("common.pickDate") : t(placeholder))}
           aria-describedby={ariaDescribedBy}
           aria-invalid={ariaInvalid}
           aria-haspopup="dialog"
@@ -99,7 +99,9 @@ export function DatePicker({
                 : format(selectedDate, "dd MMMM yyyy")}
             </span>
           ) : (
-            <span className="truncate">{t(placeholder)}</span>
+            <span className="truncate">
+              {placeholder === "Start date" ? t("common.startDate") : placeholder === "End date" ? t("common.endDate") : placeholder === "Pick a date" ? t("common.pickDate") : t(placeholder)}
+            </span>
           )}
         </Button>
       </PopoverTrigger>
