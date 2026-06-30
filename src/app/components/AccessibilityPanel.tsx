@@ -11,13 +11,13 @@ import {
   Moon,
   Sun,
   Monitor,
-  Sparkles,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Popover, PopoverTrigger, PopoverContent, PopoverClose } from './ui/popover';
 import { Sheet, SheetTrigger, SheetContent, SheetTitle } from './ui/sheet';
 import { Switch } from './ui/switch';
 import { Button } from './ui/button';
+import { InfoTooltip } from './ui/info-tooltip';
 import { cn } from '@/lib/utils';
 
 export interface AccessibilitySettings {
@@ -172,10 +172,10 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
             <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
               {meta}
             </span>
+            <InfoTooltip ariaLabel={`${label} description`}>
+              {description}
+            </InfoTooltip>
           </div>
-          <p className="text-xs leading-relaxed text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-            {description}
-          </p>
         </div>
       </div>
       <Switch
@@ -301,7 +301,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
   const renderPanelContent = (closeButton: React.ReactNode) => (
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
       <div className="mb-4 flex items-start justify-between gap-4 border-b border-border/70 pb-4 shrink-0">
-        <div className="space-y-2">
+        <div className="min-w-0">
           <h2
             className="flex items-center gap-2 text-base font-semibold text-foreground"
             style={{ fontFamily: "'Inter', sans-serif" }}
@@ -309,27 +309,34 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             <Accessibility className="w-4 h-4 text-primary" />
             Accessibility Tools
           </h2>
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <span style={{ fontFamily: "'Inter', sans-serif" }}>Clean, faster-to-scan preferences.</span>
-            {activeCount > 0 ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-primary">
-                <Sparkles className="h-3 w-3" aria-hidden="true" />
-                {activeCount} active
-              </span>
-            ) : null}
-          </div>
         </div>
-        {closeButton}
+        <div className="flex items-center gap-2 shrink-0">
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={activeCount === 0}
+            className="h-8 rounded-[var(--radius-sm)] px-3 text-xs text-muted-foreground hover:bg-destructive/10 hover:text-destructive disabled:cursor-default disabled:opacity-40"
+            onClick={() => {
+              setHighContrast(false);
+              setLargeTargets(false);
+              setLargeText(false);
+              setDyslexic(false);
+              setFocusHeavy(false);
+              triggerHaptic();
+            }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            Reset all
+          </Button>
+          {closeButton}
+        </div>
       </div>
 
       <div className="flex-1 space-y-5 overflow-y-auto pe-1 min-h-0">
         <section className="space-y-3 rounded-[var(--radius-card)] border border-border/70 bg-card/90 p-4">
-          <div className="space-y-1">
-            <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Appearance
-            </p>
-            <p className="text-xs text-muted-foreground">Compact controls for theme and language.</p>
-          </div>
+          <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Appearance
+          </p>
           <div className="space-y-2">
             <div className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Theme</p>
@@ -357,12 +364,9 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         </section>
 
         <section className="space-y-3">
-          <div className="space-y-1">
-            <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Reading
-            </p>
-            <p className="text-xs text-muted-foreground">Improve legibility without overwhelming the panel.</p>
-          </div>
+          <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Reading
+          </p>
           <div className="space-y-2">
             {readingOptions.map((option) => (
               <AccessibilityOption key={option.id} option={option} />
@@ -371,12 +375,9 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         </section>
 
         <section className="space-y-3">
-          <div className="space-y-1">
-            <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Navigation
-            </p>
-            <p className="text-xs text-muted-foreground">Support touch, keyboard, and motor accessibility.</p>
-          </div>
+          <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Navigation
+          </p>
           <div className="space-y-2">
             {interactionOptions.map((option) => (
               <AccessibilityOption key={option.id} option={option} />
@@ -385,29 +386,6 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
         </section>
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-3 border-t border-border/70 pt-3 shrink-0">
-        <p className="text-xs text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-          Keyboard friendly and responsive by default.
-        </p>
-        {activeCount > 0 ? (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 rounded-[var(--radius-sm)] px-3 text-xs text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-            onClick={() => {
-              setHighContrast(false);
-              setLargeTargets(false);
-              setLargeText(false);
-              setDyslexic(false);
-              setFocusHeavy(false);
-              triggerHaptic();
-            }}
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            Reset all
-          </Button>
-        ) : null}
-      </div>
     </div>
   );
 
