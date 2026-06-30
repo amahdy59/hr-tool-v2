@@ -1,4 +1,5 @@
 import React, { useId, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Accessibility,
   ArrowLeft,
@@ -25,76 +26,15 @@ import { AccessibilityPanel, type AccessibilitySettings } from './AccessibilityP
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
-const comparisons = [
-  {
-    id: 'employees',
-    label: 'Employee Management',
-    before: {
-      src: asset('old-system/add-employee.png'),
-      caption: 'Dense forms with limited visual hierarchy',
-    },
-    after: {
-      src: asset('new-system/employee-profile.png'),
-      caption: 'Scannable profile data with clear status patterns',
-    },
-  },
-  {
-    id: 'vacations',
-    label: 'Leave Requests',
-    before: {
-      src: asset('old-system/search-vacations.png'),
-      caption: 'Leave details scattered across separate screens',
-    },
-    after: {
-      src: asset('images/transform-leave.png'),
-      caption: 'Focused request flow with validation and status context',
-    },
-  },
-  {
-    id: 'missions',
-    label: 'Missions & Approvals',
-    before: {
-      src: asset('old-system/mission-form.png'),
-      caption: 'Disconnected form and approval experience',
-    },
-    after: {
-      src: asset('images/transform-mission.png'),
-      caption: 'Inline review flow with clear approve and decline actions',
-    },
-  },
-];
-
-const outcomes = [
-  { icon: Zap, label: 'Fewer steps', desc: 'Common HR tasks stay on one focused path.' },
-  { icon: Eye, label: 'Clear status', desc: 'Requests, employees, and approvals use readable states.' },
-  { icon: Accessibility, label: 'AAA-ready access', desc: 'Contrast, focus, target size, and motion are product requirements.' },
-  { icon: Smartphone, label: 'Responsive workflows', desc: 'Tables, filters, cards, and forms stay usable on smaller screens.' },
-];
-
-const improvements = [
-  { label: 'Bilingual translation quality', detail: 'Arabic mode preserves fully translated Arabic content and only repairs mixed Arabic/English fragments when an English token remains.' },
-  { label: 'RTL interaction design', detail: 'Logical spacing, mirrored layouts, and language-aware pagination arrows keep Arabic navigation predictable.' },
-  { label: 'Accessible controls', detail: 'Forms, tabs, filters, and pagination expose labels, focus states, and 44px minimum targets.' },
-  { label: 'Profile and request workflows', detail: 'Contextual edit modals, privacy-safe demo data, and clear request states reduce ambiguity for employees and managers.' },
-  { label: 'Supabase backend planning', detail: 'Relational PostgreSQL schemas cover departments, jobs, employees, leaves, attendance, payroll, and audit-ready workflows.' },
-  { label: 'Security posture', detail: 'Row Level Security, protected secrets, short-lived JWT validation, and storage policies are documented before production rollout.' },
-  { label: 'Maintainability blueprint', detail: 'Version-controlled migrations, generated TypeScript database types, and layered data services keep the system easier to change.' },
-];
-
-const proofPoints = [
-  { icon: Globe2, value: '2 languages', label: 'English and Arabic switching with RTL mirroring' },
-  { icon: BadgeCheck, value: 'WCAG-led', label: 'Contrast, focus, and touch target rules baked into shared components' },
-  { icon: Database, value: 'HRIS schema', label: 'Employees, titles, departments, requests, attendance, and payroll' },
-];
-
 const ScreenshotCard: React.FC<{
   src: string;
   caption: string;
-  label: 'Before' | 'After';
-}> = ({ src, caption, label }) => {
+  label: string;
+  variant: 'before' | 'after';
+}> = ({ src, caption, label, variant }) => {
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
-  const isAfter = label === 'After';
+  const isAfter = variant === 'after';
 
   return (
     <div className="flex flex-col gap-2">
@@ -150,8 +90,76 @@ interface RedesignInfoPageProps {
 }
 
 export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, accessibility }) => {
+  const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState(0);
   const pageTitleId = useId();
+  const isArabic = (i18n.resolvedLanguage || i18n.language).startsWith('ar');
+  const BackIcon = isArabic ? ArrowRight : ArrowLeft;
+  const ForwardIcon = isArabic ? ArrowLeft : ArrowRight;
+  const PreviousIcon = isArabic ? ChevronRight : ChevronLeft;
+  const NextIcon = isArabic ? ChevronLeft : ChevronRight;
+
+  const comparisons = [
+    {
+      id: 'employees',
+      label: t('redesign.comparisons.employees.label'),
+      before: {
+        src: asset('old-system/add-employee.png'),
+        caption: t('redesign.comparisons.employees.before'),
+      },
+      after: {
+        src: asset('new-system/employee-profile.png'),
+        caption: t('redesign.comparisons.employees.after'),
+      },
+    },
+    {
+      id: 'vacations',
+      label: t('redesign.comparisons.vacations.label'),
+      before: {
+        src: asset('old-system/search-vacations.png'),
+        caption: t('redesign.comparisons.vacations.before'),
+      },
+      after: {
+        src: asset('images/transform-leave.png'),
+        caption: t('redesign.comparisons.vacations.after'),
+      },
+    },
+    {
+      id: 'missions',
+      label: t('redesign.comparisons.missions.label'),
+      before: {
+        src: asset('old-system/mission-form.png'),
+        caption: t('redesign.comparisons.missions.before'),
+      },
+      after: {
+        src: asset('images/transform-mission.png'),
+        caption: t('redesign.comparisons.missions.after'),
+      },
+    },
+  ];
+
+  const outcomes = [
+    { icon: Zap, label: t('redesign.outcomes.items.fewerSteps.label'), desc: t('redesign.outcomes.items.fewerSteps.desc') },
+    { icon: Eye, label: t('redesign.outcomes.items.clearStatus.label'), desc: t('redesign.outcomes.items.clearStatus.desc') },
+    { icon: Accessibility, label: t('redesign.outcomes.items.access.label'), desc: t('redesign.outcomes.items.access.desc') },
+    { icon: Smartphone, label: t('redesign.outcomes.items.responsive.label'), desc: t('redesign.outcomes.items.responsive.desc') },
+  ];
+
+  const improvements = [
+    { label: t('redesign.improvements.items.translationQuality.label'), detail: t('redesign.improvements.items.translationQuality.detail') },
+    { label: t('redesign.improvements.items.rtlDesign.label'), detail: t('redesign.improvements.items.rtlDesign.detail') },
+    { label: t('redesign.improvements.items.accessibleControls.label'), detail: t('redesign.improvements.items.accessibleControls.detail') },
+    { label: t('redesign.improvements.items.workflows.label'), detail: t('redesign.improvements.items.workflows.detail') },
+    { label: t('redesign.improvements.items.backendPlanning.label'), detail: t('redesign.improvements.items.backendPlanning.detail') },
+    { label: t('redesign.improvements.items.security.label'), detail: t('redesign.improvements.items.security.detail') },
+    { label: t('redesign.improvements.items.maintainability.label'), detail: t('redesign.improvements.items.maintainability.detail') },
+  ];
+
+  const proofPoints = [
+    { icon: Globe2, value: t('redesign.proofPoints.languages.value'), label: t('redesign.proofPoints.languages.label') },
+    { icon: BadgeCheck, value: t('redesign.proofPoints.accessibility.value'), label: t('redesign.proofPoints.accessibility.label') },
+    { icon: Database, value: t('redesign.proofPoints.schema.value'), label: t('redesign.proofPoints.schema.label') },
+  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -166,15 +174,15 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
             type="button"
             onClick={onBack}
             className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] border border-border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-[var(--elevation-sm)] transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label="Back to login"
+            aria-label={t('login.backToLogin')}
           >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            <span>Back to login</span>
+            <BackIcon className="h-4 w-4" aria-hidden="true" />
+            <span>{t('login.backToLogin')}</span>
           </button>
           <div className="flex items-center gap-2 sm:gap-3">
             <p className="hidden items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground sm:flex">
               <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-              HR Tool Case Study
+              {t('redesign.caseStudyEyebrow')}
             </p>
             <AccessibilityPanel settings={accessibility} />
           </div>
@@ -191,28 +199,28 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
         >
           <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent shadow-sm">
             <Target className="h-3.5 w-3.5" aria-hidden="true" />
-            Employee self-service redesign
+            {t('redesign.hero.eyebrow')}
           </p>
           <div className="max-w-4xl space-y-5">
             <h1
               id="hero-heading"
               className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl lg:text-5xl"
             >
-              HR workflows, translation, and controls <span className="text-accent">redesigned for clarity.</span>
+              {t('redesign.hero.titlePrefix')} <span className="text-accent">{t('redesign.hero.titleAccent')}</span>
             </h1>
             <h2 id={pageTitleId} className="sr-only">
-              HR Tool redesign case study
+              {t('redesign.hero.screenReaderTitle')}
             </h2>
             <p className="max-w-3xl text-base leading-7 text-muted-foreground">
-              A privacy-safe case study for modernizing an internal HR tool. The redesign turns scattered legacy screens into a responsive, bilingual experience for employees, managers, and HR teams.
+              {t('redesign.hero.description')}
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
             {[
-              { label: 'Fewer steps', icon: Zap },
-              { label: 'Clear status', icon: Eye },
-              { label: 'Arabic-ready', icon: Globe2 },
-              { label: 'Accessible controls', icon: Accessibility },
+              { label: t('redesign.hero.pills.fewerSteps'), icon: Zap },
+              { label: t('redesign.hero.pills.clearStatus'), icon: Eye },
+              { label: t('redesign.hero.pills.arabicReady'), icon: Globe2 },
+              { label: t('redesign.hero.pills.accessibleControls'), icon: Accessibility },
             ].map(({ label, icon: Icon }) => (
               <div
                 key={label}
@@ -239,18 +247,18 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
         <section aria-labelledby="comparison-heading">
           <div className="mb-6 space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              Before &amp; After
+              <ForwardIcon className="h-4 w-4" aria-hidden="true" />
+              {t('redesign.comparison.eyebrow')}
             </p>
             <h2 id="comparison-heading" className="text-2xl font-semibold">
-              Compare the legacy flow with the redesigned experience
+              {t('redesign.comparison.title')}
             </h2>
             <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-              Each comparison shows how the redesign improves scanability, decision-making, and flow continuity without exposing real employee data.
+              {t('redesign.comparison.description')}
             </p>
           </div>
 
-          <div role="tablist" aria-label="Comparison screens" className="mb-6 flex gap-2 overflow-x-auto pb-1">
+          <div role="tablist" aria-label={t('redesign.comparison.tablistAriaLabel')} className="mb-6 flex gap-2 overflow-x-auto pb-1">
             {comparisons.map((c, i) => (
               <button
                 key={c.id}
@@ -281,8 +289,8 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
               hidden={activeTab !== i}
               className="grid gap-4 sm:grid-cols-2"
             >
-              <ScreenshotCard src={c.before.src} caption={c.before.caption} label="Before" />
-              <ScreenshotCard src={c.after.src} caption={c.after.caption} label="After" />
+              <ScreenshotCard src={c.before.src} caption={c.before.caption} label={t('redesign.comparison.beforeLabel')} variant="before" />
+              <ScreenshotCard src={c.after.src} caption={c.after.caption} label={t('redesign.comparison.afterLabel')} variant="after" />
             </div>
           ))}
 
@@ -292,10 +300,10 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
               onClick={() => setActiveTab((p) => Math.max(0, p - 1))}
               disabled={activeTab === 0}
               className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-button)] border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
-              aria-label="Previous comparison"
+              aria-label={t('redesign.comparison.previousAriaLabel')}
             >
-              <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-              Previous
+              <PreviousIcon className="h-4 w-4" aria-hidden="true" />
+              {t('pagination.previousText')}
             </button>
             <span className="text-xs text-muted-foreground">
               {activeTab + 1} / {comparisons.length}
@@ -305,10 +313,10 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
               onClick={() => setActiveTab((p) => Math.min(comparisons.length - 1, p + 1))}
               disabled={activeTab === comparisons.length - 1}
               className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-button)] border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
-              aria-label="Next comparison"
+              aria-label={t('redesign.comparison.nextAriaLabel')}
             >
-              Next
-              <ChevronRight className="h-4 w-4" aria-hidden="true" />
+              {t('pagination.nextText')}
+              <NextIcon className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
         </section>
@@ -317,10 +325,10 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
           <div className="mb-6 space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
               <Rocket className="h-4 w-4" aria-hidden="true" />
-              Outcomes
+              {t('redesign.outcomes.eyebrow')}
             </p>
             <h2 id="outcomes-heading" className="text-2xl font-semibold">
-              What changed for users and HR admins
+              {t('redesign.outcomes.title')}
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -340,10 +348,10 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
           <div className="mb-6 space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
               <Sparkles className="h-4 w-4" aria-hidden="true" />
-              Redesign Notes
+              {t('redesign.improvements.eyebrow')}
             </p>
             <h2 id="improvements-heading" className="text-2xl font-semibold">
-              Product decisions behind the interface
+              {t('redesign.improvements.title')}
             </h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -363,13 +371,13 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
           <div className="space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
               <Database className="h-4 w-4" aria-hidden="true" />
-              Backend &amp; Security Roadmap
+              {t('redesign.roadmap.eyebrow')}
             </p>
             <h2 id="database-roadmap-heading" className="text-2xl font-semibold">
-              Live Supabase integration and security blueprint
+              {t('redesign.roadmap.title')}
             </h2>
             <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-              The UI is backed by an implementation plan for production data, permissions, auditability, and maintainable deployment workflows.
+              {t('redesign.roadmap.description')}
             </p>
           </div>
 
@@ -379,32 +387,32 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
                 <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Database className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
-                <h3 className="text-lg font-semibold">Relational database schemas</h3>
+                <h3 className="text-lg font-semibold">{t('redesign.roadmap.database.title')}</h3>
               </div>
               <p className="text-xs leading-5 text-muted-foreground">
-                Structured around real HRIS relationships: people, roles, titles, departments, leave, missions, attendance, and payroll.
+                {t('redesign.roadmap.database.description')}
               </p>
               <div className="space-y-2.5 text-xs text-muted-foreground">
                 <div className="flex justify-between gap-4 border-b border-border pb-1.5">
                   <span className="font-semibold text-foreground">public.employees</span>
-                  <span className="text-end">Auth, roles, contracts</span>
+                  <span className="text-end">{t('redesign.roadmap.database.rows.employees')}</span>
                 </div>
                 <div className="flex justify-between gap-4 border-b border-border pb-1.5">
                   <span className="font-semibold text-foreground">public.leaves &amp; missions</span>
-                  <span className="text-end">Requests with validation</span>
+                  <span className="text-end">{t('redesign.roadmap.database.rows.requests')}</span>
                 </div>
                 <div className="flex justify-between gap-4 border-b border-border pb-1.5">
                   <span className="font-semibold text-foreground">public.attendance</span>
-                  <span className="text-end">Clock in/out by date</span>
+                  <span className="text-end">{t('redesign.roadmap.database.rows.attendance')}</span>
                 </div>
                 <div className="flex justify-between gap-4 border-b border-border pb-1.5">
                   <span className="font-semibold text-foreground">public.payroll</span>
-                  <span className="text-end">Net salary calculations</span>
+                  <span className="text-end">{t('redesign.roadmap.database.rows.payroll')}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-xs text-accent">
                 <Terminal className="h-4 w-4" aria-hidden="true" />
-                <span>Full schema definitions are documented in the README</span>
+                <span>{t('redesign.roadmap.database.footnote')}</span>
               </div>
             </div>
 
@@ -413,20 +421,20 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
                 <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Shield className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
-                <h3 className="text-lg font-semibold">Cybersecurity and maintenance</h3>
+                <h3 className="text-lg font-semibold">{t('redesign.roadmap.security.title')}</h3>
               </div>
               <p className="text-xs leading-5 text-muted-foreground">
-                Sensitive HR data requires clear boundaries before the product becomes operational.
+                {t('redesign.roadmap.security.description')}
               </p>
               <ul className="list-inside list-disc space-y-2 text-xs leading-5 text-muted-foreground">
-                <li><strong className="text-foreground">Row Level Security (RLS)</strong>: Prevent unauthorized cross-user reads and edits.</li>
-                <li><strong className="text-foreground">Credential isolation</strong>: Keep Supabase service_role keys private at all times.</li>
-                <li><strong className="text-foreground">Type safety</strong>: Keep generated database types synchronized with migrations.</li>
-                <li><strong className="text-foreground">Migrations</strong>: Track schema changes through Git versioning.</li>
+                <li><strong className="text-foreground">{t('redesign.roadmap.security.items.rls.label')}</strong>: {t('redesign.roadmap.security.items.rls.detail')}</li>
+                <li><strong className="text-foreground">{t('redesign.roadmap.security.items.credentials.label')}</strong>: {t('redesign.roadmap.security.items.credentials.detail')}</li>
+                <li><strong className="text-foreground">{t('redesign.roadmap.security.items.typeSafety.label')}</strong>: {t('redesign.roadmap.security.items.typeSafety.detail')}</li>
+                <li><strong className="text-foreground">{t('redesign.roadmap.security.items.migrations.label')}</strong>: {t('redesign.roadmap.security.items.migrations.detail')}</li>
               </ul>
               <div className="flex items-center gap-2 text-xs text-accent">
                 <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-                <span>Follows modern OWASP and Supabase best practices</span>
+                <span>{t('redesign.roadmap.security.footnote')}</span>
               </div>
             </div>
           </div>
@@ -434,18 +442,18 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
 
         <section className="rounded-[calc(var(--radius-card)+8px)] border border-primary/20 bg-card/90 px-6 py-10 text-center shadow-[var(--elevation-lg)] backdrop-blur sm:px-10" aria-labelledby="cta-heading">
           <h2 id="cta-heading" className="text-xl font-semibold">
-            Ready to explore the demo?
+            {t('redesign.cta.title')}
           </h2>
           <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            Use the demo access on the login screen to walk through the redesigned flows with no credentials needed.
+            {t('redesign.cta.description')}
           </p>
           <button
             type="button"
             onClick={onBack}
             className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Back to login
+            <BackIcon className="h-4 w-4" aria-hidden="true" />
+            {t('login.backToLogin')}
           </button>
         </section>
       </main>

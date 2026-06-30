@@ -6314,5 +6314,299 @@
     "English Text": "Search Job Titles",
     "Arabic Translation": "البحث في المسميات الوظيفية",
     "UI Category": "Label"
+  },
+  {
+    "Source Index": 13001,
+    "English Text": "A privacy-safe case study for modernizing an internal HR tool. The redesign turns scattered legacy screens into a responsive, bilingual experience for employees, managers, and HR teams.",
+    "Arabic Translation": "دراسة حالة آمنة من حيث الخصوصية لتحديث أداة موارد بشرية داخلية. تحوّل إعادة التصميم الشاشات القديمة المتفرقة إلى تجربة متجاوبة وثنائية اللغة للموظفين والمديرين وفرق الموارد البشرية.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13002,
+    "English Text": "Employee Management",
+    "Arabic Translation": "إدارة الموظفين",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 13003,
+    "English Text": "Dense forms with limited visual hierarchy",
+    "Arabic Translation": "نماذج مكثفة بهرمية بصرية محدودة",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13004,
+    "English Text": "Scannable profile data with clear status patterns",
+    "Arabic Translation": "بيانات ملف شخصي سهلة المسح مع أنماط حالة واضحة",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13005,
+    "English Text": "Leave Requests",
+    "Arabic Translation": "طلبات الإجازات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 13006,
+    "English Text": "Leave details scattered across separate screens",
+    "Arabic Translation": "تفاصيل الإجازة موزعة عبر شاشات منفصلة",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13007,
+    "English Text": "Focused request flow with validation and status context",
+    "Arabic Translation": "مسار طلب مركز مع التحقق وسياق الحالة",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13008,
+    "English Text": "Missions & Approvals",
+    "Arabic Translation": "المأموريات والموافقات",
+    "UI Category": "Navigation / module"
+  },
+  {
+    "Source Index": 13009,
+    "English Text": "Disconnected form and approval experience",
+    "Arabic Translation": "تجربة منفصلة بين النموذج والموافقة",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13010,
+    "English Text": "Inline review flow with clear approve and decline actions",
+    "Arabic Translation": "مسار مراجعة مدمج مع إجراءات واضحة للموافقة أو الرفض",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13011,
+    "English Text": "Compare the legacy flow with the redesigned experience",
+    "Arabic Translation": "قارن بين المسار القديم والتجربة المعاد تصميمها",
+    "UI Category": "Heading"
+  },
+  {
+    "Source Index": 13012,
+    "English Text": "Each comparison shows how the redesign improves scanability, decision-making, and flow continuity without exposing real employee data.",
+    "Arabic Translation": "يوضح كل عرض مقارنة كيف تحسن إعادة التصميم قابلية المسح واتخاذ القرار واستمرارية التدفق دون الكشف عن بيانات موظفين حقيقية.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13013,
+    "English Text": "What changed for users and HR admins",
+    "Arabic Translation": "ما الذي تغيّر للمستخدمين ومسؤولي الموارد البشرية",
+    "UI Category": "Heading"
+  },
+  {
+    "Source Index": 13014,
+    "English Text": "Product decisions behind the interface",
+    "Arabic Translation": "القرارات المنتجية خلف الواجهة",
+    "UI Category": "Heading"
+  },
+  {
+    "Source Index": 13015,
+    "English Text": "Bilingual translation quality",
+    "Arabic Translation": "جودة الترجمة ثنائية اللغة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13016,
+    "English Text": "Arabic mode preserves fully translated Arabic content and only repairs mixed Arabic and English fragments when an English token remains.",
+    "Arabic Translation": "يحافظ الوضع العربي على المحتوى العربي المترجم بالكامل، ويصلح فقط الأجزاء المختلطة بين العربية والإنجليزية عند بقاء رمز إنجليزي.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13017,
+    "English Text": "RTL interaction design",
+    "Arabic Translation": "تصميم التفاعل باتجاه RTL",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13018,
+    "English Text": "Logical spacing, mirrored layouts, and language-aware pagination arrows keep Arabic navigation predictable.",
+    "Arabic Translation": "يجعل التباعد المنطقي والتخطيطات المعكوسة وأسهم التنقل المراعية للغة التنقل العربي أكثر توقعًا.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13019,
+    "English Text": "Accessible controls",
+    "Arabic Translation": "عناصر تحكم ميسّرة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13020,
+    "English Text": "Forms, tabs, filters, and pagination expose labels, focus states, and 44px minimum targets.",
+    "Arabic Translation": "تكشف النماذج والألسنة والفلاتر والتنقل بين الصفحات عن تسميات وحالات تركيز وأهداف بحد أدنى 44px.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13021,
+    "English Text": "Profile and request workflows",
+    "Arabic Translation": "مسارات الملف الشخصي والطلبات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13022,
+    "English Text": "Contextual edit modals, privacy-safe demo data, and clear request states reduce ambiguity for employees and managers.",
+    "Arabic Translation": "تقلل نوافذ التعديل السياقية وبيانات العرض التجريبي الآمنة وحالات الطلب الواضحة من الغموض لدى الموظفين والمديرين.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13023,
+    "English Text": "Supabase backend planning",
+    "Arabic Translation": "تخطيط الخلفية مع Supabase",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13024,
+    "English Text": "Relational PostgreSQL schemas cover departments, jobs, employees, leaves, attendance, payroll, and audit-ready workflows.",
+    "Arabic Translation": "تغطي المخططات العلائقية في PostgreSQL الأقسام والوظائف والموظفين والإجازات والحضور والرواتب ومسارات عمل جاهزة للمراجعة.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13025,
+    "English Text": "Security posture",
+    "Arabic Translation": "الوضع الأمني",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13026,
+    "English Text": "Row Level Security, protected secrets, short-lived JWT validation, and storage policies are documented before production rollout.",
+    "Arabic Translation": "توثّق سياسات Row Level Security وحماية الأسرار والتحقق من JWT قصيرة العمر وسياسات التخزين قبل الإطلاق الإنتاجي.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13027,
+    "English Text": "Maintainability blueprint",
+    "Arabic Translation": "مخطط القابلية للصيانة",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13028,
+    "English Text": "Version-controlled migrations, generated TypeScript database types, and layered data services keep the system easier to change.",
+    "Arabic Translation": "تجعل هجرات القاعدة المتعقبة بالإصدار وأنواع TypeScript المولدة وطبقات خدمات البيانات النظام أسهل في التغيير.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13029,
+    "English Text": "Backend & Security Roadmap",
+    "Arabic Translation": "خطة الخلفية والأمان",
+    "UI Category": "Heading"
+  },
+  {
+    "Source Index": 13030,
+    "English Text": "Live Supabase integration and security blueprint",
+    "Arabic Translation": "مخطط التكامل الحي مع Supabase والأمان",
+    "UI Category": "Heading"
+  },
+  {
+    "Source Index": 13031,
+    "English Text": "The UI is backed by an implementation plan for production data, permissions, auditability, and maintainable deployment workflows.",
+    "Arabic Translation": "تستند الواجهة إلى خطة تنفيذية للبيانات الإنتاجية والصلاحيات والقابلية للمراجعة ومسارات النشر القابلة للصيانة.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13032,
+    "English Text": "Relational database schemas",
+    "Arabic Translation": "مخططات قاعدة بيانات علائقية",
+    "UI Category": "Heading"
+  },
+  {
+    "Source Index": 13033,
+    "English Text": "Structured around real HRIS relationships: people, roles, titles, departments, leave, missions, attendance, and payroll.",
+    "Arabic Translation": "مهيكلة حول علاقات HRIS حقيقية: الأشخاص والأدوار والمسميات والأقسام والإجازات والمأموريات والحضور والرواتب.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13034,
+    "English Text": "Auth, roles, contracts",
+    "Arabic Translation": "المصادقة والأدوار والعقود",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13035,
+    "English Text": "Requests with validation",
+    "Arabic Translation": "طلبات مع التحقق",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13036,
+    "English Text": "Clock in/out by date",
+    "Arabic Translation": "الحضور والانصراف حسب التاريخ",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13037,
+    "English Text": "Net salary calculations",
+    "Arabic Translation": "حسابات صافي الراتب",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13038,
+    "English Text": "Full schema definitions are documented in the README",
+    "Arabic Translation": "تم توثيق تعريفات المخطط الكاملة في README",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13039,
+    "English Text": "Cybersecurity and maintenance",
+    "Arabic Translation": "الأمن السيبراني والصيانة",
+    "UI Category": "Heading"
+  },
+  {
+    "Source Index": 13040,
+    "English Text": "Sensitive HR data requires clear boundaries before the product becomes operational.",
+    "Arabic Translation": "تحتاج بيانات الموارد البشرية الحساسة إلى حدود واضحة قبل أن يصبح المنتج تشغيليًا.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13041,
+    "English Text": "Prevent unauthorized cross-user reads and edits.",
+    "Arabic Translation": "يمنع القراءة والتعديل غير المصرح بهما عبر المستخدمين.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13042,
+    "English Text": "Credential isolation",
+    "Arabic Translation": "عزل بيانات الاعتماد",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13043,
+    "English Text": "Keep Supabase service_role keys private at all times.",
+    "Arabic Translation": "أبقِ مفاتيح Supabase service_role خاصة في جميع الأوقات.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13044,
+    "English Text": "Type safety",
+    "Arabic Translation": "أمان الأنواع",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13045,
+    "English Text": "Keep generated database types synchronized with migrations.",
+    "Arabic Translation": "أبقِ أنواع قاعدة البيانات المولدة متزامنة مع الهجرات.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13046,
+    "English Text": "Migrations",
+    "Arabic Translation": "الهجرات",
+    "UI Category": "Label"
+  },
+  {
+    "Source Index": 13047,
+    "English Text": "Track schema changes through Git versioning.",
+    "Arabic Translation": "تتبع تغييرات المخطط من خلال إصدارات Git.",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13048,
+    "English Text": "Follows modern OWASP and Supabase best practices",
+    "Arabic Translation": "يتبع أحدث ممارسات OWASP وSupabase",
+    "UI Category": "Body copy"
+  },
+  {
+    "Source Index": 13049,
+    "English Text": "Use the demo access on the login screen to walk through the redesigned flows with no credentials needed.",
+    "Arabic Translation": "استخدم الدخول التجريبي في شاشة تسجيل الدخول للتنقل عبر المسارات المعاد تصميمها دون الحاجة إلى بيانات اعتماد.",
+    "UI Category": "Body copy"
   }
 ]
