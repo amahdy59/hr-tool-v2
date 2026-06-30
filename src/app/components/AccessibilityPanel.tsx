@@ -73,6 +73,7 @@ const SegmentedControl = <T extends string>({
   ariaLabel,
   columnsClassName,
   compact = false,
+  iconOnly = false,
 }: {
   value: T;
   onChange: (next: T) => void;
@@ -80,6 +81,7 @@ const SegmentedControl = <T extends string>({
   ariaLabel: string;
   columnsClassName: string;
   compact?: boolean;
+  iconOnly?: boolean;
 }) => {
   const currentIndex = options.findIndex((option) => option.value === value);
 
@@ -109,6 +111,8 @@ const SegmentedControl = <T extends string>({
             type="button"
             role="radio"
             aria-checked={checked}
+            aria-label={option.label}
+            title={option.label}
             onClick={() => {
               onChange(option.value);
               triggerHaptic();
@@ -124,7 +128,9 @@ const SegmentedControl = <T extends string>({
               }
             }}
             className={cn(
-              compact
+              iconOnly
+                ? 'flex h-10 w-10 items-center justify-center rounded-[calc(var(--radius-card)-4px)] border p-0 transition-all duration-200'
+                : compact
                 ? 'flex min-h-10 items-center justify-center gap-2 rounded-[calc(var(--radius-card)-4px)] border px-3 py-2 text-left transition-all duration-200'
                 : 'flex min-h-14 flex-col items-center justify-center gap-1 rounded-[calc(var(--radius-card)-4px)] border px-2 py-2 text-center transition-all duration-200',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
@@ -134,7 +140,10 @@ const SegmentedControl = <T extends string>({
             )}
           >
             <Icon className={cn('h-4 w-4', checked && 'text-primary')} aria-hidden="true" />
-            <span className={cn('font-semibold leading-none', compact ? 'text-xs' : 'text-[11px]')}>{option.label}</span>
+            {!iconOnly && (
+              <span className={cn('font-semibold leading-none', compact ? 'text-xs' : 'text-[11px]')}>{option.label}</span>
+            )}
+            {iconOnly && <span className="sr-only">{option.label}</span>}
           </button>
         );
       })}
@@ -191,7 +200,7 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
 };
 
 export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const {
     highContrast,
     setHighContrast,
@@ -213,38 +222,38 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     {
       id: 'toggle-contrast',
       icon: Eye,
-      label: 'High Contrast',
+      label: t('accessibility.options.highContrast.label'),
       description: {
-        en: 'Stronger text contrast for easier reading.',
-        ar: 'تباين أقوى للنص لتسهيل القراءة.',
+        en: t('accessibility.options.highContrast.tooltip', { lng: 'en' }),
+        ar: t('accessibility.options.highContrast.tooltip', { lng: 'ar' }),
       },
       checked: highContrast,
       onChange: setHighContrast,
-      ariaLabel: 'Toggle high contrast',
+      ariaLabel: t('accessibility.options.highContrast.aria'),
     },
     {
       id: 'toggle-text-scale',
       icon: ZoomIn,
-      label: 'Larger Text',
+      label: t('accessibility.options.largerText.label'),
       description: {
-        en: 'Scales core text for comfortable reading.',
-        ar: 'يكبر النص الأساسي لتجربة قراءة أكثر راحة.',
+        en: t('accessibility.options.largerText.tooltip', { lng: 'en' }),
+        ar: t('accessibility.options.largerText.tooltip', { lng: 'ar' }),
       },
       checked: largeText,
       onChange: setLargeText,
-      ariaLabel: 'Toggle larger text',
+      ariaLabel: t('accessibility.options.largerText.aria'),
     },
     {
       id: 'toggle-dyslexic',
       icon: Type,
-      label: 'Dyslexia Font',
+      label: t('accessibility.options.dyslexiaFont.label'),
       description: {
-        en: 'Uses a more readable letterform style.',
-        ar: 'يستخدم نمط خط أكثر سهولة في القراءة.',
+        en: t('accessibility.options.dyslexiaFont.tooltip', { lng: 'en' }),
+        ar: t('accessibility.options.dyslexiaFont.tooltip', { lng: 'ar' }),
       },
       checked: dyslexic,
       onChange: setDyslexic,
-      ariaLabel: 'Toggle dyslexia font',
+      ariaLabel: t('accessibility.options.dyslexiaFont.aria'),
     },
   ];
 
@@ -252,40 +261,41 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     {
       id: 'toggle-targets',
       icon: Target,
-      label: 'Large Targets',
+      label: t('accessibility.options.largeTargets.label'),
       description: {
-        en: 'Makes buttons and hit areas easier to use.',
-        ar: 'يكبر الأزرار ومناطق اللمس لتسهيل الاستخدام.',
+        en: t('accessibility.options.largeTargets.tooltip', { lng: 'en' }),
+        ar: t('accessibility.options.largeTargets.tooltip', { lng: 'ar' }),
       },
       checked: largeTargets,
       onChange: setLargeTargets,
-      ariaLabel: 'Toggle large targets',
+      ariaLabel: t('accessibility.options.largeTargets.aria'),
     },
     {
       id: 'toggle-focus',
       icon: Highlighter,
-      label: 'Focus Ring',
+      label: t('accessibility.options.focusRing.label'),
       description: {
-        en: 'Shows stronger outlines while tabbing.',
-        ar: 'يعرض حدودًا أوضح أثناء التنقل بلوحة المفاتيح.',
+        en: t('accessibility.options.focusRing.tooltip', { lng: 'en' }),
+        ar: t('accessibility.options.focusRing.tooltip', { lng: 'ar' }),
       },
       checked: focusHeavy,
       onChange: setFocusHeavy,
-      ariaLabel: 'Toggle focus ring',
+      ariaLabel: t('accessibility.options.focusRing.aria'),
     },
   ];
 
   const allOptions = [...readingOptions, ...interactionOptions];
   const activeCount = allOptions.filter((option) => option.checked).length;
   const themeOptions: SegmentedChoice<'light' | 'dark' | 'system'>[] = [
-    { value: 'light', label: 'Light', icon: Sun },
-    { value: 'dark', label: 'Dark', icon: Moon },
-    { value: 'system', label: 'System', icon: Monitor },
+    { value: 'light', label: t('accessibility.themeOptions.light'), icon: Sun },
+    { value: 'dark', label: t('accessibility.themeOptions.dark'), icon: Moon },
+    { value: 'system', label: t('accessibility.themeOptions.system'), icon: Monitor },
   ];
   const languageOptions: SegmentedChoice<'en' | 'ar'>[] = [
-    { value: 'en', label: 'English', icon: Languages },
-    { value: 'ar', label: 'العربية', icon: Languages },
+    { value: 'en', label: t('accessibility.languageOptions.english'), icon: Languages },
+    { value: 'ar', label: t('accessibility.languageOptions.arabic'), icon: Languages },
   ];
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
   const triggerButton = (
     <Button
@@ -308,14 +318,16 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
 
   const renderPanelContent = (closeButton: React.ReactNode) => (
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
-      <div className="mb-4 flex items-start justify-between gap-4 border-b border-border/70 pb-4 shrink-0">
-        <div className="min-w-0">
+      <div className="mb-3 flex items-center justify-between gap-3 border-b border-border/70 pb-3 shrink-0">
+        <div className="min-w-0 flex items-center gap-2.5">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/[0.08]">
+            <Accessibility className="w-4 h-4 text-primary" />
+          </div>
           <h2
-            className="flex items-center gap-2 text-base font-semibold text-foreground"
+            className="text-base font-semibold leading-none text-foreground"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            <Accessibility className="w-4 h-4 text-primary" />
-            Accessibility Tools
+            {t('accessibility.panelTitle')}
           </h2>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -334,34 +346,34 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             }}
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            Reset all
+            {t('accessibility.resetAll')}
           </Button>
           {closeButton}
         </div>
       </div>
 
       <div className="flex-1 space-y-5 overflow-y-auto pe-1 min-h-0">
-        <section className="space-y-3 rounded-[var(--radius-card)] border border-border/70 bg-card/90 p-4">
+        <section className="space-y-3 rounded-[var(--radius-card)] border border-border/70 bg-card/90 p-3.5">
           <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Appearance
+            {t('accessibility.appearance')}
           </p>
-          <div className="space-y-2">
-            <div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
               <SegmentedControl
                 value={theme}
                 onChange={setTheme}
                 options={themeOptions}
-                ariaLabel="Theme"
+                ariaLabel={t('accessibility.themeGroup')}
                 columnsClassName="grid-cols-3"
-                compact
+                iconOnly
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <SegmentedControl
                 value={language}
                 onChange={setLanguage}
                 options={languageOptions}
-                ariaLabel="Language"
+                ariaLabel={t('accessibility.languageGroup')}
                 columnsClassName="grid-cols-2"
                 compact
               />
@@ -371,7 +383,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
 
         <section className="space-y-3">
           <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Reading
+            {t('accessibility.reading')}
           </p>
           <div className="space-y-2">
             {readingOptions.map((option) => (
@@ -382,7 +394,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
 
         <section className="space-y-3">
           <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Navigation
+            {t('accessibility.navigation')}
           </p>
           <div className="space-y-2">
             {interactionOptions.map((option) => (
@@ -403,7 +415,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             {triggerButton}
           </SheetTrigger>
           <SheetContent side="bottom" className="h-[100dvh] flex flex-col w-full p-5 border-0 rounded-none bg-card z-[100] overflow-hidden">
-            <SheetTitle className="sr-only">Accessibility Settings</SheetTitle>
+            <SheetTitle className="sr-only">{t('accessibility.panelTitle')}</SheetTitle>
             {renderPanelContent(null)}
           </SheetContent>
         </Sheet>
@@ -421,7 +433,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             collisionPadding={16}
           >
             {renderPanelContent(
-              <PopoverClose className="p-1 rounded hover:bg-muted text-muted-foreground flex items-center justify-center min-w-8 min-h-8 border border-border/40 cursor-pointer" aria-label="Close accessibility panel">
+              <PopoverClose
+                className="flex min-h-8 min-w-8 items-center justify-center rounded border border-border/40 p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                aria-label={isArabic ? 'إغلاق أدوات إمكانية الوصول' : 'Close accessibility panel'}
+              >
                 <X className="w-4 h-4" />
               </PopoverClose>
             )}

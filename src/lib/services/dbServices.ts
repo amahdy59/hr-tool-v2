@@ -20,7 +20,7 @@ export interface Employee {
 
 export interface LeaveRequest {
   id: string;
-  name: string;
+  name: string | { nameEn: string; nameAr: string };
   img?: string;
   type: string;
   range: string;
@@ -38,7 +38,7 @@ export interface LeaveRequest {
 
 export interface MissionRequest {
   id: string;
-  name: string;
+  name: string | { nameEn: string; nameAr: string };
   img?: string;
   type: string;
   range: string;
@@ -349,6 +349,8 @@ export const LeaveService = {
           employees:employees!employee_id (
             first_name,
             last_name,
+            first_name_ar,
+            last_name_ar,
             employee_number,
             img_url,
             contract_type,
@@ -360,7 +362,12 @@ export const LeaveService = {
       if (error) throw error;
       return (data || []).map((l: any) => ({
         id: l.id,
-        name: `${l.employees?.first_name || 'New'} ${l.employees?.last_name || 'Employee'}`,
+        name: l.employees?.first_name_ar && l.employees?.last_name_ar
+          ? {
+              nameEn: `${l.employees?.first_name || 'New'} ${l.employees?.last_name || 'Employee'}`,
+              nameAr: `${l.employees.first_name_ar} ${l.employees.last_name_ar}`,
+            }
+          : `${l.employees?.first_name || 'New'} ${l.employees?.last_name || 'Employee'}`,
         img: l.employees?.img_url || '',
         type: l.leave_type,
         range: `${l.start_date} - ${l.end_date}`,
@@ -472,6 +479,8 @@ export const MissionService = {
           employees:employees!employee_id (
             first_name,
             last_name,
+            first_name_ar,
+            last_name_ar,
             employee_number,
             img_url,
             contract_type,
@@ -483,7 +492,12 @@ export const MissionService = {
       if (error) throw error;
       return (data || []).map((m: any) => ({
         id: m.id,
-        name: `${m.employees?.first_name || 'New'} ${m.employees?.last_name || 'Employee'}`,
+        name: m.employees?.first_name_ar && m.employees?.last_name_ar
+          ? {
+              nameEn: `${m.employees?.first_name || 'New'} ${m.employees?.last_name || 'Employee'}`,
+              nameAr: `${m.employees.first_name_ar} ${m.employees.last_name_ar}`,
+            }
+          : `${m.employees?.first_name || 'New'} ${m.employees?.last_name || 'Employee'}`,
         img: m.employees?.img_url || '',
         type: m.title,
         range: `${m.start_date} - ${m.end_date}`,

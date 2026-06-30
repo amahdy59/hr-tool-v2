@@ -73,6 +73,20 @@ export const LeavesManagement: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const displayEmployeeName = (name?: string) => localizePersonName(name, language);
+  const matchesEmployeeSearch = (name: LeaveRequest['name'], employeeNumber: string | undefined, query: string) => {
+    const normalizedQuery = query.trim().toLowerCase();
+    if (!normalizedQuery) return true;
+
+    const localizedName = localizePersonName(name, language).toLowerCase();
+    const englishName = typeof name === 'string' ? name.toLowerCase() : (name.nameEn || name.name || '').toLowerCase();
+    const arabicName = typeof name === 'string' ? '' : (name.nameAr || '').toLowerCase();
+    const normalizedEmployeeNumber = employeeNumber?.toLowerCase() || '';
+
+    return localizedName.includes(normalizedQuery)
+      || englishName.includes(normalizedQuery)
+      || arabicName.includes(normalizedQuery)
+      || normalizedEmployeeNumber.includes(normalizedQuery);
+  };
   const displayDateRange = (request: Pick<LeaveRequest, 'startDate' | 'endDate' | 'range'>) => {
     const start = getRequestDate(request, 'start');
     const end = getRequestDate(request, 'end');
@@ -132,10 +146,8 @@ export const LeavesManagement: React.FC = () => {
 
   // Filtered and Paginated lists
   const filteredPending = useMemo(() => {
-    return pendingLeaves.filter(l => 
-      !pendingSearch || l.name.toLowerCase().includes(pendingSearch.toLowerCase()) || l.employeeNumber?.includes(pendingSearch)
-    );
-  }, [pendingLeaves, pendingSearch]);
+    return pendingLeaves.filter((leave) => matchesEmployeeSearch(leave.name, leave.employeeNumber, pendingSearch));
+  }, [pendingLeaves, pendingSearch, language]);
 
   const paginatedPending = useMemo(() => {
     const start = (pendingPage - 1) * 15;
@@ -159,7 +171,7 @@ export const LeavesManagement: React.FC = () => {
     return historyLeaves.filter(l => {
       const requestStart = getRequestDate(l, 'start');
       const requestEnd = getRequestDate(l, 'end');
-      const matchesSearch = !historySearch || l.name.toLowerCase().includes(historySearch.toLowerCase()) || l.employeeNumber?.includes(historySearch);
+      const matchesSearch = matchesEmployeeSearch(l.name, l.employeeNumber, historySearch);
       const matchesDept = filterDept === 'All' || l.department === filterDept;
       const matchesLeaveType = filterLeaveType === 'All' || l.type === filterLeaveType;
       const matchesFrom = !filterFrom || requestEnd >= filterFrom;

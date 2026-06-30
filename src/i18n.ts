@@ -445,6 +445,104 @@ const ar = {
   },
 };
 
+(en.translation as Record<string, unknown>).accessibility = {
+  panelTitle: 'Accessibility Tools',
+  resetAll: 'Reset all',
+  appearance: 'Appearance',
+  reading: 'Reading',
+  navigation: 'Navigation',
+  themeGroup: 'Theme selection',
+  languageGroup: 'Language selection',
+  themeOptions: {
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System',
+  },
+  languageOptions: {
+    english: 'English',
+    arabic: 'Arabic',
+  },
+  options: {
+    highContrast: {
+      label: 'High Contrast',
+      tooltip: 'Stronger text contrast for easier reading.',
+      aria: 'Toggle high contrast',
+    },
+    largerText: {
+      label: 'Larger Text',
+      tooltip: 'Scales core text for comfortable reading.',
+      aria: 'Toggle larger text',
+    },
+    dyslexiaFont: {
+      label: 'Dyslexia Font',
+      tooltip: 'Uses a more readable letterform style.',
+      aria: 'Toggle dyslexia font',
+    },
+    largeTargets: {
+      label: 'Large Targets',
+      tooltip: 'Makes buttons and hit areas easier to use.',
+      aria: 'Toggle large targets',
+    },
+    focusRing: {
+      label: 'Focus Ring',
+      tooltip: 'Shows stronger outlines while tabbing.',
+      aria: 'Toggle focus ring',
+    },
+  },
+  tooltips: {
+    info: 'More information',
+  },
+};
+
+(ar.translation as Record<string, unknown>).accessibility = {
+  panelTitle: '\u0623\u062f\u0648\u0627\u062a \u0625\u0645\u0643\u0627\u0646\u064a\u0629 \u0627\u0644\u0648\u0635\u0648\u0644',
+  resetAll: '\u0625\u0639\u0627\u062f\u0629 \u0636\u0628\u0637 \u0627\u0644\u0643\u0644',
+  appearance: '\u0627\u0644\u0645\u0638\u0647\u0631',
+  reading: '\u0627\u0644\u0642\u0631\u0627\u0621\u0629',
+  navigation: '\u0627\u0644\u062a\u0646\u0642\u0644',
+  themeGroup: '\u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0644\u0633\u0645\u0629',
+  languageGroup: '\u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0644\u0644\u063a\u0629',
+  themeOptions: {
+    light: '\u0641\u0627\u062a\u062d',
+    dark: '\u062f\u0627\u0643\u0646',
+    system: '\u0627\u0644\u0646\u0638\u0627\u0645',
+  },
+  languageOptions: {
+    english: '\u0627\u0644\u0625\u0646\u062c\u0644\u064a\u0632\u064a\u0629',
+    arabic: '\u0627\u0644\u0639\u0631\u0628\u064a\u0629',
+  },
+  options: {
+    highContrast: {
+      label: '\u062a\u0628\u0627\u064a\u0646 \u0639\u0627\u0644\u064d',
+      tooltip: '\u062a\u0628\u0627\u064a\u0646 \u0623\u0642\u0648\u0649 \u0644\u0644\u0646\u0635 \u0644\u062a\u0633\u0647\u064a\u0644 \u0627\u0644\u0642\u0631\u0627\u0621\u0629.',
+      aria: '\u062a\u0628\u062f\u064a\u0644 \u0627\u0644\u062a\u0628\u0627\u064a\u0646 \u0627\u0644\u0639\u0627\u0644\u064a',
+    },
+    largerText: {
+      label: '\u0646\u0635 \u0623\u0643\u0628\u0631',
+      tooltip: '\u064a\u0643\u0628\u0631 \u0627\u0644\u0646\u0635 \u0627\u0644\u0623\u0633\u0627\u0633\u064a \u0644\u062a\u062c\u0631\u0628\u0629 \u0642\u0631\u0627\u0621\u0629 \u0623\u0643\u062b\u0631 \u0631\u0627\u062d\u0629.',
+      aria: '\u062a\u0628\u062f\u064a\u0644 \u0627\u0644\u0646\u0635 \u0627\u0644\u0623\u0643\u0628\u0631',
+    },
+    dyslexiaFont: {
+      label: '\u062e\u0637 \u0639\u0633\u0631 \u0627\u0644\u0642\u0631\u0627\u0621\u0629',
+      tooltip: '\u064a\u0633\u062a\u062e\u062f\u0645 \u0646\u0645\u0637 \u062e\u0637 \u0623\u0643\u062b\u0631 \u0633\u0647\u0648\u0644\u0629 \u0641\u064a \u0627\u0644\u0642\u0631\u0627\u0621\u0629.',
+      aria: '\u062a\u0628\u062f\u064a\u0644 \u062e\u0637 \u0639\u0633\u0631 \u0627\u0644\u0642\u0631\u0627\u0621\u0629',
+    },
+    largeTargets: {
+      label: '\u0623\u0647\u062f\u0627\u0641 \u0623\u0643\u0628\u0631',
+      tooltip: '\u064a\u0643\u0628\u0631 \u0627\u0644\u0623\u0632\u0631\u0627\u0631 \u0648\u0645\u0646\u0627\u0637\u0642 \u0627\u0644\u0644\u0645\u0633 \u0644\u062a\u0633\u0647\u064a\u0644 \u0627\u0644\u0627\u0633\u062a\u062e\u062f\u0627\u0645.',
+      aria: '\u062a\u0628\u062f\u064a\u0644 \u0627\u0644\u0623\u0647\u062f\u0627\u0641 \u0627\u0644\u0623\u0643\u0628\u0631',
+    },
+    focusRing: {
+      label: '\u062d\u0644\u0642\u0629 \u0627\u0644\u062a\u0631\u0643\u064a\u0632',
+      tooltip: '\u064a\u0639\u0631\u0636 \u062d\u062f\u0648\u062f\u064b\u0627 \u0623\u0648\u0636\u062d \u0623\u062b\u0646\u0627\u0621 \u0627\u0644\u062a\u0646\u0642\u0644 \u0628\u0644\u0648\u062d\u0629 \u0627\u0644\u0645\u0641\u0627\u062a\u064a\u062d.',
+      aria: '\u062a\u0628\u062f\u064a\u0644 \u062d\u0644\u0642\u0629 \u0627\u0644\u062a\u0631\u0643\u064a\u0632',
+    },
+  },
+  tooltips: {
+    info: '\u0645\u0632\u064a\u062f \u0645\u0646 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062a',
+  },
+};
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)

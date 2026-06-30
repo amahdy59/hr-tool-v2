@@ -54,6 +54,20 @@ export const MissionsManagement: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const displayEmployeeName = (name?: string) => localizePersonName(name, language);
+  const matchesEmployeeSearch = (name: MissionRequest['name'], employeeNumber: string | undefined, query: string) => {
+    const normalizedQuery = query.trim().toLowerCase();
+    if (!normalizedQuery) return true;
+
+    const localizedName = localizePersonName(name, language).toLowerCase();
+    const englishName = typeof name === 'string' ? name.toLowerCase() : (name.nameEn || name.name || '').toLowerCase();
+    const arabicName = typeof name === 'string' ? '' : (name.nameAr || '').toLowerCase();
+    const normalizedEmployeeNumber = employeeNumber?.toLowerCase() || '';
+
+    return localizedName.includes(normalizedQuery)
+      || englishName.includes(normalizedQuery)
+      || arabicName.includes(normalizedQuery)
+      || normalizedEmployeeNumber.includes(normalizedQuery);
+  };
   const displayDateRange = (request: Pick<MissionRequest, 'startDate' | 'endDate' | 'range'>) => {
     const start = getRequestDate(request, 'start');
     const end = getRequestDate(request, 'end');
@@ -108,10 +122,8 @@ export const MissionsManagement: React.FC = () => {
 
   // Filtered and Paginated lists
   const filteredPending = useMemo(() => {
-    return pendingMissions.filter(m => 
-      !pendingSearch || m.name.toLowerCase().includes(pendingSearch.toLowerCase()) || m.employeeNumber?.includes(pendingSearch)
-    );
-  }, [pendingMissions, pendingSearch]);
+    return pendingMissions.filter((mission) => matchesEmployeeSearch(mission.name, mission.employeeNumber, pendingSearch));
+  }, [pendingMissions, pendingSearch, language]);
 
   const paginatedPending = useMemo(() => {
     const start = (pendingPage - 1) * 15;
@@ -122,7 +134,7 @@ export const MissionsManagement: React.FC = () => {
     return historyMissions.filter(m => {
       const requestStart = getRequestDate(m, 'start');
       const requestEnd = getRequestDate(m, 'end');
-      const matchesSearch = !historySearch || m.name.toLowerCase().includes(historySearch.toLowerCase()) || m.employeeNumber?.includes(historySearch);
+      const matchesSearch = matchesEmployeeSearch(m.name, m.employeeNumber, historySearch);
       const matchesDept = filterDept === 'All' || m.department === filterDept;
       const matchesMissionType = filterMissionType === 'All' || m.type === filterMissionType;
       const matchesFrom = !filterFrom || requestEnd >= filterFrom;
