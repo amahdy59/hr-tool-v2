@@ -78,7 +78,9 @@ Arabic support must be treated as a product requirement, not a visual afterthoug
 - **Attributes:** Translate `placeholder`, `title`, and `aria-label` with the same rules used for visible text.
 - **Eastern Arabic numerals:** In Arabic mode, ordinary text-node digits are converted to Eastern Arabic numerals by `useArabicDomTranslation`.
 - **Interactive exceptions:** Components with React-managed numbers or complex interactions can opt out with `data-no-auto-translate`, then render Arabic formatting natively.
-- **LTR fields:** Email, URL, telephone, and password-like fields that contain LTR data must keep `dir="ltr"` and left text alignment.
+- **Western numeral exceptions:** Phone numbers, email addresses, URLs, account identifiers, and similar machine-readable values must always keep Western numerals (`0-9`), even in Arabic mode.
+- **LTR fields:** Email, URL, telephone, and password-like fields that contain LTR data must keep `dir="ltr"`, left text alignment, and semantic input types such as `email`, `url`, and `tel`.
+- **LTR read-only values:** Read-only contact values should be wrapped with `dir="ltr"` and `data-no-auto-translate` so the DOM translation layer does not convert digits inside masked numbers, emails, or URLs.
 
 ---
 
@@ -151,5 +153,6 @@ Before pushing UI or localization changes:
 - Open representative dropdowns and pagination controls.
 - Switch between English and Arabic and check for mixed Arabic/English strings.
 - Confirm fully Arabic content remains unchanged.
+- Confirm contact values such as phone numbers, emails, URLs, and identifiers still display Western numerals in Arabic mode.
 - Confirm pagination arrows point in the correct direction in Arabic and English.
 - Do not commit generated `dist/` preview/build output unless the release process explicitly requires it.

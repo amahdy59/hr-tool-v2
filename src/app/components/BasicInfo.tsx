@@ -13,6 +13,7 @@ import {
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { localizePersonName } from '@/lib/localizedNames';
+import { LtrInlineText, ltrContentProps } from './profile/ltrContent';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -44,6 +45,8 @@ const maskPhoneNumber = (phone: string): string => {
   if (!phone || phone.length < 7) return phone;
   return phone.replace(/(\+?\d{2,3}|0\d{2})(\d+)(\d{3})$/, '$1 *** $3');
 };
+
+const usesWesternNumerals = (label: string) => /email|mobile|phone|landline|national id|iban|account number/i.test(label);
 
 interface PersonalInfoData {
   nameEn?: string;
@@ -298,9 +301,9 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
                     <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
                       Phone
                     </span>
-                    <span className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <LtrInlineText className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
                       {maskPhoneNumber(contact.phone)}
-                    </span>
+                    </LtrInlineText>
                   </div>
                 </div>
               </div>
@@ -503,14 +506,25 @@ const InfoItem: React.FC<{ label: string; value: string; sensitive?: boolean; in
   <div className={cn("flex gap-3 text-[var(--text-sm)]", inline ? "flex-col" : "flex-row items-start")} style={{ fontFamily: "'Inter', sans-serif" }}>
     <span className={cn("text-muted-foreground font-[var(--font-weight-medium)] shrink-0", inline ? "" : "w-28")}>{label}</span>
     <div className="flex items-center gap-2 min-w-0 flex-1">
-      <span className={cn(
-        'text-foreground min-w-0',
-        sensitive
-          ? 'inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide max-w-full truncate'
-          : 'break-all'
-      )}>
-        {value}
-      </span>
+      {usesWesternNumerals(label) ? (
+        <LtrInlineText className={cn(
+          'text-foreground min-w-0',
+          sensitive
+            ? 'inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide max-w-full truncate'
+            : 'break-all'
+        )}>
+          {value}
+        </LtrInlineText>
+      ) : (
+        <span className={cn(
+          'text-foreground min-w-0',
+          sensitive
+            ? 'inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide max-w-full truncate'
+            : 'break-all'
+        )}>
+          {value}
+        </span>
+      )}
       {sensitive && <Shield className="w-3 h-3 text-muted-foreground shrink-0" />}
     </div>
   </div>
@@ -668,7 +682,7 @@ const EditEmergencyModal: React.FC<{
               </SelectContent>
             </Select>
           </div>
-          <FormField label="Phone Number *" value={phone} onChange={setPhone} placeholder="01XXXXXXXXX" />
+          <FormField label="Phone Number *" value={phone} onChange={setPhone} type="tel" inputMode="tel" autoComplete="tel" placeholder="01XXXXXXXXX" />
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
@@ -914,6 +928,7 @@ const FormField: React.FC<{
   required?: boolean;
 }> = ({ label, value, onChange, type = 'text', inputMode, autoComplete, placeholder, maxLength, required }) => {
   const id = React.useId();
+  const shouldForceLtr = ['email', 'url', 'tel', 'password'].includes(type);
   return (
     <div className="space-y-1">
       <label htmlFor={id} className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -931,6 +946,7 @@ const FormField: React.FC<{
         autoComplete={autoComplete}
         aria-required={required ? "true" : undefined}
         style={{ fontFamily: "'Inter', sans-serif" }} 
+        {...(shouldForceLtr ? ltrContentProps : {})}
       />
     </div>
   );

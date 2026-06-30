@@ -28,6 +28,7 @@ import { SkillsSection } from './profile/SkillsSection';
 import { LanguagesSection } from './profile/LanguagesSection';
 import { LinkedInImportModal } from './profile/LinkedInImportModal';
 import { useTranslation } from 'react-i18next';
+import { LtrInlineText } from './profile/ltrContent';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -587,24 +588,24 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
             <div className="space-y-2.5 text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}>
               <div className="flex items-center gap-2.5 text-foreground">
                 <Phone className="w-4 h-4 text-muted-foreground" />
-                <span className="inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2.5 py-1 font-mono tracking-wide text-[var(--text-base)]">
+                <LtrInlineText className="inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2.5 py-1 font-mono tracking-wide text-[var(--text-base)]">
                   {maskPhoneNumber(contact.phone)}
-                </span>
+                </LtrInlineText>
               </div>
               <div className="flex items-center gap-2.5 text-foreground">
                 <Globe className="w-4 h-4 text-muted-foreground" />
-                <span className="break-all font-[var(--font-weight-semibold)]">{contact.email}</span>
+                <LtrInlineText className="break-all font-[var(--font-weight-semibold)]">{contact.email}</LtrInlineText>
               </div>
               {contact.linkedin && (
                 <div className="flex items-center gap-2.5 text-foreground">
                   <span className="w-4 h-4 flex items-center justify-center font-bold text-xs tracking-tight bg-primary/20 text-foreground rounded">in</span>
-                  <span className="break-all text-sm">{contact.linkedin}</span>
+                  <LtrInlineText className="break-all text-sm">{contact.linkedin}</LtrInlineText>
                 </div>
               )}
               {contact.dribbble && (
                 <div className="flex items-center gap-2.5 text-foreground">
                   <span className="w-4 h-4 flex items-center justify-center font-bold text-xs tracking-tight bg-primary/20 text-foreground rounded">Dr</span>
-                  <span className="break-all text-sm">{contact.dribbble}</span>
+                  <LtrInlineText className="break-all text-sm">{contact.dribbble}</LtrInlineText>
                 </div>
               )}
             </div>
@@ -796,10 +797,10 @@ const EditContactModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
       <DialogContent className="sm:max-w-md">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>Edit Contact Information</DialogTitle><DialogDescription className="sr-only">Edit contact</DialogDescription></DialogHeader>
         <div className="space-y-4">
-          <FormField label="Email *" value={email} onChange={setEmail} type="email" />
-          <FormField label="Phone *" value={phone} onChange={setPhone} />
-          <FormField label="LinkedIn Profile" value={linkedin} onChange={setLinkedin} />
-          <FormField label="Dribbble Profile" value={dribbble} onChange={setDribbble} />
+          <FormField label="Email *" value={email} onChange={setEmail} type="email" autoComplete="email" inputMode="email" />
+          <FormField label="Phone *" value={phone} onChange={setPhone} type="tel" autoComplete="tel" inputMode="tel" />
+          <FormField label="LinkedIn Profile" value={linkedin} onChange={setLinkedin} type="url" autoComplete="url" inputMode="url" />
+          <FormField label="Dribbble Profile" value={dribbble} onChange={setDribbble} type="url" autoComplete="url" inputMode="url" />
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
