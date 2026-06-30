@@ -15,7 +15,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Popover, PopoverTrigger, PopoverContent, PopoverClose } from './ui/popover';
 import { Sheet, SheetTrigger, SheetContent, SheetTitle } from './ui/sheet';
-import { Switch } from './ui/switch';
+import { Checkbox } from './ui/checkbox';
 import { Button } from './ui/button';
 import { InfoTooltip } from './ui/info-tooltip';
 import { cn } from '@/lib/utils';
@@ -159,15 +159,15 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
           : 'border-border/80 bg-card hover:border-primary/35 hover:bg-muted/35'
       )}
     >
-      <Switch
+      <Checkbox
         id={id}
         checked={checked}
         onCheckedChange={(next) => {
-          onChange(next);
+          onChange(next === true);
           triggerHaptic();
         }}
         aria-label={ariaLabel}
-        className="shrink-0"
+        className="mt-0.5 h-[18px] w-[18px] shrink-0 rounded-[6px] border-border data-[state=checked]:border-primary data-[state=checked]:bg-primary"
       />
       <div className="min-w-0 flex items-center gap-3">
         <div className={cn('flex h-8 w-8 items-center justify-center rounded-full transition-colors', checked ? 'bg-primary/15' : 'bg-muted')}>
