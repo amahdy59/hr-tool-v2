@@ -10,6 +10,7 @@ import {
 import { toast } from 'sonner';
 import { CertificationData } from './Types';
 import { FormField } from './FormField';
+import { useTranslation } from 'react-i18next';
 
 const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 
@@ -49,18 +50,33 @@ const CertificationItem: React.FC<{
   onDelete: () => void;
   onMove: (dir: 'up' | 'down') => void;
 }> = React.memo(({ data, isFirst, isLast, onEdit, onDelete, onMove }) => {
+  const { i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const isExpired = data.expiryDate && new Date(data.expiryDate) < new Date();
 
   return (
     <div className="relative group space-y-1 pb-6 border-b border-border last:border-b-0 last:pb-0">
       <div className="flex items-center gap-2">
-        <h3 className="text-base font-bold text-foreground">{data.title}</h3>
+        <h3 className="text-base font-bold text-foreground" data-no-auto-translate>{data.title}</h3>
         {isExpired && <span className="px-2 py-0.5 bg-red-50 text-red-900 border border-red-200 dark:bg-red-950/30 dark:text-red-200 dark:border-red-800 rounded-full text-sm font-semibold">Expired</span>}
       </div>
       <p className="text-base text-foreground">{data.issuer}</p>
       <p className="text-base text-muted-foreground pt-1">
-        Issued {data.issueDate}{data.expiryDate && ` - Expires ${data.expiryDate}`}
-        {data.credentialId && ` - ID: ${data.credentialId}`}
+        <span>{isArabic ? 'تم الإصدار في' : 'Issued'}</span>{' '}
+        <span>{data.issueDate}</span>
+        {data.expiryDate && (
+          <>
+            {' - '}
+            <span>{isArabic ? 'ينتهي في' : 'Expires'} {data.expiryDate}</span>
+          </>
+        )}
+        {data.credentialId && (
+          <>
+            {' - '}
+            <span>ID: </span>
+            <bdi dir="ltr" data-no-auto-translate>{data.credentialId}</bdi>
+          </>
+        )}
       </p>
       {data.credentialUrl && (
         <div className="pt-3">

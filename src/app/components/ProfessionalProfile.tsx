@@ -27,6 +27,7 @@ import { CertificationsSection } from './profile/CertificationsSection';
 import { SkillsSection } from './profile/SkillsSection';
 import { LanguagesSection } from './profile/LanguagesSection';
 import { LinkedInImportModal } from './profile/LinkedInImportModal';
+import { useTranslation } from 'react-i18next';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
@@ -90,6 +91,8 @@ export const ProfessionalProfile: React.FC<{ currentUser: any; searchQuery?: str
 );
 
 const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: string }> = ({ currentUser, searchQuery = '' }) => {
+  const { i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const resumeRef = useRef<HTMLDivElement>(null);
 
   // State management
@@ -549,7 +552,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             <span className="font-bold text-xs tracking-tight bg-white text-[#0077b5] w-4.5 h-4.5 rounded flex items-center justify-center">in</span>
-            <span>Import from LinkedIn</span>
+            <span data-no-auto-translate>{isArabic ? 'تحميل البيانات من لينكدإن' : 'Import from LinkedIn'}</span>
           </Button>
         </div>
         <p className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
