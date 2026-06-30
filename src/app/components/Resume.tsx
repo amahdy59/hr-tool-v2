@@ -1,5 +1,6 @@
 import React from 'react';
 import { Globe, Linkedin, Phone } from 'lucide-react';
+import { LtrInlineText } from './profile/ltrContent';
 
 interface ResumeProps {
   name: string;
@@ -123,23 +124,23 @@ export const Resume = React.forwardRef<HTMLDivElement, ResumeProps>(
             {phone && (
               <div style={{ display: 'flex', gap: '7px', alignItems: 'center' }}>
                 <Phone style={{ width: '13px', height: '13px', color: '#64748B', flexShrink: 0 }} />
-                <span>{phone}</span>
+                <LtrInlineText style={{ fontSize: '11px', lineHeight: 1.35, color: '#334155' }}>{phone}</LtrInlineText>
               </div>
             )}
             {linkedin && (
               <div style={{ display: 'flex', gap: '7px', alignItems: 'center' }}>
                 <Linkedin style={{ width: '13px', height: '13px', color: '#64748B', flexShrink: 0 }} />
-                <a href={normalizeLink(linkedin)} target="_blank" rel="noopener noreferrer" style={{ color: '#1D4ED8', textDecoration: 'none' }}>
+                <LtrInlineText as="a" href={normalizeLink(linkedin)} target="_blank" rel="noopener noreferrer" style={{ color: '#1D4ED8', textDecoration: 'none', fontSize: '11px', lineHeight: 1.35 }}>
                   {linkedin}
-                </a>
+                </LtrInlineText>
               </div>
             )}
             {dribbble && (
               <div style={{ display: 'flex', gap: '7px', alignItems: 'center' }}>
                 <Globe style={{ width: '13px', height: '13px', color: '#64748B', flexShrink: 0 }} />
-                <a href={normalizeLink(dribbble)} target="_blank" rel="noopener noreferrer" style={{ color: '#1D4ED8', textDecoration: 'none' }}>
+                <LtrInlineText as="a" href={normalizeLink(dribbble)} target="_blank" rel="noopener noreferrer" style={{ color: '#1D4ED8', textDecoration: 'none', fontSize: '11px', lineHeight: 1.35 }}>
                   {dribbble}
-                </a>
+                </LtrInlineText>
               </div>
             )}
           </div>
