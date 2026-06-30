@@ -45,8 +45,10 @@ type OptionDef = {
   id: string;
   icon: React.ElementType;
   label: string;
-  meta: string;
-  description: string;
+  description: {
+    en: string;
+    ar: string;
+  };
   checked: boolean;
   onChange: (v: boolean) => void;
   ariaLabel: string;
@@ -141,43 +143,22 @@ const SegmentedControl = <T extends string>({
 };
 
 const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
-  const { id, icon: Icon, label, meta, description, checked, onChange, ariaLabel } = option;
+  const { id, icon: Icon, label, description, checked, onChange, ariaLabel } = option;
+  const { i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+  const tooltipText = isArabic ? description.ar : description.en;
 
   return (
     <label
       htmlFor={id}
       className={cn(
-        'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-[var(--radius-card)] px-4 py-3 cursor-pointer transition-all duration-200 border',
+        'grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-[var(--radius-card)] px-3.5 py-2.5 cursor-pointer transition-all duration-200 border',
         'has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2',
         checked
           ? 'border-primary/25 bg-primary/[0.08] shadow-sm'
           : 'border-border/80 bg-card hover:border-primary/35 hover:bg-muted/35'
       )}
     >
-      <div className="flex min-w-0 items-start gap-3">
-        <div className={cn('mt-0.5 flex h-9 w-9 items-center justify-center rounded-full transition-colors', checked ? 'bg-primary/15' : 'bg-muted')}>
-          <Icon
-            className={cn(
-              'h-4 w-4 shrink-0 transition-colors duration-200',
-              checked ? 'text-primary' : 'text-muted-foreground'
-            )}
-            aria-hidden="true"
-          />
-        </div>
-        <div className="min-w-0 space-y-1">
-          <div className="flex min-w-0 items-center gap-2">
-            <span className="truncate text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-              {label}
-            </span>
-            <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-              {meta}
-            </span>
-            <InfoTooltip ariaLabel={`${label} description`}>
-              {description}
-            </InfoTooltip>
-          </div>
-        </div>
-      </div>
       <Switch
         id={id}
         checked={checked}
@@ -188,6 +169,23 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
         aria-label={ariaLabel}
         className="shrink-0"
       />
+      <div className="min-w-0 flex items-center gap-3">
+        <div className={cn('flex h-8 w-8 items-center justify-center rounded-full transition-colors', checked ? 'bg-primary/15' : 'bg-muted')}>
+          <Icon
+            className={cn(
+              'h-4 w-4 shrink-0 transition-colors duration-200',
+              checked ? 'text-primary' : 'text-muted-foreground'
+            )}
+            aria-hidden="true"
+          />
+        </div>
+        <span className="truncate text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+          {label}
+        </span>
+      </div>
+      <InfoTooltip ariaLabel={`${label} description`}>
+        {tooltipText}
+      </InfoTooltip>
     </label>
   );
 };
@@ -216,8 +214,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       id: 'toggle-contrast',
       icon: Eye,
       label: 'High Contrast',
-      meta: 'Readability',
-      description: 'Stronger text contrast for easier reading.',
+      description: {
+        en: 'Stronger text contrast for easier reading.',
+        ar: 'تباين أقوى للنص لتسهيل القراءة.',
+      },
       checked: highContrast,
       onChange: setHighContrast,
       ariaLabel: 'Toggle high contrast',
@@ -226,8 +226,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       id: 'toggle-text-scale',
       icon: ZoomIn,
       label: 'Larger Text',
-      meta: 'Vision',
-      description: 'Scales core text for comfortable reading.',
+      description: {
+        en: 'Scales core text for comfortable reading.',
+        ar: 'يكبر النص الأساسي لتجربة قراءة أكثر راحة.',
+      },
       checked: largeText,
       onChange: setLargeText,
       ariaLabel: 'Toggle larger text',
@@ -236,8 +238,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       id: 'toggle-dyslexic',
       icon: Type,
       label: 'Dyslexia Font',
-      meta: 'Reading',
-      description: 'Uses a more readable letterform style.',
+      description: {
+        en: 'Uses a more readable letterform style.',
+        ar: 'يستخدم نمط خط أكثر سهولة في القراءة.',
+      },
       checked: dyslexic,
       onChange: setDyslexic,
       ariaLabel: 'Toggle dyslexia font',
@@ -249,8 +253,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       id: 'toggle-targets',
       icon: Target,
       label: 'Large Targets',
-      meta: 'Touch',
-      description: 'Makes buttons and hit areas easier to use.',
+      description: {
+        en: 'Makes buttons and hit areas easier to use.',
+        ar: 'يكبر الأزرار ومناطق اللمس لتسهيل الاستخدام.',
+      },
       checked: largeTargets,
       onChange: setLargeTargets,
       ariaLabel: 'Toggle large targets',
@@ -259,8 +265,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       id: 'toggle-focus',
       icon: Highlighter,
       label: 'Focus Ring',
-      meta: 'Keyboard',
-      description: 'Shows stronger outlines while tabbing.',
+      description: {
+        en: 'Shows stronger outlines while tabbing.',
+        ar: 'يعرض حدودًا أوضح أثناء التنقل بلوحة المفاتيح.',
+      },
       checked: focusHeavy,
       onChange: setFocusHeavy,
       ariaLabel: 'Toggle focus ring',
@@ -315,7 +323,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             variant="ghost"
             size="sm"
             disabled={activeCount === 0}
-            className="h-8 rounded-[var(--radius-sm)] px-3 text-xs text-muted-foreground hover:bg-destructive/10 hover:text-destructive disabled:cursor-default disabled:opacity-40"
+            className="h-8 rounded-[var(--radius-sm)] px-3 text-xs text-muted-foreground hover:bg-muted hover:text-foreground disabled:cursor-default disabled:opacity-40"
             onClick={() => {
               setHighContrast(false);
               setLargeTargets(false);
@@ -338,8 +346,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             Appearance
           </p>
           <div className="space-y-2">
-            <div className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-3">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Theme</p>
+            <div>
               <SegmentedControl
                 value={theme}
                 onChange={setTheme}
@@ -349,8 +356,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
                 compact
               />
             </div>
-            <div className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-3">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Language</p>
+            <div>
               <SegmentedControl
                 value={language}
                 onChange={setLanguage}
