@@ -48,6 +48,9 @@ export default function App() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   useArabicDomTranslation(isArabic);
+  const setLanguage = React.useCallback((nextLanguage: 'en' | 'ar') => {
+    i18n.changeLanguage(nextLanguage);
+  }, [i18n]);
 
   useEffect(() => {
     document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
@@ -133,7 +136,9 @@ export default function App() {
     largeText, setLargeText,
     dyslexic, setDyslexic,
     focusHeavy, setFocusHeavy,
-    theme, setTheme
+    theme, setTheme,
+    language: isArabic ? 'ar' : 'en',
+    setLanguage,
   };
 
   const toasterOptions = useMemo(

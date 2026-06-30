@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import {
   Accessibility,
   ArrowLeft,
@@ -21,6 +21,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AccessibilityPanel, type AccessibilitySettings } from './AccessibilityPanel';
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -145,41 +146,63 @@ const ScreenshotCard: React.FC<{
 
 interface RedesignInfoPageProps {
   onBack: () => void;
+  accessibility: AccessibilitySettings;
 }
 
-export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) => {
+export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, accessibility }) => {
   const [activeTab, setActiveTab] = useState(0);
+  const pageTitleId = useId();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-20 border-b border-border bg-card/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,color-mix(in_srgb,var(--accent)_18%,transparent),transparent_34%),radial-gradient(circle_at_top_left,color-mix(in_srgb,var(--primary)_20%,transparent),transparent_38%),linear-gradient(180deg,color-mix(in_srgb,var(--background)_92%,white_8%),var(--background))] dark:bg-[radial-gradient(circle_at_top_right,rgba(167,243,208,0.14),transparent_32%),radial-gradient(circle_at_top_left,rgba(167,212,255,0.18),transparent_38%),linear-gradient(180deg,#07101d_0%,#0b1220_48%,#111827_100%)]"
+      />
+
+      <header className="sticky top-0 z-20 border-b border-border/70 bg-background/90 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] border border-border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-[var(--elevation-sm)] transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Back to login"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            <span className="hidden sm:inline">Back to login</span>
+            <span>Back to login</span>
           </button>
-          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-            HR Tool Case Study
-          </p>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <p className="hidden items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground sm:flex">
+              <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+              HR Tool Case Study
+            </p>
+            <AccessibilityPanel settings={accessibility} />
+          </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6 lg:space-y-14 lg:py-12">
-        <section aria-labelledby="hero-heading" className="space-y-6">
-          <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent">
+      <main
+        aria-labelledby={pageTitleId}
+        className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6 lg:space-y-14 lg:py-12"
+      >
+        <section
+          aria-labelledby="hero-heading"
+          className="space-y-6 rounded-[calc(var(--radius-card)+12px)] border border-border/70 bg-card/80 p-6 shadow-[var(--elevation-lg)] backdrop-blur sm:p-8 lg:p-10"
+        >
+          <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent shadow-sm">
             <Target className="h-3.5 w-3.5" aria-hidden="true" />
             Employee self-service redesign
           </p>
           <div className="max-w-4xl space-y-5">
-            <h1 id="hero-heading" className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl lg:text-5xl">
+            <h1
+              id="hero-heading"
+              className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl lg:text-5xl"
+            >
               HR workflows, translation, and controls <span className="text-accent">redesigned for clarity.</span>
             </h1>
+            <h2 id={pageTitleId} className="sr-only">
+              HR Tool redesign case study
+            </h2>
             <p className="max-w-3xl text-base leading-7 text-muted-foreground">
               A privacy-safe case study for modernizing an internal HR tool. The redesign turns scattered legacy screens into a responsive, bilingual experience for employees, managers, and HR teams.
             </p>
@@ -193,7 +216,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
             ].map(({ label, icon: Icon }) => (
               <div
                 key={label}
-                className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-3 py-2 text-sm font-medium shadow-[var(--elevation-sm)]"
+                className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border/80 bg-background/80 px-3 py-2 text-sm font-medium shadow-[var(--elevation-sm)] backdrop-blur"
               >
                 <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
                 {label}
@@ -202,7 +225,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
           </div>
           <div className="grid gap-3 md:grid-cols-3">
             {proofPoints.map(({ icon: Icon, value, label }) => (
-              <div key={value} className="border border-border bg-card p-4 shadow-[var(--elevation-sm)]">
+              <div key={value} className="rounded-[var(--radius-card)] border border-border/80 bg-background/80 p-4 shadow-[var(--elevation-sm)] backdrop-blur">
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
@@ -302,7 +325,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {outcomes.map(({ icon: Icon, label, desc }) => (
-              <div key={label} className="border border-border bg-card p-5 shadow-[var(--elevation-sm)]">
+              <div key={label} className="rounded-[var(--radius-card)] border border-border bg-card/90 p-5 shadow-[var(--elevation-sm)] backdrop-blur">
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
@@ -325,7 +348,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {improvements.map(({ label, detail }) => (
-              <div key={label} className="flex gap-3 border border-border bg-card p-4">
+              <div key={label} className="flex gap-3 rounded-[var(--radius-card)] border border-border bg-card/90 p-4 shadow-[var(--elevation-sm)] backdrop-blur">
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                 <div>
                   <p className="text-sm font-semibold">{label}</p>
@@ -351,7 +374,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-4 border border-border bg-card p-6 shadow-[var(--elevation-sm)]">
+            <div className="space-y-4 rounded-[var(--radius-card)] border border-border bg-card/90 p-6 shadow-[var(--elevation-sm)] backdrop-blur">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Database className="h-5 w-5 text-accent" aria-hidden="true" />
@@ -385,7 +408,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
               </div>
             </div>
 
-            <div className="space-y-4 border border-border bg-card p-6 shadow-[var(--elevation-sm)]">
+            <div className="space-y-4 rounded-[var(--radius-card)] border border-border bg-card/90 p-6 shadow-[var(--elevation-sm)] backdrop-blur">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Shield className="h-5 w-5 text-accent" aria-hidden="true" />
@@ -409,7 +432,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack }) =>
           </div>
         </section>
 
-        <section className="border border-primary/20 bg-primary/5 px-6 py-10 text-center sm:px-10" aria-labelledby="cta-heading">
+        <section className="rounded-[calc(var(--radius-card)+8px)] border border-primary/20 bg-card/90 px-6 py-10 text-center shadow-[var(--elevation-lg)] backdrop-blur sm:px-10" aria-labelledby="cta-heading">
           <h2 id="cta-heading" className="text-xl font-semibold">
             Ready to explore the demo?
           </h2>

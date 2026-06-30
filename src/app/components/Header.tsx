@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle, Languages } from 'lucide-react';
+import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
 import { Logo } from './Logo';
 import { useTranslation } from 'react-i18next';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
@@ -37,11 +37,6 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
   const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const displayName = localizePersonName(currentUser?.name, i18n.resolvedLanguage || i18n.language);
-
-  const toggleLanguage = () => {
-    const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
-    i18n.changeLanguage(isArabic ? 'en' : 'ar');
-  };
 
   return (
     <header className="grid h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 bg-background/40 backdrop-blur-xl supports-[backdrop-filter]:bg-background/40 px-3 absolute top-0 left-0 right-0 z-[60] w-full sm:px-6 transition-all">
@@ -175,15 +170,6 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
           title={t('header.shortcutsTitle')}
         >
           <Keyboard className="w-4 h-4" aria-hidden="true" />
-        </button>
-
-        <button
-          onClick={toggleLanguage}
-          className="flex w-11 h-11 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label={t('header.toggleLanguage')}
-          title={t('header.toggleLanguage')}
-        >
-          <Languages className="w-4 h-4" aria-hidden="true" />
         </button>
 
         <div>

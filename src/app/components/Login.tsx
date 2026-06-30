@@ -109,7 +109,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   };
 
   if (showInfoPage) {
-    return <RedesignInfoPage onBack={() => setShowInfoPage(false)} />;
+    return <RedesignInfoPage onBack={() => setShowInfoPage(false)} accessibility={accessibility} />;
   }
 
   return (
@@ -171,17 +171,17 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             >
               {t('login.tagline')}
             </p>
-            <div className="grid grid-cols-[auto_auto] items-stretch justify-center gap-3">
+            <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-stretch">
               <button
                 type="button"
                 onClick={() => setShowInfoPage(true)}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-4 text-[var(--text-sm)] font-[var(--font-weight-medium)] text-primary shadow-[var(--elevation-sm)] transition-colors hover:bg-muted"
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] border border-border bg-card px-4 text-[var(--text-sm)] font-[var(--font-weight-medium)] text-primary shadow-[var(--elevation-sm)] transition-colors hover:bg-muted sm:w-auto"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <Info className="w-4 h-4" />
                 {t('login.aboutRedesign')}
               </button>
-              <div className="inline-flex h-11 items-stretch">
+              <div className="inline-flex min-h-11 items-stretch self-center sm:self-auto">
                 <AccessibilityPanel settings={accessibility} />
               </div>
             </div>

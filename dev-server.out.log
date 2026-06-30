@@ -3,52 +3,46 @@
 > vite --host 127.0.0.1 --port 5173
 
 
-  [32m[1mVITE[22m v6.3.5[39m  [2mready in [0m[1m1399[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v6.3.5[39m  [2mready in [0m[1m2716[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
-[2m9:11:17 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
-[2m9:11:50 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
-[2m9:12:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
-[2m9:12:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
-[2m9:12:43 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
-[2m9:25:56 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Dashboard.tsx, /src/styles/index.css[22m
-[2m9:26:15 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
-[2m9:32:27 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
-[2m10:39:36 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\Pagination.tsx, /src/styles/index.css[22m
-[2m10:39:45 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
-[2m10:40:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
-[2m10:40:12 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
-[2m10:43:54 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\CalendarGrid.tsx, /src/styles/index.css[22m
-[2m10:44:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\CalendarGrid.tsx, /src/styles/index.css[22m
-[2m10:44:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\CalendarGrid.tsx, /src/styles/index.css[22m
-[2m10:44:56 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Dashboard.tsx, /src/styles/index.css[22m
-[2m10:45:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Dashboard.tsx, /src/styles/index.css[22m
-[2m10:45:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Dashboard.tsx, /src/styles/index.css[22m
-[2m10:49:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\ui\calendar.tsx, /src/styles/index.css[22m
-[2m10:49:40 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\ui\calendar.tsx, /src/styles/index.css[22m
-[2m10:50:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\ui\date-picker.tsx, /src/styles/index.css[22m
-[2m10:51:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\Pagination.tsx, /src/styles/index.css[22m
-[2m10:53:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
-[2m10:53:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
-[2m10:53:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
-[2m11:18:45 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/RequestLeaveModal.tsx, /src/styles/index.css[22m
-[2m11:18:51 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/RequestLeaveModal.tsx, /src/styles/index.css[22m
-[2m11:19:02 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/RequestLeaveModal.tsx, /src/styles/index.css[22m
-[2m11:19:11 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/RequestLeaveModal.tsx, /src/styles/index.css[22m
-[2m11:21:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\Pagination.tsx, /src/styles/index.css[22m
-[2m11:21:53 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/app/components/Payroll.tsx[22m
-[2m11:21:58 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/app/components/Payroll.tsx[22m
-[2m11:22:12 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/app/components/Payroll.tsx[22m
-[2m11:22:17 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Dashboard.tsx, /src/styles/index.css[22m
-[2m11:22:28 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Dashboard.tsx, /src/styles/index.css[22m
-[2m11:22:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Dashboard.tsx, /src/styles/index.css[22m
-[2m11:30:31 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
-[2m11:30:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
-[2m11:30:58 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
-[2m11:31:16 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
-[2m11:31:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
-[2m11:31:43 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
-[2m11:31:54 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
-[2m11:32:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
-[2m11:32:22 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
-[2m11:32:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+[2m11:15:50 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/app/components/profile/FormField.tsx[22m
+[2m11:15:50 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/index.css, /src/app/components/Profile.tsx[22m
+[2m11:15:50 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/app/components/Resume.tsx[22m
+[2m11:18:35 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\BasicInfo.tsx, /src/styles/index.css[22m
+[2m2:22:42 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/index.css[22m
+[2m2:22:57 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Dashboard.tsx, /src/styles/index.css[22m
+[2m2:23:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/ui/button.tsx, /src/styles/index.css[22m
+[2m2:23:12 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/app/components/ui/input.tsx[22m
+[2m2:23:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/app/components/ui/checkbox.tsx[22m
+[2m2:23:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\ui\select.tsx, /src/styles/index.css[22m
+[2m2:23:29 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\ui\date-picker.tsx, /src/styles/index.css[22m
+[2m2:25:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m2:30:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\RedesignInfoPage.tsx, /src/styles/index.css[22m
+[2m2:31:45 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\AccessibilityPanel.tsx, /src/styles/index.css[22m
+[2m2:31:55 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Header.tsx, /src/styles/index.css[22m
+[2m2:32:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m2:33:45 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\RedesignInfoPage.tsx, /src/styles/index.css[22m
+[2m2:35:43 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\AccessibilityPanel.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/ui/button.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\AccessibilityPanel.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Dashboard.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Header.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\RedesignInfoPage.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/ui/button.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/app/components/ui/checkbox.tsx[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\ui\date-picker.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/app/components/ui/input.tsx[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\ui\select.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m2:43:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/index.css[22m
+[2m2:46:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\RedesignInfoPage.tsx, /src/styles/index.css[22m
+[2m2:46:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Login.tsx, /src/styles/index.css[22m
+[2m2:48:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/C:\Users\AhmedMahdy\OneDrive - Advansys IS\Documents\Antigravity\HR Tool\src\app\components\AccessibilityPanel.tsx, /src/styles/index.css[22m
+[2m2:48:49 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m2:49:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Header.tsx, /src/styles/index.css[22m
