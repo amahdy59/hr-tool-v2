@@ -70,12 +70,14 @@ const SegmentedControl = <T extends string>({
   options,
   ariaLabel,
   columnsClassName,
+  compact = false,
 }: {
   value: T;
   onChange: (next: T) => void;
   options: SegmentedChoice<T>[];
   ariaLabel: string;
   columnsClassName: string;
+  compact?: boolean;
 }) => {
   const currentIndex = options.findIndex((option) => option.value === value);
 
@@ -89,7 +91,11 @@ const SegmentedControl = <T extends string>({
     <div
       role="radiogroup"
       aria-label={ariaLabel}
-      className={cn('grid gap-2 rounded-[var(--radius-card)] bg-muted/35 p-1.5', columnsClassName)}
+      className={cn(
+        'grid rounded-[var(--radius-card)] bg-muted/35 p-1.5',
+        compact ? 'gap-1.5' : 'gap-2',
+        columnsClassName
+      )}
     >
       {options.map((option) => {
         const Icon = option.icon;
@@ -116,7 +122,9 @@ const SegmentedControl = <T extends string>({
               }
             }}
             className={cn(
-              'flex min-h-14 flex-col items-center justify-center gap-1 rounded-[calc(var(--radius-card)-4px)] border px-2 py-2 text-center transition-all duration-200',
+              compact
+                ? 'flex min-h-10 items-center justify-center gap-2 rounded-[calc(var(--radius-card)-4px)] border px-3 py-2 text-left transition-all duration-200'
+                : 'flex min-h-14 flex-col items-center justify-center gap-1 rounded-[calc(var(--radius-card)-4px)] border px-2 py-2 text-center transition-all duration-200',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
               checked
                 ? 'border-primary/25 bg-background text-foreground shadow-sm'
@@ -124,7 +132,7 @@ const SegmentedControl = <T extends string>({
             )}
           >
             <Icon className={cn('h-4 w-4', checked && 'text-primary')} aria-hidden="true" />
-            <span className="text-[11px] font-semibold leading-none">{option.label}</span>
+            <span className={cn('font-semibold leading-none', compact ? 'text-xs' : 'text-[11px]')}>{option.label}</span>
           </button>
         );
       })}
@@ -320,10 +328,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
               Appearance
             </p>
-            <p className="text-xs text-muted-foreground">Keep core preferences together and easy to find.</p>
+            <p className="text-xs text-muted-foreground">Compact controls for theme and language.</p>
           </div>
-          <div className="space-y-3">
-            <div className="space-y-2">
+          <div className="space-y-2">
+            <div className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Theme</p>
               <SegmentedControl
                 value={theme}
@@ -331,9 +339,10 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
                 options={themeOptions}
                 ariaLabel="Theme"
                 columnsClassName="grid-cols-3"
+                compact
               />
             </div>
-            <div className="space-y-2">
+            <div className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Language</p>
               <SegmentedControl
                 value={language}
@@ -341,6 +350,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
                 options={languageOptions}
                 ariaLabel="Language"
                 columnsClassName="grid-cols-2"
+                compact
               />
             </div>
           </div>
