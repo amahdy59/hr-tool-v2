@@ -293,9 +293,9 @@
 
 /* 5. Heavy Focus Indicators */
 .accessibility-focus-heavy :focus-visible {
-  outline: 4px solid var(--ring) !important;
-  outline-offset: 4px !important;
-  box-shadow: 0 0 0 6px #000000, 0 0 0 10px #FFFFFF !important;
+  outline: 3px solid var(--ring) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 6px var(--background), 0 0 0 9px var(--ring) !important;
 }
 
 @theme inline {
@@ -466,13 +466,61 @@
     cursor: text;
   }
   
-  /* Global high-contrast focus-visible ring for accessibility */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+  
+  /* Global keyboard focus ring: visible, consistent, and compact enough for dense UI. */
   :focus-visible {
-    outline: 4px solid var(--ring);
-    outline-offset: 3px;
-    box-shadow: 0 0 0 3px var(--background), 0 0 0 7px var(--ring);
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--ring) 22%, transparent);
     border-radius: var(--radius-sm, 4px);
     scroll-margin: 96px;
+  }
+
+  :where(
+    button,
+    a[href],
+    [role="button"],
+    [role="checkbox"],
+    [role="menuitem"],
+    [role="option"],
+    [role="radio"],
+    [role="switch"],
+    [role="tab"],
+    [data-slot="button"],
+    [data-slot="tabs-trigger"],
+    [data-clickable="true"]
+  ):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--ring) 20%, transparent);
+  }
+
+  :where([role="tab"], [data-slot="tabs-trigger"]):focus-visible {
+    outline: none !important;
+    border-radius: var(--radius-button);
+    background-color: color-mix(in srgb, var(--ring) 8%, transparent);
+    box-shadow:
+      inset 0 0 0 2px var(--ring),
+      0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent) !important;
+  }
+
+  :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+    textarea,
+    select,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="date-picker-trigger"]
+  ):focus-visible {
+    outline: none;
+    border-color: var(--ring);
+    box-shadow:
+      inset 0 0 0 2px var(--ring),
+      0 0 0 4px color-mix(in srgb, var(--ring) 24%, transparent);
   }
 
   ::placeholder {

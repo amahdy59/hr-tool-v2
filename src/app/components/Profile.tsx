@@ -406,7 +406,7 @@ const ProjectItem: React.FC<{ title: string; date: string; desc: string; onEdit?
 
 const CertificationItem: React.FC<{ title: string; issuer: string; date: string }> = ({ title, issuer, date }) => (
   <div className="space-y-1">
-    <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</p>
+    <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" data-no-auto-translate>{title}</p>
     <p className="text-[var(--text-xs)] text-muted-foreground">{issuer}</p>
     <p className="text-[var(--text-xs)] text-muted-foreground">{date}</p>
     <Button variant="outline" size="sm" className="gap-1.5 mt-1 text-[var(--text-xs)]">
