@@ -499,31 +499,52 @@ export const Attendance: React.FC = () => {
   };
 
   const monthLabel = months.find((m) => m.value === selectedMonth)?.label ?? 'All';
-  // Label column is always on the right. Tightly fit the longest label so the chart can be as wide as possible.
-  const mobileChartLabelWidth = isArabic ? 95 : 75;
-  // Right margin = 0 so the label column sits flush with the card edge.
-  // Left margin gives room for the reversed X-axis ticks (Arabic) or starting point (English).
-  const mobileChartMargin = { top: 8, right: 0, left: 4, bottom: 4 };
+  // Tightly fit the longest label so the chart can be as wide as possible. Increased slightly so text isn't cut off.
+  const mobileChartLabelWidth = isArabic ? 110 : 85;
+  
+  const mobileChartMargin = isArabic 
+    ? { top: 8, right: 0, left: 4, bottom: 4 }
+    : { top: 8, right: 12, left: 0, bottom: 4 };
 
-  // Custom tick for the mobile vertical bar chart YAxis.
-  // Always renders text right-aligned (text-anchor="end") against the right boundary
-  // of the label column, so every label ends at exactly the same x position
-  // regardless of bar length or language direction.
-  const MobileYAxisTick = ({ x, y, payload }: any) => (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        x={mobileChartLabelWidth - 4}
-        y={0}
-        dy="0.35em"
-        textAnchor="end"
-        fill="var(--muted-foreground)"
-        fontSize={12}
-        fontFamily="Inter, sans-serif"
-      >
-        {payload.value}
-      </text>
-    </g>
-  );
+  const MobileYAxisTick = ({ x, y, payload }: any) => {
+    if (isArabic) {
+      // For Arabic (orientation="right"), `x` is the left edge of the label column.
+      // We align the text to the right edge of the column.
+      return (
+        <g transform={`translate(${x},${y})`}>
+          <text
+            x={mobileChartLabelWidth - 4}
+            y={0}
+            dy="0.35em"
+            textAnchor="end"
+            fill="var(--muted-foreground)"
+            fontSize={12}
+            fontFamily="Inter, sans-serif"
+          >
+            {payload.value}
+          </text>
+        </g>
+      );
+    } else {
+      // For English (orientation="left"), `x` is the right edge of the label column.
+      // We align the text to the left edge of the column.
+      return (
+        <g transform={`translate(${x},${y})`}>
+          <text
+            x={-mobileChartLabelWidth + 4}
+            y={0}
+            dy="0.35em"
+            textAnchor="start"
+            fill="var(--muted-foreground)"
+            fontSize={12}
+            fontFamily="Inter, sans-serif"
+          >
+            {payload.value}
+          </text>
+        </g>
+      );
+    }
+  };
 
   return (
     <div className="space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto">
@@ -834,7 +855,7 @@ export const Attendance: React.FC = () => {
                   dataKey="name"
                   type="category"
                   width={mobileChartLabelWidth}
-                  orientation="right"
+                  orientation={isArabic ? 'right' : 'left'}
                   axisLine={false}
                   tickLine={false}
                   interval={0}
