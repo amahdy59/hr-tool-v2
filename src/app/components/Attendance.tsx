@@ -506,17 +506,19 @@ export const Attendance: React.FC = () => {
     ? { top: 8, right: 0, left: 4, bottom: 4 }
     : { top: 8, right: 12, left: 0, bottom: 4 };
 
-  const MobileYAxisTick = ({ x, y, payload }: any) => {
+  const MobileYAxisTick = (props: any) => {
+    const { x, y, payload } = props;
     if (isArabic) {
       // For Arabic (orientation="right"), `x` is the left edge of the label column.
       // We align the text to the right edge of the column.
+      // In RTL context, textAnchor="start" anchors the RIGHT side of the text!
       return (
         <g transform={`translate(${x},${y})`}>
           <text
             x={mobileChartLabelWidth - 4}
             y={0}
             dy="0.35em"
-            textAnchor="end"
+            textAnchor="start"
             fill="var(--muted-foreground)"
             fontSize={12}
             fontFamily="Inter, sans-serif"
@@ -528,6 +530,7 @@ export const Attendance: React.FC = () => {
     } else {
       // For English (orientation="left"), `x` is the right edge of the label column.
       // We align the text to the left edge of the column.
+      // In LTR context, textAnchor="start" anchors the LEFT side of the text.
       return (
         <g transform={`translate(${x},${y})`}>
           <text
@@ -859,7 +862,7 @@ export const Attendance: React.FC = () => {
                   axisLine={false}
                   tickLine={false}
                   interval={0}
-                  tick={<MobileYAxisTick />}
+                  tick={MobileYAxisTick}
                 />
                 <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
                 <ReferenceLine
