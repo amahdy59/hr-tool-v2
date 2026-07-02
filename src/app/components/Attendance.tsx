@@ -499,6 +499,31 @@ export const Attendance: React.FC = () => {
   };
 
   const monthLabel = months.find((m) => m.value === selectedMonth)?.label ?? 'All';
+  // Label column is always on the right. Tightly fit the longest label so the chart can be as wide as possible.
+  const mobileChartLabelWidth = isArabic ? 95 : 75;
+  // Right margin = 0 so the label column sits flush with the card edge.
+  // Left margin gives room for the reversed X-axis ticks (Arabic) or starting point (English).
+  const mobileChartMargin = { top: 8, right: 0, left: 4, bottom: 4 };
+
+  // Custom tick for the mobile vertical bar chart YAxis.
+  // Always renders text right-aligned (text-anchor="end") against the right boundary
+  // of the label column, so every label ends at exactly the same x position
+  // regardless of bar length or language direction.
+  const MobileYAxisTick = ({ x, y, payload }: any) => (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={mobileChartLabelWidth - 4}
+        y={0}
+        dy="0.35em"
+        textAnchor="end"
+        fill="var(--muted-foreground)"
+        fontSize={12}
+        fontFamily="Inter, sans-serif"
+      >
+        {payload.value}
+      </text>
+    </g>
+  );
 
   return (
     <div className="space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto">
@@ -785,7 +810,7 @@ export const Attendance: React.FC = () => {
               <BarChart
                 data={translatedSummaryData}
                 layout="vertical"
-                margin={i18n.language === 'ar' ? { top: 4, right: 30, left: 10, bottom: 4 } : { top: 4, right: 10, left: 20, bottom: 4 }}
+                margin={mobileChartMargin}
                 barCategoryGap="24%"
               >
                 <defs>
@@ -808,12 +833,12 @@ export const Attendance: React.FC = () => {
                 <YAxis
                   dataKey="name"
                   type="category"
-                  width={110}
-                  orientation={i18n.language === 'ar' ? 'right' : 'left'}
+                  width={mobileChartLabelWidth}
+                  orientation="right"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12, fontFamily: 'Inter, sans-serif', textAnchor: 'end' }}
-                  dx={i18n.language === 'ar' ? 8 : -8}
+                  interval={0}
+                  tick={<MobileYAxisTick />}
                 />
                 <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
                 <ReferenceLine
