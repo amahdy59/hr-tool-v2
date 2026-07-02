@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Popover, PopoverTrigger, PopoverContent, PopoverClose } from './ui/popover';
-import { Sheet, SheetTrigger, SheetContent, SheetTitle } from './ui/sheet';
+import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetDescription } from './ui/sheet';
 import { Checkbox } from './ui/checkbox';
 import { Button } from './ui/button';
 import { InfoTooltip } from './ui/info-tooltip';
@@ -64,6 +64,15 @@ const triggerHaptic = () => {
   if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
     navigator.vibrate(12);
   }
+};
+
+const resetAccessibilitySettings = (settings: AccessibilitySettings) => {
+  settings.setHighContrast(false);
+  settings.setLargeTargets(false);
+  settings.setLargeText(false);
+  settings.setDyslexic(false);
+  settings.setFocusHeavy(false);
+  triggerHaptic();
 };
 
 const SegmentedControl = <T extends string>({
@@ -316,38 +325,35 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     </Button>
   );
 
-  const renderPanelContent = (closeButton: React.ReactNode) => (
+  const resetButton = (
+    <Button
+      variant="ghost"
+      size="sm"
+      disabled={activeCount === 0}
+      className="h-10 w-full rounded-[var(--radius-sm)] px-4 text-sm text-muted-foreground hover:bg-muted hover:text-foreground disabled:cursor-default disabled:opacity-40 sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
+      onClick={() => resetAccessibilitySettings(settings)}
+      style={{ fontFamily: "'Inter', sans-serif" }}
+    >
+      {t('accessibility.resetAll')}
+    </Button>
+  );
+
+  const renderPanelContent = (closeButton: React.ReactNode, mobile = false) => (
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
-      <div className="mb-3 flex items-center justify-between gap-3 border-b border-border/70 pb-3 shrink-0">
-        <div className="min-w-0 flex items-center gap-2.5">
+      <div className="mb-3 flex items-start justify-between gap-3 border-b border-border/70 pb-3 shrink-0">
+        <div className="min-w-0 flex flex-1 items-center gap-2.5">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/[0.08]">
             <Accessibility className="w-4 h-4 text-primary" />
           </div>
           <h2
-            className="text-base font-semibold leading-none text-foreground"
+            className="block min-w-0 flex-1 truncate whitespace-nowrap text-base font-semibold leading-none text-foreground"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {t('accessibility.panelTitle')}
           </h2>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <Button
-            variant="ghost"
-            size="sm"
-            disabled={activeCount === 0}
-            className="h-8 rounded-[var(--radius-sm)] px-3 text-xs text-muted-foreground hover:bg-muted hover:text-foreground disabled:cursor-default disabled:opacity-40"
-            onClick={() => {
-              setHighContrast(false);
-              setLargeTargets(false);
-              setLargeText(false);
-              setDyslexic(false);
-              setFocusHeavy(false);
-              triggerHaptic();
-            }}
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            {t('accessibility.resetAll')}
-          </Button>
+          {!mobile && resetButton}
           {closeButton}
         </div>
       </div>
@@ -357,8 +363,8 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
           <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             {t('accessibility.appearance')}
           </p>
-          <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0 flex-1">
               <SegmentedControl
                 value={theme}
                 onChange={setTheme}
@@ -368,7 +374,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
                 iconOnly
               />
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 sm:w-auto">
               <SegmentedControl
                 value={language}
                 onChange={setLanguage}
@@ -403,7 +409,14 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
           </div>
         </section>
       </div>
-
+      <div className="mt-4 shrink-0 border-t border-border/70 pt-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+            {isArabic ? 'يمكنك تعديل هذه الخيارات في أي وقت.' : 'You can adjust these settings anytime.'}
+          </p>
+          {mobile ? resetButton : null}
+        </div>
+      </div>
     </div>
   );
 
@@ -414,9 +427,16 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
           <SheetTrigger asChild>
             {triggerButton}
           </SheetTrigger>
-          <SheetContent side="bottom" className="h-[100dvh] flex flex-col w-full p-5 border-0 rounded-none bg-card z-[100] overflow-hidden">
+          <SheetContent
+            side={isArabic ? 'right' : 'left'}
+            dir={isArabic ? 'rtl' : 'ltr'}
+            className="h-[100dvh] w-[min(100vw,24rem)] max-w-full flex flex-col border-0 bg-card p-5 z-[100] overflow-hidden sm:max-w-none"
+          >
             <SheetTitle className="sr-only">{t('accessibility.panelTitle')}</SheetTitle>
-            {renderPanelContent(null)}
+            <SheetDescription className="sr-only">
+              {isArabic ? 'إعدادات العرض والقراءة والتنقل.' : 'Display, reading, and navigation settings.'}
+            </SheetDescription>
+            {renderPanelContent(null, true)}
           </SheetContent>
         </Sheet>
       </div>
