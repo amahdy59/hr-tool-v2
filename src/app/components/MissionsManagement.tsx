@@ -53,13 +53,13 @@ const getRequestDate = (request: Pick<MissionRequest, 'startDate' | 'endDate' | 
 export const MissionsManagement: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
-  const displayEmployeeName = (name?: string) => localizePersonName(name, language);
+  const displayEmployeeName = (name?: MissionRequest['name']) => localizePersonName(name, language);
   const matchesEmployeeSearch = (name: MissionRequest['name'], employeeNumber: string | undefined, query: string) => {
     const normalizedQuery = query.trim().toLowerCase();
     if (!normalizedQuery) return true;
 
     const localizedName = localizePersonName(name, language).toLowerCase();
-    const englishName = typeof name === 'string' ? name.toLowerCase() : (name.nameEn || name.name || '').toLowerCase();
+    const englishName = typeof name === 'string' ? name.toLowerCase() : (name.nameEn || '').toLowerCase();
     const arabicName = typeof name === 'string' ? '' : (name.nameAr || '').toLowerCase();
     const normalizedEmployeeNumber = employeeNumber?.toLowerCase() || '';
 
