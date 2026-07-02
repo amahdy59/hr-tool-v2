@@ -499,8 +499,8 @@ export const Attendance: React.FC = () => {
   };
 
   const monthLabel = months.find((m) => m.value === selectedMonth)?.label ?? 'All';
-  // Tightly fit the longest label so the chart can be as wide as possible. Increased slightly so text isn't cut off.
-  const mobileChartLabelWidth = isArabic ? 110 : 85;
+  // Tightly fit the longest label so the chart can be as wide as possible.
+  const mobileChartLabelWidth = isArabic ? 85 : 85;
   
   const mobileChartMargin = isArabic 
     ? { top: 8, right: 0, left: 4, bottom: 4 }
