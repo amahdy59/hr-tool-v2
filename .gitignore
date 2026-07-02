@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.vite/
+
+.env
+.env.local
+.env.*.local
+
+*.log
+dev-server*.log
+
+.codex-*.png
+pagination-mobile-check.png

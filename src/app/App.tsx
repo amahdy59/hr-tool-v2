@@ -47,6 +47,7 @@ import { useTranslation } from 'react-i18next';
 export default function App() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+  const language: 'en' | 'ar' = isArabic ? 'ar' : 'en';
   useArabicDomTranslation(isArabic);
   const setLanguage = React.useCallback((nextLanguage: 'en' | 'ar') => {
     i18n.changeLanguage(nextLanguage);
@@ -84,10 +85,14 @@ export default function App() {
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
-    const title = `${t(`pages.${activeTab}`)} - ${t('common.appName')}`;
+    const title = isAuthenticated
+      ? `${t(`pages.${activeTab}`)} - ${t('common.appName')}`
+      : `${t('login.signInHeading')} - ${t('common.appName')}`;
     document.title = title;
-    setAnnouncement(`Navigated to ${title}`);
-  }, [activeTab, t]);
+    if (isAuthenticated) {
+      setAnnouncement(`Navigated to ${title}`);
+    }
+  }, [activeTab, isAuthenticated, t]);
 
   useEffect(() => {
     const el = document.documentElement;
@@ -137,7 +142,7 @@ export default function App() {
     dyslexic, setDyslexic,
     focusHeavy, setFocusHeavy,
     theme, setTheme,
-    language: isArabic ? 'ar' : 'en',
+    language,
     setLanguage,
   };
 
