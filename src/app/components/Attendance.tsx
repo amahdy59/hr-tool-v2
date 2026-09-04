@@ -57,6 +57,7 @@ import {
   JobTitleService,
   Employee,
 } from '../../lib/services/dbServices';
+import { exportToCSV, exportToExcel } from '@/lib/export';
 
 // ── CSS variable colors for charts ──
 const CHART_COLORS = {
@@ -485,16 +486,35 @@ export const Attendance: React.FC = () => {
     toast.info('All filters cleared');
   };
 
-  const handleDownload = () => {
-    toast.success('Download started', {
-      description: 'Attendance data is being exported to CSV.',
-    });
+  const handleDownload = async () => {
+    try {
+      const exportRows = days.map((d) => ({
+        Day: d.day,
+        Date: d.date,
+        'Time In': d.timeIn,
+        'Time Out': d.timeOut,
+        'Total Hours': d.totalHours,
+        Status: d.status,
+      }));
+      await exportToExcel(exportRows, `Attendance-${selectedEmployee.replace(/\s+/g, '_')}`);
+      toast.success(isArabic ? 'تم تنزيل سجلات الحضور بنجاح' : 'Attendance data downloaded successfully');
+    } catch {
+      exportToCSV(days, `Attendance-${selectedEmployee.replace(/\s+/g, '_')}`);
+    }
   };
 
-  const handleSummaryExport = () => {
-    toast.success('Monthly summary exported to CSV', {
-      description: `${monthLabel} ${selectedYear} attendance summary is ready for HR review.`,
-    });
+  const handleSummaryExport = async () => {
+    try {
+      const summaryRows = [
+        { Metric: 'Employee', Value: selectedEmployee },
+        { Metric: 'Period', Value: `${monthLabel} ${selectedYear}` },
+        { Metric: 'Total Records', Value: days.length },
+      ];
+      await exportToExcel(summaryRows, `Attendance-Summary-${monthLabel}-${selectedYear}`);
+      toast.success(isArabic ? 'تم تنزيل ملخص الحضور بنجاح' : 'Attendance summary downloaded successfully');
+    } catch {
+      toast.error('Failed to export summary');
+    }
   };
 
   const handlePeriodChange = (date: string) => {
@@ -999,6 +1019,11 @@ export const Attendance: React.FC = () => {
             <Download className="w-4 h-4" />
             Download Data
           </Button>
+        </div>
+
+        {/* Screen Reader Result Announcer */}
+        <div className="sr-only" aria-live="polite" aria-atomic="true">
+          {isArabic ? `عرض ${days.length} سجل حضور` : `Showing ${days.length} attendance records`}
         </div>
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">

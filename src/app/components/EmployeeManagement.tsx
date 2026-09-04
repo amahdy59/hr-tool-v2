@@ -116,6 +116,7 @@ const includesQuery = (values: Array<string | number>, query: string) => {
 export const EmployeeManagement: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
+  const isArabic = language === 'ar';
   const [activeSubTab, setActiveSubTab] = useState('directory');
 
   // Search & filter state
@@ -387,6 +388,11 @@ export const EmployeeManagement: React.FC = () => {
                 </DropdownMenu>
               </div>
             </div>
+          </div>
+
+          {/* Screen Reader Result Announcer */}
+          <div className="sr-only" aria-live="polite" aria-atomic="true">
+            {isArabic ? `تم العثور على ${filteredEmployees.length} موظف` : `Showing ${filteredEmployees.length} employees`}
           </div>
 
           {/* Employee table */}

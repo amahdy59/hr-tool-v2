@@ -24,8 +24,8 @@ export function exportToCSV(data: any[], filename: string) {
     )
   ].join('\n');
 
-  // Create a Blob from the CSV string
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  // Create a Blob from the CSV string with UTF-8 BOM for Excel compatibility
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
   
   // Create a download link and trigger the download
   const link = document.createElement('a');
@@ -39,4 +39,15 @@ export function exportToCSV(data: any[], filename: string) {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
+}
+
+export async function exportToExcel(data: any[], filename: string, sheetName = 'Data') {
+  if (!data || !data.length) {
+    return;
+  }
+  const XLSX = await import('xlsx');
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+  XLSX.writeFile(workbook, `${filename}.xlsx`);
 }

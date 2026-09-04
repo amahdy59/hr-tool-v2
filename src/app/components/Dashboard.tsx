@@ -40,6 +40,16 @@ import {
 import { useTranslation } from 'react-i18next';
 import { localizeFirstName } from '@/lib/localizedNames';
 import { calculateAnnualEntitlement } from '@/lib/leaveCalculations';
+import { exportToCSV, exportToExcel } from '@/lib/export';
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+} from './ui/drawer';
 
 // --- Types ---
 interface HistoryItem {
@@ -189,23 +199,61 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   const [chooseRequestOpen, setChooseRequestOpen] = useState(false);
   const [chooseRequestDate, setChooseRequestDate] = useState('');
 
-  // History pagination state
+  // History pagination and filter state
   const [historyPage, setHistoryPage] = useState(1);
   const [historyPerPage, setHistoryPerPage] = useState(10);
-  const historyTotalPages = Math.max(1, Math.ceil(historyData.length / historyPerPage));
+  const [historyLeaveType, setHistoryLeaveType] = useState('all');
+  const [historyStartDate, setHistoryStartDate] = useState('');
+  const [historyEndDate, setHistoryEndDate] = useState('');
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+
+  // Filtered history items
+  const filteredHistory = useMemo(() => {
+    return historyData.filter((item) => {
+      if (historyLeaveType && historyLeaveType !== 'all') {
+        const itemType = item.type.toLowerCase();
+        if (historyLeaveType === 'vacation' && !itemType.includes('vacation') && !itemType.includes('annual')) {
+          return false;
+        } else if (historyLeaveType === 'sick' && !itemType.includes('sick')) {
+          return false;
+        } else if (historyLeaveType === 'annual' && !itemType.includes('annual')) {
+          return false;
+        } else if (historyLeaveType === 'maternity' && !itemType.includes('maternity')) {
+          return false;
+        } else if (historyLeaveType === 'paternity' && !itemType.includes('paternity')) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [historyLeaveType]);
+
+  const historyTotalPages = Math.max(1, Math.ceil(filteredHistory.length / historyPerPage));
   const paginatedHistory = useMemo(() => {
     const start = (historyPage - 1) * historyPerPage;
-    return historyData.slice(start, start + historyPerPage);
-  }, [historyPage, historyPerPage]);
+    return filteredHistory.slice(start, start + historyPerPage);
+  }, [historyPage, historyPerPage, filteredHistory]);
+
+  const handleDownloadHistory = async () => {
+    try {
+      const exportRows = filteredHistory.map((item) => ({
+        Type: item.type,
+        'Request Date': item.reqDate,
+        'Date Range': item.range,
+        Duration: item.duration,
+        Notes: item.notes,
+        Status: item.status,
+      }));
+      await exportToExcel(exportRows, `HR-History-${format(new Date(), 'yyyy-MM-dd')}`);
+      toast.success(isArabic ? 'تم تنزيل البيانات بنجاح' : 'History data downloaded successfully');
+    } catch {
+      exportToCSV(filteredHistory, `HR-History-${format(new Date(), 'yyyy-MM-dd')}`);
+    }
+  };
 
   // Weekend state
   const [currentWeekend, setCurrentWeekend] = useState('Friday and Saturday');
   const [pendingWeekend, setPendingWeekend] = useState('');
-
-  // History filter states
-  const [historyLeaveType, setHistoryLeaveType] = useState('vacation');
-  const [historyStartDate, setHistoryStartDate] = useState('2023-11-03');
-  const [historyEndDate, setHistoryEndDate] = useState('2023-11-03');
 
   // --- Handlers ---
 
@@ -403,48 +451,108 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         </h3>
 
         <div className="flex flex-col gap-4 p-4 bg-muted/30 rounded-[var(--radius)] xl:flex-row xl:items-end xl:justify-between">
-          <Button variant="outline" className="w-full xl:w-auto gap-2 cursor-pointer justify-center shrink-0">
+          <Button
+            variant="outline"
+            onClick={handleDownloadHistory}
+            className="w-full xl:w-auto gap-2 cursor-pointer justify-center shrink-0"
+          >
             <Download className="w-4 h-4" /> {t('dashboard.downloadData', 'Download Data')}
           </Button>
 
-          {/* Filters for mobile/tablet (Popover) and desktop (inline) */}
+          {/* Filters for mobile/tablet (Drawer on mobile, Popover on tablet) and desktop (inline) */}
           <div className="flex flex-wrap items-center justify-center xl:justify-end gap-3 pt-2 w-full">
-            {/* Mobile/Tablet Popover Filter */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="xl:hidden w-full gap-2 cursor-pointer justify-center">
-                  <Filter className="w-4 h-4" /> {t('dashboard.filterHistory', 'Filter History')}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="p-4 space-y-4 w-72">
-                <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-leave-type">{t('dashboard.leaveType', 'Leave Type')}</label>
-                  <Select
-                    value={historyLeaveType}
-                    onValueChange={setHistoryLeaveType}
-                  >
-                    <SelectTrigger id="mobile-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-full rounded-[var(--radius-input)]">
-                      <SelectValue placeholder={t('dashboard.selectType', 'Select type')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="vacation">{t('dashboard.vacation', 'Vacation')}</SelectItem>
-                      <SelectItem value="sick">{t('dashboard.sick', 'Sick')}</SelectItem>
-                      <SelectItem value="annual">{t('dashboard.annual', 'Annual Leave')}</SelectItem>
-                      <SelectItem value="maternity">{t('dashboard.maternity', 'Maternity')}</SelectItem>
-                      <SelectItem value="paternity">{t('dashboard.paternity', 'Paternity')}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-start-date">{t('dashboard.startDate', 'Start Date')}</label>
-                  <DatePicker id="mobile-history-start-date" value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" aria-label="History start date" />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-end-date">{t('dashboard.endDate', 'End Date')}</label>
-                  <DatePicker id="mobile-history-end-date" value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" aria-label="History end date" />
-                </div>
-              </PopoverContent>
-            </Popover>
+            {/* Mobile Bottom-Sheet Drawer (< md) */}
+            <div className="md:hidden w-full">
+              <Drawer open={isFilterDrawerOpen} onOpenChange={setIsFilterDrawerOpen}>
+                <DrawerTrigger asChild>
+                  <Button variant="outline" className="w-full gap-2 cursor-pointer justify-center">
+                    <Filter className="w-4 h-4" /> {t('dashboard.filterHistory', 'Filter History')}
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent className="p-4 space-y-4 max-h-[85vh]">
+                  <DrawerHeader className="p-0 text-start">
+                    <DrawerTitle>{t('dashboard.filterHistory', 'Filter History')}</DrawerTitle>
+                    <DrawerDescription className="text-xs text-muted-foreground">
+                      {isArabic ? 'تصفية سجل الإجازات والمأموريات حسب النوع والتاريخ' : 'Filter your leave and mission records by type and date.'}
+                    </DrawerDescription>
+                  </DrawerHeader>
+                  <div className="space-y-3 pt-2">
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="drawer-history-leave-type">{t('dashboard.leaveType', 'Leave Type')}</label>
+                      <Select
+                        value={historyLeaveType}
+                        onValueChange={setHistoryLeaveType}
+                      >
+                        <SelectTrigger id="drawer-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-full rounded-[var(--radius-input)]">
+                          <SelectValue placeholder={t('dashboard.selectType', 'Select type')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">{isArabic ? 'جميع الأنواع' : 'All Types'}</SelectItem>
+                          <SelectItem value="vacation">{t('dashboard.vacation', 'Vacation')}</SelectItem>
+                          <SelectItem value="sick">{t('dashboard.sick', 'Sick')}</SelectItem>
+                          <SelectItem value="annual">{t('dashboard.annual', 'Annual Leave')}</SelectItem>
+                          <SelectItem value="maternity">{t('dashboard.maternity', 'Maternity')}</SelectItem>
+                          <SelectItem value="paternity">{t('dashboard.paternity', 'Paternity')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="drawer-history-start-date">{t('dashboard.startDate', 'Start Date')}</label>
+                      <DatePicker id="drawer-history-start-date" value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" aria-label="History start date" />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="drawer-history-end-date">{t('dashboard.endDate', 'End Date')}</label>
+                      <DatePicker id="drawer-history-end-date" value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" aria-label="History end date" />
+                    </div>
+                  </div>
+                  <DrawerFooter className="p-0 pt-2">
+                    <Button onClick={() => setIsFilterDrawerOpen(false)} className="w-full">
+                      {isArabic ? 'تطبيق الفلتر' : 'Apply Filters'}
+                    </Button>
+                  </DrawerFooter>
+                </DrawerContent>
+              </Drawer>
+            </div>
+
+            {/* Tablet Popover Filter (md to xl) */}
+            <div className="hidden md:block xl:hidden w-full">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full gap-2 cursor-pointer justify-center">
+                    <Filter className="w-4 h-4" /> {t('dashboard.filterHistory', 'Filter History')}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="p-4 space-y-4 w-72">
+                  <div className="space-y-1">
+                    <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-leave-type">{t('dashboard.leaveType', 'Leave Type')}</label>
+                    <Select
+                      value={historyLeaveType}
+                      onValueChange={setHistoryLeaveType}
+                    >
+                      <SelectTrigger id="mobile-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-full rounded-[var(--radius-input)]">
+                        <SelectValue placeholder={t('dashboard.selectType', 'Select type')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">{isArabic ? 'جميع الأنواع' : 'All Types'}</SelectItem>
+                        <SelectItem value="vacation">{t('dashboard.vacation', 'Vacation')}</SelectItem>
+                        <SelectItem value="sick">{t('dashboard.sick', 'Sick')}</SelectItem>
+                        <SelectItem value="annual">{t('dashboard.annual', 'Annual Leave')}</SelectItem>
+                        <SelectItem value="maternity">{t('dashboard.maternity', 'Maternity')}</SelectItem>
+                        <SelectItem value="paternity">{t('dashboard.paternity', 'Paternity')}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-start-date">{t('dashboard.startDate', 'Start Date')}</label>
+                    <DatePicker id="mobile-history-start-date" value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" aria-label="History start date" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-end-date">{t('dashboard.endDate', 'End Date')}</label>
+                    <DatePicker id="mobile-history-end-date" value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" aria-label="History end date" />
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
 
             {/* Desktop Inline Filters */}
             <div className="hidden xl:flex items-center gap-3 flex-wrap">
@@ -458,6 +566,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                       <SelectValue placeholder={t('dashboard.selectType', 'Select type')} />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="all">{isArabic ? 'جميع الأنواع' : 'All Types'}</SelectItem>
                       <SelectItem value="vacation">{t('dashboard.vacation', 'Vacation')}</SelectItem>
                       <SelectItem value="sick">{t('dashboard.sick', 'Sick')}</SelectItem>
                       <SelectItem value="annual">{t('dashboard.annual', 'Annual Leave')}</SelectItem>
@@ -478,10 +587,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </div>
         </div>
 
+        {/* Screen Reader Dynamic Filter Result Live Region */}
+        <div className="sr-only" aria-live="polite" aria-atomic="true">
+          {isArabic
+            ? `عرض ${filteredHistory.length} نتيجة في سجل الإجازات والمأموريات`
+            : `Showing ${filteredHistory.length} records in history`}
+        </div>
+
         <div className="border border-border rounded-[var(--radius)] bg-card shadow-[var(--elevation-sm)] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-[var(--text-sm)] text-start">
-              <caption className="sr-only">Leaves and mission history requests</caption>
+              <caption className="sr-only">{t('dashboard.historyTitle', 'Leaves and mission history requests')}</caption>
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {[
@@ -529,7 +645,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             itemsPerPage={historyPerPage}
             onPageChange={setHistoryPage}
             onItemsPerPageChange={(n) => { setHistoryPerPage(n); setHistoryPage(1); }}
-            totalItems={historyData.length}
+            totalItems={filteredHistory.length}
           />
         </div>
       </section>
