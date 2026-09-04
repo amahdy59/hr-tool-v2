@@ -89,7 +89,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             <Select value={itemsPerPage.toString()} onValueChange={(value) => onItemsPerPageChange(Number(value))}>
               <SelectTrigger
                 aria-labelledby={pageSizeLabelId}
-                className="h-11 min-h-[44px] w-[88px] bg-background dark:bg-card border-border text-foreground hover:bg-muted/50 data-[state=open]:border-border data-[state=open]:ring-0 focus:ring-0 focus-visible:ring-0 rounded-md transition-colors shadow-none font-[var(--font-weight-medium)]"
+                className="h-11 min-h-[44px] w-[88px] bg-background dark:bg-card border-border text-foreground hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-md transition-colors shadow-none font-[var(--font-weight-medium)]"
               >
                 <SelectValue />
               </SelectTrigger>
@@ -167,7 +167,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                   className={cn(
                     'h-11 w-11 rounded-none border border-border transition-colors text-[var(--text-sm)] font-medium shadow-none z-0 hover:z-10 focus:z-10',
                     isActive
-                      ? 'bg-[#0969da] dark:bg-[#1f6feb] border-[#0969da] dark:border-[#1f6feb] text-white hover:bg-[#0969da]/90 dark:hover:bg-[#1f6feb]/90 z-10'
+                      ? 'bg-primary border-primary text-primary-foreground hover:bg-primary/90 z-10'
                       : 'bg-background dark:bg-card text-foreground hover:bg-muted/50'
                   )}
                 >

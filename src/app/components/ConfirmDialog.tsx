@@ -56,7 +56,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             {showInfoIcon && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button className="text-muted-foreground hover:text-foreground transition-colors p-0.5 rounded-full inline-flex items-center justify-center cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring">
+                  <button className="text-muted-foreground hover:text-foreground transition-colors p-0.5 rounded-full inline-flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                     <Info className="w-4 h-4" />
                   </button>
                 </TooltipTrigger>
@@ -66,7 +66,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               </Tooltip>
             )}
           </DialogTitle>
-          <DialogDescription className="sr-only">{title}</DialogDescription>
+          <DialogDescription className="sr-only">Confirmation dialog: review details and confirm or cancel this action.</DialogDescription>
         </DialogHeader>
 
         {noCard ? (

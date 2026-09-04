@@ -52,8 +52,20 @@ export default defineConfig({
             return 'vendor-charts'
           }
 
-          if (id.includes('jspdf') || id.includes('html2canvas') || id.includes('xlsx')) {
-            return 'vendor-export'
+          if (id.includes('jspdf')) {
+            return 'vendor-jspdf'
+          }
+
+          if (id.includes('html2canvas')) {
+            return 'vendor-html2canvas'
+          }
+
+          if (id.includes('lucide-react')) {
+            return 'vendor-icons'
+          }
+
+          if (id.includes('@supabase')) {
+            return 'vendor-supabase'
           }
 
           return undefined

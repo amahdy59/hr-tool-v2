@@ -110,7 +110,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
       return (
         <Tooltip>
           <TooltipTrigger asChild>{button}</TooltipTrigger>
-          <TooltipContent side="right" sideOffset={8} className="hidden sm:block text-[var(--text-sm)] font-[var(--font-weight-medium)]">
+          <TooltipContent side={isArabic ? 'left' : 'right'} sideOffset={8} className="hidden sm:block text-[var(--text-sm)] font-[var(--font-weight-medium)]">
             {itemLabel}
           </TooltipContent>
         </Tooltip>
@@ -180,6 +180,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
               <item.icon className="w-5 h-5 shrink-0" />
             );
 
+
             const LabelContent = item.id === 'profile' ? (
               <span className="truncate">{displayName || t(`sidebar.${item.id}`)}</span>
             ) : (
@@ -201,8 +202,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                       {IconContent}
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent side="right" sideOffset={8} className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
-            {itemLabel}
+                  <TooltipContent side={isArabic ? 'left' : 'right'} sideOffset={8} className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
+                    {itemLabel}
                   </TooltipContent>
                 </Tooltip>
               );

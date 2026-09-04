@@ -170,7 +170,7 @@ interface DashboardProps {
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestMission, currentUser }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   // Modal states
   const [leaveDetailOpen, setLeaveDetailOpen] = useState(false);
@@ -399,12 +399,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           }}
           className="text-foreground"
         >
-          Leaves and Mission History
+          {t('dashboard.historyTitle', 'Leaves and Mission History')}
         </h3>
 
         <div className="flex flex-col gap-4 p-4 bg-muted/30 rounded-[var(--radius)] xl:flex-row xl:items-end xl:justify-between">
           <Button variant="outline" className="w-full xl:w-auto gap-2 cursor-pointer justify-center shrink-0">
-            <Download className="w-4 h-4" /> Download Data
+            <Download className="w-4 h-4" /> {t('dashboard.downloadData', 'Download Data')}
           </Button>
 
           {/* Filters for mobile/tablet (Popover) and desktop (inline) */}
@@ -413,34 +413,34 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="xl:hidden w-full gap-2 cursor-pointer justify-center">
-                  <Filter className="w-4 h-4" /> Filter History
+                  <Filter className="w-4 h-4" /> {t('dashboard.filterHistory', 'Filter History')}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="p-4 space-y-4 w-72">
                 <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-leave-type">Leave Type</label>
+                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-leave-type">{t('dashboard.leaveType', 'Leave Type')}</label>
                   <Select
                     value={historyLeaveType}
                     onValueChange={setHistoryLeaveType}
                   >
-                    <SelectTrigger id="mobile-history-leave-type" aria-label="Filter by Leave Type" className="min-h-[44px] w-full rounded-[var(--radius-input)]">
-                      <SelectValue placeholder="Select type" />
+                    <SelectTrigger id="mobile-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-full rounded-[var(--radius-input)]">
+                      <SelectValue placeholder={t('dashboard.selectType', 'Select type')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="vacation">Vacation</SelectItem>
-                      <SelectItem value="sick">Sick</SelectItem>
-                      <SelectItem value="annual">Annual Leave</SelectItem>
-                      <SelectItem value="maternity">Maternity</SelectItem>
-                      <SelectItem value="paternity">Paternity</SelectItem>
+                      <SelectItem value="vacation">{t('dashboard.vacation', 'Vacation')}</SelectItem>
+                      <SelectItem value="sick">{t('dashboard.sick', 'Sick')}</SelectItem>
+                      <SelectItem value="annual">{t('dashboard.annual', 'Annual Leave')}</SelectItem>
+                      <SelectItem value="maternity">{t('dashboard.maternity', 'Maternity')}</SelectItem>
+                      <SelectItem value="paternity">{t('dashboard.paternity', 'Paternity')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-start-date">Start Date</label>
+                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-start-date">{t('dashboard.startDate', 'Start Date')}</label>
                   <DatePicker id="mobile-history-start-date" value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" aria-label="History start date" />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-end-date">End Date</label>
+                  <label className="text-xs text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="mobile-history-end-date">{t('dashboard.endDate', 'End Date')}</label>
                   <DatePicker id="mobile-history-end-date" value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" aria-label="History end date" />
                 </div>
               </PopoverContent>
@@ -449,29 +449,29 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             {/* Desktop Inline Filters */}
             <div className="hidden xl:flex items-center gap-3 flex-wrap">
               <div className="space-y-1">
-                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-leave-type">Leave Type</label>
+                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-leave-type">{t('dashboard.leaveType', 'Leave Type')}</label>
                   <Select
                     value={historyLeaveType}
                     onValueChange={setHistoryLeaveType}
                   >
-                    <SelectTrigger id="desktop-history-leave-type" aria-label="Filter by Leave Type" className="min-h-[44px] w-44 rounded-[var(--radius-input)]">
-                      <SelectValue placeholder="Select type" />
+                    <SelectTrigger id="desktop-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-44 rounded-[var(--radius-input)]">
+                      <SelectValue placeholder={t('dashboard.selectType', 'Select type')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="vacation">Vacation</SelectItem>
-                      <SelectItem value="sick">Sick</SelectItem>
-                      <SelectItem value="annual">Annual Leave</SelectItem>
-                      <SelectItem value="maternity">Maternity</SelectItem>
-                      <SelectItem value="paternity">Paternity</SelectItem>
+                      <SelectItem value="vacation">{t('dashboard.vacation', 'Vacation')}</SelectItem>
+                      <SelectItem value="sick">{t('dashboard.sick', 'Sick')}</SelectItem>
+                      <SelectItem value="annual">{t('dashboard.annual', 'Annual Leave')}</SelectItem>
+                      <SelectItem value="maternity">{t('dashboard.maternity', 'Maternity')}</SelectItem>
+                      <SelectItem value="paternity">{t('dashboard.paternity', 'Paternity')}</SelectItem>
                     </SelectContent>
                   </Select>
               </div>
               <div className="space-y-1">
-                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-start-date">Start Date</label>
+                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-start-date">{t('dashboard.startDate', 'Start Date')}</label>
                 <DatePicker id="desktop-history-start-date" value={historyStartDate} onChange={setHistoryStartDate} placeholder="Start date" aria-label="History start date" />
               </div>
               <div className="space-y-1">
-                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-end-date">End Date</label>
+                <label className="block text-[10px] text-muted-foreground font-[var(--font-weight-medium)]" htmlFor="desktop-history-end-date">{t('dashboard.endDate', 'End Date')}</label>
                 <DatePicker id="desktop-history-end-date" value={historyEndDate} onChange={setHistoryEndDate} placeholder="End date" aria-label="History end date" />
               </div>
             </div>
@@ -485,19 +485,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {[
-                    'Leave Type',
-                    'Request Date',
-                    'Date Range',
-                    'Duration',
-                    'Notes',
-                    'Status',
-                    'Actions',
+                    t('dashboard.leaveType', 'Leave Type'),
+                    t('dashboard.requestDate', 'Request Date'),
+                    t('dashboard.dateRange', 'Date Range'),
+                    t('dashboard.duration', 'Duration'),
+                    t('dashboard.notes', 'Notes'),
+                    t('dashboard.status', 'Status'),
+                    t('dashboard.actions', 'Actions'),
                   ].map((header) => (
                     <th
                       key={header}
                       className={cn(
                         'px-4 py-3',
-                        header === 'Actions' && 'text-end'
+                        header === t('dashboard.actions', 'Actions') && 'text-end'
                       )}
                       style={{
                         fontFamily: "'Inter', sans-serif",
@@ -546,20 +546,20 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             }}
             className="text-foreground"
           >
-            Annual and Sick Leaves
+            {t('dashboard.balancesTitle')}
           </h3>
           <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
-              <caption className="sr-only">Annual and sick leave balances</caption>
+              <caption className="sr-only">{t('dashboard.balancesTitle')}</caption>
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   {[
-                    'Leave Type',
-                    'Total Balance',
-                    'Bridge',
-                    'From Last Year',
-                    'Used Balance',
-                    'Remaining Balance',
+                    t('dashboard.leaveType'),
+                    t('dashboard.totalBalance'),
+                    t('dashboard.bridge'),
+                    t('dashboard.fromLastYear'),
+                    t('dashboard.usedBalance'),
+                    t('dashboard.remainingBalance'),
                   ].map((h) => (
                     <th
                       key={h}
@@ -577,18 +577,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </thead>
               <tbody className="divide-y divide-border">
                 <tr>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">Annual Leave</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">{calculateAnnualEntitlement(2013)} days</td>
+                  <td className="px-4 py-3 text-[var(--text-sm)]">{t('leave.annualLeave')}</td>
+                  <td className="px-4 py-3 text-[var(--text-sm)]">{calculateAnnualEntitlement(2013)} {t('dashboard.days')}</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">5</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">4</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">6</td>
                   <td className="px-4 py-3 text-[var(--text-sm)] font-semibold text-[var(--chart-3)]">
-                    {calculateAnnualEntitlement(2013) - 5 + 4 - 6} days
+                    {calculateAnnualEntitlement(2013) - 5 + 4 - 6} {t('dashboard.days')}
                   </td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">Sick Leave</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">45 days</td>
+                  <td className="px-4 py-3 text-[var(--text-sm)]">{t('leave.sickLeave')}</td>
+                  <td className="px-4 py-3 text-[var(--text-sm)]">45 {t('dashboard.days')}</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">--</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">--</td>
                   <td className="px-4 py-3 text-[var(--text-sm)]">5</td>

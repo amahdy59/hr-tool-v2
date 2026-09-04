@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { Keyboard, X } from 'lucide-react';
+import React, { useEffect, useMemo } from 'react';
+import { Keyboard } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import {
   Dialog,
   DialogContent,
@@ -13,17 +14,19 @@ interface KeyboardShortcutsPanelProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const shortcuts = [
-  { keys: ['Ctrl', 'K'], description: 'Open command palette' },
-  { keys: ['?'], description: 'Show keyboard shortcuts' },
-  { keys: ['Esc'], description: 'Close modals/menus' },
-  { keys: ['Enter'], description: 'Confirm action / Submit form' },
-  { keys: ['Space'], description: 'Toggle checkboxes/buttons' },
-  { keys: ['Tab'], description: 'Navigate focus forward' },
-  { keys: ['Shift', 'Tab'], description: 'Navigate focus backward' },
-];
-
 export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({ open, onOpenChange }) => {
+  const { t } = useTranslation();
+
+  const shortcuts = useMemo(() => [
+    { keys: ['Ctrl', 'K'], description: t('shortcuts.openCommandPalette', 'Open command palette') },
+    { keys: ['?'], description: t('shortcuts.showShortcuts', 'Show keyboard shortcuts') },
+    { keys: ['Esc'], description: t('shortcuts.closeModals', 'Close modals/menus') },
+    { keys: ['Enter'], description: t('shortcuts.confirmAction', 'Confirm action / Submit form') },
+    { keys: ['Space'], description: t('shortcuts.toggleCheckboxes', 'Toggle checkboxes/buttons') },
+    { keys: ['Tab'], description: t('shortcuts.navForward', 'Navigate focus forward') },
+    { keys: ['Shift', 'Tab'], description: t('shortcuts.navBackward', 'Navigate focus backward') },
+  ], [t]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't trigger if user is typing in an input
@@ -47,10 +50,12 @@ export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({ 
         <DialogHeader>
           <div className="flex items-center gap-2">
             <Keyboard className="h-5 w-5 text-muted-foreground" />
-            <DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Keyboard Shortcuts</DialogTitle>
+            <DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">
+              {t('shortcuts.title', 'Keyboard Shortcuts')}
+            </DialogTitle>
           </div>
           <DialogDescription className="text-[var(--text-sm)] text-muted-foreground">
-            Navigate the application quickly with these shortcuts.
+            {t('shortcuts.description', 'Navigate the application quickly with these shortcuts.')}
           </DialogDescription>
         </DialogHeader>
         

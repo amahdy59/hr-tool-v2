@@ -49,6 +49,7 @@ import { DatePicker } from './ui/date-picker';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { localizePersonName } from '@/lib/localizedNames';
+import { useTheme } from '@/lib/useTheme';
 import {
   AttendanceService,
   DepartmentService,
@@ -66,13 +67,21 @@ const CHART_COLORS = {
   unfilled: 'var(--chart-3)',
 };
 
-// ── Raw CSS values for recharts (can't use var() directly) ──
-const CHART_RAW_COLORS = {
+// ── Raw CSS values for recharts (theme-adaptive) ──
+const CHART_RAW_COLORS_LIGHT = {
   inOffice: '#1E40AF',   // --chart-1 / --primary
-  missions: '#616161',   // --chart-5 / --muted-foreground
-  leaves: '#FFCA28',     // --chart-2 / --secondary
-  noShow: '#9A3412',     // --chart-4 / --accent
+  missions: '#64748B',   // --chart-5 / --muted-foreground
+  leaves: '#D97706',     // --chart-2 / --secondary
+  noShow: '#DC2626',     // --chart-4 / --destructive
   unfilled: '#166534',   // --chart-3 / --success
+};
+
+const CHART_RAW_COLORS_DARK = {
+  inOffice: '#60A5FA',   // High-contrast bright blue (>7:1 vs #111827)
+  missions: '#94A3B8',   // Light slate (>6:1 vs #111827)
+  leaves: '#FBBF24',     // Warm amber (>10:1 vs #111827)
+  noShow: '#F87171',     // Soft red (>7:1 vs #111827)
+  unfilled: '#4ADE80',   // Vivid emerald (>10:1 vs #111827)
 };
 
 // ── Summary chart data ──
@@ -86,7 +95,7 @@ const summaryData = [
     name: 'In-office',
     hours: 152,
     percentage: 53.4,
-    color: CHART_RAW_COLORS.inOffice,
+    color: CHART_RAW_COLORS_LIGHT.inOffice,
     cssColor: CHART_COLORS.inOffice,
     severity: 'positive' as const,
   },
@@ -95,7 +104,7 @@ const summaryData = [
     name: 'Missions',
     hours: 69,
     percentage: 24.2,
-    color: CHART_RAW_COLORS.missions,
+    color: CHART_RAW_COLORS_LIGHT.missions,
     cssColor: CHART_COLORS.missions,
     severity: 'neutral' as const,
   },
@@ -104,7 +113,7 @@ const summaryData = [
     name: 'Leaves',
     hours: 3,
     percentage: 1.2,
-    color: CHART_RAW_COLORS.leaves,
+    color: CHART_RAW_COLORS_LIGHT.leaves,
     cssColor: CHART_COLORS.leaves,
     severity: 'neutral' as const,
   },
@@ -113,7 +122,7 @@ const summaryData = [
     name: 'No Show',
     hours: 29,
     percentage: 10.1,
-    color: CHART_RAW_COLORS.noShow,
+    color: CHART_RAW_COLORS_LIGHT.noShow,
     cssColor: CHART_COLORS.noShow,
     severity: 'negative' as const,
   },
@@ -122,7 +131,7 @@ const summaryData = [
     name: 'Unfilled',
     hours: 32,
     percentage: 11.1,
-    color: CHART_RAW_COLORS.unfilled,
+    color: CHART_RAW_COLORS_LIGHT.unfilled,
     cssColor: CHART_COLORS.unfilled,
     severity: 'warning' as const,
   },
@@ -260,13 +269,21 @@ export const Attendance: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const isArabic = language.startsWith('ar');
+  const { theme } = useTheme();
+  const isDark = theme === 'dark' || (theme === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const chartColors = isDark ? CHART_RAW_COLORS_DARK : CHART_RAW_COLORS_LIGHT;
 
   const translatedSummaryData = useMemo(() => {
-    return summaryData.map((item) => ({
-      ...item,
-      name: getCategoryName(item.name, language)
-    }));
-  }, [language]);
+    return summaryData.map((item) => {
+      const colorKey = (item.id === 'in-office' ? 'inOffice' : item.id === 'no-show' ? 'noShow' : item.id) as keyof typeof chartColors;
+      const color = chartColors[colorKey] || item.color;
+      return {
+        ...item,
+        color,
+        name: getCategoryName(item.name, language),
+      };
+    });
+  }, [language, chartColors]);
 
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');

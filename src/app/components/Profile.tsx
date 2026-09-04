@@ -15,8 +15,6 @@ import {
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { toast } from 'sonner';
 import { Resume } from './Resume';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { BasicInfo } from './BasicInfo';
 
 const ProfessionalProfile = lazy(() =>

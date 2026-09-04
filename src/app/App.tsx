@@ -397,7 +397,7 @@ export default function App() {
           setActiveTab={setActiveTab}
           onLogout={handleLogout}
         />
-        <main ref={mainRef} id="main-content" aria-label={t('common.mainContent', 'Main content')} className="app-main-scroll flex-1 overflow-y-auto bg-muted cursor-default pb-24 lg:pb-6 pt-16">
+        <main ref={mainRef} id="main-content" tabIndex={-1} aria-label={t('common.mainContent', 'Main content')} className="app-main-scroll flex-1 overflow-y-auto bg-muted cursor-default pb-24 lg:pb-6 pt-16 outline-none">
           <h1 className="sr-only">{t(`pages.${activeTab}`)}</h1>
           {renderContent()}
         </main>

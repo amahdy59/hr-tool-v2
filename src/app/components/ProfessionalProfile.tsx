@@ -10,8 +10,6 @@ import {
 import { toast } from 'sonner';
 import { Resume } from './Resume';
 import { ConfirmDialog } from './ConfirmDialog';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
 
 // Shared types and FormField
 import {
@@ -367,6 +365,10 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
     const element = resumeRef.current;
     if (!element) return;
     try {
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import('html2canvas'),
+        import('jspdf'),
+      ]);
       const canvas = await html2canvas(element, { scale: 2, useCORS: true });
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'in', format: 'letter' });
