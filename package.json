@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "check:a11y": "node scripts/accessibility_audit.cjs",
+    "check:code": "node scripts/code_review.cjs",
+    "check:responsive": "node scripts/audit_responsiveness.cjs",
     "dev": "vite",
     "preview": "vite preview",
-    "prepush": "npm run typecheck && npm run test && npm run build && npm run test:e2e",
+    "prepush": "npm run check:code && npm run test && npm run build && npm run check:a11y && npm run check:responsive && npm run test:e2e",
     "test": "vitest run",
     "test:e2e": "node scripts/run-e2e.cjs",
     "typecheck": "tsc --noEmit"

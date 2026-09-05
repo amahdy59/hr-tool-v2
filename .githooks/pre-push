@@ -1,7 +1,7 @@
 #!/bin/sh
 # Automated pre-push test gate
 echo ""
-echo "🚀 [Git Hook] Running automated pre-push checks..."
+echo "🚀 [Git Hook] Running automated pre-push checks (Code, A11y, Responsive, Tests, Build, E2E)..."
 echo "------------------------------------------------"
 npm run prepush
 RESULT=$?
@@ -15,7 +15,7 @@ if [ $RESULT -ne 0 ]; then
 fi
 
 echo ""
-echo "✅ [Git Hook] All quality gates passed (Typecheck, Unit Tests, Build, E2E)!"
+echo "✅ [Git Hook] All quality gates passed (Code Review, Tests, Build, A11y, Responsive, E2E)!"
 echo "   Proceeding with push..."
 echo "------------------------------------------------"
 exit 0

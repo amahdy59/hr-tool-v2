@@ -11,3 +11,4 @@ dev-server*.log
 
 .codex-*.png
 pagination-mobile-check.png
+accessibility_audit_report.json
