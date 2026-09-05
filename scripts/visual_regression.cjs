@@ -67,32 +67,81 @@ server.listen(0, '127.0.0.1', async () => {
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
-    const page = await browser.newPage();
-    // Emulate reduced motion for deterministic screenshot rendering
-    await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
-
     for (const sc of TEST_SCENARIOS) {
+      // Create an isolated incognito browser context for every scenario
+      const context = await browser.createBrowserContext();
+      const page = await context.newPage();
+
+      await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+
+      // Inject deterministic MockDate, locale, and freeze styles on new document
+      await page.evaluateOnNewDocument((lang) => {
+        // Freeze system clock for deterministic calendar & date math (2026-09-01T12:00:00Z)
+        const FIXED_TIME = 1788264000000;
+        const OriginalDate = window.Date;
+        class MockDate extends OriginalDate {
+          constructor(...args) {
+            if (args.length === 0) {
+              super(FIXED_TIME);
+            } else {
+              super(...args);
+            }
+          }
+          static now() {
+            return FIXED_TIME;
+          }
+        }
+        MockDate.UTC = OriginalDate.UTC;
+        MockDate.parse = OriginalDate.parse;
+        window.Date = MockDate;
+
+        // Ensure language is set in localStorage before React/i18next boot
+        try {
+          localStorage.setItem('i18nextLng', lang);
+        } catch (e) {}
+
+        const injectStyles = () => {
+          const style = document.createElement('style');
+          style.id = 'visual-freeze-styles';
+          style.textContent = `
+            *, *::before, *::after {
+              animation: none !important;
+              animation-duration: 0s !important;
+              animation-delay: 0s !important;
+              transition: none !important;
+              transition-duration: 0s !important;
+              transition-delay: 0s !important;
+              caret-color: transparent !important;
+            }
+            .animate-blob, .animate-float, .animate-spin, .animate-pulse {
+              animation: none !important;
+              transform: none !important;
+            }
+          `;
+          if (document.head) {
+            document.head.appendChild(style);
+          } else {
+            document.addEventListener('DOMContentLoaded', () => document.head.appendChild(style));
+          }
+        };
+        injectStyles();
+      }, sc.lang);
+
       await page.setViewport({ width: sc.width, height: sc.height });
       await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('#root', { timeout: 10000 });
+      await page.evaluate(() => (document.fonts ? document.fonts.ready : Promise.resolve()));
+      await new Promise(r => setTimeout(r, 200));
 
-      // Freeze all CSS animations and transitions for deterministic capture
-      await page.addStyleTag({
-        content: `
-          *, *::before, *::after {
-            animation: none !important;
-            transition: none !important;
-          }
-        `
-      });
-      await new Promise(r => setTimeout(r, 300));
-
-      // Handle Language switch
+      // Handle Language switch fallback if needed
       if (sc.lang === 'ar') {
-        const langBtn = await page.$('button[aria-label="Switch language to Arabic"], button[aria-label*="العربية"]');
-        if (langBtn) {
-          await langBtn.click();
-          await new Promise(r => setTimeout(r, 600));
+        const isRtl = await page.evaluate(() => document.documentElement.dir === 'rtl');
+        if (!isRtl) {
+          const langBtn = await page.$('button[aria-label="Switch language to Arabic"], button[aria-label*="العربية"]');
+          if (langBtn) {
+            await langBtn.click();
+            await page.waitForFunction(() => document.documentElement.dir === 'rtl', { timeout: 5000 }).catch(() => {});
+          }
         }
       }
 
@@ -103,12 +152,13 @@ server.listen(0, '127.0.0.1', async () => {
           return btns.find(b => {
             const txt = (b.textContent || '').toLowerCase();
             const aria = (b.getAttribute('aria-label') || '').toLowerCase();
-            return txt.includes('case study') || aria.includes('case study') || txt.includes('دراسة الحالة');
+            return txt.includes('case study') || aria.includes('case study') || txt.includes('دراسة الحالة') || txt.includes('redesign');
           });
         });
         if (caseStudyBtn && caseStudyBtn.asElement()) {
           await caseStudyBtn.asElement().click();
-          await new Promise(r => setTimeout(r, 800));
+          await page.waitForSelector('main, h1', { timeout: 10000 });
+          await new Promise(r => setTimeout(r, 600));
         }
       } else if (sc.action === 'dashboard') {
         const quickLoginBtn = await page.evaluateHandle(() => {
@@ -121,20 +171,21 @@ server.listen(0, '127.0.0.1', async () => {
         });
         if (quickLoginBtn && quickLoginBtn.asElement()) {
           await quickLoginBtn.asElement().click();
-          await new Promise(r => setTimeout(r, 1500));
+          await page.waitForSelector('#main-content', { timeout: 10000 });
+          await new Promise(r => setTimeout(r, 800));
         }
       }
 
-      // Re-freeze after dynamic navigation
-      await page.addStyleTag({
-        content: `
-          *, *::before, *::after {
-            animation: none !important;
-            transition: none !important;
-          }
-        `
+      // Settle layout, blur active inputs/buttons, and verify fonts
+      await page.evaluate(() => {
+        if (document.activeElement && document.activeElement.blur) {
+          document.activeElement.blur();
+        }
+        document.documentElement.style.scrollBehavior = 'auto';
       });
-      await new Promise(r => setTimeout(r, 200));
+      await page.mouse.move(0, 0);
+      await page.evaluate(() => (document.fonts ? document.fonts.ready : Promise.resolve()));
+      await new Promise(r => setTimeout(r, 400));
 
       const currentBuffer = await page.screenshot({ fullPage: false });
       const baselinePath = path.join(baselinesDir, `${sc.name}.png`);
@@ -150,6 +201,7 @@ server.listen(0, '127.0.0.1', async () => {
         if (baselinePng.width !== currentPng.width || baselinePng.height !== currentPng.height) {
           console.error(`   ❌ [Dimension Mismatch] ${sc.name}: Expected ${baselinePng.width}x${baselinePng.height}, got ${currentPng.width}x${currentPng.height}`);
           failures++;
+          await context.close();
           continue;
         }
 
@@ -167,7 +219,7 @@ server.listen(0, '127.0.0.1', async () => {
         const totalPixels = width * height;
         const diffPercentage = (mismatchedPixels / totalPixels) * 100;
 
-        // Allow up to 0.1% for subpixel text rendering
+        // Allow up to 0.1% for subpixel font rendering variance
         if (diffPercentage > 0.1) {
           const diffPath = path.join(baselinesDir, `diff-${sc.name}.png`);
           fs.writeFileSync(diffPath, PNG.sync.write(diff));
@@ -177,6 +229,8 @@ server.listen(0, '127.0.0.1', async () => {
           console.log(`   ✅ [Visual Match] ${sc.name}: ${mismatchedPixels}px diff (${diffPercentage.toFixed(2)}%) within tolerance.`);
         }
       }
+
+      await context.close();
     }
 
     console.log('\n--------------------------------------------------');

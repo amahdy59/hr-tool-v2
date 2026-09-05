@@ -269,11 +269,11 @@ server.listen(0, '127.0.0.1', async () => {
 
     console.log('\n--- Test 6: RTL & Bilingual Layout ---');
     await page.evaluate(() => {
-      document.documentElement.dir = 'rtl';
-      document.documentElement.lang = 'ar';
       localStorage.setItem('i18nextLng', 'ar');
     });
-    await page.reload({ waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.goto(`http://127.0.0.1:${PORT}/hr-tool-v2/`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForSelector('#root', { timeout: 10000 });
+    await new Promise(r => setTimeout(r, 400));
     const isRtl = await page.evaluate(() => document.documentElement.dir === 'rtl' && document.documentElement.lang === 'ar');
     assert(isRtl, 'HTML root attributes successfully set to dir="rtl" and lang="ar"');
 
