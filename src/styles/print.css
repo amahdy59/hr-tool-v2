@@ -1,0 +1,122 @@
+/* Print Stylesheet for HR System */
+@media print {
+  /* 1. Hide interactive app chrome and non-printable elements */
+  nav,
+  aside,
+  header,
+  footer,
+  [role="dialog"]:not(.print-include),
+  [data-sonner-toaster],
+  .offline-banner,
+  .pwa-reload-prompt,
+  .no-print,
+  button:not(.print-preserve) {
+    display: none !important;
+  }
+
+  /* 2. Reset backgrounds and force ink-friendly high-contrast layout */
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  html,
+  body,
+  #root,
+  #main-content {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 10pt !important;
+    line-height: 1.4 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 8mm !important;
+    overflow: visible !important;
+  }
+
+  /* 3. Page break and overflow management */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+    color: #0f172a !important;
+  }
+
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto;
+    margin-top: 12px;
+    margin-bottom: 16px;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  th,
+  td {
+    border: 1px solid #d1d5db !important;
+    padding: 6px 10px !important;
+    font-size: 9pt !important;
+    text-align: start !important;
+  }
+
+  th {
+    background-color: #f3f4f6 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    font-size: 8pt !important;
+    letter-spacing: 0.05em;
+  }
+
+  /* 4. Structured Print Headers & Footers */
+  .print-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #1e293b;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+
+  .print-footer {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px dashed #94a3b8;
+    page-break-inside: avoid;
+  }
+
+  .print-signature-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 220px;
+    text-align: center;
+  }
+
+  .print-signature-line {
+    border-bottom: 1px solid #111827;
+    height: 36px;
+    margin-bottom: 4px;
+  }
+}
+
+/* Screen Mode: hide print-only artifacts */
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}

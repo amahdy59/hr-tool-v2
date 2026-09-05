@@ -21,6 +21,7 @@ import {
   HelpCircle,
   CheckCircle,
   XCircle,
+  Printer,
 } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
 import { cn } from '@/lib/utils';
@@ -1001,6 +1002,20 @@ export const Attendance: React.FC = () => {
 
       {/* ── Days View ── */}
       <section className="space-y-3" aria-labelledby="attendance-days-heading">
+        {/* Print-Only Official Document Header */}
+        <div className="print-header print-only">
+          <div>
+            <h1 className="text-xl font-bold">{isArabic ? 'نظام الموارد البشرية - تقرير الحضور والانصراف' : 'HR Portal - Attendance & Timesheet Report'}</h1>
+            <p className="text-xs text-gray-600 mt-1">
+              {isArabic ? `الموظف: ${selectedEmployee} | الفترة: ${monthLabel} ${selectedYear}` : `Employee: ${selectedEmployee} | Period: ${monthLabel} ${selectedYear}`}
+            </p>
+          </div>
+          <div className="text-end text-xs text-gray-500">
+            <div>{isArabic ? 'تاريخ الاستخراج:' : 'Generated On:'} {new Date().toLocaleDateString()}</div>
+            <div>{isArabic ? 'المرجع الرسمي لإدارة الموارد البشرية' : 'Official HR Verification Record'}</div>
+          </div>
+        </div>
+
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-2">
             <h3 id="attendance-days-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Days View</h3>
@@ -1015,10 +1030,16 @@ export const Attendance: React.FC = () => {
               </TooltipContent>
             </Tooltip>
           </div>
-          <Button variant="outline" size="sm" onClick={handleDownload} className="gap-2">
-            <Download className="w-4 h-4" />
-            Download Data
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={handleDownload} className="gap-2 no-print">
+              <Download className="w-4 h-4" />
+              {isArabic ? 'تنزيل البيانات' : 'Download Data'}
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => window.print()} className="gap-2 no-print">
+              <Printer className="w-4 h-4" />
+              {isArabic ? 'طباعة التقرير' : 'Print Report'}
+            </Button>
+          </div>
         </div>
 
         {/* Screen Reader Result Announcer */}
@@ -1071,14 +1092,32 @@ export const Attendance: React.FC = () => {
             </table>
           </div>
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={(v) => { setItemsPerPage(v); setCurrentPage(1); setPageInput('1'); }}
-            totalItems={mockDays.length}
-          />
+          <div className="no-print">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={(v) => { setItemsPerPage(v); setCurrentPage(1); setPageInput('1'); }}
+              totalItems={mockDays.length}
+            />
+          </div>
+        </div>
+
+        {/* Print-Only Signature & Approval Block */}
+        <div className="print-footer print-only">
+          <div className="print-signature-box">
+            <div className="print-signature-line"></div>
+            <span className="text-xs font-medium">{isArabic ? 'توقيع الموظف' : 'Employee Signature'}</span>
+          </div>
+          <div className="print-signature-box">
+            <div className="print-signature-line"></div>
+            <span className="text-xs font-medium">{isArabic ? 'اعتماد المدير المباشر' : 'Direct Supervisor Approval'}</span>
+          </div>
+          <div className="print-signature-box">
+            <div className="print-signature-line"></div>
+            <span className="text-xs font-medium">{isArabic ? 'اعتماد الموارد البشرية' : 'HR Director Clearance'}</span>
+          </div>
         </div>
       </section>
       </>

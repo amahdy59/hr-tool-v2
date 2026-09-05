@@ -14,12 +14,15 @@ const LeavesManagement = React.lazy(() => import('./components/LeavesManagement'
 const MissionsManagement = React.lazy(() => import('./components/MissionsManagement').then(m => ({ default: m.MissionsManagement })));
 const RolesManagement = React.lazy(() => import('./components/RolesManagement').then(m => ({ default: m.RolesManagement })));
 const Profile = React.lazy(() => import('./components/Profile').then(m => ({ default: m.Profile })));
+const Payroll = React.lazy(() => import('./components/Payroll').then(m => ({ default: m.Payroll })));
 import { Login } from './components/Login';
 import { CommandPalette } from './components/CommandPalette';
 import { KeyboardShortcutsPanel } from './components/KeyboardShortcutsPanel';
 import { RequestLeaveModal } from './components/RequestLeaveModal';
 import { RequestMissionModal } from './components/RequestMissionModal';
 import { ConfirmDialog } from './components/ConfirmDialog';
+import { OfflineBanner } from './components/OfflineBanner';
+import { ReloadPrompt } from './components/ReloadPrompt';
 import { useArabicDomTranslation } from '@/lib/useArabicDomTranslation';
 import { useTheme } from '@/lib/useTheme';
 import { DirectionProvider } from '@radix-ui/react-direction';
@@ -288,11 +291,13 @@ export default function App() {
   if (!isAuthenticated) {
     return (
       <DirectionProvider dir={isArabic ? 'rtl' : 'ltr'}>
+        <OfflineBanner />
         <Toaster
           position="bottom-right"
           toastOptions={toasterOptions}
           closeButton
         />
+        <ReloadPrompt />
         <Login onLogin={handleLogin} accessibility={accessibility} />
       </DirectionProvider>
     );
@@ -339,7 +344,7 @@ export default function App() {
         content = <Profile currentUser={currentUser} onUpdateImage={updateUserImage} />;
         break;
       case 'payrolls':
-        content = <PayrollUnderDevelopment />;
+        content = <Payroll />;
         break;
       default:
         content = null;
@@ -379,6 +384,7 @@ export default function App() {
         toastOptions={toasterOptions}
         closeButton
       />
+      <ReloadPrompt />
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -388,6 +394,7 @@ export default function App() {
         currentUser={currentUser}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+        <OfflineBanner />
         <Header 
           currentUser={currentUser} 
           accessibility={accessibility} 
@@ -544,32 +551,3 @@ const BottomToolbar: React.FC<{
     </div>
   );
 }
-
-const PayrollUnderDevelopment: React.FC = () => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="px-1 py-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
-      <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
-        <section className="w-full max-w-2xl rounded-[var(--radius-card)] border border-border bg-card p-8 text-center shadow-[var(--elevation-sm)]">
-          <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] uppercase tracking-[0.08em] text-accent">
-            {t('common.underDevelopment')}
-          </p>
-          <h2
-            className="mt-3 text-foreground"
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 'var(--page-title-size)',
-              fontWeight: 'var(--page-title-weight)',
-            }}
-          >
-            {t('payrolls.title')}
-          </h2>
-          <p className="mt-2 text-[var(--text-sm)] text-muted-foreground">
-            {t('payrolls.description')}
-          </p>
-        </section>
-      </div>
-    </div>
-  );
-};

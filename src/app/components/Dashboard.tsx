@@ -30,6 +30,7 @@ import {
   Filter,
   Briefcase,
   Umbrella,
+  Printer,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -450,14 +451,37 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           {t('dashboard.historyTitle', 'Leaves and Mission History')}
         </h3>
 
+        {/* Print-Only Official Document Header */}
+        <div className="print-header print-only">
+          <div>
+            <h1 className="text-xl font-bold">{isArabic ? 'نظام الموارد البشرية - سجل الإجازات والمأموريات' : 'HR Portal - Leave & Mission History Report'}</h1>
+            <p className="text-xs text-gray-600 mt-1">
+              {isArabic ? `إجمالي السجلات: ${filteredHistory.length}` : `Total Filtered Records: ${filteredHistory.length}`}
+            </p>
+          </div>
+          <div className="text-end text-xs text-gray-500">
+            <div>{isArabic ? 'تاريخ الاستخراج:' : 'Generated On:'} {new Date().toLocaleDateString()}</div>
+            <div>{isArabic ? 'المرجع الرسمي لإدارة الموارد البشرية' : 'Official HR Verification Record'}</div>
+          </div>
+        </div>
+
         <div className="flex flex-col gap-4 p-4 bg-muted/30 rounded-[var(--radius)] xl:flex-row xl:items-end xl:justify-between">
-          <Button
-            variant="outline"
-            onClick={handleDownloadHistory}
-            className="w-full xl:w-auto gap-2 cursor-pointer justify-center shrink-0"
-          >
-            <Download className="w-4 h-4" /> {t('dashboard.downloadData', 'Download Data')}
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
+            <Button
+              variant="outline"
+              onClick={handleDownloadHistory}
+              className="w-full sm:w-auto gap-2 cursor-pointer justify-center shrink-0 no-print"
+            >
+              <Download className="w-4 h-4" /> {t('dashboard.downloadData', 'Download Data')}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => window.print()}
+              className="w-full sm:w-auto gap-2 cursor-pointer justify-center shrink-0 no-print"
+            >
+              <Printer className="w-4 h-4" /> {isArabic ? 'طباعة التقرير' : 'Print Report'}
+            </Button>
+          </div>
 
           {/* Filters for mobile/tablet (Drawer on mobile, Popover on tablet) and desktop (inline) */}
           <div className="flex flex-wrap items-center justify-center xl:justify-end gap-3 pt-2 w-full">
@@ -639,14 +663,32 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </tbody>
             </table>
           </div>
-          <Pagination
-            currentPage={historyPage}
-            totalPages={historyTotalPages}
-            itemsPerPage={historyPerPage}
-            onPageChange={setHistoryPage}
-            onItemsPerPageChange={(n) => { setHistoryPerPage(n); setHistoryPage(1); }}
-            totalItems={filteredHistory.length}
-          />
+          <div className="no-print">
+            <Pagination
+              currentPage={historyPage}
+              totalPages={historyTotalPages}
+              itemsPerPage={historyPerPage}
+              onPageChange={setHistoryPage}
+              onItemsPerPageChange={(n) => { setHistoryPerPage(n); setHistoryPage(1); }}
+              totalItems={filteredHistory.length}
+            />
+          </div>
+        </div>
+
+        {/* Print-Only Signature & Approval Block */}
+        <div className="print-footer print-only">
+          <div className="print-signature-box">
+            <div className="print-signature-line"></div>
+            <span className="text-xs font-medium">{isArabic ? 'توقيع الموظف' : 'Employee Signature'}</span>
+          </div>
+          <div className="print-signature-box">
+            <div className="print-signature-line"></div>
+            <span className="text-xs font-medium">{isArabic ? 'اعتماد المدير المباشر' : 'Direct Supervisor Approval'}</span>
+          </div>
+          <div className="print-signature-box">
+            <div className="print-signature-line"></div>
+            <span className="text-xs font-medium">{isArabic ? 'اعتماد الموارد البشرية' : 'HR Director Clearance'}</span>
+          </div>
         </div>
       </section>
 

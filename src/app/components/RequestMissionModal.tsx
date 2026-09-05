@@ -16,6 +16,8 @@ import {
 } from './ui/select';
 import { DatePicker } from './ui/date-picker';
 import { differenceInBusinessDays, parseISO, isValid } from 'date-fns';
+import { useTranslation } from 'react-i18next';
+import { cn } from '@/lib/utils';
 
 interface RequestMissionModalProps {
   open: boolean;
@@ -48,10 +50,14 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
   onSubmit,
   initialData,
 }) => {
+  const { i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+
   const [missionType, setMissionType] = useState('Work From Home');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [notes, setNotes] = useState('');
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
   React.useEffect(() => {
     if (open) {
@@ -59,6 +65,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
       setFromDate(initialData?.fromDate || '');
       setToDate(initialData?.toDate || '');
       setNotes(initialData?.notes || '');
+      setAttemptedSubmit(false);
     }
   }, [open, initialData]);
 
@@ -70,7 +77,31 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
     return differenceInBusinessDays(to, from) + 1;
   }, [fromDate, toDate]);
 
+  const validationError = useMemo(() => {
+    if (!attemptedSubmit) return null;
+    if (!fromDate || !toDate) {
+      return isArabic ? 'يرجى تحديد تاريخي البداية والنهاية للمأمورية.' : 'Please select both start and end dates for the mission.';
+    }
+    const from = parseISO(fromDate);
+    const to = parseISO(toDate);
+    if (!isValid(from) || !isValid(to) || to < from) {
+      return isArabic ? 'نطاق التاريخ المحدد غير صحيح.' : 'Invalid date range selected.';
+    }
+    return null;
+  }, [attemptedSubmit, fromDate, toDate, isArabic]);
+
+  const hasDateError = attemptedSubmit && !!validationError;
+
   const handleSubmit = () => {
+    setAttemptedSubmit(true);
+    if (!fromDate) {
+      document.getElementById('mission-from-date')?.focus();
+      return;
+    }
+    if (!toDate || (fromDate && toDate && toDate < fromDate)) {
+      document.getElementById('mission-to-date')?.focus();
+      return;
+    }
     onSubmit({ missionType, fromDate, toDate, daysRequested, notes });
   };
 
@@ -144,6 +175,8 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
                 value={fromDate}
                 id="mission-from-date"
                 aria-label="Mission start date"
+                aria-describedby={hasDateError ? "mission-date-error" : "mission-date-help"}
+                aria-invalid={hasDateError}
                 onChange={(date) => {
                   setFromDate(date);
                   if (!toDate || (date && toDate && date > toDate)) {
@@ -169,6 +202,8 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
                 value={toDate}
                 id="mission-to-date"
                 aria-label="Mission end date"
+                aria-describedby={hasDateError ? "mission-date-error" : "mission-date-help"}
+                aria-invalid={hasDateError}
                 onChange={setToDate}
                 placeholder="End date"
               />
@@ -181,11 +216,19 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
               fontSize: 'var(--text-xs)',
               fontWeight: 'var(--font-weight-normal)',
             }}
-            className="text-muted-foreground -mt-3"
-            id="mission-date-help"
+            className={cn(
+              'text-muted-foreground -mt-3',
+              hasDateError && 'text-destructive font-medium'
+            )}
+            id={hasDateError ? "mission-date-error" : "mission-date-help"}
+            role={hasDateError ? "alert" : undefined}
             aria-live="polite"
           >
-            {dateLabel}
+            {validationError ? (
+              <span className="flex items-center gap-1 text-red-600 dark:text-red-400">⚠️ {validationError}</span>
+            ) : (
+              dateLabel
+            )}
           </p>
 
           <div className="space-y-1">

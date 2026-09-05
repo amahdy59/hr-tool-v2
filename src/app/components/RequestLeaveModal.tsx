@@ -92,6 +92,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   const [toDate, setToDate] = useState('');
   const [notes, setNotes] = useState('');
   const [attachments, setAttachments] = useState<File[]>([]);
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
   React.useEffect(() => {
     if (open) {
@@ -100,6 +101,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
       setToDate(initialData?.toDate || '');
       setNotes(initialData?.notes || '');
       setAttachments([]);
+      setAttemptedSubmit(false);
     }
   }, [open, initialData]);
 
@@ -170,8 +172,34 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
     return null;
   }, [fromDate, toDate, leaveType, daysRequested, currentBalance, hireDate, isVacationRequest]);
 
+  const dateError = useMemo(() => {
+    if (attemptedSubmit && (!fromDate || !toDate)) {
+      return isArabic ? 'يرجى تحديد تاريخي البداية والنهاية.' : 'Please select both start and end dates.';
+    }
+    return validationError;
+  }, [attemptedSubmit, fromDate, toDate, validationError, isArabic]);
+
+  const hasDateError = attemptedSubmit && !!dateError;
+  const hasAttachmentError = attemptedSubmit && attachmentMissing;
+
   const handleSubmit = () => {
-    if (attachmentMissing || validationError) return;
+    setAttemptedSubmit(true);
+    if (!fromDate) {
+      document.getElementById('leave-from-date')?.focus();
+      return;
+    }
+    if (!toDate) {
+      document.getElementById('leave-to-date')?.focus();
+      return;
+    }
+    if (validationError) {
+      document.getElementById('leave-from-date')?.focus();
+      return;
+    }
+    if (attachmentMissing) {
+      document.getElementById('leave-attachments')?.focus();
+      return;
+    }
 
     onSubmit({
       leaveType,
@@ -268,6 +296,8 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 value={fromDate}
                 id="leave-from-date"
                 aria-label="Leave start date"
+                aria-describedby={hasDateError ? "leave-date-error" : "leave-date-help"}
+                aria-invalid={hasDateError}
                 onChange={(d) => {
                   setFromDate(d);
                   // Auto-set toDate if empty or if toDate < fromDate
@@ -295,6 +325,8 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 value={toDate}
                 id="leave-to-date"
                 aria-label="Leave end date"
+                aria-describedby={hasDateError ? "leave-date-error" : "leave-date-help"}
+                aria-invalid={hasDateError}
                 onChange={setToDate}
                 placeholder="End date"
                 disabledDays={isEgyptianWeekend}
@@ -310,13 +342,14 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
             }}
             className={cn(
               'text-muted-foreground -mt-3',
-              ((isVacationRequest && daysRequested > currentBalance) || !!validationError) && 'text-destructive font-medium'
+              ((isVacationRequest && daysRequested > currentBalance) || hasDateError) && 'text-destructive font-medium'
             )}
-            id="leave-date-help"
+            id={hasDateError ? "leave-date-error" : "leave-date-help"}
+            role={hasDateError ? "alert" : undefined}
             aria-live="polite"
           >
-            {validationError ? (
-              <span className="flex items-center gap-1 text-red-600 dark:text-red-400">⚠️ {validationError}</span>
+            {dateError ? (
+              <span className="flex items-center gap-1 text-red-600 dark:text-red-400">⚠️ {dateError}</span>
             ) : (
               <>
                 {dateLabel}
@@ -372,7 +405,11 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 </span>
               </div>
               <label
-                className="flex w-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-[var(--radius)] border border-dashed border-border/80 py-4 text-muted-foreground transition-all duration-200 hover:border-primary/80 hover:bg-primary/5 hover:text-primary focus-within:ring-2 focus-within:ring-ring"
+                htmlFor="leave-attachments"
+                className={cn(
+                  "flex w-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-[var(--radius)] border border-dashed py-4 text-muted-foreground transition-all duration-200 hover:border-primary/80 hover:bg-primary/5 hover:text-primary focus-within:ring-2 focus-within:ring-ring",
+                  hasAttachmentError ? "border-destructive bg-destructive/5 text-destructive" : "border-border/80"
+                )}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <input
@@ -381,6 +418,8 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                   className="sr-only"
                   multiple
                   accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
+                  aria-describedby={hasAttachmentError ? "leave-attachment-error" : undefined}
+                  aria-invalid={hasAttachmentError}
                   onChange={(event) => {
                     const files = Array.from(event.target.files ?? []);
                     setAttachments(files);
@@ -394,6 +433,11 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                   Required for {leaveType.toLowerCase()} requests
                 </span>
               </label>
+              {hasAttachmentError && (
+                <p id="leave-attachment-error" role="alert" className="text-xs text-destructive font-medium flex items-center gap-1">
+                  ⚠️ {isArabic ? 'المرفق إلزامي لهذا النوع من الإجازات.' : 'Attachment is required for this leave type.'}
+                </p>
+              )}
               {attachments.length > 0 && (
                 <div className="space-y-2">
                   {attachments.map((file) => (
@@ -470,9 +514,9 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
 
           {/* Submit Button */}
           <Button
-            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white"
+            id="leave-submit-button"
+            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer"
             onClick={handleSubmit}
-            disabled={daysRequested === 0 || !!validationError || attachmentMissing}
           >
             {mode === 'edit' ? 'Save changes' : 'Book time off'}
             {daysRequested > 0 && mode === 'add' && (
