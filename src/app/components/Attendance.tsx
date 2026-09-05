@@ -22,6 +22,7 @@ import {
   CheckCircle,
   XCircle,
   Printer,
+  FileText,
 } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
 import { cn } from '@/lib/utils';
@@ -58,7 +59,7 @@ import {
   JobTitleService,
   Employee,
 } from '../../lib/services/dbServices';
-import { exportToCSV, exportToExcel } from '@/lib/export';
+import { exportToCSV, exportToExcel, exportToBrandedPDF } from '@/lib/export';
 
 // ── CSS variable colors for charts ──
 const CHART_COLORS = {
@@ -501,6 +502,37 @@ export const Attendance: React.FC = () => {
       toast.success(isArabic ? 'تم تنزيل سجلات الحضور بنجاح' : 'Attendance data downloaded successfully');
     } catch {
       exportToCSV(days, `Attendance-${selectedEmployee.replace(/\s+/g, '_')}`);
+    }
+  };
+
+  const handlePdfExport = async () => {
+    try {
+      const headers = ['Day', 'Date', 'Time In', 'Time Out', 'Hours', 'Status'];
+      const rows = days.map((d) => [
+        d.day,
+        d.date,
+        d.timeIn,
+        d.timeOut,
+        d.totalHours,
+        d.status,
+      ]);
+      await exportToBrandedPDF({
+        title: `Attendance Statement: ${selectedEmployee}`,
+        subtitle: `Official work attendance report for ${monthLabel} ${selectedYear}`,
+        metadata: {
+          Employee: selectedEmployee,
+          Period: `${monthLabel} ${selectedYear}`,
+          Records: `${days.length} entries`,
+        },
+        headers,
+        rows,
+        filename: `Attendance_${selectedEmployee.replace(/\s+/g, '_')}_${selectedYear}`,
+        isArabic,
+      });
+      toast.success(isArabic ? 'تم تنزيل تقرير PDF الرسمي بنجاح' : 'Official PDF report downloaded successfully');
+    } catch (err) {
+      console.error(err);
+      toast.error(isArabic ? 'فشل في إنشاء تقرير PDF' : 'Failed to generate PDF report');
     }
   };
 
@@ -1030,7 +1062,33 @@ export const Attendance: React.FC = () => {
               </TooltipContent>
             </Tooltip>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1.5 no-print me-2">
+              {[
+                { id: '11', label: isArabic ? 'نوفمبر ٢٠٢٤' : 'Nov 2024' },
+                { id: '10', label: isArabic ? 'أكتوبر ٢٠٢٤' : 'Oct 2024' },
+                { id: 'all', label: isArabic ? 'كل الشهور' : 'All' },
+              ].map((chip) => (
+                <button
+                  key={chip.id}
+                  type="button"
+                  onClick={() => setSelectedMonth(chip.id)}
+                  className={cn(
+                    'px-2.5 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer border',
+                    selectedMonth === chip.id
+                      ? 'bg-primary text-primary-foreground border-primary shadow-xs'
+                      : 'bg-muted/50 text-muted-foreground border-border hover:bg-muted'
+                  )}
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
+
+            <Button variant="outline" size="sm" onClick={handlePdfExport} className="gap-2 no-print">
+              <FileText className="w-4 h-4 text-primary" />
+              {isArabic ? 'تصدير PDF' : 'Export PDF'}
+            </Button>
             <Button variant="outline" size="sm" onClick={handleDownload} className="gap-2 no-print">
               <Download className="w-4 h-4" />
               {isArabic ? 'تنزيل البيانات' : 'Download Data'}

@@ -8,11 +8,12 @@
     "check:a11y": "node scripts/accessibility_audit.cjs",
     "check:code": "node scripts/code_review.cjs",
     "check:deadcode": "knip --include files,dependencies",
+    "check:perf": "node scripts/check_performance_budget.cjs",
     "check:responsive": "node scripts/audit_responsiveness.cjs",
     "check:visual": "node scripts/visual_regression.cjs",
     "dev": "vite",
     "preview": "vite preview",
-    "prepush": "npm run check:code && npm run check:deadcode && npm run test && npm run build && npm run check:a11y && npm run check:responsive && npm run check:visual && npm run test:e2e",
+    "prepush": "npm run check:code && npm run check:deadcode && npm run test && npm run build && npm run check:perf && npm run check:a11y && npm run check:responsive && npm run check:visual && npm run test:e2e",
     "test": "vitest run",
     "test:e2e": "node scripts/run-e2e.cjs",
     "typecheck": "tsc --noEmit"

@@ -443,11 +443,12 @@ export const LeaveService = {
     return newLeave;
   },
 
-  async updateStatus(id: string, status: 'approved' | 'rejected'): Promise<void> {
+  async updateStatus(id: string, status: 'approved' | 'rejected' | 'pending'): Promise<void> {
     if (isSupabaseConfigured) {
+      const dbStatus = status === 'approved' ? 'Approved' : status === 'rejected' ? 'Rejected' : 'Pending';
       const { error } = await supabase
         .from('leaves')
-        .update({ status: status === 'approved' ? 'Approved' : 'Rejected' })
+        .update({ status: dbStatus })
         .eq('id', id);
       if (error) throw error;
       return;
@@ -576,11 +577,12 @@ export const MissionService = {
     return newMission;
   },
 
-  async updateStatus(id: string, status: 'approved' | 'rejected'): Promise<void> {
+  async updateStatus(id: string, status: 'approved' | 'rejected' | 'pending'): Promise<void> {
     if (isSupabaseConfigured) {
+      const dbStatus = status === 'approved' ? 'Approved' : status === 'rejected' ? 'Rejected' : 'Pending';
       const { error } = await supabase
         .from('missions')
-        .update({ status: status === 'approved' ? 'Approved' : 'Rejected' })
+        .update({ status: dbStatus })
         .eq('id', id);
       if (error) throw error;
       return;

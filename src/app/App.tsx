@@ -22,6 +22,8 @@ import { RequestLeaveModal } from './components/RequestLeaveModal';
 import { RequestMissionModal } from './components/RequestMissionModal';
 import { ConfirmDialog } from './components/ConfirmDialog';
 import { OfflineBanner } from './components/OfflineBanner';
+import { PwaInstallPrompt } from './components/PwaInstallPrompt';
+import { ComponentStyleguideModal } from './components/ComponentStyleguideModal';
 import { ReloadPrompt } from './components/ReloadPrompt';
 import { useArabicDomTranslation } from '@/lib/useArabicDomTranslation';
 import { useTheme } from '@/lib/useTheme';
@@ -75,6 +77,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [styleguideOpen, setStyleguideOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
 
   // Accessibility states
@@ -110,14 +113,63 @@ export default function App() {
   }, [largeTargets]);
 
   useEffect(() => {
+    let pendingPrefix: 'g' | 'n' | null = null;
+    let prefixTimeout: ReturnType<typeof setTimeout> | null = null;
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target as HTMLElement)?.isContentEditable
+      ) {
+        return;
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        setCommandPaletteOpen(open => !open);
+        setCommandPaletteOpen((open) => !open);
+        return;
+      }
+
+      if (e.altKey && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        setStyleguideOpen((open) => !open);
+        return;
+      }
+
+      const key = e.key.toLowerCase();
+
+      if (pendingPrefix) {
+        if (pendingPrefix === 'g') {
+          if (key === 'd') { e.preventDefault(); setActiveTab('dashboard'); }
+          else if (key === 'a') { e.preventDefault(); setActiveTab('attendance'); }
+          else if (key === 'e') { e.preventDefault(); setActiveTab('employees'); }
+          else if (key === 'l') { e.preventDefault(); setActiveTab('leaves'); }
+          else if (key === 'm') { e.preventDefault(); setActiveTab('missions'); }
+          else if (key === 'r') { e.preventDefault(); setActiveTab('roles'); }
+          else if (key === 'p') { e.preventDefault(); setActiveTab('profile'); }
+        } else if (pendingPrefix === 'n') {
+          if (key === 'l') { e.preventDefault(); setRequestLeaveOpen(true); }
+          else if (key === 'm') { e.preventDefault(); setRequestMissionOpen(true); }
+        }
+        pendingPrefix = null;
+        if (prefixTimeout) clearTimeout(prefixTimeout);
+        return;
+      }
+
+      if (key === 'g' || key === 'n') {
+        pendingPrefix = key;
+        prefixTimeout = setTimeout(() => {
+          pendingPrefix = null;
+        }, 1200);
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      if (prefixTimeout) clearTimeout(prefixTimeout);
+    };
   }, []);
 
   useEffect(() => {
@@ -394,12 +446,14 @@ export default function App() {
         currentUser={currentUser}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+        <PwaInstallPrompt />
         <OfflineBanner />
         <Header 
           currentUser={currentUser} 
           accessibility={accessibility} 
           onOpenCommandPalette={() => setCommandPaletteOpen(true)}
           onOpenShortcuts={() => setShortcutsOpen(true)}
+          onOpenStyleguide={() => setStyleguideOpen(true)}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           onLogout={handleLogout}
@@ -419,6 +473,10 @@ export default function App() {
       <KeyboardShortcutsPanel 
         open={shortcutsOpen} 
         onOpenChange={setShortcutsOpen} 
+      />
+      <ComponentStyleguideModal
+        open={styleguideOpen}
+        onOpenChange={setStyleguideOpen}
       />
 
       {/* Global Modals */}

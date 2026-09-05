@@ -18,18 +18,29 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  let reqPath = req.url.split('?')[0].replace(/^\/hr-tool-v2/, '');
-  if (reqPath === '' || reqPath === '/') reqPath = '/index.html';
-  let filePath = path.join(distDir, reqPath);
-
+  let cleanUrl = req.url.split('?')[0];
+  if (cleanUrl.startsWith('/hr-tool-v2/')) {
+    cleanUrl = cleanUrl.slice('/hr-tool-v2/'.length - 1);
+  } else if (cleanUrl === '/hr-tool-v2') {
+    cleanUrl = '/';
+  }
+  let filePath = path.join(distDir, cleanUrl === '/' ? 'index.html' : cleanUrl);
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
     filePath = path.join(distDir, 'index.html');
   }
 
   const ext = path.extname(filePath).toLowerCase();
   const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-  res.writeHead(200, { 'Content-Type': contentType });
-  fs.createReadStream(filePath).pipe(res);
+
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      res.writeHead(500);
+      res.end('Error loading file');
+    } else {
+      res.writeHead(200, { 'Content-Type': contentType });
+      res.end(content);
+    }
+  });
 });
 
 const VIEWPORTS = [

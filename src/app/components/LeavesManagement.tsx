@@ -21,7 +21,9 @@ import { Checkbox } from './ui/checkbox';
 import { StatusBadge } from './StatusBadge';
 import { toast } from 'sonner';
 import { EmptyState } from './EmptyState';
-import { exportToCSV } from '../../lib/export';
+import { exportToCSV, exportToBrandedPDF } from '../../lib/export';
+import { undoManager } from '../../lib/undoStack';
+import { enqueueOfflineAction } from '../../lib/offlineQueue';
 import { Pagination } from './Pagination';
 import { useTranslation } from 'react-i18next';
 import { formatLocalizedDate, localizePersonName } from '@/lib/localizedNames';
@@ -72,6 +74,7 @@ const getRequestDate = (request: Pick<LeaveRequest, 'startDate' | 'endDate' | 'r
 export const LeavesManagement: React.FC = () => {
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const displayEmployeeName = (name?: LeaveRequest['name']) => localizePersonName(name, language);
   const matchesEmployeeSearch = (name: LeaveRequest['name'], employeeNumber: string | undefined, query: string) => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -211,6 +214,36 @@ export const LeavesManagement: React.FC = () => {
 
   const togglePending = (id: string) => setSelectedPending(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id]);
   const toggleAllPending = () => setSelectedPending(p => p.length === pendingLeaves.length ? [] : pendingLeaves.map(l => l.id));
+
+  const handlePdfExport = async () => {
+    try {
+      const headers = ['Employee', 'Type', 'Date Range', 'Duration', 'Status'];
+      const rows = filteredHistory.map((l) => [
+        displayEmployeeName(l.name),
+        l.type,
+        l.range,
+        l.duration,
+        l.status || '',
+      ]);
+      await exportToBrandedPDF({
+        title: 'Official Leave Management Statement',
+        subtitle: `Executive summary of employee leave records (${filteredHistory.length} entries)`,
+        metadata: {
+          Scope: 'Company-Wide',
+          TotalLeaves: `${filteredHistory.length}`,
+          Generated: new Date().toLocaleDateString(),
+        },
+        headers,
+        rows,
+        filename: `Leaves_Statement_${new Date().getFullYear()}`,
+        isArabic,
+      });
+      toast.success(isArabic ? 'تم تنزيل تقرير PDF الرسمي بنجاح' : 'Official PDF statement exported successfully');
+    } catch (err) {
+      console.error(err);
+      toast.error(isArabic ? 'فشل في إنشاء تقرير PDF' : 'Failed to generate PDF report');
+    }
+  };
 
   const applyFilters = () => {
     let c = 0;
@@ -436,12 +469,29 @@ export const LeavesManagement: React.FC = () => {
               </Popover>
             </div>
           </div>
-          <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
-            exportToCSV(filteredHistory, 'Leaves_History');
-            toast.success('Download started', { description: 'Leaves data exported to CSV.' });
-          }}>
-            <Download className="w-4 h-4" /> Download Data
-          </Button>
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2 rounded-[var(--radius-button)] border-border"
+              onClick={handlePdfExport}
+            >
+              <FileText className="w-4 h-4 text-primary" />
+              {isArabic ? 'تصدير PDF' : 'Export PDF'}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2 rounded-[var(--radius-button)] border-border"
+              onClick={() => {
+                exportToCSV(filteredHistory, 'Leaves_History');
+                toast.success(isArabic ? 'تم تنزيل البيانات بصيغة CSV' : 'Leaves data exported to CSV.');
+              }}
+            >
+              <Download className="w-4 h-4" />
+              {isArabic ? 'تنزيل البيانات' : 'Download Data'}
+            </Button>
+          </div>
         </div>
 
         <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
@@ -537,17 +587,33 @@ export const LeavesManagement: React.FC = () => {
       <ConfirmDialog
         open={confirmApprovalOpen} onOpenChange={setConfirmApprovalOpen}
         title="Confirm Approval"
-        message={`You are approving ${selectedPending.length} leave request(s). This action cannot be undone.`}
-        confirmLabel="Confirm" cancelLabel="Cancel"
+        message={`You are approving ${selectedPending.length} leave request(s). You can undo this action within 6 seconds.`}
+        confirmLabel="Approve" cancelLabel="Cancel"
         onConfirm={async () => {
+          const ids = [...selectedPending];
+          const prevItems = allLeaves.filter(l => ids.includes(l.id));
           try {
-            for (const id of selectedPending) {
-              await LeaveService.updateStatus(id, 'approved');
-            }
-            await loadLeaves();
+            await undoManager.executeAction({
+              id: `approve_${Date.now()}`,
+              description: isArabic
+                ? `تمت الموافقة على ${ids.length} طلب إجازة بنجاح`
+                : `Approved ${ids.length} leave request(s) successfully`,
+              execute: async () => {
+                for (const id of ids) {
+                  await LeaveService.updateStatus(id, 'approved');
+                }
+                await loadLeaves();
+              },
+              undo: async () => {
+                for (const item of prevItems) {
+                  await LeaveService.updateStatus(item.id, 'pending');
+                }
+                await loadLeaves();
+              },
+            }, isArabic ? 'تراجع' : 'Undo', 6000);
+
             setConfirmApprovalOpen(false);
             setSelectedPending([]);
-            toast.success(`${selectedPending.length} request(s) approved successfully`);
           } catch (e) {
             toast.error('Failed to approve selected leaves');
           }
@@ -561,16 +627,29 @@ export const LeavesManagement: React.FC = () => {
       <ConfirmDialog
         open={declineOpen} onOpenChange={setDeclineOpen}
         title="Decline Leave"
-        message={<>You are declining <strong>{displayEmployeeName(declineData?.name)}</strong>'s {declineData?.type?.toLowerCase()} leave from <strong>{declineData?.range}</strong>. This action is permanent.</>}
+        message={<>You are declining <strong>{displayEmployeeName(declineData?.name)}</strong>'s {declineData?.type?.toLowerCase()} leave from <strong>{declineData?.range}</strong>. You can undo within 6 seconds.</>}
         confirmLabel="Decline" cancelLabel="Cancel" variant="destructive"
         onConfirm={async () => {
+          if (!declineData) return;
+          const targetLeave = declineData;
           try {
-            if (declineData) {
-              await LeaveService.updateStatus(declineData.id, 'rejected');
-              await loadLeaves();
-            }
+            await undoManager.executeAction({
+              id: `decline_${Date.now()}`,
+              description: isArabic
+                ? `تم رفض طلب إجازة ${displayEmployeeName(targetLeave.name)}`
+                : `Declined ${displayEmployeeName(targetLeave.name)}'s leave request`,
+              execute: async () => {
+                await LeaveService.updateStatus(targetLeave.id, 'rejected');
+                await loadLeaves();
+              },
+              undo: async () => {
+                await LeaveService.updateStatus(targetLeave.id, 'pending');
+                await loadLeaves();
+              },
+            }, isArabic ? 'تراجع' : 'Undo', 6000);
+
             setDeclineOpen(false);
-            toast.success(`${displayEmployeeName(declineData?.name)}'s leave request declined`);
+            setDeclineData(null);
           } catch (e) {
             toast.error('Failed to decline leave request');
           }

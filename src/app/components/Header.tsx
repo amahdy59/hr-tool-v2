@@ -1,8 +1,10 @@
-import React from 'react';
-import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle, Palette, CloudOff } from 'lucide-react';
 import { Logo } from './Logo';
 import { useTranslation } from 'react-i18next';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
+import { NotificationCenter } from './NotificationCenter';
+import { getPendingOfflineQueue } from '@/lib/offlineQueue';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from './ui/sheet';
 import { cn } from '@/lib/utils';
 import type { AppTab } from '../App';
@@ -18,6 +20,7 @@ interface HeaderProps {
   accessibility: AccessibilitySettings;
   onOpenCommandPalette?: () => void;
   onOpenShortcuts?: () => void;
+  onOpenStyleguide?: () => void;
   activeTab: AppTab;
   setActiveTab: (tab: AppTab) => void;
   onLogout?: () => void;
@@ -32,11 +35,30 @@ const getInitials = (name: string): string => {
     .join('');
 };
 
-export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, activeTab, setActiveTab, onLogout }) => {
+export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOpenCommandPalette, onOpenShortcuts, onOpenStyleguide, activeTab, setActiveTab, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [offlinePendingCount, setOfflinePendingCount] = useState(0);
   const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const displayName = localizePersonName(currentUser?.name, i18n.resolvedLanguage || i18n.language);
+
+  useEffect(() => {
+    const updateCount = async () => {
+      const queue = await getPendingOfflineQueue();
+      setOfflinePendingCount(queue.length);
+    };
+    updateCount();
+
+    window.addEventListener('hr-offline-queue-changed', updateCount);
+    window.addEventListener('online', updateCount);
+    window.addEventListener('offline', updateCount);
+
+    return () => {
+      window.removeEventListener('hr-offline-queue-changed', updateCount);
+      window.removeEventListener('online', updateCount);
+      window.removeEventListener('offline', updateCount);
+    };
+  }, []);
 
   return (
     <header className="grid h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 bg-background/40 backdrop-blur-xl supports-[backdrop-filter]:bg-background/40 px-3 absolute top-0 left-0 right-0 z-[60] w-full sm:px-6 transition-all">
@@ -162,10 +184,35 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         </button>
       </div>
 
-      <div className="flex min-w-0 items-center justify-end gap-2 lg:gap-3">
+      <div className="flex min-w-0 items-center justify-end gap-2 lg:gap-2.5">
+        {offlinePendingCount > 0 && (
+          <div
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-xs font-semibold select-none"
+            title={t('header.syncPending', { count: offlinePendingCount })}
+          >
+            <CloudOff className="w-3.5 h-3.5 animate-pulse" aria-hidden="true" />
+            <span className="hidden sm:inline">{offlinePendingCount}</span>
+          </div>
+        )}
+
+        <NotificationCenter />
+
+        {onOpenStyleguide && (
+          <button
+            type="button"
+            onClick={onOpenStyleguide}
+            className="hidden md:flex w-11 h-11 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            aria-label={t('header.styleguide', 'Component Styleguide')}
+            title={`${t('header.styleguide', 'Component Styleguide')} (Alt+S)`}
+          >
+            <Palette className="w-4 h-4" aria-hidden="true" />
+          </button>
+        )}
+
         <button
+          type="button"
           onClick={onOpenShortcuts}
-          className="hidden md:flex w-11 h-11 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="hidden md:flex w-11 h-11 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
           aria-label={t('header.shortcutsTitle')}
           title={t('header.shortcutsTitle')}
         >
@@ -175,7 +222,6 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
         <div>
           <AccessibilityPanel settings={accessibility} />
         </div>
-
       </div>
     </header>
   );

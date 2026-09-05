@@ -50,6 +50,9 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
+      - name: Performance Budget Audit (Bundle & Gzip Limits)
+        run: npm run check:perf
+
       - name: Accessibility Review (WCAG 2.2 AAA Axe-core)
         run: npm run check:a11y 2>&1 | tee a11y.log
 
@@ -72,6 +75,7 @@ jobs:
           echo "| **Dead Code Audit** | Knip Zero Dead Files / Unused Dependencies |" >> $GITHUB_STEP_SUMMARY
           echo "| **Unit Tests** | 29 Vitest Domain & Logic Tests |" >> $GITHUB_STEP_SUMMARY
           echo "| **Production Build** | Vite PWA Bundle |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Performance Budget** | Strict Gzip Thresholds (JS < 160kB, CSS < 35kB) |" >> $GITHUB_STEP_SUMMARY
           echo "| **Accessibility Review** | WCAG 2.2 AAA (0 Violations) |" >> $GITHUB_STEP_SUMMARY
           echo "| **Responsiveness Review** | 7 Viewports (320px–1440px, 0 Overflow) |" >> $GITHUB_STEP_SUMMARY
           echo "| **Visual Regression** | Pixelmatch Baseline Match |" >> $GITHUB_STEP_SUMMARY

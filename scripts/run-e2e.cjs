@@ -59,6 +59,10 @@ server.listen(0, '127.0.0.1', async () => {
     });
 
     const page = await browser.newPage();
+    page.on('console', msg => {
+      if (msg.type() === 'error') console.log('BROWSER CONSOLE ERROR:', msg.text());
+    });
+    page.on('pageerror', err => console.error('BROWSER UNCAUGHT ERROR:', err));
     await page.setViewport({ width: 1280, height: 800 });
 
     const report = [];
