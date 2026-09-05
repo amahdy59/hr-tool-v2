@@ -14,6 +14,8 @@ function getArg(flag, defaultValue) {
 }
 const shouldWait = args.includes('--wait');
 const shouldVerifyLive = args.includes('--verify-live');
+const skipCheckRuns = args.includes('--skip-check-runs');
+const currentCiJob = process.env.GITHUB_JOB || process.env.GITHUB_ACTION;
 const repo = getArg('--repo', 'amahdy59/hr-tool-v2');
 const targetUrl = getArg('--url', 'https://amahdy59.github.io/hr-tool-v2/');
 const timeoutSeconds = parseInt(getArg('--timeout', '300'), 10);
@@ -32,7 +34,7 @@ console.log('🚀 [Deployment Auto-Checker] Starting deployment health audit...'
 console.log(`   Repository : ${repo}`);
 console.log(`   Commit SHA : ${targetSha}`);
 console.log(`   Live URL   : ${targetUrl}`);
-console.log(`   Mode       : ${shouldVerifyLive ? 'Live Smoke Test + Check-Runs' : 'Check-Runs Audit'}${shouldWait ? ' (Polling with wait)' : ''}`);
+console.log(`   Mode       : ${shouldVerifyLive ? 'Live Smoke Test' : ''}${!skipCheckRuns ? (shouldVerifyLive ? ' + ' : '') + 'Check-Runs Audit' : ''}${shouldWait ? ' (Polling with wait)' : ''}`);
 console.log('--------------------------------------------------');
 
 // Helper to fetch GitHub API
@@ -158,57 +160,62 @@ async function run() {
   let lastCheckRuns = [];
 
   // If in wait mode or auditing GitHub check runs
-  while (!completed) {
-    try {
-      const data = await fetchGithubCheckRuns(repo, targetSha);
-      const runs = data.check_runs || [];
-      lastCheckRuns = runs;
+  if (!skipCheckRuns) {
+    while (!completed) {
+      try {
+        const data = await fetchGithubCheckRuns(repo, targetSha);
+        const runs = data.check_runs || [];
+        lastCheckRuns = runs;
 
-      console.log(`\n📋 GitHub Commit Check-Runs for [${targetSha.substring(0, 8)}]:`);
-      if (runs.length === 0) {
-        console.log('   No check runs registered yet for this commit.');
-      }
-
-      let inProgressCount = 0;
-      let failureCount = 0;
-
-      runs.forEach(c => {
-        const isCompleted = c.status === 'completed';
-        const isSuccess = c.conclusion === 'success';
-        let badge = '⏳';
-        if (isCompleted) {
-          badge = isSuccess ? '✅' : '❌';
+        console.log(`\n📋 GitHub Commit Check-Runs for [${targetSha.substring(0, 8)}]:`);
+        if (runs.length === 0) {
+          console.log('   No check runs registered yet for this commit.');
         }
 
-        console.log(`   ${badge} [${c.name}] Status: ${c.status}, Conclusion: ${c.conclusion || 'pending'}`);
-        if (!isCompleted) inProgressCount++;
-        if (isCompleted && !isSuccess) {
-          failureCount++;
-          if (c.output?.summary) {
-            console.log(`      Summary: ${c.output.summary.slice(0, 200)}`);
+        let inProgressCount = 0;
+        let failureCount = 0;
+
+        runs.forEach(c => {
+          const isCurrentJob = currentCiJob && c.name.toLowerCase().includes(currentCiJob.toLowerCase());
+          const isCompleted = c.status === 'completed';
+          const isSuccess = c.conclusion === 'success';
+          let badge = '⏳';
+          if (isCompleted) {
+            badge = isSuccess ? '✅' : '❌';
+          }
+
+          console.log(`   ${badge} [${c.name}] Status: ${c.status}, Conclusion: ${c.conclusion || 'pending'}${isCurrentJob ? ' (Current CI Job)' : ''}`);
+          if (!isCompleted && !isCurrentJob) inProgressCount++;
+          if (isCompleted && !isSuccess) {
+            failureCount++;
+            if (c.output?.summary) {
+              console.log(`      Summary: ${c.output.summary.slice(0, 200)}`);
+            }
+          }
+        });
+
+        if (!shouldWait || inProgressCount === 0 || failureCount > 0) {
+          completed = true;
+          allPassed = (runs.length > 0) && (failureCount === 0) && (inProgressCount === 0);
+        } else {
+          const elapsed = Math.round((Date.now() - startTime) / 1000);
+          if (elapsed >= timeoutSeconds) {
+            console.error(`\n⌛ Timeout exceeded (${timeoutSeconds}s) waiting for check runs.`);
+            completed = true;
+            allPassed = false;
+          } else {
+            console.log(`   ⏳ Checks still in progress (${inProgressCount}). Waiting 10s... (Elapsed: ${elapsed}s)`);
+            await new Promise(r => setTimeout(r, 10000));
           }
         }
-      });
-
-      if (!shouldWait || inProgressCount === 0 || failureCount > 0) {
+      } catch (err) {
+        console.warn(`   ⚠️ Could not query GitHub API (${err.message}).`);
         completed = true;
-        allPassed = (runs.length > 0) && (failureCount === 0) && (inProgressCount === 0);
-      } else {
-        const elapsed = Math.round((Date.now() - startTime) / 1000);
-        if (elapsed >= timeoutSeconds) {
-          console.error(`\n⌛ Timeout exceeded (${timeoutSeconds}s) waiting for check runs.`);
-          completed = true;
-          allPassed = false;
-        } else {
-          console.log(`   ⏳ Checks still in progress (${inProgressCount}). Waiting 10s... (Elapsed: ${elapsed}s)`);
-          await new Promise(r => setTimeout(r, 10000));
-        }
+        allPassed = true; // allow live verification to govern
       }
-    } catch (err) {
-      console.warn(`   ⚠️ Could not query GitHub API (${err.message}).`);
-      completed = true;
-      allPassed = true; // allow live verification to govern
     }
+  } else {
+    allPassed = true;
   }
 
   // Live endpoint verification

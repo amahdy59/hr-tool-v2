@@ -9,7 +9,7 @@
     "check:code": "node scripts/code_review.cjs",
     "check:deadcode": "knip --include files,dependencies",
     "check:deployments": "node scripts/check_deployments.cjs",
-    "check:live": "node scripts/check_deployments.cjs --verify-live",
+    "check:live": "node scripts/check_deployments.cjs --verify-live --skip-check-runs",
     "check:migrations": "node scripts/lint_supabase_migrations.cjs",
     "check:perf": "node scripts/check_performance_budget.cjs",
     "check:responsive": "node scripts/audit_responsiveness.cjs",
