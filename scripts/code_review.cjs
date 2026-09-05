@@ -135,6 +135,15 @@ try {
   hasErrors = true;
 }
 
+// 5. Supabase Migration & Seed Linting (RFC-4122 UUID & PostgreSQL syntax)
+try {
+  console.log('\n5️⃣ Verifying Supabase SQL Migrations & Seed Compliance...');
+  execSync('node scripts/lint_supabase_migrations.cjs', { stdio: 'inherit', cwd: path.join(__dirname, '..') });
+} catch (e) {
+  console.error('   ❌ Supabase migration check failed.');
+  hasErrors = true;
+}
+
 console.log('--------------------------------------------------');
 if (hasErrors) {
   console.error('💥 [Code Review] Verification FAILED. Please fix the issues above.');
