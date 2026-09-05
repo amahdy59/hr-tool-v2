@@ -29,7 +29,7 @@ create table if not exists public.employees (
     gender text check (gender in ('Male', 'Female')),
     department_id uuid references public.departments(id) on delete set null,
     job_title_id uuid references public.job_titles(id) on delete set null,
-    contract_type text check (contract_type in ('Full-Time', 'Part-Time', 'Contractor', 'Intern', 'Freelance')),
+    contract_type text check (contract_type in ('Permanent', 'Full-Time', 'Part-Time', 'Contractor', 'Intern', 'Freelance')),
     source_system text,
     hire_date date not null default current_date,
     activity_type text check (activity_type in ('Direct', 'InDirect')),
