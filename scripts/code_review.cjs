@@ -93,6 +93,48 @@ try {
   hasErrors = true;
 }
 
+// 4. RTL Logical Property Linter (Disallow physical ml-, mr-, pl-, pr- on UI)
+try {
+  console.log('\n4️⃣ Verifying RTL Logical CSS Utilities in UI Components...');
+  const srcDir = path.join(__dirname, '..', 'src');
+  const physicalClassPattern = /\b(mr-|ml-|pl-|pr-)\d+\b/g;
+
+  function scanDir(dir) {
+    let files = [];
+    for (const item of fs.readdirSync(dir)) {
+      const fullPath = path.join(dir, item);
+      if (fs.statSync(fullPath).isDirectory()) {
+        files = files.concat(scanDir(fullPath));
+      } else if (/\.(tsx|jsx)$/.test(item)) {
+        files.push(fullPath);
+      }
+    }
+    return files;
+  }
+
+  const uiFiles = scanDir(srcDir);
+  let physicalViolations = [];
+
+  for (const file of uiFiles) {
+    const content = fs.readFileSync(file, 'utf8');
+    const matches = content.match(physicalClassPattern);
+    if (matches && matches.length > 0) {
+      physicalViolations.push({ file: path.relative(path.join(__dirname, '..'), file), matches });
+    }
+  }
+
+  if (physicalViolations.length > 0) {
+    console.error(`   ❌ Found physical margin/padding classes that break RTL mirroring:`);
+    physicalViolations.forEach(v => console.error(`      - ${v.file}: ${v.matches.join(', ')} (use ms-, me-, ps-, pe-)`));
+    hasErrors = true;
+  } else {
+    console.log(`   ✅ RTL logical property compliance: 0 physical spacing violations across ${uiFiles.length} components.`);
+  }
+} catch (e) {
+  console.error('   ❌ RTL logical property check failed:', e.message);
+  hasErrors = true;
+}
+
 console.log('--------------------------------------------------');
 if (hasErrors) {
   console.error('💥 [Code Review] Verification FAILED. Please fix the issues above.');

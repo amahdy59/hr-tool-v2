@@ -116,7 +116,7 @@ const ExperienceItem: React.FC<{
 
           {data.skillsUsed && data.skillsUsed.length > 0 && (
             <div className="pt-2 flex flex-wrap gap-1.5 items-center">
-              <span className="text-xs text-muted-foreground font-[var(--font-weight-medium)] mr-1">Skills:</span>
+              <span className="text-xs text-muted-foreground font-[var(--font-weight-medium)] me-1">Skills:</span>
               {data.skillsUsed.map((sk, i) => (
                 <span key={i} className="inline-flex items-center px-2 py-0.5 rounded-md bg-secondary/60 text-secondary-foreground text-xs font-medium">
                   {sk}

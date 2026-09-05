@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/knip@5/overview/configuration-schema.json",
+  "entry": ["src/main.tsx", "scripts/*.cjs", "postcss.config.mjs"],
+  "project": ["src/**/*.{ts,tsx}", "scripts/*.cjs"],
+  "ignore": ["src/app/components/ui/**"],
+  "ignoreDependencies": [
+    "@radix-ui/*",
+    "@supabase/ssr",
+    "cmdk",
+    "next-themes",
+    "react-hook-form",
+    "express",
+    "embla-carousel-react",
+    "input-otp",
+    "react-resizable-panels",
+    "tw-animate-css",
+    "tailwindcss"
+  ]
+}

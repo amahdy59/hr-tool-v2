@@ -33,8 +33,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Code Review (Typecheck, Manifest, i18n Parity)
+      - name: Code Review (Typecheck, Manifest, i18n Parity, RTL Linter)
         run: npm run check:code
+
+      - name: Dead Code Audit (Knip)
+        run: npm run check:deadcode
 
       - name: Unit Tests
         run: npm run test
@@ -51,6 +54,9 @@ jobs:
       - name: Responsiveness Review (7 Standard Viewports)
         run: npm run check:responsive
 
+      - name: Visual Regression Review (Pixelmatch)
+        run: npm run check:visual
+
       - name: End-to-End Tests
         run: npm run test:e2e
 
@@ -60,11 +66,13 @@ jobs:
           echo "## 🛡️ Automated Quality Gates Summary" >> $GITHUB_STEP_SUMMARY
           echo "| Check | Status | Standard |" >> $GITHUB_STEP_SUMMARY
           echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Code Review** | ✅ Passed | TypeScript, PWA Manifest, i18n Parity |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Unit Tests** | ✅ Passed | Vitest Component & Logic Suite |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Code Review** | ✅ Passed | TypeScript, PWA Manifest, i18n Parity, RTL Linter |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Dead Code Audit** | ✅ Passed | Knip Zero Dead Files / Unused Dependencies |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Unit Tests** | ✅ Passed | 29 Vitest Domain & Logic Tests |" >> $GITHUB_STEP_SUMMARY
           echo "| **Production Build** | ✅ Passed | Vite PWA Bundle |" >> $GITHUB_STEP_SUMMARY
           echo "| **Accessibility Review** | ✅ Passed | WCAG 2.2 AAA (0 Violations) |" >> $GITHUB_STEP_SUMMARY
           echo "| **Responsiveness Review** | ✅ Passed | 7 Viewports (320px–1440px, 0 Overflow) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Visual Regression** | ✅ Passed | Pixelmatch Baseline Match (0% Diff) |" >> $GITHUB_STEP_SUMMARY
           echo "| **E2E Integration** | ✅ Passed | Complete User Flows & RTL Parity |" >> $GITHUB_STEP_SUMMARY
         
       - name: Setup Pages

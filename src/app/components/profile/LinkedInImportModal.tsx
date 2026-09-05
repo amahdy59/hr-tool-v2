@@ -330,7 +330,7 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({ open, 
               <strong>LinkedIn import ready!</strong> We parsed {parsedData.experiences.length} Experiences, {parsedData.educations.length} Education items, {parsedData.projects.length} Projects, and {parsedData.skills.length} Skills. Review them below before merging.
             </div>
 
-            <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-2 border border-border p-3 rounded-lg bg-muted/20">
+            <div className="space-y-4 max-h-[40vh] overflow-y-auto pe-2 border border-border p-3 rounded-lg bg-muted/20">
               <div className="space-y-1">
                 <span className="text-xs uppercase font-bold text-muted-foreground tracking-wider" style={{ fontFamily: "'Inter', sans-serif" }}>Summary / About</span>
                 <p className="text-[var(--text-sm)] line-clamp-2" style={{ fontFamily: "'Inter', sans-serif" }}>{parsedData.about}</p>
