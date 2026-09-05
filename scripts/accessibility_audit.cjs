@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const axeCore = require('axe-core');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
@@ -53,7 +54,7 @@ server.listen(0, '127.0.0.1', async () => {
 
     async function auditCurrentState(stateName) {
       console.log(`\n🔍 Auditing view: ${stateName}...`);
-      await page.addScriptTag({ url: 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.8.2/axe.min.js' });
+      await page.evaluate(axeCore.source);
       const results = await page.evaluate(async () => {
         // @ts-ignore
         return await axe.run({
@@ -84,7 +85,9 @@ server.listen(0, '127.0.0.1', async () => {
     }
 
     // 1. Audit Login Screen (English)
-    await page.goto(baseUrl, { waitUntil: 'networkidle0' });
+    await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('#root', { timeout: 15000 });
+    await page.evaluate(() => (document.fonts ? document.fonts.ready : Promise.resolve()));
     await auditCurrentState('1. Login Screen (English)');
 
     // 2. Audit Login Screen (Arabic)
