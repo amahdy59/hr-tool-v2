@@ -158,7 +158,7 @@ begin
   )
   values (
     new.id,
-    coalesce(new.raw_user_meta_data->>'employee_number', substring(new.id::text from 1 for 8)),
+    coalesce(new.raw_user_meta_data->>'employee_number', 'EMP-' || replace(new.id::text, '-', '')),
     coalesce(new.raw_user_meta_data->>'first_name', 'New'),
     coalesce(new.raw_user_meta_data->>'last_name', 'Employee'),
     new.email,

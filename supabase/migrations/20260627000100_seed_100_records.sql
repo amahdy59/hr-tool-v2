@@ -5,6 +5,10 @@
 alter table public.employees drop constraint if exists employees_contract_type_check;
 alter table public.employees add constraint employees_contract_type_check check (contract_type in ('Permanent', 'Full-Time', 'Part-Time', 'Contractor', 'Intern', 'Freelance'));
 
+
+-- Drop signup trigger during bulk seeding to prevent duplicate key collisions
+drop trigger if exists on_auth_user_created on auth.users;
+
 -- Clean existing if needed
 truncate table public.payroll cascade;
 truncate table public.attendance cascade;
@@ -1340,4 +1344,39 @@ insert into public.attendance (employee_id, date, clock_in, clock_out, status, n
     ('e1000000-0000-0000-0000-000000000100', '2026-06-25', '09:00:00', '17:00:00', 'Present', 'Autoseeded normal check-in');
 insert into public.payroll (employee_id, month, basic_salary, allowances, deductions, bonuses, payment_status) values
     ('e1000000-0000-0000-0000-000000000100', '2026-06-01', 25000, 1000, 150, 300, 'Paid');
+
+-- Re-create signup trigger for future auth users
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.employees (
+    id, 
+    employee_number, 
+    first_name, 
+    last_name, 
+    email, 
+    role, 
+    hire_date,
+    contract_type,
+    activity_type
+  )
+  values (
+    new.id,
+    coalesce(new.raw_user_meta_data->>'employee_number', 'EMP-' || replace(new.id::text, '-', '')),
+    coalesce(new.raw_user_meta_data->>'first_name', 'New'),
+    coalesce(new.raw_user_meta_data->>'last_name', 'Employee'),
+    new.email,
+    'Employee',
+    current_date,
+    'Full-Time',
+    'Direct'
+  )
+  on conflict (id) do nothing;
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create or replace trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
 
