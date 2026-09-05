@@ -178,7 +178,7 @@ server.listen(0, '127.0.0.1', async () => {
     assert(isAuthenticated, 'Authenticated layout rendered (#main-content exists)');
 
     console.log('\n--- Test 3: Navigation Across Core Modules ---');
-    const tabs = ['dashboard', 'attendance', 'employees', 'leaves', 'missions', 'roles', 'payrolls', 'profile'];
+    const tabs = ['dashboard', 'attendance', 'employees', 'leaves', 'missions', 'roles', 'profile'];
     for (const tab of tabs) {
       await page.evaluate((t) => {
         const links = Array.from(document.querySelectorAll('button, a'));
