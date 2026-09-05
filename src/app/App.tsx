@@ -355,7 +355,7 @@ export default function App() {
           <div className="flex items-center justify-center min-h-[400px] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             <div className="flex flex-col items-center gap-3">
               <span className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></span>
-              <span>Loading...</span>
+              <span>{t('common.loading')}</span>
             </div>
           </div>
         }>
@@ -373,7 +373,7 @@ export default function App() {
         className="skip-link fixed start-4 top-4 z-[100] flex min-h-11 min-w-11 -translate-y-20 items-center justify-center rounded-md bg-primary px-4 py-2.5 text-primary-foreground opacity-0 shadow-lg transition-transform focus:translate-y-0 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
         style={{ fontFamily: "'Inter', sans-serif" }}
       >
-        Skip to main content
+        {t('common.skipToMain')}
       </a>
       {/* Accessibility Announcement Region */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">

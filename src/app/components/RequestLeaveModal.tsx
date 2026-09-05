@@ -60,7 +60,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   initialData,
   mode = 'add',
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
   const toEasternArabic = (val: number | string) => {
@@ -357,6 +357,50 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               </>
             )}
           </p>
+
+          {/* Live Entitlement Balance Preview Card (eLearning Scaffolding) */}
+          {fromDate && toDate && daysRequested > 0 && isVacationRequest && (
+            <div
+              className={cn(
+                "rounded-[var(--radius-card)] border p-3 text-start space-y-2 transition-all",
+                daysRequested > currentBalance 
+                  ? "border-destructive/40 bg-destructive/5 text-destructive"
+                  : "border-border/80 bg-muted/30 text-foreground"
+              )}
+              aria-live="polite"
+            >
+              <div className="flex items-center justify-between text-[var(--text-xs)] font-semibold uppercase tracking-wider text-muted-foreground">
+                <span>{t('leave.balanceBreakdown', 'Balance Breakdown')}</span>
+                <span className={cn("text-[var(--text-xs)] font-bold px-2 py-0.5 rounded-full border",
+                  daysRequested > currentBalance
+                    ? "bg-destructive/10 text-destructive border-destructive/20"
+                    : "bg-chart-3/15 text-chart-3 border-chart-3/30"
+                )}>
+                  {daysRequested > currentBalance ? (isArabic ? 'رصيد غير كافٍ' : 'Insufficient Balance') : (isArabic ? 'رصيد كافٍ' : 'Balance Sufficient')}
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-center pt-1 border-t border-border/40">
+                <div className="bg-background/80 rounded-[var(--radius-sm)] p-2 border border-border/50">
+                  <span className="block text-[var(--text-xs)] text-muted-foreground truncate">{t('leave.currentBalance', 'Current Balance')}</span>
+                  <span className="text-[var(--text-sm)] font-bold tabular-nums text-foreground">
+                    {toEasternArabic(currentBalance)} {t('dashboard.days', 'days')}
+                  </span>
+                </div>
+                <div className="bg-background/80 rounded-[var(--radius-sm)] p-2 border border-border/50">
+                  <span className="block text-[var(--text-xs)] text-muted-foreground truncate">{t('leave.requestedDays', 'Requested')}</span>
+                  <span className={cn("text-[var(--text-sm)] font-bold tabular-nums", daysRequested > currentBalance ? "text-destructive" : "text-primary")}>
+                    {toEasternArabic(daysRequested)} {t('dashboard.days', 'days')}
+                  </span>
+                </div>
+                <div className="bg-background/80 rounded-[var(--radius-sm)] p-2 border border-border/50">
+                  <span className="block text-[var(--text-xs)] text-muted-foreground truncate">{t('leave.balanceAfter', 'Remaining After')}</span>
+                  <span className={cn("text-[var(--text-sm)] font-bold tabular-nums", daysRequested > currentBalance ? "text-destructive font-extrabold" : "text-foreground")}>
+                    {toEasternArabic(remainingBalance)} {t('dashboard.days', 'days')}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Notes */}
           <div className="space-y-1">

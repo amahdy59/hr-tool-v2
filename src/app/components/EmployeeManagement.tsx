@@ -18,6 +18,7 @@ import {
   Users,
   FileText,
   PenLine,
+  Columns3,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -114,10 +115,34 @@ const includesQuery = (values: Array<string | number>, query: string) => {
 
 // ── Main Component ──
 export const EmployeeManagement: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const isArabic = language === 'ar';
   const [activeSubTab, setActiveSubTab] = useState('directory');
+
+  // Column visibility state
+  const [columnsOpen, setColumnsOpen] = useState(false);
+  const [visibleColumns, setVisibleColumns] = useState<{
+    empNumber: boolean;
+    department: boolean;
+    jobTitle: boolean;
+  }>(() => {
+    try {
+      const saved = localStorage.getItem('hr-employee-columns');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return { empNumber: true, department: true, jobTitle: true };
+  });
+
+  const toggleColumn = (col: 'empNumber' | 'department' | 'jobTitle') => {
+    setVisibleColumns(prev => {
+      const updated = { ...prev, [col]: !prev[col] };
+      try {
+        localStorage.setItem('hr-employee-columns', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
+  };
 
   // Search & filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -370,6 +395,49 @@ export const EmployeeManagement: React.FC = () => {
                     />
                   </PopoverContent>
                 </Popover>
+                <Popover open={columnsOpen} onOpenChange={setColumnsOpen}>
+                  <PopoverTrigger asChild>
+                    <button
+                      type="button"
+                      aria-label="Customize visible columns"
+                      title={t('common.columns', 'Columns')}
+                      className="relative h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-card hover:bg-muted text-muted-foreground transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <Columns3 className="w-4 h-4" />
+                      <span className="hidden xl:inline text-[var(--text-xs)] font-medium">
+                        {t('common.columns', 'Columns')}
+                      </span>
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent align="end" side="bottom" className="w-56 p-3 space-y-2">
+                    <p className="text-[var(--text-xs)] font-semibold text-muted-foreground uppercase tracking-wider">
+                      {t('common.columns', 'Columns')}
+                    </p>
+                    <div className="space-y-2 pt-1">
+                      <label className="flex items-center gap-2 text-[var(--text-sm)] cursor-pointer">
+                        <Checkbox
+                          checked={visibleColumns.empNumber}
+                          onCheckedChange={() => toggleColumn('empNumber')}
+                        />
+                        <span>{isArabic ? 'الرقم الوظيفي' : 'Employee Number'}</span>
+                      </label>
+                      <label className="flex items-center gap-2 text-[var(--text-sm)] cursor-pointer">
+                        <Checkbox
+                          checked={visibleColumns.department}
+                          onCheckedChange={() => toggleColumn('department')}
+                        />
+                        <span>{isArabic ? 'القسم' : 'Department'}</span>
+                      </label>
+                      <label className="flex items-center gap-2 text-[var(--text-sm)] cursor-pointer">
+                        <Checkbox
+                          checked={visibleColumns.jobTitle}
+                          onCheckedChange={() => toggleColumn('jobTitle')}
+                        />
+                        <span>{isArabic ? 'المسمى الوظيفي' : 'Job Title'}</span>
+                      </label>
+                    </div>
+                  </PopoverContent>
+                </Popover>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button type="button" aria-label="Open manager actions" className="h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-card hover:bg-muted text-muted-foreground transition-colors cursor-pointer flex items-center justify-center gap-2">
@@ -409,11 +477,17 @@ export const EmployeeManagement: React.FC = () => {
                 <table className={dataTableClass}>
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Employee Number</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">{isArabic ? 'الاسم' : 'Name'}</th>
+                      {visibleColumns.empNumber && (
+                        <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">{isArabic ? 'الرقم الوظيفي' : 'Employee Number'}</th>
+                      )}
+                      {visibleColumns.department && (
+                        <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">{isArabic ? 'القسم' : 'Department'}</th>
+                      )}
+                      {visibleColumns.jobTitle && (
+                        <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">{isArabic ? 'المسمى الوظيفي' : 'Job Title'}</th>
+                      )}
+                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">{isArabic ? 'الإجراءات' : 'Actions'}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -424,9 +498,15 @@ export const EmployeeManagement: React.FC = () => {
                             <span className="text-primary font-[var(--font-weight-medium)]">{localizePersonName(emp.name, language)}</span>
                           </div>
                         </td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span><span data-no-auto-translate>{emp.employeeNumber}</span></td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Department:</span>{localizeDepartmentName(emp.department, language)}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Title:</span>{localizeJobTitle(emp.jobTitle, language)}</td>
+                        {visibleColumns.empNumber && (
+                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span><span data-no-auto-translate>{emp.employeeNumber}</span></td>
+                        )}
+                        {visibleColumns.department && (
+                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Department:</span>{localizeDepartmentName(emp.department, language)}</td>
+                        )}
+                        {visibleColumns.jobTitle && (
+                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Title:</span>{localizeJobTitle(emp.jobTitle, language)}</td>
+                        )}
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>

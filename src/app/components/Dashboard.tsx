@@ -378,7 +378,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             }}
             className="text-foreground"
           >
-            Welcome {localizeFirstName(currentUser?.name || 'Ahmed', i18n.resolvedLanguage || i18n.language)}
+            {t('dashboard.welcome', 'Welcome')} {localizeFirstName(currentUser?.name || 'Ahmed', i18n.resolvedLanguage || i18n.language)}
           </h2>
         </div>
         <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
@@ -387,18 +387,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             className="w-full sm:w-auto cursor-pointer"
             onClick={onRequestLeave}
           >
-            Request Leave
+            {t('dashboard.requestLeave', 'Request Leave')}
           </Button>
           <Button
             className="w-full bg-chart-3 hover:bg-chart-3/90 text-white sm:w-auto cursor-pointer"
             onClick={onRequestMission}
           >
-            Request Mission
+            {t('dashboard.requestMission', 'Request Mission')}
           </Button>
         </div>
       </div>
 
-      {/* Timesheet Section */}
+      {/* Timesheet Section (Desktop / Tablet >= 990px) */}
       <section className="hidden space-y-2 min-[990px]:block" aria-labelledby="timesheet-heading">
         <h3
           id="timesheet-heading"
@@ -409,7 +409,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           }}
           className="text-foreground"
         >
-          Timesheet
+          {t('dashboard.timesheet', 'Timesheet')}
         </h3>
         <CalendarGrid
           onViewRequest={handleViewRequest}
@@ -435,6 +435,66 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             })}
           onAddRequest={handleAddRequest}
         />
+      </section>
+
+      {/* Mobile Agenda Schedule (Mobile / Small Tablet < 990px) */}
+      <section className="min-[990px]:hidden space-y-3" aria-labelledby="mobile-agenda-heading">
+        <div className="flex items-center justify-between">
+          <h3
+            id="mobile-agenda-heading"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 'var(--section-heading-size)',
+              fontWeight: 'var(--section-heading-weight)',
+            }}
+            className="text-foreground"
+          >
+            {t('dashboard.agendaSchedule', 'Upcoming Schedule')}
+          </h3>
+          <span className="text-[var(--text-xs)] font-medium text-muted-foreground">
+            {t('dashboard.timesheet', 'Timesheet')}
+          </span>
+        </div>
+        <div className="space-y-2">
+          {historyData.slice(0, 4).map((item) => (
+            <div
+              key={`agenda-${item.id}`}
+              className="flex items-center justify-between gap-3 rounded-[var(--radius-card)] border border-border bg-card p-3 shadow-sm"
+            >
+              <div className="min-w-0 flex-1 space-y-1 text-start">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[var(--text-sm)] font-semibold text-foreground truncate">
+                    {item.labelOverride ?? item.type}
+                  </span>
+                  <StatusBadge
+                    variant={
+                      item.status === 'approved'
+                        ? 'approved'
+                        : item.status === 'pending'
+                        ? 'pending'
+                        : 'noshow'
+                    }
+                    className="shrink-0 text-[11px] py-0 px-2 min-w-0"
+                  >
+                    {t(`status.${item.status}`, item.status)}
+                  </StatusBadge>
+                </div>
+                <p className="text-[var(--text-xs)] text-muted-foreground truncate">
+                  {item.range} • {item.duration}
+                </p>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-9 w-9 p-0 text-muted-foreground hover:text-foreground shrink-0 rounded-full"
+                onClick={() => handleViewRequest(item)}
+                aria-label={`View ${item.type} details`}
+              >
+                <Eye className="w-4 h-4" />
+              </Button>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* History Table */}
