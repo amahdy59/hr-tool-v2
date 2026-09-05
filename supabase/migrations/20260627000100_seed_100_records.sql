@@ -1,5 +1,10 @@
 
 -- Seed 100 Dynamic Bilingual Records
+
+-- Ensure constraint supports both Permanent and Full-Time
+alter table public.employees drop constraint if exists employees_contract_type_check;
+alter table public.employees add constraint employees_contract_type_check check (contract_type in ('Permanent', 'Full-Time', 'Part-Time', 'Contractor', 'Intern', 'Freelance'));
+
 -- Clean existing if needed
 truncate table public.payroll cascade;
 truncate table public.attendance cascade;
@@ -38,7 +43,7 @@ on conflict (title) do nothing;
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000001', 'sara.salem.1@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000001', '10001', 'Sara', 'Salem', 'سارة', 'سالم', 'sara.salem.1@acme.com', '+20 100 2420545', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b2000000-0000-0000-0000-000000000002', 'Permanent', '2021-01-02', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000001', '10001', 'Sara', 'Salem', 'سارة', 'سالم', 'sara.salem.1@acme.com', '+20 100 2420545', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b2000000-0000-0000-0000-000000000002', 'Full-Time', '2021-01-02', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000001', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -51,7 +56,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000002', 'omar.farouk.2@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000002', '10002', 'Omar', 'Farouk', 'عمر', 'فاروق', 'omar.farouk.2@acme.com', '+20 100 8468645', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b3000000-0000-0000-0000-000000000003', 'Permanent', '2022-01-03', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000002', '10002', 'Omar', 'Farouk', 'عمر', 'فاروق', 'omar.farouk.2@acme.com', '+20 100 8468645', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b3000000-0000-0000-0000-000000000003', 'Full-Time', '2022-01-03', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000002', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -77,7 +82,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000004', 'mohamed.othman.4@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000004', '10004', 'Mohamed', 'Othman', 'محمد', 'عثمان', 'mohamed.othman.4@acme.com', '+20 100 6203242', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b5000000-0000-0000-0000-000000000005', 'Permanent', '2024-01-05', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000004', '10004', 'Mohamed', 'Othman', 'محمد', 'عثمان', 'mohamed.othman.4@acme.com', '+20 100 6203242', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b5000000-0000-0000-0000-000000000005', 'Full-Time', '2024-01-05', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000004', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -90,7 +95,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000005', 'mahmoud.khalil.5@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000005', '10005', 'Mahmoud', 'Khalil', 'محمود', 'خليل', 'mahmoud.khalil.5@acme.com', '+20 100 3333554', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b6000000-0000-0000-0000-000000000006', 'Permanent', '2020-01-06', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000005', '10005', 'Mahmoud', 'Khalil', 'محمود', 'خليل', 'mahmoud.khalil.5@acme.com', '+20 100 3333554', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b6000000-0000-0000-0000-000000000006', 'Full-Time', '2020-01-06', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000005', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -116,7 +121,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000007', 'youssef.nasir.7@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000007', '10007', 'Youssef', 'Nasir', 'يوسف', 'ناصر', 'youssef.nasir.7@acme.com', '+20 100 5656170', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b8000000-0000-0000-0000-000000000008', 'Permanent', '2022-01-08', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000007', '10007', 'Youssef', 'Nasir', 'يوسف', 'ناصر', 'youssef.nasir.7@acme.com', '+20 100 5656170', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b8000000-0000-0000-0000-000000000008', 'Full-Time', '2022-01-08', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000007', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -129,7 +134,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000008', 'ibrahim.el-amin.8@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000008', '10008', 'Ibrahim', 'El-Amin', 'إبراهيم', 'الأمين', 'ibrahim.el-amin.8@acme.com', '+20 100 6235670', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b9000000-0000-0000-0000-000000000009', 'Permanent', '2023-01-09', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000008', '10008', 'Ibrahim', 'El-Amin', 'إبراهيم', 'الأمين', 'ibrahim.el-amin.8@acme.com', '+20 100 6235670', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b9000000-0000-0000-0000-000000000009', 'Full-Time', '2023-01-09', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000008', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -155,7 +160,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000010', 'mariam.abdelaziz.10@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000010', '10010', 'Mariam', 'Abdelaziz', 'مريم', 'عبد العزيز', 'mariam.abdelaziz.10@acme.com', '+20 100 3532670', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000001', 'Permanent', '2020-01-11', 'Direct', true, 'Manager')
+    ('e1000000-0000-0000-0000-000000000010', '10010', 'Mariam', 'Abdelaziz', 'مريم', 'عبد العزيز', 'mariam.abdelaziz.10@acme.com', '+20 100 3532670', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000001', 'Full-Time', '2020-01-11', 'Direct', true, 'Manager')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000010', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -168,7 +173,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000011', 'nour.el-sayed.11@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000011', '10011', 'Nour', 'El-Sayed', 'نور', 'السيد', 'nour.el-sayed.11@acme.com', '+20 100 2789595', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b2000000-0000-0000-0000-000000000002', 'Permanent', '2021-01-12', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000011', '10011', 'Nour', 'El-Sayed', 'نور', 'السيد', 'nour.el-sayed.11@acme.com', '+20 100 2789595', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b2000000-0000-0000-0000-000000000002', 'Full-Time', '2021-01-12', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000011', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -194,7 +199,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000013', 'mona.hani.13@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000013', '10013', 'Mona', 'Hani', 'منى', 'هاني', 'mona.hani.13@acme.com', '+20 100 9957955', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b4000000-0000-0000-0000-000000000004', 'Permanent', '2023-01-14', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000013', '10013', 'Mona', 'Hani', 'منى', 'هاني', 'mona.hani.13@acme.com', '+20 100 9957955', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b4000000-0000-0000-0000-000000000004', 'Full-Time', '2023-01-14', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000013', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -207,7 +212,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000014', 'mostafa.kamal.14@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000014', '10014', 'Mostafa', 'Kamal', 'مصطفى', 'كمال', 'mostafa.kamal.14@acme.com', '+20 100 9151729', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b5000000-0000-0000-0000-000000000005', 'Permanent', '2024-01-15', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000014', '10014', 'Mostafa', 'Kamal', 'مصطفى', 'كمال', 'mostafa.kamal.14@acme.com', '+20 100 9151729', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b5000000-0000-0000-0000-000000000005', 'Full-Time', '2024-01-15', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000014', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -233,7 +238,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000016', 'amr.fawzy.16@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000016', '10016', 'Amr', 'Fawzy', 'عمرو', 'فوزي', 'amr.fawzy.16@acme.com', '+20 100 1753620', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b7000000-0000-0000-0000-000000000007', 'Permanent', '2021-01-17', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000016', '10016', 'Amr', 'Fawzy', 'عمرو', 'فوزي', 'amr.fawzy.16@acme.com', '+20 100 1753620', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b7000000-0000-0000-0000-000000000007', 'Full-Time', '2021-01-17', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000016', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -246,7 +251,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000017', 'hoda.gaber.17@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000017', '10017', 'Hoda', 'Gaber', 'هدى', 'جابر', 'hoda.gaber.17@acme.com', '+20 100 4827975', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b8000000-0000-0000-0000-000000000008', 'Permanent', '2022-01-18', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000017', '10017', 'Hoda', 'Gaber', 'هدى', 'جابر', 'hoda.gaber.17@acme.com', '+20 100 4827975', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b8000000-0000-0000-0000-000000000008', 'Full-Time', '2022-01-18', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000017', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -272,7 +277,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000019', 'dina.ezzat.19@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000019', '10019', 'Dina', 'Ezzat', 'دينا', 'عزت', 'dina.ezzat.19@acme.com', '+20 100 4235865', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b1010000-0000-0000-0000-000000000010', 'Permanent', '2024-01-20', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000019', '10019', 'Dina', 'Ezzat', 'دينا', 'عزت', 'dina.ezzat.19@acme.com', '+20 100 4235865', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b1010000-0000-0000-0000-000000000010', 'Full-Time', '2024-01-20', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000019', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -285,7 +290,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000020', 'ahmed.mahdy.20@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000020', '10020', 'Ahmed', 'Mahdy', 'أحمد', 'مهدي', 'ahmed.mahdy.20@acme.com', '+20 100 1590660', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b1000000-0000-0000-0000-000000000001', 'Permanent', '2020-01-21', 'Direct', true, 'Manager')
+    ('e1000000-0000-0000-0000-000000000020', '10020', 'Ahmed', 'Mahdy', 'أحمد', 'مهدي', 'ahmed.mahdy.20@acme.com', '+20 100 1590660', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b1000000-0000-0000-0000-000000000001', 'Full-Time', '2020-01-21', 'Direct', true, 'Manager')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000020', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -311,7 +316,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000022', 'omar.farouk.22@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000022', '10022', 'Omar', 'Farouk', 'عمر', 'فاروق', 'omar.farouk.22@acme.com', '+20 100 6176387', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b3000000-0000-0000-0000-000000000003', 'Permanent', '2022-01-23', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000022', '10022', 'Omar', 'Farouk', 'عمر', 'فاروق', 'omar.farouk.22@acme.com', '+20 100 6176387', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b3000000-0000-0000-0000-000000000003', 'Full-Time', '2022-01-23', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000022', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -324,7 +329,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000023', 'fatima.shalaby.23@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000023', '10023', 'Fatima', 'Shalaby', 'فاطمة', 'شلبي', 'fatima.shalaby.23@acme.com', '+20 100 6328525', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b4000000-0000-0000-0000-000000000004', 'Permanent', '2023-01-24', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000023', '10023', 'Fatima', 'Shalaby', 'فاطمة', 'شلبي', 'fatima.shalaby.23@acme.com', '+20 100 6328525', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b4000000-0000-0000-0000-000000000004', 'Full-Time', '2023-01-24', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000023', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -350,7 +355,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000025', 'mahmoud.khalil.25@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000025', '10025', 'Mahmoud', 'Khalil', 'محمود', 'خليل', 'mahmoud.khalil.25@acme.com', '+20 100 4188371', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b6000000-0000-0000-0000-000000000006', 'Permanent', '2020-01-26', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000025', '10025', 'Mahmoud', 'Khalil', 'محمود', 'خليل', 'mahmoud.khalil.25@acme.com', '+20 100 4188371', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b6000000-0000-0000-0000-000000000006', 'Full-Time', '2020-01-26', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000025', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -363,7 +368,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000026', 'ali.habib.26@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000026', '10026', 'Ali', 'Habib', 'علي', 'حبيب', 'ali.habib.26@acme.com', '+20 100 7772334', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b7000000-0000-0000-0000-000000000007', 'Permanent', '2021-01-27', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000026', '10026', 'Ali', 'Habib', 'علي', 'حبيب', 'ali.habib.26@acme.com', '+20 100 7772334', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b7000000-0000-0000-0000-000000000007', 'Full-Time', '2021-01-27', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000026', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -389,7 +394,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000028', 'ibrahim.el-amin.28@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000028', '10028', 'Ibrahim', 'El-Amin', 'إبراهيم', 'الأمين', 'ibrahim.el-amin.28@acme.com', '+20 100 3445259', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b9000000-0000-0000-0000-000000000009', 'Permanent', '2023-01-01', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000028', '10028', 'Ibrahim', 'El-Amin', 'إبراهيم', 'الأمين', 'ibrahim.el-amin.28@acme.com', '+20 100 3445259', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b9000000-0000-0000-0000-000000000009', 'Full-Time', '2023-01-01', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000028', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -402,7 +407,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000029', 'khaled.hussein.29@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000029', '10029', 'Khaled', 'Hussein', 'خالد', 'حسين', 'khaled.hussein.29@acme.com', '+20 100 4955515', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b1010000-0000-0000-0000-000000000010', 'Permanent', '2024-01-02', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000029', '10029', 'Khaled', 'Hussein', 'خالد', 'حسين', 'khaled.hussein.29@acme.com', '+20 100 4955515', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b1010000-0000-0000-0000-000000000010', 'Full-Time', '2024-01-02', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000029', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -428,7 +433,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000031', 'nour.el-sayed.31@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000031', '10031', 'Nour', 'El-Sayed', 'نور', 'السيد', 'nour.el-sayed.31@acme.com', '+20 100 1461101', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b2000000-0000-0000-0000-000000000002', 'Permanent', '2021-01-04', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000031', '10031', 'Nour', 'El-Sayed', 'نور', 'السيد', 'nour.el-sayed.31@acme.com', '+20 100 1461101', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b2000000-0000-0000-0000-000000000002', 'Full-Time', '2021-01-04', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000031', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -441,7 +446,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000032', 'hassan.tarek.32@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000032', '10032', 'Hassan', 'Tarek', 'حسن', 'طارق', 'hassan.tarek.32@acme.com', '+20 100 1207083', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b3000000-0000-0000-0000-000000000003', 'Permanent', '2022-01-05', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000032', '10032', 'Hassan', 'Tarek', 'حسن', 'طارق', 'hassan.tarek.32@acme.com', '+20 100 1207083', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b3000000-0000-0000-0000-000000000003', 'Full-Time', '2022-01-05', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000032', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -467,7 +472,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000034', 'mostafa.kamal.34@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000034', '10034', 'Mostafa', 'Kamal', 'مصطفى', 'كمال', 'mostafa.kamal.34@acme.com', '+20 100 8443832', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b5000000-0000-0000-0000-000000000005', 'Permanent', '2024-01-07', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000034', '10034', 'Mostafa', 'Kamal', 'مصطفى', 'كمال', 'mostafa.kamal.34@acme.com', '+20 100 8443832', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b5000000-0000-0000-0000-000000000005', 'Full-Time', '2024-01-07', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000034', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -480,7 +485,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000035', 'zeinab.saad.35@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000035', '10035', 'Zeinab', 'Saad', 'زينب', 'سعد', 'zeinab.saad.35@acme.com', '+20 100 7421269', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b6000000-0000-0000-0000-000000000006', 'Permanent', '2020-01-08', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000035', '10035', 'Zeinab', 'Saad', 'زينب', 'سعد', 'zeinab.saad.35@acme.com', '+20 100 7421269', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b6000000-0000-0000-0000-000000000006', 'Full-Time', '2020-01-08', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000035', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -506,7 +511,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000037', 'hoda.gaber.37@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000037', '10037', 'Hoda', 'Gaber', 'هدى', 'جابر', 'hoda.gaber.37@acme.com', '+20 100 2795214', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b8000000-0000-0000-0000-000000000008', 'Permanent', '2022-01-10', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000037', '10037', 'Hoda', 'Gaber', 'هدى', 'جابر', 'hoda.gaber.37@acme.com', '+20 100 2795214', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b8000000-0000-0000-0000-000000000008', 'Full-Time', '2022-01-10', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000037', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -519,7 +524,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000038', 'sherif.rashed.38@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000038', '10038', 'Sherif', 'Rashed', 'شريف', 'راشد', 'sherif.rashed.38@acme.com', '+20 100 3515117', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b9000000-0000-0000-0000-000000000009', 'Permanent', '2023-01-11', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000038', '10038', 'Sherif', 'Rashed', 'شريف', 'راشد', 'sherif.rashed.38@acme.com', '+20 100 3515117', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b9000000-0000-0000-0000-000000000009', 'Full-Time', '2023-01-11', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000038', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -545,7 +550,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000040', 'ahmed.mahdy.40@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000040', '10040', 'Ahmed', 'Mahdy', 'أحمد', 'مهدي', 'ahmed.mahdy.40@acme.com', '+20 100 8242334', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b1000000-0000-0000-0000-000000000001', 'Permanent', '2020-01-13', 'Direct', true, 'Manager')
+    ('e1000000-0000-0000-0000-000000000040', '10040', 'Ahmed', 'Mahdy', 'أحمد', 'مهدي', 'ahmed.mahdy.40@acme.com', '+20 100 8242334', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b1000000-0000-0000-0000-000000000001', 'Full-Time', '2020-01-13', 'Direct', true, 'Manager')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000040', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -558,7 +563,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000041', 'sara.salem.41@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000041', '10041', 'Sara', 'Salem', 'سارة', 'سالم', 'sara.salem.41@acme.com', '+20 100 4161545', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b2000000-0000-0000-0000-000000000002', 'Permanent', '2021-01-14', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000041', '10041', 'Sara', 'Salem', 'سارة', 'سالم', 'sara.salem.41@acme.com', '+20 100 4161545', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b2000000-0000-0000-0000-000000000002', 'Full-Time', '2021-01-14', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000041', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -584,7 +589,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000043', 'fatima.shalaby.43@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000043', '10043', 'Fatima', 'Shalaby', 'فاطمة', 'شلبي', 'fatima.shalaby.43@acme.com', '+20 100 4112653', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b4000000-0000-0000-0000-000000000004', 'Permanent', '2023-01-16', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000043', '10043', 'Fatima', 'Shalaby', 'فاطمة', 'شلبي', 'fatima.shalaby.43@acme.com', '+20 100 4112653', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b4000000-0000-0000-0000-000000000004', 'Full-Time', '2023-01-16', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000043', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -597,7 +602,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000044', 'mohamed.othman.44@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000044', '10044', 'Mohamed', 'Othman', 'محمد', 'عثمان', 'mohamed.othman.44@acme.com', '+20 100 1893098', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b5000000-0000-0000-0000-000000000005', 'Permanent', '2024-01-17', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000044', '10044', 'Mohamed', 'Othman', 'محمد', 'عثمان', 'mohamed.othman.44@acme.com', '+20 100 1893098', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b5000000-0000-0000-0000-000000000005', 'Full-Time', '2024-01-17', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000044', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -623,7 +628,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000046', 'ali.habib.46@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000046', '10046', 'Ali', 'Habib', 'علي', 'حبيب', 'ali.habib.46@acme.com', '+20 100 7204627', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b7000000-0000-0000-0000-000000000007', 'Permanent', '2021-01-19', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000046', '10046', 'Ali', 'Habib', 'علي', 'حبيب', 'ali.habib.46@acme.com', '+20 100 7204627', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b7000000-0000-0000-0000-000000000007', 'Full-Time', '2021-01-19', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000046', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -636,7 +641,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000047', 'youssef.nasir.47@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000047', '10047', 'Youssef', 'Nasir', 'يوسف', 'ناصر', 'youssef.nasir.47@acme.com', '+20 100 3667502', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b8000000-0000-0000-0000-000000000008', 'Permanent', '2022-01-20', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000047', '10047', 'Youssef', 'Nasir', 'يوسف', 'ناصر', 'youssef.nasir.47@acme.com', '+20 100 3667502', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b8000000-0000-0000-0000-000000000008', 'Full-Time', '2022-01-20', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000047', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -662,7 +667,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000049', 'khaled.hussein.49@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000049', '10049', 'Khaled', 'Hussein', 'خالد', 'حسين', 'khaled.hussein.49@acme.com', '+20 100 1737933', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b1010000-0000-0000-0000-000000000010', 'Permanent', '2024-01-22', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000049', '10049', 'Khaled', 'Hussein', 'خالد', 'حسين', 'khaled.hussein.49@acme.com', '+20 100 1737933', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b1010000-0000-0000-0000-000000000010', 'Full-Time', '2024-01-22', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000049', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -675,7 +680,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000050', 'mariam.abdelaziz.50@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000050', '10050', 'Mariam', 'Abdelaziz', 'مريم', 'عبد العزيز', 'mariam.abdelaziz.50@acme.com', '+20 100 2955621', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b1000000-0000-0000-0000-000000000001', 'Permanent', '2020-01-23', 'Direct', true, 'Manager')
+    ('e1000000-0000-0000-0000-000000000050', '10050', 'Mariam', 'Abdelaziz', 'مريم', 'عبد العزيز', 'mariam.abdelaziz.50@acme.com', '+20 100 2955621', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b1000000-0000-0000-0000-000000000001', 'Full-Time', '2020-01-23', 'Direct', true, 'Manager')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000050', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -701,7 +706,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000052', 'hassan.tarek.52@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000052', '10052', 'Hassan', 'Tarek', 'حسن', 'طارق', 'hassan.tarek.52@acme.com', '+20 100 2106891', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b3000000-0000-0000-0000-000000000003', 'Permanent', '2022-01-25', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000052', '10052', 'Hassan', 'Tarek', 'حسن', 'طارق', 'hassan.tarek.52@acme.com', '+20 100 2106891', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b3000000-0000-0000-0000-000000000003', 'Full-Time', '2022-01-25', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000052', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -714,7 +719,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000053', 'mona.hani.53@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000053', '10053', 'Mona', 'Hani', 'منى', 'هاني', 'mona.hani.53@acme.com', '+20 100 5930333', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b4000000-0000-0000-0000-000000000004', 'Permanent', '2023-01-26', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000053', '10053', 'Mona', 'Hani', 'منى', 'هاني', 'mona.hani.53@acme.com', '+20 100 5930333', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b4000000-0000-0000-0000-000000000004', 'Full-Time', '2023-01-26', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000053', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -740,7 +745,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000055', 'zeinab.saad.55@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000055', '10055', 'Zeinab', 'Saad', 'زينب', 'سعد', 'zeinab.saad.55@acme.com', '+20 100 4022143', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b6000000-0000-0000-0000-000000000006', 'Permanent', '2020-01-28', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000055', '10055', 'Zeinab', 'Saad', 'زينب', 'سعد', 'zeinab.saad.55@acme.com', '+20 100 4022143', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b6000000-0000-0000-0000-000000000006', 'Full-Time', '2020-01-28', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000055', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -753,7 +758,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000056', 'amr.fawzy.56@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000056', '10056', 'Amr', 'Fawzy', 'عمرو', 'فوزي', 'amr.fawzy.56@acme.com', '+20 100 9142154', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b7000000-0000-0000-0000-000000000007', 'Permanent', '2021-01-01', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000056', '10056', 'Amr', 'Fawzy', 'عمرو', 'فوزي', 'amr.fawzy.56@acme.com', '+20 100 9142154', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b7000000-0000-0000-0000-000000000007', 'Full-Time', '2021-01-01', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000056', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -779,7 +784,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000058', 'sherif.rashed.58@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000058', '10058', 'Sherif', 'Rashed', 'شريف', 'راشد', 'sherif.rashed.58@acme.com', '+20 100 3362851', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b9000000-0000-0000-0000-000000000009', 'Permanent', '2023-01-03', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000058', '10058', 'Sherif', 'Rashed', 'شريف', 'راشد', 'sherif.rashed.58@acme.com', '+20 100 3362851', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b9000000-0000-0000-0000-000000000009', 'Full-Time', '2023-01-03', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000058', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -792,7 +797,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000059', 'dina.ezzat.59@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000059', '10059', 'Dina', 'Ezzat', 'دينا', 'عزت', 'dina.ezzat.59@acme.com', '+20 100 4976500', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b1010000-0000-0000-0000-000000000010', 'Permanent', '2024-01-04', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000059', '10059', 'Dina', 'Ezzat', 'دينا', 'عزت', 'dina.ezzat.59@acme.com', '+20 100 4976500', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b1010000-0000-0000-0000-000000000010', 'Full-Time', '2024-01-04', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000059', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -818,7 +823,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000061', 'sara.salem.61@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000061', '10061', 'Sara', 'Salem', 'سارة', 'سالم', 'sara.salem.61@acme.com', '+20 100 1974302', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b2000000-0000-0000-0000-000000000002', 'Permanent', '2021-01-06', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000061', '10061', 'Sara', 'Salem', 'سارة', 'سالم', 'sara.salem.61@acme.com', '+20 100 1974302', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b2000000-0000-0000-0000-000000000002', 'Full-Time', '2021-01-06', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000061', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -831,7 +836,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000062', 'omar.farouk.62@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000062', '10062', 'Omar', 'Farouk', 'عمر', 'فاروق', 'omar.farouk.62@acme.com', '+20 100 2043546', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b3000000-0000-0000-0000-000000000003', 'Permanent', '2022-01-07', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000062', '10062', 'Omar', 'Farouk', 'عمر', 'فاروق', 'omar.farouk.62@acme.com', '+20 100 2043546', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b3000000-0000-0000-0000-000000000003', 'Full-Time', '2022-01-07', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000062', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -857,7 +862,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000064', 'mohamed.othman.64@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000064', '10064', 'Mohamed', 'Othman', 'محمد', 'عثمان', 'mohamed.othman.64@acme.com', '+20 100 8492494', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b5000000-0000-0000-0000-000000000005', 'Permanent', '2024-01-09', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000064', '10064', 'Mohamed', 'Othman', 'محمد', 'عثمان', 'mohamed.othman.64@acme.com', '+20 100 8492494', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b5000000-0000-0000-0000-000000000005', 'Full-Time', '2024-01-09', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000064', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -870,7 +875,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000065', 'mahmoud.khalil.65@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000065', '10065', 'Mahmoud', 'Khalil', 'محمود', 'خليل', 'mahmoud.khalil.65@acme.com', '+20 100 7924606', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b6000000-0000-0000-0000-000000000006', 'Permanent', '2020-01-10', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000065', '10065', 'Mahmoud', 'Khalil', 'محمود', 'خليل', 'mahmoud.khalil.65@acme.com', '+20 100 7924606', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b6000000-0000-0000-0000-000000000006', 'Full-Time', '2020-01-10', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000065', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -896,7 +901,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000067', 'youssef.nasir.67@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000067', '10067', 'Youssef', 'Nasir', 'يوسف', 'ناصر', 'youssef.nasir.67@acme.com', '+20 100 6683332', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b8000000-0000-0000-0000-000000000008', 'Permanent', '2022-01-12', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000067', '10067', 'Youssef', 'Nasir', 'يوسف', 'ناصر', 'youssef.nasir.67@acme.com', '+20 100 6683332', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b8000000-0000-0000-0000-000000000008', 'Full-Time', '2022-01-12', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000067', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -909,7 +914,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000068', 'ibrahim.el-amin.68@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000068', '10068', 'Ibrahim', 'El-Amin', 'إبراهيم', 'الأمين', 'ibrahim.el-amin.68@acme.com', '+20 100 2833442', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b9000000-0000-0000-0000-000000000009', 'Permanent', '2023-01-13', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000068', '10068', 'Ibrahim', 'El-Amin', 'إبراهيم', 'الأمين', 'ibrahim.el-amin.68@acme.com', '+20 100 2833442', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b9000000-0000-0000-0000-000000000009', 'Full-Time', '2023-01-13', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000068', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -935,7 +940,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000070', 'mariam.abdelaziz.70@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000070', '10070', 'Mariam', 'Abdelaziz', 'مريم', 'عبد العزيز', 'mariam.abdelaziz.70@acme.com', '+20 100 5679750', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b1000000-0000-0000-0000-000000000001', 'Permanent', '2020-01-15', 'Direct', true, 'Manager')
+    ('e1000000-0000-0000-0000-000000000070', '10070', 'Mariam', 'Abdelaziz', 'مريم', 'عبد العزيز', 'mariam.abdelaziz.70@acme.com', '+20 100 5679750', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b1000000-0000-0000-0000-000000000001', 'Full-Time', '2020-01-15', 'Direct', true, 'Manager')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000070', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -948,7 +953,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000071', 'nour.el-sayed.71@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000071', '10071', 'Nour', 'El-Sayed', 'نور', 'السيد', 'nour.el-sayed.71@acme.com', '+20 100 4824336', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b2000000-0000-0000-0000-000000000002', 'Permanent', '2021-01-16', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000071', '10071', 'Nour', 'El-Sayed', 'نور', 'السيد', 'nour.el-sayed.71@acme.com', '+20 100 4824336', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b2000000-0000-0000-0000-000000000002', 'Full-Time', '2021-01-16', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000071', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -974,7 +979,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000073', 'mona.hani.73@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000073', '10073', 'Mona', 'Hani', 'منى', 'هاني', 'mona.hani.73@acme.com', '+20 100 9251322', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b4000000-0000-0000-0000-000000000004', 'Permanent', '2023-01-18', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000073', '10073', 'Mona', 'Hani', 'منى', 'هاني', 'mona.hani.73@acme.com', '+20 100 9251322', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b4000000-0000-0000-0000-000000000004', 'Full-Time', '2023-01-18', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000073', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -987,7 +992,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000074', 'mostafa.kamal.74@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000074', '10074', 'Mostafa', 'Kamal', 'مصطفى', 'كمال', 'mostafa.kamal.74@acme.com', '+20 100 9713783', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b5000000-0000-0000-0000-000000000005', 'Permanent', '2024-01-19', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000074', '10074', 'Mostafa', 'Kamal', 'مصطفى', 'كمال', 'mostafa.kamal.74@acme.com', '+20 100 9713783', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b5000000-0000-0000-0000-000000000005', 'Full-Time', '2024-01-19', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000074', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1013,7 +1018,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000076', 'amr.fawzy.76@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000076', '10076', 'Amr', 'Fawzy', 'عمرو', 'فوزي', 'amr.fawzy.76@acme.com', '+20 100 6104379', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b7000000-0000-0000-0000-000000000007', 'Permanent', '2021-01-21', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000076', '10076', 'Amr', 'Fawzy', 'عمرو', 'فوزي', 'amr.fawzy.76@acme.com', '+20 100 6104379', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b7000000-0000-0000-0000-000000000007', 'Full-Time', '2021-01-21', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000076', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -1026,7 +1031,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000077', 'hoda.gaber.77@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000077', '10077', 'Hoda', 'Gaber', 'هدى', 'جابر', 'hoda.gaber.77@acme.com', '+20 100 7954154', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b8000000-0000-0000-0000-000000000008', 'Permanent', '2022-01-22', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000077', '10077', 'Hoda', 'Gaber', 'هدى', 'جابر', 'hoda.gaber.77@acme.com', '+20 100 7954154', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b8000000-0000-0000-0000-000000000008', 'Full-Time', '2022-01-22', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000077', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1052,7 +1057,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000079', 'dina.ezzat.79@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000079', '10079', 'Dina', 'Ezzat', 'دينا', 'عزت', 'dina.ezzat.79@acme.com', '+20 100 8925345', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b1010000-0000-0000-0000-000000000010', 'Permanent', '2024-01-24', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000079', '10079', 'Dina', 'Ezzat', 'دينا', 'عزت', 'dina.ezzat.79@acme.com', '+20 100 8925345', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b1010000-0000-0000-0000-000000000010', 'Full-Time', '2024-01-24', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000079', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1065,7 +1070,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000080', 'ahmed.mahdy.80@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000080', '10080', 'Ahmed', 'Mahdy', 'أحمد', 'مهدي', 'ahmed.mahdy.80@acme.com', '+20 100 4287239', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b1000000-0000-0000-0000-000000000001', 'Permanent', '2020-01-25', 'Direct', true, 'Manager')
+    ('e1000000-0000-0000-0000-000000000080', '10080', 'Ahmed', 'Mahdy', 'أحمد', 'مهدي', 'ahmed.mahdy.80@acme.com', '+20 100 4287239', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b1000000-0000-0000-0000-000000000001', 'Full-Time', '2020-01-25', 'Direct', true, 'Manager')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000080', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -1091,7 +1096,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000082', 'omar.farouk.82@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000082', '10082', 'Omar', 'Farouk', 'عمر', 'فاروق', 'omar.farouk.82@acme.com', '+20 100 8735668', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b3000000-0000-0000-0000-000000000003', 'Permanent', '2022-01-27', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000082', '10082', 'Omar', 'Farouk', 'عمر', 'فاروق', 'omar.farouk.82@acme.com', '+20 100 8735668', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b3000000-0000-0000-0000-000000000003', 'Full-Time', '2022-01-27', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000082', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1104,7 +1109,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000083', 'fatima.shalaby.83@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000083', '10083', 'Fatima', 'Shalaby', 'فاطمة', 'شلبي', 'fatima.shalaby.83@acme.com', '+20 100 3423801', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b4000000-0000-0000-0000-000000000004', 'Permanent', '2023-01-28', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000083', '10083', 'Fatima', 'Shalaby', 'فاطمة', 'شلبي', 'fatima.shalaby.83@acme.com', '+20 100 3423801', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b4000000-0000-0000-0000-000000000004', 'Full-Time', '2023-01-28', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000083', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1130,7 +1135,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000085', 'mahmoud.khalil.85@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000085', '10085', 'Mahmoud', 'Khalil', 'محمود', 'خليل', 'mahmoud.khalil.85@acme.com', '+20 100 7096634', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b6000000-0000-0000-0000-000000000006', 'Permanent', '2020-01-02', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000085', '10085', 'Mahmoud', 'Khalil', 'محمود', 'خليل', 'mahmoud.khalil.85@acme.com', '+20 100 7096634', 'Male', 'd5000000-0000-0000-0000-000000000005', 'b6000000-0000-0000-0000-000000000006', 'Full-Time', '2020-01-02', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000085', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1143,7 +1148,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000086', 'ali.habib.86@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000086', '10086', 'Ali', 'Habib', 'علي', 'حبيب', 'ali.habib.86@acme.com', '+20 100 8505775', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b7000000-0000-0000-0000-000000000007', 'Permanent', '2021-01-03', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000086', '10086', 'Ali', 'Habib', 'علي', 'حبيب', 'ali.habib.86@acme.com', '+20 100 8505775', 'Female', 'd6000000-0000-0000-0000-000000000006', 'b7000000-0000-0000-0000-000000000007', 'Full-Time', '2021-01-03', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000086', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1169,7 +1174,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000088', 'ibrahim.el-amin.88@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000088', '10088', 'Ibrahim', 'El-Amin', 'إبراهيم', 'الأمين', 'ibrahim.el-amin.88@acme.com', '+20 100 3629863', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b9000000-0000-0000-0000-000000000009', 'Permanent', '2023-01-05', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000088', '10088', 'Ibrahim', 'El-Amin', 'إبراهيم', 'الأمين', 'ibrahim.el-amin.88@acme.com', '+20 100 3629863', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b9000000-0000-0000-0000-000000000009', 'Full-Time', '2023-01-05', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000088', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -1182,7 +1187,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000089', 'khaled.hussein.89@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000089', '10089', 'Khaled', 'Hussein', 'خالد', 'حسين', 'khaled.hussein.89@acme.com', '+20 100 1087213', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b1010000-0000-0000-0000-000000000010', 'Permanent', '2024-01-06', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000089', '10089', 'Khaled', 'Hussein', 'خالد', 'حسين', 'khaled.hussein.89@acme.com', '+20 100 1087213', 'Male', 'd9000000-0000-0000-0000-000000000009', 'b1010000-0000-0000-0000-000000000010', 'Full-Time', '2024-01-06', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000089', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1208,7 +1213,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000091', 'nour.el-sayed.91@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000091', '10091', 'Nour', 'El-Sayed', 'نور', 'السيد', 'nour.el-sayed.91@acme.com', '+20 100 8766704', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b2000000-0000-0000-0000-000000000002', 'Permanent', '2021-01-08', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000091', '10091', 'Nour', 'El-Sayed', 'نور', 'السيد', 'nour.el-sayed.91@acme.com', '+20 100 8766704', 'Male', 'd2000000-0000-0000-0000-000000000002', 'b2000000-0000-0000-0000-000000000002', 'Full-Time', '2021-01-08', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000091', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1221,7 +1226,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000092', 'hassan.tarek.92@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000092', '10092', 'Hassan', 'Tarek', 'حسن', 'طارق', 'hassan.tarek.92@acme.com', '+20 100 2917748', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b3000000-0000-0000-0000-000000000003', 'Permanent', '2022-01-09', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000092', '10092', 'Hassan', 'Tarek', 'حسن', 'طارق', 'hassan.tarek.92@acme.com', '+20 100 2917748', 'Female', 'd3000000-0000-0000-0000-000000000003', 'b3000000-0000-0000-0000-000000000003', 'Full-Time', '2022-01-09', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000092', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
@@ -1247,7 +1252,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000094', 'mostafa.kamal.94@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000094', '10094', 'Mostafa', 'Kamal', 'مصطفى', 'كمال', 'mostafa.kamal.94@acme.com', '+20 100 8848832', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b5000000-0000-0000-0000-000000000005', 'Permanent', '2024-01-11', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000094', '10094', 'Mostafa', 'Kamal', 'مصطفى', 'كمال', 'mostafa.kamal.94@acme.com', '+20 100 8848832', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b5000000-0000-0000-0000-000000000005', 'Full-Time', '2024-01-11', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000094', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1260,7 +1265,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000095', 'zeinab.saad.95@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000095', '10095', 'Zeinab', 'Saad', 'زينب', 'سعد', 'zeinab.saad.95@acme.com', '+20 100 6979727', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b6000000-0000-0000-0000-000000000006', 'Permanent', '2020-01-12', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000095', '10095', 'Zeinab', 'Saad', 'زينب', 'سعد', 'zeinab.saad.95@acme.com', '+20 100 6979727', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b6000000-0000-0000-0000-000000000006', 'Full-Time', '2020-01-12', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000095', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1286,7 +1291,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000097', 'hoda.gaber.97@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000097', '10097', 'Hoda', 'Gaber', 'هدى', 'جابر', 'hoda.gaber.97@acme.com', '+20 100 9782419', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b8000000-0000-0000-0000-000000000008', 'Permanent', '2022-01-14', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000097', '10097', 'Hoda', 'Gaber', 'هدى', 'جابر', 'hoda.gaber.97@acme.com', '+20 100 9782419', 'Male', 'd8000000-0000-0000-0000-000000000008', 'b8000000-0000-0000-0000-000000000008', 'Full-Time', '2022-01-14', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000097', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1299,7 +1304,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000098', 'sherif.rashed.98@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000098', '10098', 'Sherif', 'Rashed', 'شريف', 'راشد', 'sherif.rashed.98@acme.com', '+20 100 2768754', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b9000000-0000-0000-0000-000000000009', 'Permanent', '2023-01-15', 'Direct', false, 'Employee')
+    ('e1000000-0000-0000-0000-000000000098', '10098', 'Sherif', 'Rashed', 'شريف', 'راشد', 'sherif.rashed.98@acme.com', '+20 100 2768754', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b9000000-0000-0000-0000-000000000009', 'Full-Time', '2023-01-15', 'Direct', false, 'Employee')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000098', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Pending');
@@ -1325,7 +1330,7 @@ insert into public.payroll (employee_id, month, basic_salary, allowances, deduct
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000100', 'ahmed.mahdy.100@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
-    ('e1000000-0000-0000-0000-000000000100', '10100', 'Ahmed', 'Mahdy', 'أحمد', 'مهدي', 'ahmed.mahdy.100@acme.com', '+20 100 1303105', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000001', 'Permanent', '2020-01-17', 'Direct', true, 'Manager')
+    ('e1000000-0000-0000-0000-000000000100', '10100', 'Ahmed', 'Mahdy', 'أحمد', 'مهدي', 'ahmed.mahdy.100@acme.com', '+20 100 1303105', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000001', 'Full-Time', '2020-01-17', 'Direct', true, 'Manager')
     on conflict (id) do nothing;
 insert into public.leaves (employee_id, leave_type, start_date, end_date, days_count, reason, status) values
     ('e1000000-0000-0000-0000-000000000100', 'Vacation', '2026-07-01', '2026-07-05', 4, 'Annual vacation leave', 'Approved');
