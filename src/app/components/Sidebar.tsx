@@ -11,6 +11,7 @@ import {
   LogOut,
   ChevronsLeft,
   ChevronsRight,
+  Banknote,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -48,6 +49,7 @@ const navItems = [
   { id: 'leaves', label: 'Leaves Management', icon: FileText },
   { id: 'missions', label: 'Missions Management', icon: Rocket },
   { id: 'roles', label: 'Roles Management', icon: ShieldCheck },
+  { id: 'payrolls', label: 'Payrolls', icon: Banknote },
 ] as const satisfies ReadonlyArray<{ id: AppTab; label: string; icon: React.ComponentType<{ className?: string }> }>;
 
 const footerItems = [

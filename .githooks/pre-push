@@ -1,0 +1,21 @@
+#!/bin/sh
+# Automated pre-push test gate
+echo ""
+echo "🚀 [Git Hook] Running automated pre-push checks..."
+echo "------------------------------------------------"
+npm run prepush
+RESULT=$?
+
+if [ $RESULT -ne 0 ]; then
+  echo ""
+  echo "❌ [Git Hook] Pre-push verification failed!"
+  echo "   Push aborted to protect production deployment."
+  echo "------------------------------------------------"
+  exit 1
+fi
+
+echo ""
+echo "✅ [Git Hook] All quality gates passed (Typecheck, Unit Tests, Build, E2E)!"
+echo "   Proceeding with push..."
+echo "------------------------------------------------"
+exit 0

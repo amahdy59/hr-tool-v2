@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle } from 'lucide-react';
+import { Search, Keyboard, Menu, X, LogOut, LayoutDashboard, CalendarCheck, Users, FileText, Rocket, ShieldCheck, UserCircle, Banknote } from 'lucide-react';
 import { Logo } from './Logo';
 import { useTranslation } from 'react-i18next';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
@@ -92,6 +92,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
                 { id: 'leaves', label: t('sidebar.leaves'), icon: FileText },
                 { id: 'missions', label: t('sidebar.missions'), icon: Rocket },
                 { id: 'roles', label: t('sidebar.roles'), icon: ShieldCheck },
+                { id: 'payrolls', label: t('sidebar.payrolls'), icon: Banknote },
                 { id: 'profile', label: t('sidebar.myProfile'), icon: UserCircle },
               ].map((item) => {
                 const isActive = activeTab === item.id;

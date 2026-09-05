@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, FileText, Users, LayoutDashboard, CalendarCheck, ShieldCheck, Rocket, UserCircle, LogOut } from 'lucide-react';
+import { Search, FileText, Users, LayoutDashboard, CalendarCheck, ShieldCheck, Rocket, UserCircle, LogOut, Banknote } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { AppTab } from '../App';
@@ -18,6 +18,7 @@ const navCommandDefs: Array<{ id: AppTab | 'logout'; key: string; icon: React.Co
   { id: 'leaves', key: 'goToLeaves', icon: FileText, type: 'nav' },
   { id: 'missions', key: 'goToMissions', icon: Rocket, type: 'nav' },
   { id: 'roles', key: 'goToRoles', icon: ShieldCheck, type: 'nav' },
+  { id: 'payrolls', key: 'goToPayrolls', icon: Banknote, type: 'nav' },
   { id: 'profile', key: 'goToProfile', icon: UserCircle, type: 'nav' },
   { id: 'logout', key: 'logout', icon: LogOut, type: 'action' },
 ];
