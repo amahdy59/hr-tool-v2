@@ -20,8 +20,14 @@ const mimeTypes = {
 };
 
 const server = http.createServer((req, res) => {
-  let filePath = path.join(distPath, req.url === '/' ? 'index.html' : req.url.split('?')[0]);
-  if (!fs.existsSync(filePath)) {
+  let cleanUrl = req.url.split('?')[0];
+  if (cleanUrl.startsWith('/hr-tool-v2/')) {
+    cleanUrl = cleanUrl.slice('/hr-tool-v2/'.length - 1);
+  } else if (cleanUrl === '/hr-tool-v2') {
+    cleanUrl = '/';
+  }
+  let filePath = path.join(distPath, cleanUrl === '/' ? 'index.html' : cleanUrl);
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
     filePath = path.join(distPath, 'index.html');
   }
   const extname = String(path.extname(filePath)).toLowerCase();
@@ -67,11 +73,88 @@ server.listen(PORT, async () => {
     };
 
     console.log('\n--- Test 1: Page Initialization ---');
-    await page.goto(`http://localhost:${PORT}`, { waitUntil: 'networkidle0' });
+    await page.goto(`http://localhost:${PORT}/hr-tool-v2/`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForSelector('#root', { timeout: 10000 });
     const pageTitle = await page.title();
     assert(pageTitle.length > 0, 'Page loads with non-empty title', `Title: "${pageTitle}"`);
     const hasRoot = await page.$('#root');
     assert(hasRoot !== null, 'Root container mounted');
+
+    console.log('\n--- Test 1.5: Login Screen UI & Case Study Revamp ---');
+    const caseStudyBtnExists = await page.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('button'));
+      return btns.some(b => {
+        const txt = (b.textContent || '').toLowerCase();
+        const aria = (b.getAttribute('aria-label') || '').toLowerCase();
+        return txt.includes('case study') || aria.includes('case study') || txt.includes('دراسة الحالة');
+      });
+    });
+    assert(caseStudyBtnExists, 'Case Study button present with refined label');
+
+    // Test form error alignment and aria-describedby
+    const emailInput = await page.$('input[type="email"]');
+    if (emailInput) {
+      await emailInput.type('invalid-email');
+      await page.keyboard.press('Tab'); // Trigger blur
+      await new Promise(r => setTimeout(r, 200));
+
+      const errorAlert = await page.evaluate(() => {
+        const alert = document.querySelector('[role="alert"]');
+        if (!alert) return null;
+        const style = window.getComputedStyle(alert);
+        const icon = alert.querySelector('svg');
+        return {
+          exists: true,
+          display: style.display,
+          alignItems: style.alignItems,
+          hasIcon: icon !== null,
+          hasText: alert.textContent.length > 0,
+        };
+      });
+      assert(errorAlert && errorAlert.exists, 'Email error alert rendered on blur');
+      assert(errorAlert && errorAlert.alignItems === 'flex-start', 'Email error container uses items-start for optical top alignment');
+    }
+
+    // Open Case Study
+    const openedCaseStudy = await page.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('button'));
+      const btn = btns.find(b => {
+        const txt = (b.textContent || '').toLowerCase();
+        const aria = (b.getAttribute('aria-label') || '').toLowerCase();
+        return txt.includes('case study') || aria.includes('case study') || txt.includes('دراسة الحالة');
+      });
+      if (btn) {
+        btn.click();
+        return true;
+      }
+      return false;
+    });
+    assert(openedCaseStudy, 'Navigated to Case Study page');
+    await new Promise(r => setTimeout(r, 600));
+
+    const caseStudyLoaded = await page.evaluate(() => {
+      const hero = document.getElementById('hero-heading');
+      const tabs = document.querySelectorAll('[role="tab"]');
+      return hero !== null && tabs.length > 0;
+    });
+    assert(caseStudyLoaded, 'Case study page mounted with comparison tabs and hero');
+
+    // Test back button
+    const backToLoginClicked = await page.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('button'));
+      const backBtn = btns.find(b => {
+        const txt = (b.textContent || '').toLowerCase();
+        const aria = (b.getAttribute('aria-label') || '').toLowerCase();
+        return txt.includes('back to login') || aria.includes('back to login') || txt.includes('العودة');
+      });
+      if (backBtn) {
+        backBtn.click();
+        return true;
+      }
+      return false;
+    });
+    assert(backToLoginClicked, 'Returned to Login page from Case Study');
+    await new Promise(r => setTimeout(r, 600));
 
     console.log('\n--- Test 2: Authentication & Demo Login ---');
     const demoBtn = await page.evaluate(() => {
@@ -191,7 +274,7 @@ server.listen(PORT, async () => {
       document.documentElement.lang = 'ar';
       localStorage.setItem('i18nextLng', 'ar');
     });
-    await page.reload({ waitUntil: 'networkidle0' });
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 15000 });
     const isRtl = await page.evaluate(() => document.documentElement.dir === 'rtl' && document.documentElement.lang === 'ar');
     assert(isRtl, 'HTML root attributes successfully set to dir="rtl" and lang="ar"');
 

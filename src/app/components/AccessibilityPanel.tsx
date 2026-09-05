@@ -39,6 +39,8 @@ export interface AccessibilitySettings {
 
 interface AccessibilityPanelProps {
   settings: AccessibilitySettings;
+  triggerClassName?: string;
+  forceShowLabel?: boolean;
 }
 
 type OptionDef = {
@@ -208,7 +210,7 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
   );
 };
 
-export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings }) => {
+export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings, triggerClassName, forceShowLabel = false }) => {
   const { t, i18n } = useTranslation();
   const {
     highContrast,
@@ -309,12 +311,16 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
   const triggerButton = (
     <Button
       variant="outline"
-      className="relative flex h-11 w-11 items-center justify-center border-border/80 text-foreground transition-all duration-200 hover:border-primary/50 hover:shadow-sm lg:h-11 lg:w-auto lg:gap-2 lg:px-4"
+      className={cn(
+        "relative flex h-11 items-center justify-center border-border/80 text-foreground transition-all duration-200 hover:border-primary/50 hover:shadow-sm",
+        forceShowLabel ? "w-auto gap-2 px-4" : "w-11 lg:w-auto lg:gap-2 lg:px-4",
+        triggerClassName
+      )}
       aria-label={t('header.accessibility')}
       title={t('header.accessibility')}
     >
       <Accessibility className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
-      <span className="hidden lg:inline" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <span className={cn(forceShowLabel ? "inline" : "hidden lg:inline")} style={{ fontFamily: "'Inter', sans-serif" }}>
         {t('header.accessibility')}
       </span>
       {activeCount > 0 && (

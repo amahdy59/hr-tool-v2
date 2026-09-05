@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Info, KeyRound, Zap, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, Info, KeyRound, Zap, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 import { RedesignInfoPage } from './RedesignInfoPage';
@@ -18,10 +18,13 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   const rememberMeId = React.useId();
   const loginErrorId = React.useId();
   const usernameErrorTextId = React.useId();
+  const usernameHintId = React.useId();
   const passwordErrorTextId = React.useId();
+  const passwordHintId = React.useId();
   const resetEmailId = React.useId();
   const resetErrorId = React.useId();
   const resetEmailErrorTextId = React.useId();
+  const resetEmailHintId = React.useId();
   const [username, setUsername] = useState('');
   const [usernameTouched, setUsernameTouched] = useState(false);
   const [password, setPassword] = useState('');
@@ -109,7 +112,16 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   };
 
   if (showInfoPage) {
-    return <RedesignInfoPage onBack={() => setShowInfoPage(false)} accessibility={accessibility} />;
+    return (
+      <RedesignInfoPage
+        onBack={() => setShowInfoPage(false)}
+        onExploreDemo={() => {
+          setShowInfoPage(false);
+          handleQuickLogin();
+        }}
+        accessibility={accessibility}
+      />
+    );
   }
 
   return (
@@ -171,18 +183,23 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             >
               {t('login.tagline')}
             </p>
-            <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-stretch">
+            <div className="flex flex-row items-center justify-center gap-3 w-full">
               <button
                 type="button"
                 onClick={() => setShowInfoPage(true)}
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] border border-border bg-card px-4 text-[var(--text-sm)] font-[var(--font-weight-medium)] text-primary shadow-[var(--elevation-sm)] transition-colors hover:bg-muted sm:w-auto"
+                className="inline-flex min-h-11 h-11 flex-1 sm:flex-initial items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] border border-border/80 bg-card px-4 sm:px-5 text-[var(--text-sm)] font-medium text-foreground shadow-sm transition-all duration-200 hover:border-primary/50 hover:bg-muted/70 hover:text-primary active:scale-[0.98] cursor-pointer"
                 style={{ fontFamily: "'Inter', sans-serif" }}
+                aria-label={t('login.aboutRedesign')}
               >
-                <Info className="w-4 h-4" />
-                {t('login.aboutRedesign')}
+                <Sparkles className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
+                <span>{t('login.aboutRedesign')}</span>
               </button>
-              <div className="inline-flex min-h-11 items-stretch self-center sm:self-auto">
-                <AccessibilityPanel settings={accessibility} />
+              <div className="inline-flex min-h-11 h-11 flex-1 sm:flex-initial items-center justify-center">
+                <AccessibilityPanel
+                  settings={accessibility}
+                  forceShowLabel
+                  triggerClassName="w-full sm:w-auto h-11 px-4 sm:px-5 text-[var(--text-sm)] font-medium text-foreground active:scale-[0.98] cursor-pointer"
+                />
               </div>
             </div>
           </div>
@@ -244,7 +261,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   required
                   aria-required="true"
                   aria-invalid={showUsernameError || errorField === 'username'}
-                  aria-describedby={showUsernameError ? usernameErrorTextId : undefined}
+                  aria-describedby={showUsernameError ? usernameErrorTextId : usernameHintId}
                   autoComplete="email"
                   inputMode="email"
                   className={cn(
@@ -272,15 +289,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   </span>
                 )}
               </div>
-              {showUsernameError && (
-                <p
+              {showUsernameError ? (
+                <div
                   id={usernameErrorTextId}
                   role="alert"
-                  className="text-[var(--text-xs)] text-[#B91C1C] flex items-center gap-1 mt-1"
+                  className="flex items-start gap-2 mt-1.5 p-2 rounded-[var(--radius-input)] bg-destructive/10 border border-destructive/20 text-destructive text-[var(--text-xs)] font-medium transition-all animate-fadeIn"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
-                  <AlertCircle className="w-3.5 h-3.5" />
-                  {t('login.errors.invalidWorkEmail')}
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-destructive" aria-hidden="true" />
+                  <span className="leading-snug text-start flex-1">{t('login.errors.invalidWorkEmail')}</span>
+                </div>
+              ) : (
+                <p
+                  id={usernameHintId}
+                  className="text-[var(--text-xs)] text-muted-foreground mt-1.5 flex items-start gap-1.5"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/70" aria-hidden="true" />
+                  <span className="leading-snug text-start">{t('login.emailHint')}</span>
                 </p>
               )}
             </div>
@@ -312,7 +338,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   required
                   aria-required="true"
                   aria-invalid={showPasswordError || errorField === 'password'}
-                  aria-describedby={showPasswordError ? passwordErrorTextId : undefined}
+                  aria-describedby={showPasswordError ? passwordErrorTextId : passwordHintId}
                   autoComplete="current-password"
                   className={cn(
                     'w-full min-h-[44px] ps-3 pe-20 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
@@ -353,15 +379,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   </button>
                 </div>
               </div>
-              {showPasswordError && (
-                <p
+              {showPasswordError ? (
+                <div
                   id={passwordErrorTextId}
                   role="alert"
-                  className="text-[var(--text-xs)] text-[#B91C1C] flex items-center gap-1 mt-1"
+                  className="flex items-start gap-2 mt-1.5 p-2 rounded-[var(--radius-input)] bg-destructive/10 border border-destructive/20 text-destructive text-[var(--text-xs)] font-medium transition-all animate-fadeIn"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
-                  <AlertCircle className="w-3.5 h-3.5" />
-                  {t('login.errors.invalidPasswordLength')}
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-destructive" aria-hidden="true" />
+                  <span className="leading-snug text-start flex-1">{t('login.errors.invalidPasswordLength')}</span>
+                </div>
+              ) : (
+                <p
+                  id={passwordHintId}
+                  className="text-[var(--text-xs)] text-muted-foreground mt-1.5 flex items-start gap-1.5"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/70" aria-hidden="true" />
+                  <span className="leading-snug text-start">{t('login.passwordHint')}</span>
                 </p>
               )}
             </div>
@@ -539,7 +574,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     required
                     aria-required="true"
                     aria-invalid={showResetEmailError || errorField === 'resetEmail'}
-                    aria-describedby={showResetEmailError ? resetEmailErrorTextId : undefined}
+                    aria-describedby={showResetEmailError ? resetEmailErrorTextId : resetEmailHintId}
                     autoComplete="email"
                     inputMode="email"
                     className={cn(
@@ -567,15 +602,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     </span>
                   )}
                 </div>
-                {showResetEmailError && (
-                  <p
+                {showResetEmailError ? (
+                  <div
                     id={resetEmailErrorTextId}
                     role="alert"
-                    className="text-[var(--text-xs)] text-[#B91C1C] flex items-center gap-1 mt-1"
+                    className="flex items-start gap-2 mt-1.5 p-2 rounded-[var(--radius-input)] bg-destructive/10 border border-destructive/20 text-destructive text-[var(--text-xs)] font-medium transition-all animate-fadeIn"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >
-                    <AlertCircle className="w-3.5 h-3.5" />
-                    {t('login.errors.invalidResetEmail')}
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-destructive" aria-hidden="true" />
+                    <span className="leading-snug text-start flex-1">{t('login.errors.invalidResetEmail')}</span>
+                  </div>
+                ) : (
+                  <p
+                    id={resetEmailHintId}
+                    className="text-[var(--text-xs)] text-muted-foreground mt-1.5 flex items-start gap-1.5"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/70" aria-hidden="true" />
+                    <span className="leading-snug text-start">{t('login.resetEmailHint')}</span>
                   </p>
                 )}
               </div>

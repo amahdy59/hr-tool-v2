@@ -4,7 +4,9 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
+app.use('/hr-tool-v2', express.static(path.join(__dirname, '..', 'dist')));
 app.use(express.static(path.join(__dirname, '..', 'dist')));
+app.use((req, res) => res.sendFile(path.join(__dirname, '..', 'dist', 'index.html')));
 
 const server = app.listen(3000, async () => {
   console.log('Server running on port 3000 for Accessibility Audit...');
@@ -16,7 +18,7 @@ const server = app.listen(3000, async () => {
     page.on('console', msg => console.log('BROWSER LOG:', msg.text()));
     page.on('pageerror', err => console.log('BROWSER ERROR:', err.message));
 
-    await page.goto('http://localhost:3000');
+    await page.goto('http://localhost:3000/hr-tool-v2/');
     console.log('Page loaded. Performing Quick Login...');
     
     await page.waitForSelector('button');

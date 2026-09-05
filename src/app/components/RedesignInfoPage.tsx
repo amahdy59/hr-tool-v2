@@ -37,24 +37,30 @@ const ScreenshotCard: React.FC<{
   const isAfter = variant === 'after';
 
   return (
-    <div className="flex flex-col gap-2">
-      <div
-        className={cn(
-          'inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold',
-          isAfter ? 'bg-[#E7F6EF] text-[#064E3B]' : 'bg-muted text-muted-foreground'
-        )}
-      >
-        {isAfter ? (
-          <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
-        ) : (
-          <Clock className="h-3 w-3" aria-hidden="true" />
-        )}
-        {label}
+    <div className="group flex flex-col gap-2.5 rounded-[calc(var(--radius-card)+4px)] border border-border/80 bg-card/70 p-3.5 sm:p-4 shadow-sm transition-all duration-200 hover:border-primary/40 hover:shadow-md">
+      <div className="flex items-center justify-between gap-2">
+        <div
+          className={cn(
+            'inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-transform duration-200 group-hover:scale-[1.02] motion-reduce:transform-none',
+            isAfter
+              ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30'
+              : 'bg-muted text-muted-foreground border border-border/80'
+          )}
+        >
+          {isAfter ? (
+            <CheckCircle2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          ) : (
+            <Clock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          )}
+          <span>{label}</span>
+        </div>
       </div>
       <div
         className={cn(
-          'relative aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-card)] border bg-card',
-          isAfter ? 'border-[#047857]/30 shadow-md' : 'border-border'
+          'relative aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-card)] border bg-card transition-all duration-300',
+          isAfter
+            ? 'border-emerald-500/30 shadow-sm group-hover:border-emerald-500/60 group-hover:shadow-md'
+            : 'border-border/80 group-hover:border-border'
         )}
       >
         {!loaded && !failed && (
@@ -73,7 +79,7 @@ const ScreenshotCard: React.FC<{
             onLoad={() => setLoaded(true)}
             onError={() => setFailed(true)}
             className={cn(
-              'absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-300',
+              'absolute inset-0 h-full w-full object-cover object-top transition-all duration-500 group-hover:scale-[1.02] motion-reduce:transform-none',
               loaded ? 'opacity-100' : 'opacity-0'
             )}
           />
@@ -86,10 +92,15 @@ const ScreenshotCard: React.FC<{
 
 interface RedesignInfoPageProps {
   onBack: () => void;
+  onExploreDemo?: () => void;
   accessibility: AccessibilitySettings;
 }
 
-export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, accessibility }) => {
+export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
+  onBack,
+  onExploreDemo,
+  accessibility,
+}) => {
   const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState(0);
   const pageTitleId = useId();
@@ -173,17 +184,23 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] border border-border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-[var(--elevation-sm)] transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-[var(--elevation-sm)] transition-all duration-150 hover:bg-muted active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transform-none cursor-pointer"
             aria-label={t('login.backToLogin')}
           >
             <BackIcon className="h-4 w-4" aria-hidden="true" />
             <span>{t('login.backToLogin')}</span>
           </button>
           <div className="flex items-center gap-2 sm:gap-3">
-            <p className="hidden items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground sm:flex">
-              <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-              {t('redesign.caseStudyEyebrow')}
-            </p>
+            {onExploreDemo && (
+              <button
+                type="button"
+                onClick={onExploreDemo}
+                className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-150 hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transform-none cursor-pointer"
+              >
+                <Sparkles className="h-4 w-4" aria-hidden="true" />
+                <span>{t('login.launchDemo')}</span>
+              </button>
+            )}
             <AccessibilityPanel settings={accessibility} />
           </div>
         </div>
@@ -224,28 +241,31 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
             ].map(({ label, icon: Icon }) => (
               <div
                 key={label}
-                className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border/80 bg-background/80 px-3 py-2 text-sm font-medium shadow-[var(--elevation-sm)] backdrop-blur"
+                className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border/80 bg-background/80 px-3.5 py-2 text-sm font-medium shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 motion-reduce:transform-none"
               >
                 <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
                 {label}
               </div>
             ))}
           </div>
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3">
             {proofPoints.map(({ icon: Icon, value, label }) => (
-              <div key={value} className="rounded-[var(--radius-card)] border border-border/80 bg-background/80 p-4 shadow-[var(--elevation-sm)] backdrop-blur">
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
+              <div
+                key={value}
+                className="group rounded-[var(--radius-card)] border border-border/80 bg-background/80 p-5 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md motion-reduce:transform-none"
+              >
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10 transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none">
                   <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
-                <p className="text-sm font-semibold text-foreground">{value}</p>
+                <p className="text-base font-bold text-foreground">{value}</p>
                 <p className="mt-1 text-xs leading-5 text-muted-foreground">{label}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section aria-labelledby="comparison-heading">
-          <div className="mb-6 space-y-2">
+        <section aria-labelledby="comparison-heading" className="space-y-6">
+          <div className="space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">
               <ForwardIcon className="h-4 w-4" aria-hidden="true" />
               {t('redesign.comparison.eyebrow')}
@@ -258,7 +278,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
             </p>
           </div>
 
-          <div role="tablist" aria-label={t('redesign.comparison.tablistAriaLabel')} className="mb-6 flex gap-2 overflow-x-auto pb-1">
+          <div role="tablist" aria-label={t('redesign.comparison.tablistAriaLabel')} className="flex gap-2 overflow-x-auto pb-1">
             {comparisons.map((c, i) => (
               <button
                 key={c.id}
@@ -269,10 +289,10 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
                 type="button"
                 onClick={() => setActiveTab(i)}
                 className={cn(
-                  'shrink-0 rounded-[var(--radius-button)] border px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                  'shrink-0 inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border px-4 py-2 text-sm font-medium transition-all duration-150 active:scale-[0.98] motion-reduce:transform-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer',
                   activeTab === i
-                    ? 'border-primary bg-primary text-primary-foreground'
-                    : 'border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
+                    ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                    : 'border-border bg-card text-muted-foreground hover:border-border/90 hover:bg-muted hover:text-foreground'
                 )}
               >
                 {c.label}
@@ -287,13 +307,15 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
               role="tabpanel"
               aria-labelledby={`tab-${c.id}`}
               hidden={activeTab !== i}
-              className="grid gap-4 sm:grid-cols-2"
+              className={cn(
+                'grid gap-5 sm:grid-cols-2',
+                activeTab === i && 'animate-fadeIn'
+              )}
             >
               <ScreenshotCard src={c.before.src} caption={c.before.caption} label={t('redesign.comparison.beforeLabel')} variant="before" />
               <ScreenshotCard src={c.after.src} caption={c.after.caption} label={t('redesign.comparison.afterLabel')} variant="after" />
             </div>
           ))}
-
           <div className="mt-4 flex items-center justify-between sm:hidden">
             <button
               type="button"
@@ -333,11 +355,14 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {outcomes.map(({ icon: Icon, label, desc }) => (
-              <div key={label} className="rounded-[var(--radius-card)] border border-border bg-card/90 p-5 shadow-[var(--elevation-sm)] backdrop-blur">
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
+              <div
+                key={label}
+                className="group rounded-[var(--radius-card)] border border-border bg-card/90 p-5 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md motion-reduce:transform-none"
+              >
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10 transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none">
                   <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
-                <h3 className="text-sm font-semibold">{label}</h3>
+                <h3 className="text-sm font-semibold text-foreground">{label}</h3>
                 <p className="mt-1 text-xs leading-5 text-muted-foreground">{desc}</p>
               </div>
             ))}
@@ -356,10 +381,13 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {improvements.map(({ label, detail }) => (
-              <div key={label} className="flex gap-3 rounded-[var(--radius-card)] border border-border bg-card/90 p-4 shadow-[var(--elevation-sm)] backdrop-blur">
+              <div
+                key={label}
+                className="flex gap-3 rounded-[var(--radius-card)] border border-border bg-card/90 p-4 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-sm motion-reduce:transform-none"
+              >
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                 <div>
-                  <p className="text-sm font-semibold">{label}</p>
+                  <p className="text-sm font-semibold text-foreground">{label}</p>
                   <p className="mt-0.5 text-xs leading-5 text-muted-foreground">{detail}</p>
                 </div>
               </div>
@@ -382,7 +410,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-4 rounded-[var(--radius-card)] border border-border bg-card/90 p-6 shadow-[var(--elevation-sm)] backdrop-blur">
+            <div className="space-y-4 rounded-[var(--radius-card)] border border-border bg-card/90 p-6 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:border-primary/30 hover:shadow-md">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Database className="h-5 w-5 text-accent" aria-hidden="true" />
@@ -393,19 +421,19 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
                 {t('redesign.roadmap.database.description')}
               </p>
               <div className="space-y-2.5 text-xs text-muted-foreground">
-                <div className="flex justify-between gap-4 border-b border-border pb-1.5">
+                <div className="flex justify-between gap-4 border-b border-border pb-1.5 transition-colors hover:text-foreground">
                   <span className="font-semibold text-foreground">public.employees</span>
                   <span className="text-end">{t('redesign.roadmap.database.rows.employees')}</span>
                 </div>
-                <div className="flex justify-between gap-4 border-b border-border pb-1.5">
+                <div className="flex justify-between gap-4 border-b border-border pb-1.5 transition-colors hover:text-foreground">
                   <span className="font-semibold text-foreground">public.leaves &amp; missions</span>
                   <span className="text-end">{t('redesign.roadmap.database.rows.requests')}</span>
                 </div>
-                <div className="flex justify-between gap-4 border-b border-border pb-1.5">
+                <div className="flex justify-between gap-4 border-b border-border pb-1.5 transition-colors hover:text-foreground">
                   <span className="font-semibold text-foreground">public.attendance</span>
                   <span className="text-end">{t('redesign.roadmap.database.rows.attendance')}</span>
                 </div>
-                <div className="flex justify-between gap-4 border-b border-border pb-1.5">
+                <div className="flex justify-between gap-4 border-b border-border pb-1.5 transition-colors hover:text-foreground">
                   <span className="font-semibold text-foreground">public.payroll</span>
                   <span className="text-end">{t('redesign.roadmap.database.rows.payroll')}</span>
                 </div>
@@ -416,7 +444,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
               </div>
             </div>
 
-            <div className="space-y-4 rounded-[var(--radius-card)] border border-border bg-card/90 p-6 shadow-[var(--elevation-sm)] backdrop-blur">
+            <div className="space-y-4 rounded-[var(--radius-card)] border border-border bg-card/90 p-6 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:border-primary/30 hover:shadow-md">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
                   <Shield className="h-5 w-5 text-accent" aria-hidden="true" />
@@ -440,21 +468,39 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({ onBack, acce
           </div>
         </section>
 
-        <section className="rounded-[calc(var(--radius-card)+8px)] border border-primary/20 bg-card/90 px-6 py-10 text-center shadow-[var(--elevation-lg)] backdrop-blur sm:px-10" aria-labelledby="cta-heading">
-          <h2 id="cta-heading" className="text-xl font-semibold">
+        <section
+          className="rounded-[calc(var(--radius-card)+8px)] border border-primary/25 bg-gradient-to-b from-card to-card/70 px-6 py-10 text-center shadow-[var(--elevation-lg)] backdrop-blur sm:px-10"
+          aria-labelledby="cta-heading"
+        >
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
+            <Sparkles className="h-6 w-6" aria-hidden="true" />
+          </div>
+          <h2 id="cta-heading" className="text-2xl font-bold tracking-tight">
             {t('redesign.cta.title')}
           </h2>
           <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
             {t('redesign.cta.description')}
           </p>
-          <button
-            type="button"
-            onClick={onBack}
-            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            <BackIcon className="h-4 w-4" aria-hidden="true" />
-            {t('login.backToLogin')}
-          </button>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            {onExploreDemo && (
+              <button
+                type="button"
+                onClick={onExploreDemo}
+                className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all duration-150 hover:bg-primary/90 hover:shadow-lg active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none cursor-pointer"
+              >
+                <Zap className="h-4 w-4" aria-hidden="true" />
+                <span>{t('login.launchDemo')}</span>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground shadow-sm transition-all duration-150 hover:bg-muted active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none cursor-pointer"
+            >
+              <BackIcon className="h-4 w-4" aria-hidden="true" />
+              <span>{t('login.backToLogin')}</span>
+            </button>
+          </div>
         </section>
       </main>
     </div>

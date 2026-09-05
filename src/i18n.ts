@@ -21,7 +21,8 @@ const en = {
     login: {
       appName: 'HR Tool',
       tagline: 'Workforce management, simplified.',
-      aboutRedesign: 'About this redesign',
+      aboutRedesign: 'Case Study',
+      launchDemo: 'Explore Demo',
       signInHeading: 'Sign in to HR Tool',
       email: 'Email',
       emailPlaceholder: 'name@company.com',
@@ -533,7 +534,8 @@ const ar = {
 (ar.translation as Record<string, unknown>).login = {
   appName: 'أداة الموارد البشرية',
   tagline: 'إدارة القوى العاملة ببساطة.',
-  aboutRedesign: 'نبذة عن إعادة التصميم',
+  aboutRedesign: 'دراسة الحالة',
+  launchDemo: 'استكشاف العرض',
   signInHeading: 'تسجيل الدخول إلى أداة الموارد البشرية',
   email: 'البريد الإلكتروني',
   emailPlaceholder: 'الاسم@company.com',
