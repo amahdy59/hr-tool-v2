@@ -62,8 +62,10 @@ server.listen(0, '127.0.0.1', async () => {
   let comparisons = 0;
 
   try {
+    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || (fs.existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : undefined);
     browser = await puppeteer.launch({
       headless: true,
+      executablePath,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
     });
 
@@ -252,7 +254,8 @@ server.listen(0, '127.0.0.1', async () => {
     console.error('💥 [Visual Regression] Unexpected error:', err);
     process.exitCode = 1;
   } finally {
-    if (browser) await browser.close();
+    if (browser) await browser.close().catch(() => {});
     server.close();
+    process.exit(failures > 0 ? 1 : (process.exitCode || 0));
   }
 });
