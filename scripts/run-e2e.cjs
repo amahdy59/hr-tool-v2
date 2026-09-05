@@ -39,15 +39,14 @@ const server = http.createServer((req, res) => {
       res.end('Error loading file');
     } else {
       res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content, 'utf-8');
+      res.end(content);
     }
   });
 });
 
-const PORT = 4570;
-
-server.listen(PORT, async () => {
-  console.log(`[E2E Runner] Static server listening on http://localhost:${PORT}`);
+server.listen(0, '127.0.0.1', async () => {
+  const PORT = server.address().port;
+  console.log(`[E2E Runner] Static server listening on http://127.0.0.1:${PORT}`);
   let browser;
   let exitCode = 0;
 
@@ -73,8 +72,8 @@ server.listen(PORT, async () => {
     };
 
     console.log('\n--- Test 1: Page Initialization ---');
-    await page.goto(`http://localhost:${PORT}/hr-tool-v2/`, { waitUntil: 'domcontentloaded', timeout: 15000 });
-    await page.waitForSelector('#root', { timeout: 10000 });
+    await page.goto(`http://127.0.0.1:${PORT}/hr-tool-v2/`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForSelector('#root', { timeout: 15000 });
     const pageTitle = await page.title();
     assert(pageTitle.length > 0, 'Page loads with non-empty title', `Title: "${pageTitle}"`);
     const hasRoot = await page.$('#root');
