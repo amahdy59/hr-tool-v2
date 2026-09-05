@@ -31,7 +31,9 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npx puppeteer browsers install chrome
 
       - name: Code Review (Typecheck, Manifest, i18n Parity, RTL Linter)
         run: npm run check:code
