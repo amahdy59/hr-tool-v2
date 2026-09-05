@@ -9,7 +9,7 @@ insert into public.departments (id, name, dept_code) values
   ('d7000000-0000-0000-0000-000000000007', 'HR', 'DEPT-HR'),
   ('d8000000-0000-0000-0000-000000000008', 'Finance', 'DEPT-FIN'),
   ('d9000000-0000-0000-0000-000000000009', 'Engineering', 'DEPT-ENG')
-on conflict (name) do nothing;
+on conflict (name) do update set id = excluded.id, dept_code = excluded.dept_code;
 
 -- 2. Seed Job Titles
 insert into public.job_titles (id, title) values
@@ -23,7 +23,7 @@ insert into public.job_titles (id, title) values
   ('b8000000-0000-0000-0000-000000000008', 'HR Operations Manager'),
   ('b9000000-0000-0000-0000-000000000009', 'Senior Financial Controller'),
   ('b1010000-0000-0000-0000-000000000010', 'Frontend Intern')
-on conflict (title) do nothing;
+on conflict (title) do update set id = excluded.id;
 
 -- 3. Seed Employees
 -- Note: If employees table references auth.users(id), these seeds require auth.users entries first.
