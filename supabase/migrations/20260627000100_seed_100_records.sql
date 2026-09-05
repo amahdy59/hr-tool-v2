@@ -5,8 +5,8 @@ truncate table public.payroll cascade;
 truncate table public.attendance cascade;
 truncate table public.missions cascade;
 truncate table public.leaves cascade;
-delete from public.employees where id like 'e%';
-delete from auth.users where id like 'e%';
+delete from public.employees where id::text like 'e%';
+delete from auth.users where id::text like 'e%';
 
 insert into auth.users (id, email) values ('e1000000-0000-0000-0000-000000000001', 'sara.salem.1@acme.com') on conflict (id) do nothing;
 insert into public.employees (id, employee_number, first_name, last_name, first_name_ar, last_name_ar, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, role) values
