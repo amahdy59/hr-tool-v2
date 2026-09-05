@@ -13,16 +13,16 @@ on conflict (name) do nothing;
 
 -- 2. Seed Job Titles
 insert into public.job_titles (id, title) values
-  ('j1000000-0000-0000-0000-000000000001', 'Senior Solutions Architect'),
-  ('j2000000-0000-0000-0000-000000000002', 'Global Operations Manager'),
-  ('j3000000-0000-0000-0000-000000000003', 'Senior Project Manager'),
-  ('j4000000-0000-0000-0000-000000000004', 'Senior Cybersecurity Specialist'),
-  ('j5000000-0000-0000-0000-000000000005', 'Director of Supply Chain Optimization'),
-  ('j6000000-0000-0000-0000-000000000006', 'Senior UX Designer & Data Analyst'),
-  ('j7000000-0000-0000-0000-000000000007', 'Lead DevOps Engineer'),
-  ('j8000000-0000-0000-0000-000000000008', 'HR Operations Manager'),
-  ('j9000000-0000-0000-0000-000000000009', 'Senior Financial Controller'),
-  ('j1010000-0000-0000-0000-000000000010', 'Frontend Intern')
+  ('b1000000-0000-0000-0000-000000000001', 'Senior Solutions Architect'),
+  ('b2000000-0000-0000-0000-000000000002', 'Global Operations Manager'),
+  ('b3000000-0000-0000-0000-000000000003', 'Senior Project Manager'),
+  ('b4000000-0000-0000-0000-000000000004', 'Senior Cybersecurity Specialist'),
+  ('b5000000-0000-0000-0000-000000000005', 'Director of Supply Chain Optimization'),
+  ('b6000000-0000-0000-0000-000000000006', 'Senior UX Designer & Data Analyst'),
+  ('b7000000-0000-0000-0000-000000000007', 'Lead DevOps Engineer'),
+  ('b8000000-0000-0000-0000-000000000008', 'HR Operations Manager'),
+  ('b9000000-0000-0000-0000-000000000009', 'Senior Financial Controller'),
+  ('b1010000-0000-0000-0000-000000000010', 'Frontend Intern')
 on conflict (title) do nothing;
 
 -- 3. Seed Employees
@@ -43,16 +43,16 @@ on conflict (id) do nothing;
 
 -- Populate public.employees (The signup trigger handle_new_user might do this, but running this directly guarantees matching details)
 insert into public.employees (id, employee_number, first_name, last_name, email, phone, gender, department_id, job_title_id, contract_type, hire_date, activity_type, is_manager, img_url, role) values
-  ('e1000000-0000-0000-0000-000000000001', '12345', 'Aleksander', 'Garcia', 'alex.garcia@acme.com', '+972(0) 2788-9451', 'Male', 'd1000000-0000-0000-0000-000000000001', 'j1000000-0000-0000-0000-000000000001', 'Freelance', '2023-04-15', 'Direct', false, 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', 'Employee'),
-  ('e2000000-0000-0000-0000-000000000002', '54321', 'Tanvi', 'Lumari', 'tanvi.l@acme.com', '+972(0) 2788-9452', 'Female', 'd2000000-0000-0000-0000-000000000002', 'j2000000-0000-0000-0000-000000000002', 'Permanent', '2022-01-10', 'Direct', true, 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop', 'Manager'),
-  ('e3000000-0000-0000-0000-000000000003', '98765', 'Jack', 'Gray', 'jack.g@acme.com', '+972(0) 2788-9453', 'Male', 'd3000000-0000-0000-0000-000000000003', 'j3000000-0000-0000-0000-000000000003', 'Permanent', '2021-08-22', 'Direct', false, 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop', 'Employee'),
-  ('e4000000-0000-0000-0000-000000000004', '24680', 'Saad', 'Jawahir', 'saad.j@acme.com', '+972(0) 2788-9454', 'Male', 'd4000000-0000-0000-0000-000000000004', 'j4000000-0000-0000-0000-000000000004', 'Contractor', '2023-11-01', 'InDirect', false, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', 'Employee'),
-  ('e5000000-0000-0000-0000-000000000005', '24252', 'Imani', 'Adimbola', 'imani.a@acme.com', '+972(0) 2788-9455', 'Female', 'd5000000-0000-0000-0000-000000000005', 'j5000000-0000-0000-0000-000000000005', 'Permanent', '2020-03-14', 'Direct', true, 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop', 'Manager'),
-  ('e6000000-0000-0000-0000-000000000006', '30111', 'Ahmed', 'Mahdy', 'amahdy59@gmail.com', '+20 150 000 0111', 'Male', 'd6000000-0000-0000-0000-000000000006', 'j6000000-0000-0000-0000-000000000006', 'Permanent', '2023-01-15', 'Direct', true, '', 'Admin'),
-  ('e7000000-0000-0000-0000-000000000007', '40222', 'Sarah', 'Connor', 'sarah.c@acme.com', '+972(0) 2788-9457', 'Female', 'd9000000-0000-0000-0000-000000000009', 'j7000000-0000-0000-0000-000000000007', 'Permanent', '2024-05-10', 'Direct', false, '', 'Employee'),
-  ('e8000000-0000-0000-0000-000000000008', '50333', 'Tarek', 'Abdelaziz', 'tarek.a@acme.com', '+972(0) 2788-9458', 'Male', 'd7000000-0000-0000-0000-000000000007', 'j8000000-0000-0000-0000-000000000008', 'Permanent', '2022-09-01', 'Direct', true, '', 'Manager'),
-  ('e9000000-0000-0000-0000-000000000009', '60444', 'Fatima', 'El-Sayed', 'fatima.s@acme.com', '+972(0) 2788-9459', 'Female', 'd8000000-0000-0000-0000-000000000008', 'j9000000-0000-0000-0000-000000000009', 'Permanent', '2023-02-28', 'Direct', false, '', 'Employee'),
-  ('e1010000-0000-0000-0000-000000000010', '70555', 'John', 'Doe', 'john.d@acme.com', '+972(0) 2788-9460', 'Male', 'd3000000-0000-0000-0000-000000000003', 'j1010000-0000-0000-0000-000000000010', 'Intern', '2026-06-01', 'InDirect', false, '', 'Employee')
+  ('e1000000-0000-0000-0000-000000000001', '12345', 'Aleksander', 'Garcia', 'alex.garcia@acme.com', '+972(0) 2788-9451', 'Male', 'd1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000001', 'Freelance', '2023-04-15', 'Direct', false, 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', 'Employee'),
+  ('e2000000-0000-0000-0000-000000000002', '54321', 'Tanvi', 'Lumari', 'tanvi.l@acme.com', '+972(0) 2788-9452', 'Female', 'd2000000-0000-0000-0000-000000000002', 'b2000000-0000-0000-0000-000000000002', 'Permanent', '2022-01-10', 'Direct', true, 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop', 'Manager'),
+  ('e3000000-0000-0000-0000-000000000003', '98765', 'Jack', 'Gray', 'jack.g@acme.com', '+972(0) 2788-9453', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b3000000-0000-0000-0000-000000000003', 'Permanent', '2021-08-22', 'Direct', false, 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop', 'Employee'),
+  ('e4000000-0000-0000-0000-000000000004', '24680', 'Saad', 'Jawahir', 'saad.j@acme.com', '+972(0) 2788-9454', 'Male', 'd4000000-0000-0000-0000-000000000004', 'b4000000-0000-0000-0000-000000000004', 'Contractor', '2023-11-01', 'InDirect', false, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', 'Employee'),
+  ('e5000000-0000-0000-0000-000000000005', '24252', 'Imani', 'Adimbola', 'imani.a@acme.com', '+972(0) 2788-9455', 'Female', 'd5000000-0000-0000-0000-000000000005', 'b5000000-0000-0000-0000-000000000005', 'Permanent', '2020-03-14', 'Direct', true, 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop', 'Manager'),
+  ('e6000000-0000-0000-0000-000000000006', '30111', 'Ahmed', 'Mahdy', 'amahdy59@gmail.com', '+20 150 000 0111', 'Male', 'd6000000-0000-0000-0000-000000000006', 'b6000000-0000-0000-0000-000000000006', 'Permanent', '2023-01-15', 'Direct', true, '', 'Admin'),
+  ('e7000000-0000-0000-0000-000000000007', '40222', 'Sarah', 'Connor', 'sarah.c@acme.com', '+972(0) 2788-9457', 'Female', 'd9000000-0000-0000-0000-000000000009', 'b7000000-0000-0000-0000-000000000007', 'Permanent', '2024-05-10', 'Direct', false, '', 'Employee'),
+  ('e8000000-0000-0000-0000-000000000008', '50333', 'Tarek', 'Abdelaziz', 'tarek.a@acme.com', '+972(0) 2788-9458', 'Male', 'd7000000-0000-0000-0000-000000000007', 'b8000000-0000-0000-0000-000000000008', 'Permanent', '2022-09-01', 'Direct', true, '', 'Manager'),
+  ('e9000000-0000-0000-0000-000000000009', '60444', 'Fatima', 'El-Sayed', 'fatima.s@acme.com', '+972(0) 2788-9459', 'Female', 'd8000000-0000-0000-0000-000000000008', 'b9000000-0000-0000-0000-000000000009', 'Permanent', '2023-02-28', 'Direct', false, '', 'Employee'),
+  ('e1010000-0000-0000-0000-000000000010', '70555', 'John', 'Doe', 'john.d@acme.com', '+972(0) 2788-9460', 'Male', 'd3000000-0000-0000-0000-000000000003', 'b1010000-0000-0000-0000-000000000010', 'Intern', '2026-06-01', 'InDirect', false, '', 'Employee')
 on conflict (id) do update set
   employee_number = excluded.employee_number,
   first_name = excluded.first_name,
