@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const projectRoot = path.resolve(__dirname, '..');
 const distPath = path.resolve(projectRoot, 'dist');
@@ -52,13 +53,17 @@ server.listen(0, '127.0.0.1', async () => {
 
   try {
     const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || (fs.existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : undefined);
+    const uniqueUserDir = path.join(os.tmpdir(), `puppeteer_e2e_${Date.now()}_${Math.random().toString(36).slice(2)}`);
     browser = await puppeteer.launch({
       headless: true,
       executablePath,
+      userDataDir: uniqueUserDir,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
     });
 
     const page = await browser.newPage();
+    page.setDefaultNavigationTimeout(60000);
+    page.setDefaultTimeout(60000);
     page.on('console', msg => {
       if (msg.type() === 'error') console.log('BROWSER CONSOLE ERROR:', msg.text());
     });

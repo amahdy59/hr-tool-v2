@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const { PNG } = require('pngjs');
 const rawPixelmatch = require('pixelmatch');
 const pixelmatch = rawPixelmatch.default || rawPixelmatch;
@@ -74,9 +75,11 @@ server.listen(0, '127.0.0.1', async () => {
 
   try {
     const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || (fs.existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : undefined);
+    const uniqueUserDir = path.join(os.tmpdir(), `puppeteer_vis_${Date.now()}_${Math.random().toString(36).slice(2)}`);
     browser = await puppeteer.launch({
       headless: true,
       executablePath,
+      userDataDir: uniqueUserDir,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
     });
 
