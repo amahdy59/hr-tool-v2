@@ -123,6 +123,85 @@ server.listen(0, '127.0.0.1', async () => {
       }
     }
 
+    async function checkHeaderResponsiveness(label) {
+      const result = await page.evaluate(() => {
+        const header = document.querySelector('header');
+        if (!header) return { found: false };
+
+        const windowWidth = window.innerWidth;
+        const interactive = Array.from(header.querySelectorAll('button, a, input, [tabindex="0"]'));
+        const elementsData = interactive.map(el => {
+          const r = el.getBoundingClientRect();
+          const computed = window.getComputedStyle(el);
+          return {
+            tag: el.tagName.toLowerCase(),
+            ariaLabel: el.getAttribute('aria-label') || el.getAttribute('title') || el.textContent.trim().slice(0, 20),
+            visible: computed.display !== 'none' && computed.visibility !== 'hidden' && r.width > 0 && r.height > 0,
+            rect: {
+              top: Math.round(r.top),
+              bottom: Math.round(r.bottom),
+              left: Math.round(r.left),
+              right: Math.round(r.right),
+              width: Math.round(r.width),
+              height: Math.round(r.height)
+            },
+            touchAdequate: r.width >= 43.5 && r.height >= 43.5
+          };
+        }).filter(e => e.visible);
+
+        const overflowing = elementsData.filter(e => e.rect.right > windowWidth || e.rect.left < 0);
+
+        const overlaps = [];
+        for (let i = 0; i < elementsData.length; i++) {
+          for (let j = i + 1; j < elementsData.length; j++) {
+            const a = elementsData[i].rect;
+            const b = elementsData[j].rect;
+            const overlapX = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+            const overlapY = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+            if (overlapX > 2 && overlapY > 2) {
+              overlaps.push(`${elementsData[i].ariaLabel} overlaps with ${elementsData[j].ariaLabel} (${overlapX}px x ${overlapY}px)`);
+            }
+          }
+        }
+
+        const smallTargets = elementsData.filter(e => !e.touchAdequate);
+
+        return {
+          found: true,
+          overflowing,
+          overlaps,
+          smallTargets,
+          elementsCount: elementsData.length
+        };
+      });
+
+      if (!result.found) return;
+
+      if (result.overflowing.length > 0) {
+        const err = `${label} header element overflow: ${result.overflowing.map(e => e.ariaLabel).join(', ')}`;
+        failures.push(err);
+        console.error(`   ❌ ${err}`);
+      } else {
+        checksPassed++;
+      }
+
+      if (result.overlaps.length > 0) {
+        const err = `${label} header element overlap: ${result.overlaps.join('; ')}`;
+        failures.push(err);
+        console.error(`   ❌ ${err}`);
+      } else {
+        checksPassed++;
+      }
+
+      if (result.smallTargets.length > 0) {
+        const err = `${label} header small touch target: ${result.smallTargets.map(t => `${t.ariaLabel} (${t.rect.width}x${t.rect.height})`).join(', ')}`;
+        failures.push(err);
+        console.error(`   ❌ ${err}`);
+      } else {
+        checksPassed++;
+      }
+    }
+
     console.log(`Auditing ${VIEWPORTS.length} standard viewports across multiple routes and locales...\n`);
 
     for (const vp of VIEWPORTS) {
@@ -197,6 +276,7 @@ server.listen(0, '127.0.0.1', async () => {
         await quickLoginBtn.asElement().click();
         await new Promise(r => setTimeout(r, 1500));
         await checkPageOverflow(`[${vp.name}] Dashboard Overview (EN)`);
+        await checkHeaderResponsiveness(`[${vp.name}] Header (EN)`);
 
         // Check Request Leave Modal
         const reqLeaveBtn = await page.evaluateHandle(() => {
@@ -229,6 +309,7 @@ server.listen(0, '127.0.0.1', async () => {
           await dashArBtn.click();
           await new Promise(r => setTimeout(r, 500));
           await checkPageOverflow(`[${vp.name}] Dashboard (AR)`);
+          await checkHeaderResponsiveness(`[${vp.name}] Header (AR)`);
         }
       }
     }

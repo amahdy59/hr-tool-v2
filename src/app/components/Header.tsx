@@ -138,9 +138,17 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
               })}
             </nav>
 
-            {/* Bottom Actions (Logout) */}
-            <div className="border-t border-border pt-4 mt-auto space-y-2">
-              
+            {/* Bottom Actions (Logout & Offline status) */}
+            <div className="border-t border-border pt-4 mt-auto space-y-2 p-3">
+              {offlinePendingCount > 0 && (
+                <div
+                  className="flex items-center gap-2 p-2.5 rounded-[var(--radius)] bg-amber-500/15 text-[#7C2D12] dark:text-amber-300 border border-amber-500/30 text-xs font-bold"
+                  role="status"
+                >
+                  <CloudOff className="w-4 h-4 shrink-0 animate-pulse" aria-hidden="true" />
+                  <span>{t('header.syncPending', { count: offlinePendingCount })}</span>
+                </div>
+              )}
               {onLogout && (
                 <SheetClose asChild>
                   <button
@@ -176,7 +184,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
       <div className="flex justify-center">
         <button 
           onClick={() => setActiveTab('dashboard')} 
-          className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-md hover:opacity-80 transition-opacity flex items-center px-2"
+          className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-md hover:opacity-80 transition-opacity flex items-center justify-center p-1 min-h-11 min-w-11"
           aria-label={t('header.goDashboard')}
           title={t('header.goDashboard')}
         >
@@ -187,7 +195,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
       <div className="flex min-w-0 items-center justify-end gap-2 lg:gap-2.5">
         {offlinePendingCount > 0 && (
           <div
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/15 text-[#7C2D12] dark:text-amber-300 border border-amber-500/30 text-xs font-bold select-none"
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/15 text-[#7C2D12] dark:text-amber-300 border border-amber-500/30 text-xs font-bold select-none"
             title={t('header.syncPending', { count: offlinePendingCount })}
           >
             <CloudOff className="w-3.5 h-3.5 animate-pulse" aria-hidden="true" />

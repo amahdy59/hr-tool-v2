@@ -313,14 +313,14 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       variant="outline"
       className={cn(
         "relative flex h-11 items-center justify-center border-border/80 text-foreground transition-all duration-200 hover:border-primary/50 hover:shadow-sm",
-        forceShowLabel ? "w-auto gap-2 px-4" : "w-11 lg:w-auto lg:gap-2 lg:px-4",
+        forceShowLabel ? "w-auto gap-2 px-4" : "w-11 xl:w-auto xl:gap-2 xl:px-4",
         triggerClassName
       )}
       aria-label={t('header.accessibility')}
       title={t('header.accessibility')}
     >
       <Accessibility className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
-      <span className={cn(forceShowLabel ? "inline" : "hidden lg:inline")} style={{ fontFamily: "'Inter', sans-serif" }}>
+      <span className={cn(forceShowLabel ? "inline" : "hidden xl:inline")} style={{ fontFamily: "'Inter', sans-serif" }}>
         {t('header.accessibility')}
       </span>
       {activeCount > 0 && (
