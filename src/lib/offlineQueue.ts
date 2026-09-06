@@ -114,3 +114,11 @@ function notifyQueueSubscribers() {
     window.dispatchEvent(new CustomEvent('hr-offline-queue-changed'));
   }
 }
+
+export function subscribeOfflineQueue(callback: () => void): () => void {
+  if (typeof window === 'undefined') return () => {};
+  window.addEventListener('hr-offline-queue-changed', callback);
+  return () => {
+    window.removeEventListener('hr-offline-queue-changed', callback);
+  };
+}
