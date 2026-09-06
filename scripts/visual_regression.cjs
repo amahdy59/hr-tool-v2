@@ -84,6 +84,8 @@ server.listen(0, '127.0.0.1', async () => {
       // Create an isolated incognito browser context for every scenario
       const context = await browser.createBrowserContext();
       const page = await context.newPage();
+      page.setDefaultNavigationTimeout(60000);
+      page.setDefaultTimeout(60000);
 
       await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
 

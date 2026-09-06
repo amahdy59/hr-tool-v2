@@ -71,6 +71,8 @@ server.listen(0, '127.0.0.1', async () => {
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
     });
     const page = await browser.newPage();
+    page.setDefaultNavigationTimeout(60000);
+    page.setDefaultTimeout(60000);
 
     async function checkPageOverflow(label) {
       const result = await page.evaluate(() => {

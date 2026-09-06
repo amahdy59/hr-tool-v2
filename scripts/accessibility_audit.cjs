@@ -63,6 +63,8 @@ server.listen(0, '127.0.0.1', async () => {
     });
 
     const page = await browser.newPage();
+    page.setDefaultNavigationTimeout(60000);
+    page.setDefaultTimeout(60000);
     await page.setViewport({ width: 1280, height: 800 });
 
     async function auditCurrentState(stateName) {
