@@ -72,7 +72,7 @@ const getRequestDate = (request: Pick<LeaveRequest, 'startDate' | 'endDate' | 'r
 };
 
 export const LeavesManagement: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const displayEmployeeName = (name?: LeaveRequest['name']) => localizePersonName(name, language);
@@ -255,14 +255,14 @@ export const LeavesManagement: React.FC = () => {
     if (filterEmploymentTypes.length) c++;
     setActiveFilters(c);
     setFilterOpen(false);
-    toast.success('Filters applied', { description: `${c} filter${c !== 1 ? 's' : ''} active` });
+    toast.success(t('management.filtersApplied'), { description: t('management.filtersActive', { count: c }) });
   };
 
   const clearFilters = () => {
     setFilterDept('All'); setFilterLeaveType('All'); setFilterFrom(''); setFilterTo('');
     setFilterActivityTypes([]); setFilterEmploymentTypes([]);
     setActiveFilters(0);
-    toast.info('Filters cleared');
+    toast.info(t('management.filtersCleared'));
   };
 
   return (
@@ -270,33 +270,33 @@ export const LeavesManagement: React.FC = () => {
       {/* ══ Pending Approval ══ */}
       <section className="space-y-6">
         <div>
-          <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Leaves Pending Approval</h2>
+          <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">{t('management.leavesPendingApproval')}</h2>
         </div>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex-1 max-w-md space-y-1">
             <div className="inline-flex items-center gap-1.5">
-              <label htmlFor="pending-leaves-search" className={labelClass}>Search Employee</label>
+              <label htmlFor="pending-leaves-search" className={labelClass}>{t('management.searchEmployee')}</label>
               <InfoTooltip ariaLabel="Search help">
-                <p>Search by name or Employee number</p>
+                <p>{t('management.searchHelp')}</p>
               </InfoTooltip>
             </div>
             <form role="search" onSubmit={(e) => e.preventDefault()} className="relative">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="pending-leaves-search" type="search" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="search" />
+              <input id="pending-leaves-search" type="search" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder={t('management.searchPlaceholder')} className={cn(inputClass, 'ps-10')} autoComplete="search" />
             </form>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
-              <Plus className="w-4 h-4" /> Create Leave
+              <Plus className="w-4 h-4" /> {t('management.createLeave')}
             </Button>
             <Button 
               ref={approveButtonRef}
               variant={selectedPending.length > 0 ? "default" : "outline"} 
               size="sm" 
               className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center transition-all" 
-              onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}
+              onClick={() => { if (!selectedPending.length) { toast.error(t('management.selectAtLeastOne')); return; } setReviewOpen(true); }}
             >
-              {selectedPending.length > 1 ? 'Approve Leaves' : 'Approve Leave'}
+              {selectedPending.length > 1 ? t('management.approveLeaves') : t('management.approveLeave')}
             </Button>
           </div>
         </div>
@@ -306,8 +306,8 @@ export const LeavesManagement: React.FC = () => {
             {pendingLeaves.length === 0 ? (
               <EmptyState 
                 icon={FileText} 
-                title="No Pending Requests" 
-                description="There are currently no pending leave requests to review." 
+                title={t('management.noPendingLeaves')} 
+                description={t('management.noPendingLeavesDesc')} 
                 className="py-16"
               />
             ) : (
@@ -315,12 +315,12 @@ export const LeavesManagement: React.FC = () => {
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-muted border-b border-border">
                     <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingLeaves.length && pendingLeaves.length > 0} onCheckedChange={toggleAllPending} /></th>
-                    <th className={thClass}>Employee Name</th>
-                    <th className={thClass}>Leave Type</th>
-                    <th className={thClass}>Date Range</th>
-                    <th className={thClass}>Duration</th>
-                    <th className={thClass}>Notes</th>
-                    <th className={cn(thClass, 'text-end')}>Actions</th>
+                    <th className={thClass}>{t('management.employeeName')}</th>
+                    <th className={thClass}>{t('management.leaveType')}</th>
+                    <th className={thClass}>{t('management.dateRange')}</th>
+                    <th className={thClass}>{t('management.duration')}</th>
+                    <th className={thClass}>{t('management.notes')}</th>
+                    <th className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -333,18 +333,18 @@ export const LeavesManagement: React.FC = () => {
                           <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(leave.name)}</span>
                         </div>
                       </td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(leave)}</span></td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{leave.duration}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{leave.notes}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>{leave.type}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(leave)}</span></td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>{leave.duration}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>{leave.notes}</td>
                       <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">{t('management.actions')}</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-56">
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Leave</DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve Leave</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewLeave')}</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> {t('management.approveLeave')}</DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(leave); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline Leave</DropdownMenuItem>
+                            <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(leave); setDeclineOpen(true); }}><X className="w-4 h-4" /> {t('management.declineLeave')}</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </td>
@@ -435,14 +435,14 @@ export const LeavesManagement: React.FC = () => {
 
       {/* ══ Leaves History ══ */}
       <section className="space-y-6">
-        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Leaves History</h2>
+        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">{t('management.leavesHistory')}</h2>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex-1 max-w-md space-y-1">
-            <label htmlFor="leave-history-search" className={labelClass}>Search Employee</label>
+            <label htmlFor="leave-history-search" className={labelClass}>{t('management.searchEmployee')}</label>
             <div className="flex items-center gap-2">
               <form role="search" onSubmit={(e) => e.preventDefault()} className="relative flex-1">
                 <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-                <input id="leave-history-search" type="search" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="search" />
+                <input id="leave-history-search" type="search" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder={t('management.searchPlaceholder')} className={cn(inputClass, 'ps-10')} autoComplete="search" />
               </form>
               <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                 <PopoverTrigger asChild>
@@ -507,12 +507,12 @@ export const LeavesManagement: React.FC = () => {
               <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-muted border-b border-border">
-                    <th className={thClass}>Employee Name</th>
-                    <th className={thClass}>Leave Type</th>
-                    <th className={thClass}>Date Range</th>
-                    <th className={thClass}>Duration</th>
-                    <th className={thClass}>Status</th>
-                    <th className={cn(thClass, 'text-end')}>Actions</th>
+                    <th className={thClass}>{t('management.employeeName')}</th>
+                    <th className={thClass}>{t('management.leaveType')}</th>
+                    <th className={thClass}>{t('management.dateRange')}</th>
+                    <th className={thClass}>{t('management.duration')}</th>
+                    <th className={thClass}>{t('dashboard.status')}</th>
+                    <th className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -521,15 +521,15 @@ export const LeavesManagement: React.FC = () => {
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
                         <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(leave.name)}</span>
                       </td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{leave.type}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(leave)}</span></td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{leave.duration}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">Status:</span><StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>{leave.type}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(leave)}</span></td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>{leave.duration}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('dashboard.status')}:</span><StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? (isArabic ? 'تمت الموافقة' : 'Approved') : (isArabic ? 'مرفوض' : 'Rejected')}</StatusBadge></td>
                       <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">{t('management.actions')}</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-56">
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> View Leave</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewLeave')}</DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer gap-2 whitespace-nowrap" onClick={() => toast.success('Details sent to employee')}><Download className="w-4 h-4" /> Download Letter</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

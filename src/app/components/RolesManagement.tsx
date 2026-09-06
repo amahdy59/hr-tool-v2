@@ -100,7 +100,7 @@ const SelectField: React.FC<{
 
 // ── Main Component ──
 export const RolesManagement: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   // State
   const [searchQuery, setSearchQuery] = useState('');
@@ -162,7 +162,7 @@ export const RolesManagement: React.FC = () => {
   // Handlers
   const handleAddRole = () => {
     if (!newPosition.trim() || !newManager.trim()) {
-      toast.error('All fields are required');
+      toast.error(t('roles.allFieldsRequired'));
       return;
     }
     toast.success('Role added successfully', {
@@ -182,10 +182,10 @@ export const RolesManagement: React.FC = () => {
 
   const handleSaveEdit = () => {
     if (!editPosition.trim() || !editManager.trim()) {
-      toast.error('All fields are required');
+      toast.error(t('roles.allFieldsRequired'));
       return;
     }
-    toast.success('Role updated successfully', {
+    toast.success(t('roles.roleUpdated'), {
       description: `Updated ${localizePersonName(selectedRole?.employeeName, language)}'s role`,
     });
     setEditRoleOpen(false);
@@ -198,7 +198,7 @@ export const RolesManagement: React.FC = () => {
   };
 
   const handleConfirmDelete = () => {
-    toast.success('Role removed successfully', {
+    toast.success(t('roles.roleRemoved'), {
       description: `${localizePersonName(selectedRole?.employeeName, language)}'s role has been removed`,
     });
     setDeleteRoleOpen(false);
@@ -225,7 +225,7 @@ export const RolesManagement: React.FC = () => {
           }}
           className="text-foreground"
         >
-          Roles Management
+          {t('roles.title')}
         </h2>
       </div>
 
@@ -233,9 +233,9 @@ export const RolesManagement: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         {/* Department Filter */}
         <div className="flex-1 max-w-md space-y-1">
-          <label htmlFor="roles-department-filter" className={labelClass}>Department</label>
+          <label htmlFor="roles-department-filter" className={labelClass}>{t('roles.department')}</label>
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-            <SelectTrigger id="roles-department-filter" className="h-10 rounded-[var(--radius-input)]" aria-label="Department">
+            <SelectTrigger id="roles-department-filter" className="h-10 rounded-[var(--radius-input)]" aria-label={t('roles.department')}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -251,10 +251,10 @@ export const RolesManagement: React.FC = () => {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <Button className="w-full sm:w-auto bg-chart-3 hover:bg-chart-3/90 text-white gap-2 rounded-[var(--radius-button)]" onClick={() => setAddRoleOpen(true)}>
-            <Plus className="w-4 h-4" /> Add New Role
+            <Plus className="w-4 h-4" /> {t('roles.addNewRole')}
           </Button>
           <Button variant="outline" className="hidden sm:flex w-full sm:w-auto gap-2 rounded-[var(--radius-button)]" onClick={handleUploadData}>
-            <Upload className="w-4 h-4" /> Upload Data
+            <Upload className="w-4 h-4" /> {t('roles.uploadData')}
           </Button>
         </div>
       </div>
@@ -270,10 +270,10 @@ export const RolesManagement: React.FC = () => {
             }}
             className="text-foreground"
           >
-            Roles List
+            {t('roles.rolesList')}
           </h3>
           <InfoTooltip ariaLabel="Roles list help">
-            <p>Manage employee role assignments and permissions</p>
+            <p>{t('roles.rolesListHelp')}</p>
           </InfoTooltip>
         </div>
 
@@ -283,19 +283,19 @@ export const RolesManagement: React.FC = () => {
               <thead className="hidden md:table-header-group">
                 <tr className="bg-muted border-b border-border">
                   <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
-                    Employee Name
+                    {t('roles.employeeName')}
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
-                    Date Enrolled
+                    {t('roles.dateEnrolled')}
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
-                    Date Left
+                    {t('roles.dateLeft')}
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
-                    Job Title
+                    {t('roles.jobTitle')}
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">
-                    Actions
+                    {t('roles.actions')}
                   </th>
                 </tr>
               </thead>
@@ -303,19 +303,19 @@ export const RolesManagement: React.FC = () => {
                 {paginatedRoles.map((role) => (
                   <tr key={role.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
                     <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)] flex justify-between md:table-cell">
-                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Name:</span>
+                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.employeeName')}:</span>
                       <span>{localizePersonName(role.employeeName, language)}</span>
                     </td>
                     <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
-                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Enrolled:</span>
+                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.dateEnrolled')}:</span>
                       <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'}>{displayDate(role.dateEnrolled)}</span>
                     </td>
                     <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground flex justify-between md:table-cell">
-                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Left:</span>
+                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.dateLeft')}:</span>
                       <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'}>{displayDate(role.dateLeft)}</span>
                     </td>
                     <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
-                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">Title:</span>
+                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.jobTitle')}:</span>
                       <span>{localizeJobTitle(role.jobTitle, language)}</span>
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
@@ -323,17 +323,17 @@ export const RolesManagement: React.FC = () => {
                         <button
                           onClick={() => handleEditRole(role)}
                           className="w-full md:w-auto flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer border border-border md:border-none"
-                          title="Edit Role"
+                          title={t('roles.editRole')}
                         >
-                          <span className="md:hidden">Edit Role</span>
+                          <span className="md:hidden">{t('roles.editRole')}</span>
                           <Pencil className="w-4 h-4 text-primary" />
                         </button>
                         <button
                           onClick={() => handleDeleteRole(role)}
                           className="w-full md:w-auto flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer border border-destructive text-destructive md:border-none"
-                          title="Delete Role"
+                          title={t('roles.deleteRole')}
                         >
-                          <span className="md:hidden">Delete Role</span>
+                          <span className="md:hidden">{t('roles.deleteRole')}</span>
                           <Trash2 className="w-4 h-4 text-destructive" />
                         </button>
                       </div>

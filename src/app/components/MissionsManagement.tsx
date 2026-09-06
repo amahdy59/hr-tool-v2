@@ -51,8 +51,9 @@ const getRequestDate = (request: Pick<MissionRequest, 'startDate' | 'endDate' | 
 };
 
 export const MissionsManagement: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
+  const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const displayEmployeeName = (name?: MissionRequest['name']) => localizePersonName(name, language);
   const matchesEmployeeSearch = (name: MissionRequest['name'], employeeNumber: string | undefined, query: string) => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -174,38 +175,38 @@ export const MissionsManagement: React.FC = () => {
     if (filterEmploymentTypes.length) c++;
     setActiveFilters(c);
     setFilterOpen(false);
-    toast.success('Filters applied', { description: `${c} filter${c !== 1 ? 's' : ''} active` });
+    toast.success(t('management.filtersApplied'), { description: t('management.filtersActive', { count: c }) });
   };
   const clearFilters = () => {
     setFilterDept('All'); setFilterMissionType('All'); setFilterFrom(''); setFilterTo('');
     setFilterActivityTypes([]); setFilterEmploymentTypes([]); setActiveFilters(0);
-    toast.info('Filters cleared');
+    toast.info(t('management.filtersCleared'));
   };
 
   return (
     <div className="px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6 sm:space-y-8">
       {/* ══ Pending Approval ══ */}
       <section className="space-y-6">
-        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Missions Pending Approval</h2>
+        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">{t('management.missionsPendingApproval')}</h2>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex-1 max-w-md space-y-1">
             <div className="inline-flex items-center gap-1.5">
-              <label htmlFor="pending-missions-search" className={labelClass}>Search Employee</label>
+              <label htmlFor="pending-missions-search" className={labelClass}>{t('management.searchEmployee')}</label>
               <InfoTooltip ariaLabel="Search help">
-                <p>Search by name or Employee number</p>
+                <p>{t('management.searchHelp')}</p>
               </InfoTooltip>
             </div>
             <form role="search" onSubmit={(e) => e.preventDefault()} className="relative">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <input id="pending-missions-search" type="search" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="search" />
+              <input id="pending-missions-search" type="search" value={pendingSearch} onChange={e => setPendingSearch(e.target.value)} placeholder={t('management.searchPlaceholder')} className={cn(inputClass, 'ps-10')} autoComplete="search" />
             </form>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <Button variant={selectedPending.length > 0 ? "default" : "outline"} size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center transition-all" onClick={() => { if (!selectedPending.length) { toast.error('Select at least one request'); return; } setReviewOpen(true); }}>
-              {selectedPending.length > 1 ? 'Approve Missions' : 'Approve Mission'}
+            <Button variant={selectedPending.length > 0 ? "default" : "outline"} size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center transition-all" onClick={() => { if (!selectedPending.length) { toast.error(t('management.selectAtLeastOne')); return; } setReviewOpen(true); }}>
+              {selectedPending.length > 1 ? t('management.approveMissions') : t('management.approveMission')}
             </Button>
             <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateMissionOpen(true)}>
-              <Plus className="w-4 h-4" /> Create Mission
+              <Plus className="w-4 h-4" /> {t('management.createMission')}
             </Button>
           </div>
         </div>
@@ -215,8 +216,8 @@ export const MissionsManagement: React.FC = () => {
             {pendingMissions.length === 0 ? (
               <EmptyState 
                 icon={Rocket} 
-                title="No Pending Missions" 
-                description="There are currently no pending missions to review." 
+                title={t('management.noPendingMissions')} 
+                description={t('management.noPendingMissionsDesc')} 
                 className="py-16"
               />
               ) : (
@@ -224,11 +225,11 @@ export const MissionsManagement: React.FC = () => {
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted border-b border-border">
                       <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingMissions.length && pendingMissions.length > 0} onCheckedChange={toggleAll} /></th>
-                      <th className={thClass}>Employee Name</th>
-                      <th className={thClass}>Mission Type</th>
-                      <th className={thClass}>Date Range</th>
-                      <th className={thClass}>Duration</th>
-                      <th className={thClass}>Notes</th>
+                      <th className={thClass}>{t('management.employeeName')}</th>
+                      <th className={thClass}>{t('management.missionType')}</th>
+                      <th className={thClass}>{t('management.dateRange')}</th>
+                      <th className={thClass}>{t('management.duration')}</th>
+                      <th className={thClass}>{t('management.notes')}</th>
                       <th className={cn(thClass, 'text-end')}>Actions</th>
                     </tr>
                   </thead>
@@ -242,18 +243,18 @@ export const MissionsManagement: React.FC = () => {
                             <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(m.name)}</span>
                           </div>
                         </td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{m.type}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{m.duration}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{m.notes}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>{m.type}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>{m.duration}</td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>{m.notes}</td>
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <DropdownMenu>
-                            <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                            <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">{t('management.actions')}</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-56">
-                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
-                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> Approve Mission</DropdownMenuItem>
+                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewDetails')}</DropdownMenuItem>
+                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> {t('management.approveMission')}</DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(m); setDeclineOpen(true); }}><X className="w-4 h-4" /> Decline</DropdownMenuItem>
+                              <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(m); setDeclineOpen(true); }}><X className="w-4 h-4" /> {t('management.declineMission')}</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </td>
@@ -269,14 +270,14 @@ export const MissionsManagement: React.FC = () => {
 
       {/* ══ Missions History ══ */}
       <section className="space-y-4">
-        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Missions History</h2>
+        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">{t('management.missionsHistory')}</h2>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex-1 max-w-md space-y-1">
-            <label htmlFor="mission-history-search" className={labelClass}>Search Employee</label>
+            <label htmlFor="mission-history-search" className={labelClass}>{t('management.searchEmployee')}</label>
             <div className="flex items-center gap-2">
               <form role="search" onSubmit={(e) => e.preventDefault()} className="relative flex-1">
                 <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-                <input id="mission-history-search" type="search" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder="Search by name or Employee#..." className={cn(inputClass, 'ps-10')} autoComplete="search" />
+                <input id="mission-history-search" type="search" value={historySearch} onChange={e => setHistorySearch(e.target.value)} placeholder={t('management.searchPlaceholder')} className={cn(inputClass, 'ps-10')} autoComplete="search" />
               </form>
               <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                 <PopoverTrigger asChild>
@@ -304,9 +305,9 @@ export const MissionsManagement: React.FC = () => {
           </div>
           <Button variant="outline" size="sm" className="gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
             exportToCSV(filteredHistory, 'Missions_History');
-            toast.success('Download started', { description: 'Missions data exported to CSV.' });
+            toast.success(isArabic ? 'تم تنزيل البيانات بصيغة CSV' : 'Missions data exported to CSV.');
           }}>
-            <Download className="w-4 h-4" /> Download Data
+            <Download className="w-4 h-4" /> {isArabic ? 'تنزيل البيانات' : 'Download Data'}
           </Button>
         </div>
 
@@ -323,13 +324,13 @@ export const MissionsManagement: React.FC = () => {
               <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-muted border-b border-border">
-                    <th className={thClass}>Employee Name</th>
-                    <th className={thClass}>Mission Type</th>
-                    <th className={thClass}>Date Range</th>
-                    <th className={thClass}>Duration</th>
-                    <th className={thClass}>Notes</th>
-                    <th className={thClass}>Status</th>
-                    <th className={cn(thClass, 'text-end')}>Actions</th>
+                    <th className={thClass}>{t('management.employeeName')}</th>
+                    <th className={thClass}>{t('management.missionType')}</th>
+                    <th className={thClass}>{t('management.dateRange')}</th>
+                    <th className={thClass}>{t('management.duration')}</th>
+                    <th className={thClass}>{t('management.notes')}</th>
+                    <th className={thClass}>{t('dashboard.status')}</th>
+                    <th className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -338,17 +339,17 @@ export const MissionsManagement: React.FC = () => {
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
                         <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(m.name)}</span>
                       </td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Type:</span>{m.type}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Dates:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Duration:</span>{m.duration}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Notes:</span>{m.notes}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">Status:</span><StatusBadge variant={m.status as any}>{m.status === 'approved' ? 'Approved' : 'Rejected'}</StatusBadge></td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>{m.type}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>{m.duration}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>{m.notes}</td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('dashboard.status')}:</span><StatusBadge variant={m.status as any}>{m.status === 'approved' ? (isArabic ? 'تمت الموافقة' : 'Approved') : (isArabic ? 'مرفوض' : 'Rejected')}</StatusBadge></td>
                       <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">{t('management.actions')}</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-44">
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> View Details</DropdownMenuItem>
-                            {m.status === 'approved' && <><DropdownMenuSeparator /><DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeleteData(m); setDeleteOpen(true); }}><Trash2 className="w-4 h-4" /> Delete Mission</DropdownMenuItem></>}
+                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewDetails')}</DropdownMenuItem>
+                            {m.status === 'approved' && <><DropdownMenuSeparator /><DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeleteData(m); setDeleteOpen(true); }}><Trash2 className="w-4 h-4" /> {isArabic ? 'حذف المأمورية' : 'Delete Mission'}</DropdownMenuItem></>}
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </td>

@@ -209,7 +209,7 @@ const DEDUCTION_ITEMS = [
 ];
 
 export const Payroll: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage || i18n.language;
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedMonth, setSelectedMonth] = useState('October');
@@ -251,10 +251,10 @@ export const Payroll: React.FC = () => {
   }, []);
 
   const tabs = [
-    { id: 'overview', label: 'Overview' },
-    { id: 'employees', label: 'Employee Payroll' },
-    { id: 'compensation', label: 'Compensation' },
-    { id: 'deductions', label: 'Deductions' },
+    { id: 'overview', label: t('payroll.overview') },
+    { id: 'employees', label: t('payroll.employees') },
+    { id: 'compensation', label: t('payroll.compensation') },
+    { id: 'deductions', label: t('payroll.deductions') },
   ];
 
   const months = [
@@ -270,7 +270,7 @@ export const Payroll: React.FC = () => {
   };
 
   const handleDownloadPayslip = () => {
-    toast.success('Payslip downloaded successfully');
+    toast.success(t('payroll.payslipSuccess'));
     setShowPayslipModal(false);
   };
 
@@ -290,7 +290,7 @@ export const Payroll: React.FC = () => {
   }, [filteredEmployees, payrollPage, payrollPerPage]);
 
   return (
-    <div className="px-1 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
+    <div className="px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
       {/* Tabs */}
       <div className="flex border-b border-border gap-6 overflow-x-auto">
         {tabs.map(tab => (
@@ -318,7 +318,7 @@ export const Payroll: React.FC = () => {
           <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input 
             type="text" 
-            placeholder="Search employees, payroll records..." 
+            placeholder={t('payroll.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full min-h-[44px] px-3 ps-10 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow" 

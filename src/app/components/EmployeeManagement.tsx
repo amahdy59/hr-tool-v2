@@ -316,41 +316,41 @@ export const EmployeeManagement: React.FC = () => {
     <div className={pageShellClass}>
       {/* Header */}
       <div>
-        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Manage Employees</h2>
+        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">{t('employeeManagement.title')}</h2>
       </div>
 
       {/* Tabs */}
       <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className={employeeTabsClass}>
         <div className={tabHeaderClass}>
           <TabsList className="min-w-0 md:flex-1">
-            <TabsTrigger value="directory" className="text-[var(--text-sm)]">Directory</TabsTrigger>
-            <TabsTrigger value="departments" className="text-[var(--text-sm)]">Departments</TabsTrigger>
-            <TabsTrigger value="jobtitles" className="text-[var(--text-sm)]">Job Titles</TabsTrigger>
-            <TabsTrigger value="activity" className="text-[var(--text-sm)]">Activity Log</TabsTrigger>
+            <TabsTrigger value="directory" className="text-[var(--text-sm)]">{t('employeeManagement.directory')}</TabsTrigger>
+            <TabsTrigger value="departments" className="text-[var(--text-sm)]">{t('employeeManagement.departments')}</TabsTrigger>
+            <TabsTrigger value="jobtitles" className="text-[var(--text-sm)]">{t('employeeManagement.jobTitles')}</TabsTrigger>
+            <TabsTrigger value="activity" className="text-[var(--text-sm)]">{t('employeeManagement.activityLog')}</TabsTrigger>
           </TabsList>
 
           <div className={tabActionsClass}>
             {activeSubTab === 'directory' && (
               <>
                 <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
-                  <Plus className="w-4 h-4" /> Add an Employee
+                  <Plus className="w-4 h-4" /> {t('employeeManagement.addEmployee')}
                 </Button>
                 <Button variant="outline" size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
                   exportToCSV(filteredEmployees, 'Employees_Data');
-                  toast.success('Download started', { description: 'Employee data exported to CSV.' });
+                  toast.success(isArabic ? 'تم تنزيل البيانات بصيغة CSV' : 'Employee data exported to CSV.');
                 }}>
-                  <Download className="w-4 h-4" /> <span>Download Data</span>
+                  <Download className="w-4 h-4" /> <span>{t('employeeManagement.downloadData')}</span>
                 </Button>
               </>
             )}
             {activeSubTab === 'departments' && (
               <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddDeptOpen(true)}>
-                <Plus className="w-4 h-4" /> Add Department
+                <Plus className="w-4 h-4" /> {t('employeeManagement.addDepartment')}
               </Button>
             )}
             {activeSubTab === 'jobtitles' && (
               <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddJtOpen(true)}>
-                <Plus className="w-4 h-4" /> Add Job Title
+                <Plus className="w-4 h-4" /> {t('employeeManagement.addJobTitle')}
               </Button>
             )}
           </div>

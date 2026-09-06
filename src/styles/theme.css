@@ -1068,10 +1068,14 @@ html {
    ========================================================================== */
 
 /* 1. Arabic-Specific Typography */
-[lang="ar"] {
-  font-family: "Noto Sans Arabic", "Tahoma", sans-serif;
-  line-height: 1.7;
+[lang="ar"],
+[lang="ar"] * {
+  font-family: "Noto Sans Arabic", "Tahoma", -apple-system, BlinkMacSystemFont, sans-serif !important;
   letter-spacing: 0 !important;
+}
+
+[lang="ar"] {
+  line-height: 1.7;
 }
 
 /* 2. Force LTR on Specific Input Types */

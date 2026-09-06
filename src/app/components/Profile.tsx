@@ -14,6 +14,7 @@ import {
 } from './ui/dialog';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { Resume } from './Resume';
 import { BasicInfo } from './BasicInfo';
 
@@ -111,24 +112,25 @@ interface ProfileProps {
 }
 
 export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('basic');
   const [searchQuery, setSearchQuery] = useState('');
 
   const tabs = [
-    { id: 'basic', label: 'Basic Information' },
-    { id: 'professional', label: 'Professional Profile' },
-    { id: 'documents', label: 'Download Center' },
+    { id: 'basic', label: t('profile.basicInfo') },
+    { id: 'professional', label: t('profile.professionalProfile') },
+    { id: 'documents', label: t('profile.downloadCenter') },
   ];
 
   return (
     <main aria-labelledby="profile-heading" className="px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h2 id="profile-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: "var(--page-title-size)", fontWeight: "var(--page-title-weight)" }} className="text-foreground">Profile</h2>
+        <h2 id="profile-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: "var(--page-title-size)", fontWeight: "var(--page-title-weight)" }} className="text-foreground">{t('profile.title')}</h2>
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-col sm:flex-row border-b border-border gap-1 sm:gap-6 sm:overflow-x-auto" role="tablist" aria-label="Profile sections">
+      <div className="flex flex-col sm:flex-row border-b border-border gap-1 sm:gap-6 sm:overflow-x-auto" role="tablist" aria-label={t('profile.sectionsAriaLabel')}>
         {tabs.map(tab => (
           <button
             key={tab.id}
