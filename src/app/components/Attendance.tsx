@@ -149,11 +149,10 @@ const officeGoalDelta = Math.round((officePercent - OFFICE_GOAL_PERCENT) * 10) /
 const actualHoursPercent = Math.round((totalHours / EXPECTED_WORKING_HOURS) * 1000) / 10;
 const maxSummaryHours = Math.max(...summaryData.map((item) => item.hours));
 
-// Severity → color map for #4 (color-coded hours)
 const severityHoursClass = (severity: 'positive' | 'neutral' | 'negative' | 'warning') => {
   switch (severity) {
-    case 'negative': return 'text-destructive';
-    case 'warning': return 'text-chart-4';
+    case 'negative': return 'text-destructive dark:text-red-300';
+    case 'warning': return 'text-chart-4 dark:text-orange-300';
     default: return 'text-foreground';
   }
 };
@@ -783,7 +782,7 @@ export const Attendance: React.FC = () => {
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">
                 {isArabic ? `العمل من المكتب: ${officePercent}%` : `Office Attendance: ${officePercent}%`}
               </p>
-              <p className={cn('text-[var(--text-xs)] font-[var(--font-weight-medium)]', meetsOfficeGoal ? 'text-[var(--chart-3)]' : 'text-destructive')}>
+              <p className={cn('text-[var(--text-xs)] font-[var(--font-weight-medium)]', meetsOfficeGoal ? 'text-[var(--chart-3)] dark:text-emerald-300' : 'text-destructive dark:text-red-300')}>
                 {isArabic ? (
                   `${meetsOfficeGoal ? '▲' : '▼'} ${Math.abs(officeGoalDelta)}% ${meetsOfficeGoal ? 'أعلى من' : 'أقل من'} هدف الشركة (${OFFICE_GOAL_PERCENT}%)`
                 ) : (
@@ -796,8 +795,8 @@ export const Attendance: React.FC = () => {
             className={cn(
               "rounded-full p-1.5 flex items-center justify-center shadow-[var(--elevation-sm)] border shrink-0",
               meetsOfficeGoal 
-                ? "bg-[var(--chart-3)]/20 text-[var(--chart-3)] border-[var(--chart-3)]/30" 
-                : "bg-destructive/20 text-destructive border-destructive/30"
+                ? "bg-[var(--chart-3)]/20 text-[var(--chart-3)] dark:text-emerald-300 border-[var(--chart-3)]/30" 
+                : "bg-destructive/20 text-destructive dark:text-red-300 border-destructive/30"
             )}
             title={meetsOfficeGoal ? 'Goal met' : 'Goal missed'}
             aria-label={meetsOfficeGoal ? 'Goal met' : 'Goal missed'}
@@ -1008,10 +1007,10 @@ export const Attendance: React.FC = () => {
                   <td className="px-4 py-3 text-foreground text-start">5</td>
                   <td className="px-4 py-3 text-foreground text-start">4</td>
                   <td className="px-4 py-3 text-start">
-                    <span className="text-[var(--chart-4)] font-[var(--font-weight-medium)]">6</span>
+                    <span className="text-[var(--chart-4)] dark:text-orange-300 font-[var(--font-weight-medium)]">6</span>
                   </td>
                   <td className="px-4 py-3 text-start">
-                    <span className="text-[var(--chart-3)] font-[var(--font-weight-semibold)]">14</span>
+                    <span className="text-[var(--chart-3)] dark:text-emerald-300 font-[var(--font-weight-semibold)]">14</span>
                   </td>
                 </tr>
                 <tr className="hover:bg-muted/30 transition-colors">
@@ -1020,10 +1019,10 @@ export const Attendance: React.FC = () => {
                   <td className="px-4 py-3 text-foreground text-start">0</td>
                   <td className="px-4 py-3 text-foreground text-start">2</td>
                   <td className="px-4 py-3 text-start">
-                    <span className="text-[var(--chart-4)] font-[var(--font-weight-medium)]">3</span>
+                    <span className="text-[var(--chart-4)] dark:text-orange-300 font-[var(--font-weight-medium)]">3</span>
                   </td>
                   <td className="px-4 py-3 text-start">
-                    <span className="text-[var(--chart-3)] font-[var(--font-weight-semibold)]">13</span>
+                    <span className="text-[var(--chart-3)] dark:text-emerald-300 font-[var(--font-weight-semibold)]">13</span>
                   </td>
                 </tr>
               </tbody>
@@ -1038,11 +1037,11 @@ export const Attendance: React.FC = () => {
         <div className="print-header print-only">
           <div>
             <h1 className="text-xl font-bold">{isArabic ? 'نظام الموارد البشرية - تقرير الحضور والانصراف' : 'HR Portal - Attendance & Timesheet Report'}</h1>
-            <p className="text-xs text-gray-600 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {isArabic ? `الموظف: ${selectedEmployee} | الفترة: ${monthLabel} ${selectedYear}` : `Employee: ${selectedEmployee} | Period: ${monthLabel} ${selectedYear}`}
             </p>
           </div>
-          <div className="text-end text-xs text-gray-500">
+          <div className="text-end text-xs text-muted-foreground">
             <div>{isArabic ? 'تاريخ الاستخراج:' : 'Generated On:'} {new Date().toLocaleDateString()}</div>
             <div>{isArabic ? 'المرجع الرسمي لإدارة الموارد البشرية' : 'Official HR Verification Record'}</div>
           </div>

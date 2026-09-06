@@ -23,7 +23,7 @@ export interface CalendarEvent {
   label: string;
   color: string;
   textColor?: string;
-  status?: 'approved' | 'pending' | 'noshow';
+  status?: 'approved' | 'pending' | 'noshow' | 'cancelled' | 'rejected';
   range?: string;
   duration?: string;
   /** Date this event starts, as YYYY-MM-DD */
@@ -35,7 +35,7 @@ export interface CalendarEvent {
 interface CalendarGridProps {
   /** Structured leave / attendance events keyed to a date. Pass in real data from the parent. */
   events?: CalendarEvent[];
-  onViewRequest?: (item: { id: string; type: string; status: 'approved' | 'pending' | 'noshow'; range: string; duration: string }) => void;
+  onViewRequest?: (item: { id: string; type: string; status: 'approved' | 'pending' | 'noshow' | 'cancelled' | 'rejected'; range: string; duration: string }) => void;
   onAddRequest?: (dateStr: string) => void;
 }
 

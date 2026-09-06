@@ -185,7 +185,10 @@ server.listen(0, '127.0.0.1', async () => {
     console.error('💥 [Accessibility Audit] Unexpected error:', err);
     process.exitCode = 1;
   } finally {
-    if (browser) await browser.close().catch(() => {});
+    if (browser) {
+      await Promise.race([browser.close(), new Promise(r => setTimeout(r, 1500))]).catch(() => {});
+    }
+    if (server.closeAllConnections) server.closeAllConnections();
     server.close();
     process.exit(totalViolations > 0 ? 1 : (process.exitCode || 0));
   }

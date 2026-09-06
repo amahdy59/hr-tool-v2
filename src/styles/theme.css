@@ -49,11 +49,11 @@
   /* The default color for text or elements that appear on top of muted colored elements. */
   --muted-foreground: #334155;
   /* The accent color used for highlights, links, and other interactive elements. */
-  --accent: #0F766E;
+  --accent: #0B534C;
   /* The default color for text or elements that appear on top of accent colored elements. */
   --accent-foreground: #FFFFFF;
   /* The color used for background in destructive actions, such as delete buttons or error messages. */
-  --destructive: #D32F2F;
+  --destructive: #991B1B;
   /* The default color for text or elements that appear on top of destructive colored elements. */
   --destructive-foreground: #FFFFFF;
   /* The default border color for elements such as inputs, buttons, and other containers. */
@@ -153,8 +153,8 @@
   --muted-foreground: #D1D5DB;
   --accent: #A7F3D0;
   --accent-foreground: #06281F;
-  --destructive: #FCA5A5;
-  --destructive-foreground: #220606;
+  --destructive: #991B1B;
+  --destructive-foreground: #FFFFFF;
   --border: #64748B;
   --field-border: #94A3B8;
   --input: #0B1220;

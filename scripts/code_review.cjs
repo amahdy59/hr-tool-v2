@@ -12,7 +12,7 @@ let hasErrors = false;
 // 1. TypeScript Check
 try {
   console.log('1️⃣ Checking TypeScript types (tsc --noEmit)...');
-  execSync('npx tsc --noEmit', { stdio: 'inherit', cwd: path.join(__dirname, '..') });
+  execSync('node ./node_modules/typescript/bin/tsc --noEmit', { stdio: 'inherit', cwd: path.join(__dirname, '..') });
   console.log('   ✅ TypeScript compilation passed with 0 errors.');
 } catch (e) {
   console.error('   ❌ TypeScript check failed.');

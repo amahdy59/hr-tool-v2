@@ -419,7 +419,10 @@ server.listen(0, '127.0.0.1', async () => {
     console.error('Fatal E2E error:', err);
     exitCode = 1;
   } finally {
-    if (browser) await browser.close();
+    if (browser) {
+      await Promise.race([browser.close(), new Promise(r => setTimeout(r, 1500))]).catch(() => {});
+    }
+    if (server.closeAllConnections) server.closeAllConnections();
     server.close();
     process.exit(exitCode);
   }

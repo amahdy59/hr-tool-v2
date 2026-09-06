@@ -170,8 +170,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                   <img src={currentUser.image} alt={currentUser.name} className="w-full h-full object-cover" />
                 </div>
               ) : (
-                <div className="w-6 h-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center border border-border">
-                  <span className="text-primary text-[10px] font-bold" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <div className="w-6 h-6 shrink-0 rounded-full bg-white/20 flex items-center justify-center border border-white/40 ring-1 ring-white/20">
+                  <span className="text-white text-[10px] font-bold leading-none select-none" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {currentUser ? getInitials(currentUser.name) : 'U'}
                   </span>
                 </div>

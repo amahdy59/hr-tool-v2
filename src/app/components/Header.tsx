@@ -187,7 +187,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, accessibility, onOp
       <div className="flex min-w-0 items-center justify-end gap-2 lg:gap-2.5">
         {offlinePendingCount > 0 && (
           <div
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-xs font-semibold select-none"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/15 text-[#7C2D12] dark:text-amber-300 border border-amber-500/30 text-xs font-bold select-none"
             title={t('header.syncPending', { count: offlinePendingCount })}
           >
             <CloudOff className="w-3.5 h-3.5 animate-pulse" aria-hidden="true" />

@@ -60,7 +60,7 @@ interface HistoryItem {
   range: string;
   duration: string;
   notes: string;
-  status: 'approved' | 'pending' | 'noshow';
+  status: 'approved' | 'pending' | 'noshow' | 'cancelled' | 'rejected';
   labelOverride?: string;
   customColor?: string;
   canEdit?: boolean;
@@ -136,9 +136,8 @@ const historyData: HistoryItem[] = [
     range: 'Jan 15 - Jan 17',
     duration: '3 days',
     notes: 'Cold symptoms',
-    status: 'noshow',
+    status: 'cancelled',
     labelOverride: 'Cancelled',
-    customColor: 'bg-destructive',
     canEdit: false,
     canCancel: false,
   },
@@ -258,7 +257,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
 
   // --- Handlers ---
 
-  const handleViewRequest = (item: { id: string; type: string; status: 'approved' | 'pending' | 'noshow'; range: string; duration: string }) => {
+  const handleViewRequest = (item: { id: string; type: string; status: 'approved' | 'pending' | 'noshow' | 'cancelled' | 'rejected'; range: string; duration: string }) => {
     // For pending items (from calendar click), open edit modal directly
     if (item.status === 'pending') {
       const dates = rangeToIso(item.range);
@@ -274,7 +273,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
 
     let leaveStatus: 'requested' | 'hr' | 'complete' | 'cancelled' = 'hr';
     if (item.status === 'approved') leaveStatus = 'complete';
-    else if (item.status === 'noshow') leaveStatus = 'cancelled';
+    else if (item.status === 'noshow' || item.status === 'cancelled' || item.status === 'rejected') leaveStatus = 'cancelled';
 
     // Find matching history item to get full detail
     const histItem = historyData.find(h => h.id === item.id);
@@ -515,11 +514,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         <div className="print-header print-only">
           <div>
             <h1 className="text-xl font-bold">{isArabic ? 'نظام الموارد البشرية - سجل الإجازات والمأموريات' : 'HR Portal - Leave & Mission History Report'}</h1>
-            <p className="text-xs text-gray-600 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {isArabic ? `إجمالي السجلات: ${filteredHistory.length}` : `Total Filtered Records: ${filteredHistory.length}`}
             </p>
           </div>
-          <div className="text-end text-xs text-gray-500">
+          <div className="text-end text-xs text-muted-foreground">
             <div>{isArabic ? 'تاريخ الاستخراج:' : 'Generated On:'} {new Date().toLocaleDateString()}</div>
             <div>{isArabic ? 'المرجع الرسمي لإدارة الموارد البشرية' : 'Official HR Verification Record'}</div>
           </div>

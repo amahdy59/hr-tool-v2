@@ -223,12 +223,12 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
     {
       label: 'Requesting',
       value: daysRequested > 0 ? `-${daysRequested}` : '0',
-      className: daysRequested > 0 ? 'text-orange-500 dark:text-orange-500 font-medium' : 'text-muted-foreground',
+      className: daysRequested > 0 ? 'text-[#9A3412] dark:text-orange-300 font-semibold' : 'text-muted-foreground',
     },
     {
       label: 'Remaining when approved',
       value: remainingBalance,
-      className: remainingBalance < 0 ? 'text-destructive' : 'text-emerald-600 dark:text-emerald-300 font-medium',
+      className: remainingBalance < 0 ? 'text-destructive font-semibold' : 'text-[#065F46] dark:text-emerald-300 font-semibold',
     },
   ];
 
@@ -473,7 +473,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 <span className="text-[var(--text-sm)] font-[var(--font-weight-medium)]">
                   Upload file or drag and drop
                 </span>
-                <span className="text-[10px] text-muted-foreground/80">
+                <span className="text-[10px] text-muted-foreground">
                   Required for {leaveType.toLowerCase()} requests
                 </span>
               </label>

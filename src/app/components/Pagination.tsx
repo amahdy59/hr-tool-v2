@@ -140,7 +140,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               return (
                 <li key={`ellipsis-${index}`} className="-ms-[1px] list-item z-0">
                   <span
-                    className="flex h-11 w-11 items-center justify-center border border-border bg-background dark:bg-card text-[var(--text-sm)] font-medium text-muted-foreground/70"
+                    className="flex h-11 w-11 items-center justify-center border border-border bg-background dark:bg-card text-[var(--text-sm)] font-semibold text-muted-foreground"
                     aria-hidden="true"
                   >
                     ...

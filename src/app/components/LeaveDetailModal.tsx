@@ -18,6 +18,7 @@ import {
   FileCheck,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { StatusBadge } from './StatusBadge';
 
 interface LeaveDetailModalProps {
   open: boolean;
@@ -84,24 +85,24 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
       case 'requested':
       case 'hr':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-[var(--font-weight-medium)] bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
-            <Clock className="w-3.5 h-3.5" />
+          <StatusBadge variant="pending" className="gap-1.5 py-1 px-3">
+            <Clock className="w-3.5 h-3.5" aria-hidden="true" />
             Pending Approval
-          </span>
+          </StatusBadge>
         );
       case 'complete':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-[var(--font-weight-medium)] bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
-            <Check className="w-3.5 h-3.5" />
+          <StatusBadge variant="approved" className="gap-1.5 py-1 px-3">
+            <Check className="w-3.5 h-3.5" aria-hidden="true" />
             Approved
-          </span>
+          </StatusBadge>
         );
       case 'cancelled':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-[var(--font-weight-medium)] bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-300">
-            <XCircle className="w-3.5 h-3.5" />
+          <StatusBadge variant="cancelled" className="gap-1.5 py-1 px-3">
+            <XCircle className="w-3.5 h-3.5" aria-hidden="true" />
             Cancelled
-          </span>
+          </StatusBadge>
         );
       default:
         return null;
