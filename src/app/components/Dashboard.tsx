@@ -778,6 +778,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                   ].map((header) => (
                     <th
                       key={header}
+                      scope="col"
                       className={cn(
                         'whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start',
                         header === t('dashboard.actions', 'Actions') && 'text-end'
@@ -860,6 +861,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                   ].map((h) => (
                     <th
                       key={h}
+                      scope="col"
                       className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"
                       style={{ fontFamily: "'Inter', sans-serif" }}
                     >
@@ -932,6 +934,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                   {(isArabic ? ['نوع الاجازة', 'الرصيد'] : ['Leave Type', 'Balance']).map((h) => (
                     <th
                       key={h}
+                      scope="col"
                       className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"
                       style={{ fontFamily: "'Inter', sans-serif" }}
                     >
@@ -1180,18 +1183,10 @@ const HistoryRow: React.FC<{
               <MoreVertical className="w-4 h-4" aria-hidden="true" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuContent align="end" className="min-w-[13rem]">
             <DropdownMenuItem onClick={onView} className="cursor-pointer">
-              <Eye className="w-4 h-4 me-2" />
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 'var(--text-sm)',
-                  fontWeight: 'var(--font-weight-normal)',
-                }}
-              >
-                View Request
-              </span>
+              <Eye className="w-4 h-4" />
+              <span>View Request</span>
             </DropdownMenuItem>
             {item.canCancel && (
               <>
@@ -1201,31 +1196,15 @@ const HistoryRow: React.FC<{
                   className="cursor-pointer"
                   variant="destructive"
                 >
-                  <XCircle className="w-4 h-4 me-2" />
-                  <span
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: 'var(--text-sm)',
-                      fontWeight: 'var(--font-weight-normal)',
-                    }}
-                  >
-                    Cancel Request
-                  </span>
+                  <XCircle className="w-4 h-4" />
+                  <span>Cancel Request</span>
                 </DropdownMenuItem>
               </>
             )}
             {item.canEdit && (
               <DropdownMenuItem onClick={onEdit} className="cursor-pointer">
-                <Pencil className="w-4 h-4 me-2" />
-                <span
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 'var(--text-sm)',
-                    fontWeight: 'var(--font-weight-normal)',
-                  }}
-                >
-                  Edit Request
-                </span>
+                <Pencil className="w-4 h-4" />
+                <span>Edit Request</span>
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>

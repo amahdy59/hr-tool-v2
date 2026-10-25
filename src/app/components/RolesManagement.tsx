@@ -280,21 +280,22 @@ export const RolesManagement: React.FC = () => {
         <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+              <caption className="sr-only">{t('roles.rolesListHelp', 'Employee Roles and Access List')}</caption>
               <thead className="hidden md:table-header-group">
                 <tr className="bg-muted/50 border-b border-border/80">
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
                     {t('roles.employeeName')}
                   </th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
                     {t('roles.dateEnrolled')}
                   </th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
                     {t('roles.dateLeft')}
                   </th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
                     {t('roles.jobTitle')}
                   </th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">
                     {t('roles.actions')}
                   </th>
                 </tr>

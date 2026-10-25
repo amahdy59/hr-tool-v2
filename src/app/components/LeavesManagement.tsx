@@ -312,15 +312,16 @@ export const LeavesManagement: React.FC = () => {
               />
             ) : (
               <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+                <caption className="sr-only">{t('management.pendingLeaves', 'Pending Leave Requests')}</caption>
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-muted/50 border-b border-border/80">
-                    <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingLeaves.length && pendingLeaves.length > 0} onCheckedChange={toggleAllPending} /></th>
-                    <th className={thClass}>{t('management.employeeName')}</th>
-                    <th className={thClass}>{t('management.leaveType')}</th>
-                    <th className={thClass}>{t('management.dateRange')}</th>
-                    <th className={thClass}>{t('management.duration')}</th>
-                    <th className={thClass}>{t('management.notes')}</th>
-                    <th className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
+                    <th scope="col" className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingLeaves.length && pendingLeaves.length > 0} onCheckedChange={toggleAllPending} /></th>
+                    <th scope="col" className={thClass}>{t('management.employeeName')}</th>
+                    <th scope="col" className={thClass}>{t('management.leaveType')}</th>
+                    <th scope="col" className={thClass}>{t('management.dateRange')}</th>
+                    <th scope="col" className={thClass}>{t('management.duration')}</th>
+                    <th scope="col" className={thClass}>{t('management.notes')}</th>
+                    <th scope="col" className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -350,7 +351,7 @@ export const LeavesManagement: React.FC = () => {
                               <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-56">
+                          <DropdownMenuContent align="end" className="min-w-[13rem]">
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewLeave')}</DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> {t('management.approveLeave')}</DropdownMenuItem>
                             <DropdownMenuSeparator />
@@ -405,16 +406,17 @@ export const LeavesManagement: React.FC = () => {
           </Button>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[600px] text-[var(--text-sm)] text-start">
+              <caption className="sr-only">Holiday and seasonal leave list</caption>
               <thead>
                 <tr className="bg-muted/50 border-b border-border/80">
-                  <th className={thClass}>Leave Type</th>
-                  <th className={thClass}>Date Range</th>
-                  <th className={thClass}>Duration</th>
-                  <th className={thClass}>Notes</th>
-                  <th className={cn(thClass, 'text-end')}>Actions</th>
+                  <th scope="col" className={thClass}>Leave Type</th>
+                  <th scope="col" className={thClass}>Date Range</th>
+                  <th scope="col" className={thClass}>Duration</th>
+                  <th scope="col" className={thClass}>Notes</th>
+                  <th scope="col" className={cn(thClass, 'text-end')}>Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -427,7 +429,7 @@ export const LeavesManagement: React.FC = () => {
                     <td className="whitespace-nowrap px-4 py-3 text-end">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild><button className="inline-flex items-center justify-center size-9 hover:bg-muted/80 rounded-xl transition-all cursor-pointer border border-transparent hover:border-border/80 active:scale-95 text-muted-foreground hover:text-foreground shadow-2xs"><MoreVertical className="w-4 h-4" /></button></DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-44">
+                        <DropdownMenuContent align="end" className="min-w-[12rem]">
                           <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setEditHolidayData(h); setEditHolidayOpen(true); }}><Edit className="w-4 h-4" /> Edit</DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeleteHolidayData(h); setDeleteHolidayOpen(true); }}><Trash2 className="w-4 h-4" /> Delete</DropdownMenuItem>
@@ -515,14 +517,15 @@ export const LeavesManagement: React.FC = () => {
               />
             ) : (
               <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+                <caption className="sr-only">{t('management.history', 'Leave Request History')}</caption>
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-muted/50 border-b border-border/80">
-                    <th className={thClass}>{t('management.employeeName')}</th>
-                    <th className={thClass}>{t('management.leaveType')}</th>
-                    <th className={thClass}>{t('management.dateRange')}</th>
-                    <th className={thClass}>{t('management.duration')}</th>
-                    <th className={thClass}>{t('dashboard.status')}</th>
-                    <th className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
+                    <th scope="col" className={thClass}>{t('management.employeeName')}</th>
+                    <th scope="col" className={thClass}>{t('management.leaveType')}</th>
+                    <th scope="col" className={thClass}>{t('management.dateRange')}</th>
+                    <th scope="col" className={thClass}>{t('management.duration')}</th>
+                    <th scope="col" className={thClass}>{t('dashboard.status')}</th>
+                    <th scope="col" className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -548,7 +551,7 @@ export const LeavesManagement: React.FC = () => {
                               <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-56">
+                          <DropdownMenuContent align="end" className="min-w-[13rem]">
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewLeave')}</DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer gap-2 whitespace-nowrap" onClick={() => toast.success('Details sent to employee')}><Download className="w-4 h-4" /> Download Letter</DropdownMenuItem>
                           </DropdownMenuContent>

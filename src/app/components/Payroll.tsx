@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Pagination } from './Pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
+import { Button } from './ui/button';
 import { PayrollService } from '../../lib/services/dbServices';
 import { useTranslation } from 'react-i18next';
 import { localizeDepartmentName, localizeJobTitle, localizePersonName } from '@/lib/localizedNames';
@@ -470,6 +472,7 @@ const EmployeesTab = ({
     <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full md:min-w-max text-[var(--text-sm)]">
+          <caption className="sr-only">Monthly employee payroll records</caption>
           <thead className="bg-muted/50 border-b border-border/80">
             <tr>
               <TableHeader>SESA ID</TableHeader>
@@ -618,7 +621,7 @@ const NotificationItem = ({ icon: Icon, iconColor, bgColor, borderColor, title, 
 );
 
 const TableHeader = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-  <th className={cn("text-start px-4 py-3.5 whitespace-nowrap text-xs font-semibold uppercase tracking-wider text-muted-foreground", className)} style={{ fontFamily: "'Inter', sans-serif" }}>
+  <th scope="col" className={cn("text-start px-4 py-3.5 whitespace-nowrap text-xs font-semibold uppercase tracking-wider text-muted-foreground", className)} style={{ fontFamily: "'Inter', sans-serif" }}>
     {children}
   </th>
 );
@@ -633,25 +636,19 @@ const TableCell = ({ children, weight = 'normal', color = 'text-foreground', cla
 // ── Payslip Modal ──
 // ════════════════════════════════════
 const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYear, language }: any) => (
-  <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div className="bg-card border border-border rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-border sticky top-0 bg-card">
-        <div>
-          <h2 className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Payslip - {selectedMonth} {selectedYear}
-          </h2>
-          <p className="text-[var(--text-sm)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-            {localizePersonName(employee.name, language)}
-          </p>
-        </div>
-        <button onClick={onClose} className="p-1.5 hover:bg-muted rounded-full text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-          <X className="w-5 h-5" />
-        </button>
-      </div>
+  <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
+    <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogHeader>
+        <DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">
+          Payslip — {selectedMonth} {selectedYear}
+        </DialogTitle>
+        <DialogDescription className="text-sm text-muted-foreground">
+          {localizePersonName(employee.name, language)}
+        </DialogDescription>
+      </DialogHeader>
 
       {/* Content */}
-      <div className="p-6 space-y-6">
+      <div className="space-y-6 pt-2">
         {/* Employee Info */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-2xl border border-border/80">
           <InfoRow label="SESA ID" value={employee.sesaId} noAutoTranslateValue />
@@ -662,7 +659,7 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
 
         {/* Earnings */}
         <div>
-          <h3 className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground mb-3" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <h3 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
             Earnings
           </h3>
           <div className="space-y-2">
@@ -675,7 +672,7 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
 
         {/* Deductions */}
         <div>
-          <h3 className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground mb-3" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <h3 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
             Deductions
           </h3>
           <div className="space-y-2">
@@ -690,10 +687,10 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
         {/* Net Pay */}
         <div className="p-4 bg-chart-3/10 border border-chart-3/30 rounded-2xl">
           <div className="flex items-center justify-between">
-            <span className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <span className="text-base font-semibold text-foreground">
               Net Pay
             </span>
-            <span className="text-[var(--text-2xl)] font-[var(--font-weight-bold)] text-chart-3" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <span className="text-2xl font-bold text-chart-3">
               ${employee.netPay.toLocaleString()}
             </span>
           </div>
@@ -701,16 +698,16 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
       </div>
 
       {/* Footer */}
-      <div className="p-6 border-t border-border flex gap-3 justify-end">
-        <button onClick={onClose} className="min-h-[44px] px-4 border border-border/80 rounded-xl text-[var(--text-sm)] font-[var(--font-weight-medium)] hover:bg-muted transition-all cursor-pointer active:scale-[0.98]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <div className="pt-4 border-t border-border flex gap-3 justify-end">
+        <Button variant="outline" onClick={onClose} className="rounded-xl">
           Close
-        </button>
-        <button onClick={onDownload} className="min-h-[44px] px-4 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white text-[var(--text-sm)] font-[var(--font-weight-medium)] flex items-center gap-2 transition-all cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.98]" style={{ fontFamily: "'Inter', sans-serif" }}>
+        </Button>
+        <Button onClick={onDownload} className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white gap-2">
           <Download className="w-4 h-4" /> Download Payslip
-        </button>
+        </Button>
       </div>
-    </div>
-  </div>
+    </DialogContent>
+  </Dialog>
 );
 
 const InfoRow = ({ label, value, noAutoTranslateValue }: { label: string; value: string; noAutoTranslateValue?: boolean }) => (

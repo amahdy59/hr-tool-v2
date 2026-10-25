@@ -445,7 +445,7 @@ export const EmployeeManagement: React.FC = () => {
                       <span className="hidden sm:inline">Manager Actions</span>
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuContent align="end" className="min-w-[13rem]">
                     <DropdownMenuItem onClick={() => setAddFormerOpen(true)} className="cursor-pointer gap-2">
                       <UserPlus className="w-4 h-4" /> Add Former Employee
                     </DropdownMenuItem>
@@ -475,19 +475,20 @@ export const EmployeeManagement: React.FC = () => {
                 />
               ) : (
                 <table className={dataTableClass}>
+                  <caption className="sr-only">Active employees directory</caption>
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted/50 border-b border-border/80">
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'الاسم' : 'Name'}</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'الاسم' : 'Name'}</th>
                       {visibleColumns.empNumber && (
-                        <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'الرقم الوظيفي' : 'Employee Number'}</th>
+                        <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'الرقم الوظيفي' : 'Employee Number'}</th>
                       )}
                       {visibleColumns.department && (
-                        <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'القسم' : 'Department'}</th>
+                        <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'القسم' : 'Department'}</th>
                       )}
                       {visibleColumns.jobTitle && (
-                        <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'المسمى الوظيفي' : 'Job Title'}</th>
+                        <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'المسمى الوظيفي' : 'Job Title'}</th>
                       )}
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">{isArabic ? 'الإجراءات' : 'Actions'}</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">{isArabic ? 'الإجراءات' : 'Actions'}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -505,7 +506,7 @@ export const EmployeeManagement: React.FC = () => {
                             <div className="flex items-center gap-3">
                               <div className="relative w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600/10 to-indigo-600/20 text-blue-600 dark:text-blue-300 font-bold flex items-center justify-center text-xs border border-blue-500/20 shrink-0">
                                 {initials}
-                                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-card" aria-hidden="true" />
+                                <span className="absolute bottom-0 end-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-card" aria-hidden="true" />
                               </div>
                               <span className="text-foreground font-semibold hover:text-primary transition-colors cursor-pointer">{empDisplayName}</span>
                             </div>
@@ -524,7 +525,7 @@ export const EmployeeManagement: React.FC = () => {
                             <DropdownMenuTrigger asChild>
                               <Button variant="outline" size="sm" className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-56">
+                            <DropdownMenuContent align="end" className="min-w-[13rem]">
                               <DropdownMenuItem onClick={() => { setEditEmpData(emp); setEditEmpOpen(true); }} className="cursor-pointer gap-2">
                                 <Edit className="w-4 h-4" /> Edit Info
                               </DropdownMenuItem>
@@ -571,13 +572,14 @@ export const EmployeeManagement: React.FC = () => {
                 />
               ) : (
                 <table className={dataTableClass}>
+                  <caption className="sr-only">Administrative activity log</caption>
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted/50 border-b border-border/80">
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Admin</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Action Taken</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Date</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Amount Affected</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Admin</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Action Taken</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Date</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Amount Affected</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -633,12 +635,13 @@ export const EmployeeManagement: React.FC = () => {
                 />
               ) : (
                 <table className={dataTableClass}>
+                  <caption className="sr-only">Company departments list</caption>
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted/50 border-b border-border/80">
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Department</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"><span data-no-auto-translate>Department ID</span></th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Total Number</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Department</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"><span data-no-auto-translate>Department ID</span></th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Total Number</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -679,11 +682,12 @@ export const EmployeeManagement: React.FC = () => {
           <div className={tableCardClass}>
             <div className={tableScrollClass}>
               <table className={dataTableClass}>
+                <caption className="sr-only">Job titles list</caption>
                 <thead>
                   <tr className="bg-muted/50 border-b border-border/80">
-                    <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Job Title</th>
-                    <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"># Employees</th>
-                    <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
+                    <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Job Title</th>
+                    <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"># Employees</th>
+                    <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -1162,13 +1166,14 @@ const FormerEmployeeModal: React.FC<{
           <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Former Employees</p>
           <div className="border border-border/80 rounded-2xl overflow-hidden shadow-2xs">
             <table className="w-full md:min-w-max text-[var(--text-sm)]">
+              <caption className="sr-only">Former employees directory</caption>
               <thead>
                 <tr className="bg-muted/50 border-b border-border/80">
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Name</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Employee#</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Dept</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Title</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Action</th>
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Name</th>
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Employee#</th>
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Dept</th>
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Title</th>
+                  <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -1280,13 +1285,14 @@ const AccessCardsModal: React.FC<{
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Assigned Cards</p>
               <div className="border border-border/80 rounded-2xl overflow-x-auto bg-card mt-2 shadow-2xs">
                 <table className="w-full md:min-w-max text-[var(--text-sm)]">
+                  <caption className="sr-only">Assigned access cards list</caption>
                   <thead>
                     <tr className="bg-muted/50 border-b border-border/80">
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Card Number</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Start Date</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">End Date</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Card Type</th>
-                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Status</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Card Number</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Start Date</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">End Date</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Card Type</th>
+                      <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">

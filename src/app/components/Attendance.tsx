@@ -1000,12 +1000,12 @@ export const Attendance: React.FC = () => {
               <caption className="sr-only">Annual and sick leave balance details</caption>
               <thead className="bg-muted/50 border-b border-border/80">
                 <tr>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Leave Type</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Total Balance</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Bridge</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">From Last Year</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Used Balance</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Remaining Balance</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Leave Type</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Total Balance</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Bridge</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">From Last Year</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Used Balance</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Remaining Balance</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
@@ -1118,12 +1118,12 @@ export const Attendance: React.FC = () => {
               <caption className="sr-only">Daily attendance records for the selected employee and period</caption>
               <thead className="bg-muted/50 border-b border-border/80">
                 <tr>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Day</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Date</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Time In</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Time Out</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Total Hours</th>
-                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Day Status</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Day</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Date</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Time In</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Time Out</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Total Hours</th>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Day Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">

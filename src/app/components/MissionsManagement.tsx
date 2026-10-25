@@ -222,15 +222,16 @@ export const MissionsManagement: React.FC = () => {
               />
               ) : (
                 <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+                  <caption className="sr-only">{t('management.pendingMissions', 'Pending Mission Requests')}</caption>
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted/50 border-b border-border/80">
-                      <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingMissions.length && pendingMissions.length > 0} onCheckedChange={toggleAll} /></th>
-                      <th className={thClass}>{t('management.employeeName')}</th>
-                      <th className={thClass}>{t('management.missionType')}</th>
-                      <th className={thClass}>{t('management.dateRange')}</th>
-                      <th className={thClass}>{t('management.duration')}</th>
-                      <th className={thClass}>{t('management.notes')}</th>
-                      <th className={cn(thClass, 'text-end')}>Actions</th>
+                      <th scope="col" className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingMissions.length && pendingMissions.length > 0} onCheckedChange={toggleAll} /></th>
+                      <th scope="col" className={thClass}>{t('management.employeeName')}</th>
+                      <th scope="col" className={thClass}>{t('management.missionType')}</th>
+                      <th scope="col" className={thClass}>{t('management.dateRange')}</th>
+                      <th scope="col" className={thClass}>{t('management.duration')}</th>
+                      <th scope="col" className={thClass}>{t('management.notes')}</th>
+                      <th scope="col" className={cn(thClass, 'text-end')}>Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -260,7 +261,7 @@ export const MissionsManagement: React.FC = () => {
                               <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
                             </Button>
                           </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-56">
+                            <DropdownMenuContent align="end" className="min-w-[13rem]">
                               <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewDetails')}</DropdownMenuItem>
                               <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> {t('management.approveMission')}</DropdownMenuItem>
                               <DropdownMenuSeparator />
@@ -332,15 +333,16 @@ export const MissionsManagement: React.FC = () => {
               />
             ) : (
               <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
+                <caption className="sr-only">{t('management.history', 'Mission Request History')}</caption>
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-muted/50 border-b border-border/80">
-                    <th className={thClass}>{t('management.employeeName')}</th>
-                    <th className={thClass}>{t('management.missionType')}</th>
-                    <th className={thClass}>{t('management.dateRange')}</th>
-                    <th className={thClass}>{t('management.duration')}</th>
-                    <th className={thClass}>{t('management.notes')}</th>
-                    <th className={thClass}>{t('dashboard.status')}</th>
-                    <th className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
+                    <th scope="col" className={thClass}>{t('management.employeeName')}</th>
+                    <th scope="col" className={thClass}>{t('management.missionType')}</th>
+                    <th scope="col" className={thClass}>{t('management.dateRange')}</th>
+                    <th scope="col" className={thClass}>{t('management.duration')}</th>
+                    <th scope="col" className={thClass}>{t('management.notes')}</th>
+                    <th scope="col" className={thClass}>{t('dashboard.status')}</th>
+                    <th scope="col" className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -367,7 +369,7 @@ export const MissionsManagement: React.FC = () => {
                               <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-44">
+                          <DropdownMenuContent align="end" className="min-w-[12rem]">
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewDetails')}</DropdownMenuItem>
                             {m.status === 'approved' && <><DropdownMenuSeparator /><DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeleteData(m); setDeleteOpen(true); }}><Trash2 className="w-4 h-4" /> {isArabic ? 'حذف المأمورية' : 'Delete Mission'}</DropdownMenuItem></>}
                           </DropdownMenuContent>
