@@ -29,7 +29,7 @@ import { useTranslation } from 'react-i18next';
 import { formatLocalizedDate, localizePersonName } from '@/lib/localizedNames';
 
 // ── Shared styles ──
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)] whitespace-nowrap';
 const getErrorMessage = (error: unknown) =>
@@ -301,7 +301,7 @@ export const LeavesManagement: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
             {pendingLeaves.length === 0 ? (
               <EmptyState 
@@ -395,7 +395,7 @@ export const LeavesManagement: React.FC = () => {
           </Button>
         </div>
 
-        <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[600px] text-[var(--text-sm)] text-start">
               <thead>
@@ -494,7 +494,7 @@ export const LeavesManagement: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
             {historyLeaves.length === 0 ? (
               <EmptyState 
@@ -926,7 +926,7 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Review Selected Requests</DialogTitle><DialogDescription className="sr-only">Review and approve selected leave requests</DialogDescription></DialogHeader>
-          <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
+          <div className="border border-border rounded-xl overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
             <table className="w-full md:min-w-max text-[var(--text-sm)]">
             <thead><tr className="bg-muted border-b border-border">
               <th className={thClass}>Employee Name</th><th className={thClass}>Leave Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
@@ -971,7 +971,7 @@ const ViewLeaveDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean)
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Leave Details</DialogTitle><DialogDescription className="sr-only">Leave request details</DialogDescription></DialogHeader>
         {leave && (
           <div className="space-y-3">
-            <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
+            <div className="flex items-center gap-3 p-3 bg-muted rounded-xl">
               <div><p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{localizePersonName(leave.name, language)}</p><p className="text-[var(--text-xs)] text-muted-foreground uppercase" data-no-auto-translate>{leave.employeeNumber || '00000'}</p></div>
             </div>
             <div className="space-y-2 text-[var(--text-sm)]">
@@ -1063,7 +1063,7 @@ const ConfirmDialog: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent className="sm:max-w-md">
       <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">{title}</DialogTitle><DialogDescription className="sr-only">{title}</DialogDescription></DialogHeader>
-      <div className={cn('p-3 rounded-[var(--radius)] border flex gap-3', variant === 'destructive' ? 'bg-destructive/5 border-destructive/20' : 'bg-primary/5 border-primary/20')}>
+      <div className={cn('p-3 rounded-xl border flex gap-3', variant === 'destructive' ? 'bg-destructive/5 border-destructive/20' : 'bg-primary/5 border-primary/20')}>
         <Info className={cn('w-5 h-5 shrink-0 mt-0.5', variant === 'destructive' ? 'text-destructive' : 'text-primary')} />
         <p className="text-[var(--text-sm)] text-foreground">{message}</p>
       </div>

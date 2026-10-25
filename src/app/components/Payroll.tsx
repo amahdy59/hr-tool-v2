@@ -300,8 +300,8 @@ export const Payroll: React.FC = () => {
             className={cn(
               'pb-3 text-[var(--text-sm)] whitespace-nowrap transition-colors cursor-pointer shrink-0',
               activeTab === tab.id
-                ? "text-chart-3 font-[var(--font-weight-semibold)] border-b-2 border-chart-3"
-                : 'text-muted-foreground hover:text-foreground font-[var(--font-weight-medium)]'
+                ? "text-primary font-semibold border-b-2 border-primary"
+                : 'text-muted-foreground hover:text-foreground font-medium'
             )}
             style={{
               fontFamily: "'Inter', sans-serif",
@@ -321,7 +321,7 @@ export const Payroll: React.FC = () => {
             placeholder={t('payroll.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full min-h-[44px] px-3 ps-10 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow" 
+            className="w-full min-h-[44px] px-3 ps-10 border border-border rounded-xl bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow" 
             style={{
               fontFamily: "'Inter', sans-serif",
             }}
@@ -369,7 +369,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
     </div>
 
     {/* Quick Payslip Generator */}
-    <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="bg-card border border-border rounded-2xl p-5 shadow-[var(--elevation-sm)] space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Quick Payslip Generator</span>
       </div>
@@ -382,7 +382,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
             value={selectedMonth}
             onValueChange={setSelectedMonth}
           >
-            <SelectTrigger className="w-full min-h-[44px] border border-border rounded-[var(--radius-input)] bg-input-background text-foreground">
+            <SelectTrigger className="w-full min-h-[44px] border border-border rounded-xl bg-input-background text-foreground">
               <SelectValue placeholder="Month" />
             </SelectTrigger>
             <SelectContent>
@@ -400,7 +400,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
             value={selectedYear}
             onValueChange={setSelectedYear}
           >
-            <SelectTrigger className="w-full min-h-[44px] border border-border rounded-[var(--radius-input)] bg-input-background text-foreground">
+            <SelectTrigger className="w-full min-h-[44px] border border-border rounded-xl bg-input-background text-foreground">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
@@ -414,7 +414,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
     </div>
 
     {/* Notifications */}
-    <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="bg-card border border-border rounded-2xl p-5 shadow-[var(--elevation-sm)] space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Recent Activity</span>
       </div>
@@ -467,7 +467,7 @@ const EmployeesTab = ({
   <div className="space-y-6 max-w-6xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Employee Payroll</h3>
 
-    <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+    <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
       <div className="overflow-x-auto">
         <table className="w-full md:min-w-max text-[var(--text-sm)]">
           <thead className="bg-muted border-b border-border">
@@ -529,7 +529,7 @@ const CompensationTab = () => (
   <div className="space-y-6 max-w-3xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Compensation Structure</h3>
 
-    <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="bg-card border border-border rounded-2xl p-5 shadow-[var(--elevation-sm)] space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Compensation Items</span>
       </div>
@@ -559,7 +559,7 @@ const DeductionsTab = () => (
   <div className="space-y-6 max-w-3xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Payroll Deductions</h3>
 
-    <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="bg-card border border-border rounded-2xl p-5 shadow-[var(--elevation-sm)] space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Deduction Items</span>
       </div>
@@ -588,21 +588,23 @@ const DeductionsTab = () => (
 // ── Reusable Components ──
 // ════════════════════════════════════
 const SummaryCard = ({ icon: Icon, label, value, color }: any) => (
-  <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
+  <div className="bg-card border border-border/80 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
     <div className="flex items-center gap-3 mb-2">
-      <Icon className={cn("w-5 h-5", color)} />
+      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center transition-transform group-hover:scale-110">
+        <Icon className={cn("w-5 h-5", color)} />
+      </div>
       <p className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
         {label}
       </p>
     </div>
-    <p className="text-[var(--text-2xl)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <p className="text-[var(--text-2xl)] font-[var(--font-weight-bold)] text-foreground tracking-tight" style={{ fontFamily: "'Inter', sans-serif" }}>
       {value}
     </p>
   </div>
 );
 
 const NotificationItem = ({ icon: Icon, iconColor, bgColor, borderColor, title, description }: any) => (
-  <div className={cn("flex items-start gap-3 p-3 rounded-[var(--radius)] border", bgColor, borderColor)}>
+  <div className={cn("flex items-start gap-3 p-3 rounded-xl border transition-colors", bgColor, borderColor)}>
     <Icon className={cn("w-5 h-5 shrink-0 mt-0.5", iconColor)} />
     <div>
       <p className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -632,7 +634,7 @@ const TableCell = ({ children, weight = 'normal', color = 'text-foreground' }: {
 // ════════════════════════════════════
 const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYear, language }: any) => (
   <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div className="bg-card border border-border rounded-[var(--radius-card)] shadow-[var(--elevation-lg)] max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="bg-card border border-border rounded-2xl shadow-[var(--elevation-lg)] max-w-2xl w-full max-h-[90vh] overflow-y-auto">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-border sticky top-0 bg-card">
         <div>

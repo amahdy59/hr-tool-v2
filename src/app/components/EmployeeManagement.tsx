@@ -94,7 +94,7 @@ const uniqueOptions = (values: Array<string | undefined>) =>
   Array.from(new Set(values.map((value) => value?.trim()).filter((value): value is string => Boolean(value)))).sort((a, b) => a.localeCompare(b));
 
 // ── Shared input style ──
-const inputClass = "w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow";
+const inputClass = "w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs";
 const labelClass = "block text-start text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground";
 const pageShellClass = "w-full max-w-7xl mx-auto px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 space-y-6";
 const tabHeaderClass = "flex w-full min-w-0 flex-col gap-4 md:flex-row md:items-center md:justify-between";
@@ -104,7 +104,7 @@ const tabContentClass = "w-full min-w-0 space-y-4";
 const searchGroupClass = "w-full max-w-md space-y-1";
 const searchRowClass = "flex w-full items-center gap-3";
 const searchFieldClass = "relative w-full sm:max-w-sm";
-const tableCardClass = "w-full min-w-0 overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-[var(--elevation-sm)]";
+const tableCardClass = "w-full min-w-0 overflow-hidden rounded-2xl border border-border/80 bg-card shadow-sm hover:shadow-md transition-shadow";
 const tableScrollClass = "w-full overflow-x-auto";
 const dataTableClass = "w-full text-start text-[var(--text-sm)] md:min-w-[720px]";
 const includesQuery = (values: Array<string | number>, query: string) => {
@@ -491,13 +491,25 @@ export const EmployeeManagement: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {paginatedEmployees.map((emp) => (
-                      <tr key={emp.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3">
-                          <div className="flex items-center gap-2">
-                            <span className="text-primary font-[var(--font-weight-medium)]">{localizePersonName(emp.name, language)}</span>
-                          </div>
-                        </td>
+                    {paginatedEmployees.map((emp) => {
+                      const empDisplayName = localizePersonName(emp.name, language);
+                      const initials = empDisplayName
+                        .split(' ')
+                        .map((n: string) => n[0])
+                        .join('')
+                        .slice(0, 2)
+                        .toUpperCase();
+                      return (
+                        <tr key={emp.id} className="hover:bg-muted/40 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
+                          <td className="whitespace-nowrap px-4 py-2 md:py-3.5">
+                            <div className="flex items-center gap-3">
+                              <div className="relative w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600/10 to-indigo-600/20 text-blue-600 dark:text-blue-300 font-bold flex items-center justify-center text-xs border border-blue-500/20 shrink-0">
+                                {initials}
+                                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-card" aria-hidden="true" />
+                              </div>
+                              <span className="text-foreground font-semibold hover:text-primary transition-colors cursor-pointer">{empDisplayName}</span>
+                            </div>
+                          </td>
                         {visibleColumns.empNumber && (
                           <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span><span data-no-auto-translate>{emp.employeeNumber}</span></td>
                         )}
@@ -527,7 +539,8 @@ export const EmployeeManagement: React.FC = () => {
                           </DropdownMenu>
                         </td>
                       </tr>
-                    ))}
+                    );
+                  })}
                   </tbody>
                 </table>
               )}

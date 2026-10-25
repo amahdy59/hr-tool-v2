@@ -13,16 +13,16 @@
   --text-xs: 12px;
   
   /* Core brand colors */
-  --color-primary-brand: #1E40AF;
-  --color-primary-dark: #1E3A8A;
+  --color-primary-brand: #2563EB;
+  --color-primary-dark: #1D4ED8;
   --color-secondary-accent: #F59E0B;
-  --color-accent-warm: #0F766E;
-  --color-success: #166534;
+  --color-accent-warm: #0D9488;
+  --color-success: #10B981;
   --color-bg-main: #F8FAFC;
-  --color-bg-subtle: #E0F2FE;
+  --color-bg-subtle: #EFF6FF;
   --color-text-main: #0F172A;
   --color-text-muted: #334155;
-  --color-border-divider: #CBD5E1;
+  --color-border-divider: #E2E8F0;
   
   /* The default background color for the application. */
   --background: #F8FAFC;
@@ -37,27 +37,27 @@
   /* The default color for text or elements that appear on top of dropdowns and tooltips. */
   --popover-foreground: #0F172A;
   /* The primary color used for buttons, links, and other interactive elements. */
-  --primary: #1E40AF;
+  --primary: #2563EB;
   /* The default color for text or elements that appear on top of primary colored elements. */
   --primary-foreground: #FFFFFF;
   /* The secondary color used for secondary(but NOT-DESTRUCTIVE) buttons and interactive elements. */
-  --secondary: #F59E0B;
+  --secondary: #475569;
   /* The default color for text or elements that appear on top of secondary colored elements. */
-  --secondary-foreground: #111827;
+  --secondary-foreground: #FFFFFF;
   /* The muted color used for less prominent elements, such as disabled buttons or disabled text. */
-  --muted: #EEF2F7;
+  --muted: #F1F5F9;
   /* The default color for text or elements that appear on top of muted colored elements. */
-  --muted-foreground: #334155;
+  --muted-foreground: #475569;
   /* The accent color used for highlights, links, and other interactive elements. */
-  --accent: #0B534C;
+  --accent: #0D9488;
   /* The default color for text or elements that appear on top of accent colored elements. */
   --accent-foreground: #FFFFFF;
   /* The color used for background in destructive actions, such as delete buttons or error messages. */
-  --destructive: #991B1B;
+  --destructive: #EF4444;
   /* The default color for text or elements that appear on top of destructive colored elements. */
   --destructive-foreground: #FFFFFF;
   /* The default border color for elements such as inputs, buttons, and other containers. */
-  --border: #CBD5E1;
+  --border: #E2E8F0;
   /* A stronger outline color reserved for editable fields and dropdown triggers. */
   --field-border: #64748B;
   /* The default background color for input fields once the text has been filled. Should be either transparent or match the input-background. */
@@ -72,28 +72,28 @@
   --font-weight-semibold: 600;
   /* The color for focus rings, outlines, and other focus indicators. */
   --ring: #2563EB;
-  /* Small elevation shadow for cards, buttons, and modals. */
-  --elevation-sm: 0px 1px 2px 0px rgba(33, 33, 33, 0.1);
-  /* Large elevation shadow for prominent elements. */
-  --elevation-lg: 0px 10px 30px 0px rgba(33, 33, 33, 0.15), 0px 4px 8px 0px rgba(33, 33, 33, 0.1);
+  /* Apple & Fluent subtle ambient shadows */
+  --elevation-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --elevation-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --elevation-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
   /* The color for chart elements, such as a bar or line in a chart. */
-  --chart-1: #1E40AF;
+  --chart-1: #2563EB;
   /* The color for another chart element, such as a bar or line in a chart. */
   --chart-2: #F59E0B;
   /* The color for another chart element, such as a bar or line in a chart. */
   --chart-3: #166534;
   /* The color for another chart element, such as a bar or line in a chart. */
-  --chart-4: #9A3412;
+  --chart-4: #8B5CF6;
   /* The color for another chart element, such as a bar or line in a chart. */
-  --chart-5: #475569;
+  --chart-5: #06B6D4;
   /* The default border radius for elements such as buttons, tooltip, and other containers. */
-  --radius: 8px;
+  --radius: 12px;
   /* The border radius for buttons. */
-  --radius-button: 8px;
+  --radius-button: 10px;
   /* The border radius for cards and containers. */
-  --radius-card: 8px;
+  --radius-card: 16px;
   /* The border radius for input fields. */
-  --radius-input: 8px;
+  --radius-input: 10px;
   
   /* Spacing Tokens */
   --spacing-label-input: 4px;
@@ -121,60 +121,61 @@
   --section-heading-weight: var(--font-weight-semibold);
 
   /* The background color for sidebars */
-  --sidebar: #102A56;
+  --sidebar: #0F172A;
   /* The default color for text or elements that appear on top of sidebars, navigation menus, and other persistent elements. */
-  --sidebar-foreground: #FFFFFF;
+  --sidebar-foreground: #F8FAFC;
   /* The primary color used for buttons, links, and other interactive elements in sidebars and navigation menus. */
-  --sidebar-primary: #EDE7F6;
+  --sidebar-primary: #3B82F6;
   /* The default color for text or elements that appear on top of primary colored elements in sidebars and navigation menus. */
-  --sidebar-primary-foreground: #102A56;
+  --sidebar-primary-foreground: #FFFFFF;
   /* The accent color used for highlights, links, and other interactive elements in sidebars and navigation menus. */
-  --sidebar-accent: #EDE7F6;
+  --sidebar-accent: #1E293B;
   /* The default color for text or elements that appear on top of accent colored elements in sidebars and navigation menus. */
-  --sidebar-accent-foreground: #102A56;
+  --sidebar-accent-foreground: #FFFFFF;
   /* The default border color for elements in sidebars and navigation menus. */
-  --sidebar-border: #1E3A8A;
+  --sidebar-border: #1E293B;
   /* The default color for focus rings, outlines, and other focus indicators in sidebars and navigation menus. */
-  --sidebar-ring: #EDE7F6;
+  --sidebar-ring: #60A5FA;
 }
 
 .dark {
-  --background: #0B1220;
-  --foreground: #F1F5F9;
+  --background: #0B0F19;
+  --foreground: #F8FAFC;
   --card: #111827;
-  --card-foreground: #F1F5F9;
+  --card-foreground: #F8FAFC;
   --popover: #111827;
-  --popover-foreground: #F1F5F9;
-  --primary: #A7D4FF;
-  --primary-foreground: #08111F;
-  --secondary: #F7C948;
-  --secondary-foreground: #111827;
-  --muted: #1F2937;
-  --muted-foreground: #D1D5DB;
-  --accent: #A7F3D0;
-  --accent-foreground: #06281F;
-  --destructive: #991B1B;
-  --destructive-foreground: #FFFFFF;
-  --border: #64748B;
-  --field-border: #94A3B8;
-  --input: #0B1220;
-  --input-background: #0B1220;
-  --ring: #BFDBFE;
-  --elevation-sm: 0px 1px 0px rgba(255, 255, 255, 0.08);
-  --elevation-lg: 0px 18px 40px rgba(0, 0, 0, 0.45), 0px 0px 0px 1px rgba(255, 255, 255, 0.08);
-  --chart-1: #93C5FD;
-  --chart-2: #FACC15;
+  --popover-foreground: #F8FAFC;
+  --primary: #60A5FA;
+  --primary-foreground: #0B0F19;
+  --secondary: #94A3B8;
+  --secondary-foreground: #0B0F19;
+  --muted: #1E293B;
+  --muted-foreground: #CBD5E1;
+  --accent: #34D399;
+  --accent-foreground: #064E3B;
+  --destructive: #F87171;
+  --destructive-foreground: #450A0A;
+  --border: #334155;
+  --field-border: #64748B;
+  --input: #111827;
+  --input-background: #111827;
+  --ring: #60A5FA;
+  --elevation-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --elevation-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --elevation-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --chart-1: #60A5FA;
+  --chart-2: #FBBF24;
   --chart-3: #166534;
-  --chart-4: #9A3412;
-  --chart-5: #CBD5E1;
-  --sidebar: #08111F;
-  --sidebar-foreground: #F1F5F9;
-  --sidebar-primary: #DBEAFE;
-  --sidebar-primary-foreground: #08111F;
-  --sidebar-accent: #1E293B;
+  --chart-4: #A78BFA;
+  --chart-5: #22D3EE;
+  --sidebar: #080D1A;
+  --sidebar-foreground: #F8FAFC;
+  --sidebar-primary: #3B82F6;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #111827;
   --sidebar-accent-foreground: #F8FAFC;
-  --sidebar-border: #64748B;
-  --sidebar-ring: #BFDBFE;
+  --sidebar-border: #1E293B;
+  --sidebar-ring: #60A5FA;
 }
 
 /* ==========================================================================
@@ -328,6 +329,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 16px);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -337,6 +340,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --shadow-sm: var(--elevation-sm);
+  --shadow-md: var(--elevation-md);
+  --shadow-lg: var(--elevation-lg);
 }
 
 @layer base {

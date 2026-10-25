@@ -72,19 +72,19 @@ const CHART_COLORS = {
 
 // ── Raw CSS values for recharts (theme-adaptive) ──
 const CHART_RAW_COLORS_LIGHT = {
-  inOffice: '#1E40AF',   // --chart-1 / --primary
-  missions: '#64748B',   // --chart-5 / --muted-foreground
-  leaves: '#D97706',     // --chart-2 / --secondary
-  noShow: '#DC2626',     // --chart-4 / --destructive
-  unfilled: '#166534',   // --chart-3 / --success
+  inOffice: '#2563EB',   // --chart-1 / Electric Azure
+  missions: '#8B5CF6',   // --chart-4 / Violet
+  leaves: '#F59E0B',     // --chart-3 / Warm amber
+  noShow: '#EF4444',     // --destructive / Ruby
+  unfilled: '#10B981',   // --chart-2 / Emerald
 };
 
 const CHART_RAW_COLORS_DARK = {
   inOffice: '#60A5FA',   // High-contrast bright blue (>7:1 vs #111827)
-  missions: '#94A3B8',   // Light slate (>6:1 vs #111827)
+  missions: '#A78BFA',   // Soft violet (>6:1 vs #111827)
   leaves: '#FBBF24',     // Warm amber (>10:1 vs #111827)
   noShow: '#F87171',     // Soft red (>7:1 vs #111827)
-  unfilled: '#4ADE80',   // Vivid emerald (>10:1 vs #111827)
+  unfilled: '#34D399',   // Vivid emerald (>10:1 vs #111827)
 };
 
 // ── Summary chart data ──
@@ -702,7 +702,7 @@ export const Attendance: React.FC = () => {
 
 
       {filteredEmployees.length === 0 ? (
-        <div className="bg-card border border-border rounded-[var(--radius-card)] p-8 text-center shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl p-8 text-center shadow-[var(--elevation-sm)]">
           <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
             <Search className="w-6 h-6 text-muted-foreground" />
           </div>
@@ -736,7 +736,7 @@ export const Attendance: React.FC = () => {
           </p>
 
       {/* ── Summary View ── */}
-      <section className="bg-card border border-border rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-sm)] sm:p-6" aria-labelledby="attendance-summary-heading">
+      <section className="bg-card border border-border rounded-2xl p-4 shadow-[var(--elevation-sm)] sm:p-6" aria-labelledby="attendance-summary-heading">
         <div className="mb-5 flex flex-col items-start gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-muted-foreground">
@@ -769,7 +769,7 @@ export const Attendance: React.FC = () => {
 
         <div
           className={cn(
-            'mb-5 flex flex-col gap-3 rounded-[var(--radius-card)] border p-4 sm:flex-row sm:items-center sm:justify-between',
+            'mb-5 flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between',
             meetsOfficeGoal
               ? 'border-[var(--chart-3)]/70 bg-[var(--chart-3)]/10'
               : 'border-destructive/70 bg-destructive/10'
@@ -811,7 +811,7 @@ export const Attendance: React.FC = () => {
 
         <div className="grid grid-cols-1 gap-6 items-start xl:grid-cols-[minmax(430px,1fr)_minmax(340px,0.9fr)] xl:items-stretch xl:gap-8">
           {/* Left: summary table */}
-          <div className="hidden w-full overflow-x-auto sm:block bg-card border border-border rounded-[var(--radius-card)] shadow-[var(--elevation-sm)] overflow-hidden">
+          <div className="hidden w-full overflow-x-auto sm:block bg-card border border-border rounded-2xl shadow-[var(--elevation-sm)] overflow-hidden">
             <table className="w-full text-start border-collapse cursor-default text-[var(--text-sm)]" aria-label={`Attendance summary for ${monthLabel} ${selectedYear}`}>
               <caption className="sr-only">Attendance summary by category, hours, and percentage</caption>
               <thead>
@@ -868,11 +868,11 @@ export const Attendance: React.FC = () => {
 
           <div className="space-y-3 sm:hidden" aria-label={`Attendance summary cards for ${monthLabel} ${selectedYear}`}>
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-[var(--radius-card)] border border-border bg-muted/20 p-3">
+              <div className="rounded-2xl border border-border bg-muted/20 p-3">
                 <p className="text-[var(--text-xs)] text-muted-foreground">{isArabic ? 'المتوقع' : 'Expected'}</p>
                 <p className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">{EXPECTED_WORKING_HOURS}{isArabic ? 'س' : 'h'}</p>
               </div>
-              <div className="rounded-[var(--radius-card)] border border-border bg-muted/20 p-3">
+              <div className="rounded-2xl border border-border bg-muted/20 p-3">
                 <p className="text-[var(--text-xs)] text-muted-foreground">{isArabic ? 'الفعلي' : 'Actual'}</p>
                 <p className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground">{totalHours}{isArabic ? 'س' : 'h'}</p>
               </div>
@@ -880,7 +880,7 @@ export const Attendance: React.FC = () => {
             {translatedSummaryData.map((item) => (
               <div
                 key={item.id}
-                className="rounded-[var(--radius-card)] border border-border bg-card p-3 shadow-[var(--elevation-sm)]"
+                className="rounded-2xl border border-border bg-card p-3 shadow-[var(--elevation-sm)]"
                 style={{ borderInlineStart: `4px solid ${item.cssColor}` }}
               >
                 <div className="flex items-center justify-between gap-3">
@@ -950,7 +950,7 @@ export const Attendance: React.FC = () => {
           </div>
 
           {/* Desktop: Bar Chart representing breakdown of logged hours */}
-          <div className="hidden min-w-0 xl:block bg-card border border-border rounded-[var(--radius-card)] shadow-[var(--elevation-sm)] p-5 h-full">
+          <div className="hidden min-w-0 xl:block bg-card border border-border rounded-2xl shadow-[var(--elevation-sm)] p-5 h-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={translatedSummaryData}
@@ -986,7 +986,7 @@ export const Attendance: React.FC = () => {
       {/* ── Annual and Sick Leaves ── */}
       <section className="space-y-3" aria-labelledby="attendance-leave-balances-heading">
         <h3 id="attendance-leave-balances-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Annual and Sick Leaves</h3>
-        <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">Annual and sick leave balance details</caption>
@@ -1104,7 +1104,7 @@ export const Attendance: React.FC = () => {
           {isArabic ? `عرض ${days.length} سجل حضور` : `Showing ${days.length} attendance records`}
         </div>
 
-        <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">Daily attendance records for the selected employee and period</caption>

@@ -430,7 +430,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
 
   return (
     <div 
-      className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)] focus-visible:outline-none"
+      className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm focus-visible:outline-none"
       dir={isArabic ? 'rtl' : 'ltr'}
       role="region"
       aria-label={isArabic ? 'جدول المواعيد والغياب' : 'Attendance and Leave Calendar'}

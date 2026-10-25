@@ -73,28 +73,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         aria-current={isActive ? 'page' : undefined}
         aria-label={itemLabel}
         className={cn(
-          'relative flex min-h-11 min-w-[76px] flex-col items-center justify-center gap-1 rounded-[var(--radius)] px-2 py-2 text-center transition-all duration-300 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-11 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-start',
+          'relative flex min-h-11 min-w-[76px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-center transition-all duration-200 ease-out cursor-pointer overflow-hidden group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring sm:w-full sm:min-w-11 sm:flex-row sm:gap-3 sm:px-3 sm:py-2.5 sm:text-start',
           sidebarItemTextClass,
           collapsed ? 'sm:justify-center' : 'sm:justify-start',
           isActive
-            ? '!bg-[#EDEFFB] !text-[#111827] shadow-sm scale-[0.98]'
-            : 'text-sidebar-foreground hover:bg-[#EDEFFB] hover:text-[#102A56] hover:scale-[1.02] active:scale-[0.98]'
+            ? 'bg-gradient-to-r from-blue-600/25 to-indigo-600/20 text-white font-semibold shadow-xs border-s-4 border-blue-500 scale-[0.99]'
+            : 'text-slate-300 hover:text-white hover:bg-white/10 hover:scale-[1.01] active:scale-[0.98]'
         )}
       >
         {/* Ripple effect on click */}
         <span className="absolute inset-0 bg-white/10 opacity-0 group-active:opacity-100 transition-opacity duration-200" />
         
         <item.icon className={cn(
-          "w-5 h-5 shrink-0 transition-transform duration-300 ease-out",
-          isActive ? "!text-[#111827] scale-110" : "group-hover:scale-110 group-hover:text-[#102A56]"
+          "w-5 h-5 shrink-0 transition-transform duration-200 ease-out",
+          isActive ? "text-blue-400 scale-110" : "text-slate-400 group-hover:scale-110 group-hover:text-white"
         )} />
         <span
           style={{
             fontFamily: "'Inter', sans-serif",
           }}
           className={cn(
-            "max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap transition-all duration-300 sm:max-w-none sm:text-start",
-            isActive && "!text-[#111827]",
+            "max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap transition-all duration-200 sm:max-w-none sm:text-start",
+            isActive ? "text-white font-semibold" : "text-slate-300",
             collapsed && "sm:hidden"
           )}
         >
@@ -103,7 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         
         {/* Active indicator */}
         {isActive && !collapsed && (
-          <span className="hidden sm:block ms-auto w-1.5 h-1.5 rounded-full !bg-[#111827] animate-pulse shrink-0" />
+          <span className="hidden sm:block ms-auto w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)] animate-pulse shrink-0" />
         )}
       </button>
     );
@@ -128,16 +128,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         aria-label={t('sidebar.mainNavigation', 'Main navigation and user actions')}
         dir={isArabic ? 'rtl' : 'ltr'}
         className={cn(
-          'hidden lg:flex lg:flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 h-screen shrink-0',
+          'hidden lg:flex lg:flex-col border-e border-slate-800/80 bg-slate-900/95 dark:bg-[#070C18]/95 backdrop-blur-2xl text-slate-100 transition-all duration-300 h-screen shrink-0 shadow-lg',
           collapsed ? 'lg:w-[72px]' : 'lg:w-64'
         )}
       >
         {/* Logo */}
-        <div className={cn('flex items-center shrink-0 px-4', collapsed ? 'h-16 justify-center' : 'h-16')}>
+        <div className={cn('flex items-center shrink-0 px-4 border-b border-white/5', collapsed ? 'h-16 justify-center' : 'h-16')}>
           {collapsed ? (
-            <Logo className="w-8 h-8 text-sidebar-foreground" ariaLabel="HR Logo" />
+            <Logo className="w-8 h-8 text-white" ariaLabel="HR Logo" />
           ) : (
-            <Logo className="w-12 h-12 text-sidebar-foreground" ariaLabel="HR Tool Logo" />
+            <Logo className="w-12 h-12 text-white" ariaLabel="HR Tool Logo" />
           )}
         </div>
 
@@ -153,7 +153,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         </nav>
 
         {/* Footer - Fixed at bottom */}
-        <div className="space-y-1 bg-sidebar shrink-0 p-3">
+        <div className="space-y-1 bg-transparent border-t border-white/5 shrink-0 p-3">
           {footerItems.map((item) => {
             const handleClick = () => {
               if (item.id === 'profile') {
@@ -168,7 +168,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
 
             const IconContent = item.id === 'profile' ? (
               currentUser?.image ? (
-                <div className="w-6 h-6 shrink-0 rounded-full overflow-hidden border border-border">
+                <div className="w-6 h-6 shrink-0 rounded-full overflow-hidden border border-white/20">
                   <img src={currentUser.image} alt={currentUser.name} className="w-full h-full object-cover" />
                 </div>
               ) : (
@@ -197,7 +197,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                       onClick={handleClick}
                       aria-label={itemLabel}
                       className={cn(
-                        'w-full min-h-11 flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+                        'w-full min-h-11 flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-slate-300 hover:text-white hover:bg-white/10 cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
                         sidebarItemTextClass
                       )}
                     >
@@ -217,7 +217,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                 onClick={handleClick}
                 aria-label={itemLabel}
                 className={cn(
-                  'w-full min-h-11 flex items-center justify-start gap-3 px-3 py-2.5 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring text-start',
+                  'w-full min-h-11 flex items-center justify-start gap-3 px-3 py-2.5 rounded-xl transition-all text-slate-300 hover:text-white hover:bg-white/10 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring text-start',
                   sidebarItemTextClass
                 )}
               >
@@ -233,7 +233,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             aria-label={collapsed ? t('sidebar.expand', 'Expand sidebar') : t('sidebar.collapse', 'Collapse sidebar')}
             aria-expanded={!collapsed}
             className={cn(
-              'w-full min-h-11 flex items-center gap-3 px-3 py-2 rounded-[var(--radius)] transition-all text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+              'w-full min-h-11 flex items-center gap-3 px-3 py-2 rounded-xl transition-all text-slate-300 hover:text-white hover:bg-white/10 cursor-pointer mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
               sidebarItemTextClass,
               collapsed ? 'justify-center' : 'justify-start text-start'
             )}

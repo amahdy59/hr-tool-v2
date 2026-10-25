@@ -31,6 +31,11 @@ import {
   Briefcase,
   Umbrella,
   Printer,
+  Users,
+  CheckCircle2,
+  Clock,
+  ArrowUpRight,
+  Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -390,34 +395,119 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   return (
     <div className="space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 sm:space-y-8 max-w-7xl mx-auto">
 
-      {/* Top Controls */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h2
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 'var(--page-title-size)',
-              fontWeight: 'var(--page-title-weight)',
-            }}
-            className="text-foreground"
-          >
-            {t('dashboard.welcome', 'Welcome')} {localizeFirstName(currentUser?.name || 'Ahmed', i18n.resolvedLanguage || i18n.language)}
-          </h2>
+      {/* Modern Hero Greeting Banner (Apple HIG + Fluent Glass) */}
+      <div className="relative overflow-hidden rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-600/10 via-indigo-600/5 to-card p-6 sm:p-8 shadow-sm backdrop-blur-sm">
+        {/* Ambient background decoration */}
+        <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-600 dark:text-blue-400">
+              <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+              <span>{isArabic ? 'بوابة الموارد البشرية الذكية' : 'Enterprise HR Suite'}</span>
+            </div>
+            <h1
+              style={{
+                fontFamily: "'Inter', sans-serif",
+              }}
+              className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground"
+            >
+              {t('dashboard.welcome', 'Welcome')}, {localizeFirstName(currentUser?.name || 'Ahmed', i18n.resolvedLanguage || i18n.language)}!
+            </h1>
+            <p className="text-sm text-muted-foreground max-w-xl">
+              {isArabic 
+                ? 'لوحة تحكم تفاعلية متكاملة لمتابعة الحضور، الإجازات، المأموريات والمستحقات بكل سهولة ودقة.' 
+                : 'Here is your unified overview for timesheets, leave balances, team presence, and payroll.'}
+            </p>
+          </div>
+
+          <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center shrink-0">
+            <Button
+              variant="outline"
+              className="w-full sm:w-auto cursor-pointer shadow-2xs hover:shadow-xs rounded-xl"
+              onClick={onRequestLeave}
+            >
+              {t('dashboard.requestLeave', 'Request Leave')}
+            </Button>
+            <Button
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white sm:w-auto cursor-pointer shadow-sm rounded-xl border border-blue-400/30"
+              onClick={onRequestMission}
+            >
+              {t('dashboard.requestMission', 'Request Mission')}
+            </Button>
+          </div>
         </div>
-        <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
-          <Button
-            variant="outline"
-            className="w-full sm:w-auto cursor-pointer"
-            onClick={onRequestLeave}
-          >
-            {t('dashboard.requestLeave', 'Request Leave')}
-          </Button>
-          <Button
-            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white sm:w-auto cursor-pointer"
-            onClick={onRequestMission}
-          >
-            {t('dashboard.requestMission', 'Request Mission')}
-          </Button>
+      </div>
+
+      {/* KPI Metric Cards (Google Material 3 + Fluent 2) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Card 1: Team Size */}
+        <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{isArabic ? 'إجمالي الموظفين' : 'Total Employees'}</span>
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-transform group-hover:scale-110">
+              <Users className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-3xl font-bold tracking-tight text-foreground">142</span>
+            <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              +4.5%
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">{isArabic ? '12 قسم نشط' : '12 active departments'}</p>
+        </div>
+
+        {/* Card 2: Attendance Rate */}
+        <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{isArabic ? 'حضور اليوم' : "Today's Attendance"}</span>
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center transition-transform group-hover:scale-110">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-3xl font-bold tracking-tight text-foreground">94.8%</span>
+            <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              +1.2%
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">{isArabic ? '135 موظف حاضر' : '135 checked-in on time'}</p>
+        </div>
+
+        {/* Card 3: Pending Leaves */}
+        <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{isArabic ? 'طلبات قيد الانتظار' : 'Pending Leaves'}</span>
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center transition-transform group-hover:scale-110">
+              <Clock className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-3xl font-bold tracking-tight text-foreground">3</span>
+            <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+              {isArabic ? 'بانتظار المراجعة' : 'Review'}
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">{isArabic ? 'أحدث طلب منذ ساعتين' : 'Latest requested 2h ago'}</p>
+        </div>
+
+        {/* Card 4: Active Missions */}
+        <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{isArabic ? 'مأموريات نشطة' : 'Active Missions'}</span>
+            <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center transition-transform group-hover:scale-110">
+              <Briefcase className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-3xl font-bold tracking-tight text-foreground">5</span>
+            <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
+              {isArabic ? 'ميداني' : 'Field'}
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">{isArabic ? '2 خارجية، 3 محلية' : '2 external, 3 domestic'}</p>
         </div>
       </div>
 
@@ -701,11 +791,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             : `Showing ${filteredHistory.length} records in history`}
         </div>
 
-        <div className="border border-border rounded-[var(--radius)] bg-card shadow-[var(--elevation-sm)] overflow-hidden">
+        <div className="border border-border/80 rounded-2xl bg-card shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-[var(--text-sm)] text-start">
               <caption className="sr-only">{t('dashboard.historyTitle', 'Leaves and mission history requests')}</caption>
-              <thead className="bg-muted/50 border-b border-border">
+              <thead className="bg-muted/60 border-b border-border/80">
                 <tr>
                   {[
                     t('dashboard.leaveType', 'Leave Type'),

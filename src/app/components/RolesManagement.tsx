@@ -42,7 +42,7 @@ const DEPARTMENTS = ['All', 'IT', 'HR', 'Finance', 'Operations', 'Marketing', 'S
 const JOB_TITLES = ['Admin', 'Super Admin', 'HR Specialist', 'HR Manager', 'Team Leader', 'Financial Specialist', 'Financial Reviewer', 'Accountant'];
 
 // ── CSS Classes ──
-const inputClass = 'h-[44px] w-full px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'h-[44px] w-full px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
 
 // ── Form Field Component ──
@@ -277,7 +277,7 @@ export const RolesManagement: React.FC = () => {
           </InfoTooltip>
         </div>
 
-        <div className="bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <thead className="hidden md:table-header-group">
