@@ -1,0 +1,501 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-10-25T08:55:02.617Z",
+  "departments": [
+    {
+      "id": "1",
+      "name": "Marketing",
+      "deptId": "D1001",
+      "totalNumber": 23
+    },
+    {
+      "id": "2",
+      "name": "Software",
+      "deptId": "D1002",
+      "totalNumber": 45
+    },
+    {
+      "id": "3",
+      "name": "Oil & Gas",
+      "deptId": "D1003",
+      "totalNumber": 31
+    },
+    {
+      "id": "4",
+      "name": "Sales",
+      "deptId": "D1004",
+      "totalNumber": 18
+    },
+    {
+      "id": "5",
+      "name": "SCADA",
+      "deptId": "D1005",
+      "totalNumber": 12
+    },
+    {
+      "id": "6",
+      "name": "Engineering",
+      "deptId": "D1006",
+      "totalNumber": 28
+    },
+    {
+      "id": "7",
+      "name": "Human Resources",
+      "deptId": "D1007",
+      "totalNumber": 10
+    }
+  ],
+  "jobTitles": [
+    {
+      "id": "1",
+      "title": "Cybersecurity Engineer",
+      "count": 5
+    },
+    {
+      "id": "2",
+      "title": "Software Developer",
+      "count": 12
+    },
+    {
+      "id": "3",
+      "title": "Senior Project Manager",
+      "count": 3
+    },
+    {
+      "id": "4",
+      "title": "Solutions Architect",
+      "count": 7
+    },
+    {
+      "id": "5",
+      "title": "Global Operations Manager",
+      "count": 4
+    },
+    {
+      "id": "6",
+      "title": "Director of Supply Chain Optimization",
+      "count": 2
+    }
+  ],
+  "employees": [
+    {
+      "id": "1",
+      "name": {
+        "nameEn": "Aleksander Garcia",
+        "nameAr": "ألكسندر جارسيا"
+      },
+      "employeeNumber": "12345",
+      "department": "Marketing",
+      "jobTitle": "Senior Solutions Architect",
+      "email": "alex.garcia@acme.com",
+      "phone": "+972(0) 2788-9451",
+      "gender": "Male",
+      "contractType": "Freelance",
+      "hireDate": "2023-04-15",
+      "activityType": "Direct",
+      "isManager": false,
+      "img": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
+    },
+    {
+      "id": "2",
+      "name": {
+        "nameEn": "Tanvi Lumari",
+        "nameAr": "تانفي لوماري"
+      },
+      "employeeNumber": "54321",
+      "department": "Sales",
+      "jobTitle": "Global Operations Manager",
+      "email": "tanvi.l@acme.com",
+      "phone": "+972(0) 2788-9452",
+      "gender": "Female",
+      "contractType": "Permanent",
+      "hireDate": "2022-01-10",
+      "activityType": "Direct",
+      "isManager": true,
+      "img": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
+    },
+    {
+      "id": "3",
+      "name": {
+        "nameEn": "Jack Gray",
+        "nameAr": "جاك جراي"
+      },
+      "employeeNumber": "98765",
+      "department": "Software",
+      "jobTitle": "Senior Project Manager",
+      "email": "jack.g@acme.com",
+      "phone": "+972(0) 2788-9453",
+      "gender": "Male",
+      "contractType": "Permanent",
+      "hireDate": "2021-08-22",
+      "activityType": "Direct",
+      "isManager": false,
+      "img": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop"
+    },
+    {
+      "id": "4",
+      "name": {
+        "nameEn": "Saad Jawahir",
+        "nameAr": "سعد جواهر"
+      },
+      "employeeNumber": "24680",
+      "department": "SCADA",
+      "jobTitle": "Senior Cybersecurity Specialist",
+      "email": "saad.j@acme.com",
+      "phone": "+972(0) 2788-9454",
+      "gender": "Male",
+      "contractType": "Contract",
+      "hireDate": "2023-11-01",
+      "activityType": "InDirect",
+      "isManager": false,
+      "img": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
+    },
+    {
+      "id": "5",
+      "name": {
+        "nameEn": "Imani Adimbola",
+        "nameAr": "إيماني أديمبولا"
+      },
+      "employeeNumber": "24252",
+      "department": "Oil & Gas",
+      "jobTitle": "Director of Supply Chain Optimization",
+      "email": "imani.a@acme.com",
+      "phone": "+972(0) 2788-9455",
+      "gender": "Female",
+      "contractType": "Permanent",
+      "hireDate": "2020-03-14",
+      "activityType": "Direct",
+      "isManager": true,
+      "img": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop"
+    },
+    {
+      "id": "6",
+      "name": {
+        "nameEn": "Ahmed Mahdy",
+        "nameAr": "أحمد مهدي"
+      },
+      "employeeNumber": "10001",
+      "department": "Software",
+      "jobTitle": "UX Designer & Data Analyst",
+      "email": "amahdy59@gmail.com",
+      "phone": "+20 100 123 4567",
+      "gender": "Male",
+      "contractType": "Full-Time",
+      "hireDate": "2021-01-01",
+      "activityType": "Direct",
+      "isManager": true,
+      "img": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop"
+    }
+  ],
+  "leaves": [
+    {
+      "id": "l1",
+      "name": {
+        "nameEn": "Sara Abdallah",
+        "nameAr": "سارة عبد الله"
+      },
+      "img": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+      "type": "Sick",
+      "range": "Sep 10 - Sep 14",
+      "duration": "5 days",
+      "notes": "Fever and seasonal flu",
+      "employeeNumber": "49201",
+      "status": "pending",
+      "department": "Marketing",
+      "jobTitle": "Senior Solutions Architect",
+      "contractType": "Full-Time",
+      "activityType": "Direct"
+    },
+    {
+      "id": "l2",
+      "name": {
+        "nameEn": "Vinay Ansari",
+        "nameAr": "فيناي أنصاري"
+      },
+      "img": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+      "type": "Vacation",
+      "range": "Oct 5 - Oct 12",
+      "duration": "8 days",
+      "notes": "Annual family holiday",
+      "employeeNumber": "31245",
+      "status": "pending",
+      "department": "Software",
+      "jobTitle": "Software Developer",
+      "contractType": "Full-Time",
+      "activityType": "Direct"
+    },
+    {
+      "id": "l3",
+      "name": {
+        "nameEn": "Sara Kasongo",
+        "nameAr": "سارة كاسونجو"
+      },
+      "img": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop",
+      "type": "Sick",
+      "range": "Nov 3 - Nov 6",
+      "duration": "4 days",
+      "notes": "Stomachache and doctor rest",
+      "employeeNumber": "20124",
+      "status": "approved",
+      "department": "Sales",
+      "jobTitle": "Global Operations Manager",
+      "contractType": "Permanent",
+      "activityType": "Direct"
+    },
+    {
+      "id": "l4",
+      "name": {
+        "nameEn": "María Fernanda",
+        "nameAr": "ماريا فرناندا"
+      },
+      "img": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
+      "type": "Vacation",
+      "range": "Dec 20 - Jan 2",
+      "duration": "14 days",
+      "notes": "End of year travel",
+      "employeeNumber": "55102",
+      "status": "approved",
+      "department": "SCADA",
+      "jobTitle": "Cybersecurity Specialist",
+      "contractType": "Contract",
+      "activityType": "InDirect"
+    },
+    {
+      "id": "l5",
+      "name": {
+        "nameEn": "Luka Silva",
+        "nameAr": "لوكا سيلفا"
+      },
+      "img": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+      "type": "Vacation",
+      "range": "Jan 15 - Jan 17",
+      "duration": "3 days",
+      "notes": "Personal errand",
+      "employeeNumber": "12098",
+      "status": "rejected",
+      "department": "Oil & Gas",
+      "jobTitle": "Director of Supply Chain Optimization",
+      "contractType": "Permanent",
+      "activityType": "Direct"
+    }
+  ],
+  "missions": [
+    {
+      "id": "m1",
+      "name": {
+        "nameEn": "Sara Abdallah",
+        "nameAr": "سارة عبد الله"
+      },
+      "employeeNumber": "49201",
+      "img": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+      "type": "Work From Home",
+      "range": "Sep 10 - Sep 14",
+      "duration": "5 days",
+      "notes": "Remote deep work sprints",
+      "reason": "Sprint delivery deadline",
+      "status": "pending",
+      "department": "Marketing",
+      "jobTitle": "Senior Solutions Architect"
+    },
+    {
+      "id": "m2",
+      "name": {
+        "nameEn": "Vinay Ansari",
+        "nameAr": "فيناي أنصاري"
+      },
+      "employeeNumber": "31245",
+      "img": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+      "type": "Work From Home",
+      "range": "Oct 5 - Oct 12",
+      "duration": "8 days",
+      "notes": "Home renovation period",
+      "reason": "Home maintenance commitments",
+      "status": "pending",
+      "department": "Software",
+      "jobTitle": "Software Developer"
+    },
+    {
+      "id": "m3",
+      "name": {
+        "nameEn": "Sara Kasongo",
+        "nameAr": "سارة كاسونجو"
+      },
+      "employeeNumber": "20124",
+      "img": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop",
+      "type": "Client Visit",
+      "range": "Nov 3 - Nov 6",
+      "duration": "4 days",
+      "notes": "On-site technical integration",
+      "reason": "Client deployment phase 2",
+      "status": "approved",
+      "department": "Sales",
+      "jobTitle": "Global Operations Manager"
+    },
+    {
+      "id": "m4",
+      "name": {
+        "nameEn": "María Fernanda",
+        "nameAr": "ماريا فرناندا"
+      },
+      "employeeNumber": "55102",
+      "img": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
+      "type": "Training",
+      "range": "Dec 20 - Jan 2",
+      "duration": "14 days",
+      "notes": "Enterprise Cloud Architect Certification",
+      "reason": "Upskilling professional program",
+      "status": "approved",
+      "department": "SCADA",
+      "jobTitle": "Cybersecurity Specialist"
+    },
+    {
+      "id": "m5",
+      "name": {
+        "nameEn": "Luka Silva",
+        "nameAr": "لوكا سيلفا"
+      },
+      "employeeNumber": "12098",
+      "img": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+      "type": "Visa Issuing",
+      "range": "Jan 15 - Jan 17",
+      "duration": "3 days",
+      "notes": "Embassy appointment for international conference",
+      "reason": "Visa processing for GITEX Dubai",
+      "status": "rejected",
+      "department": "Oil & Gas",
+      "jobTitle": "Director of Supply Chain Optimization"
+    }
+  ],
+  "attendance": [
+    {
+      "id": "att1",
+      "employeeId": "1",
+      "employeeName": "Aleksander Garcia",
+      "employeeNumber": "12345",
+      "date": "2026-10-25",
+      "clockIn": "09:02 AM",
+      "clockOut": "05:30 PM",
+      "status": "Present",
+      "notes": "Regular check-in"
+    },
+    {
+      "id": "att2",
+      "employeeId": "2",
+      "employeeName": "Tanvi Lumari",
+      "employeeNumber": "54321",
+      "date": "2026-10-25",
+      "clockIn": "08:55 AM",
+      "clockOut": "06:15 PM",
+      "status": "Present",
+      "notes": "On time"
+    },
+    {
+      "id": "att3",
+      "employeeId": "3",
+      "employeeName": "Jack Gray",
+      "employeeNumber": "98765",
+      "date": "2026-10-25",
+      "clockIn": "09:45 AM",
+      "clockOut": "05:45 PM",
+      "status": "Late",
+      "notes": "Traffic delay"
+    },
+    {
+      "id": "att4",
+      "employeeId": "4",
+      "employeeName": "Saad Jawahir",
+      "employeeNumber": "24680",
+      "date": "2026-10-25",
+      "status": "On Leave",
+      "notes": "Approved sick leave"
+    }
+  ],
+  "payroll": [
+    {
+      "id": "pay1",
+      "employeeName": "Aleksander Garcia",
+      "employeeNumber": "12345",
+      "jobTitle": "Senior Solutions Architect",
+      "department": "Marketing",
+      "basicSalary": 8500,
+      "allowances": 1200,
+      "deductions": 650,
+      "netSalary": 9050,
+      "month": "2026-10",
+      "status": "Paid"
+    },
+    {
+      "id": "pay2",
+      "employeeName": "Tanvi Lumari",
+      "employeeNumber": "54321",
+      "jobTitle": "Global Operations Manager",
+      "department": "Sales",
+      "basicSalary": 9200,
+      "allowances": 1500,
+      "deductions": 720,
+      "netSalary": 9980,
+      "month": "2026-10",
+      "status": "Paid"
+    },
+    {
+      "id": "pay3",
+      "employeeName": "Jack Gray",
+      "employeeNumber": "98765",
+      "jobTitle": "Senior Project Manager",
+      "department": "Software",
+      "basicSalary": 7800,
+      "allowances": 900,
+      "deductions": 580,
+      "netSalary": 8120,
+      "month": "2026-10",
+      "status": "Pending"
+    },
+    {
+      "id": "pay4",
+      "employeeName": "Saad Jawahir",
+      "employeeNumber": "24680",
+      "jobTitle": "Senior Cybersecurity Specialist",
+      "department": "SCADA",
+      "basicSalary": 8900,
+      "allowances": 1100,
+      "deductions": 690,
+      "netSalary": 9310,
+      "month": "2026-10",
+      "status": "Paid"
+    }
+  ],
+  "activityLog": [
+    {
+      "id": "1",
+      "admin": "Muhammed Habib",
+      "action": "Edited Employee Info",
+      "date": "October 20, 2026",
+      "affectedCount": 2,
+      "affectedEmployeeNumber": "12345"
+    },
+    {
+      "id": "2",
+      "admin": "Lena Mohamed",
+      "action": "Updated Department Assignment",
+      "date": "October 15, 2026",
+      "affectedCount": 1,
+      "affectedEmployeeNumber": "54321"
+    },
+    {
+      "id": "3",
+      "admin": "Ahmed Mahdy",
+      "action": "Added New Employee Record",
+      "date": "October 10, 2026",
+      "affectedCount": 1,
+      "affectedEmployeeNumber": "10001"
+    },
+    {
+      "id": "4",
+      "admin": "Mohammed Habib",
+      "action": "Approved Annual Leave",
+      "date": "October 05, 2026",
+      "affectedCount": 1,
+      "affectedEmployeeNumber": "20124"
+    }
+  ]
+}

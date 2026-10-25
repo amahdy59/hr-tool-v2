@@ -1,4 +1,18 @@
 import { supabase, isSupabaseConfigured } from '../supabaseClient';
+import {
+  getCollection,
+  setCollection,
+  initializeCloudflareData,
+  resetToCloudflareSampleData,
+  isCloudflareConfigured,
+} from './cloudflareStorage';
+
+export { resetToCloudflareSampleData, isCloudflareConfigured };
+
+// Kick off edge initialization asynchronously
+if (typeof window !== 'undefined') {
+  initializeCloudflareData().catch(console.warn);
+}
 
 // --- TS Interfaces ---
 
@@ -120,20 +134,11 @@ const missingSubmissionFunctionMessage = (functionName: string): string =>
 // --- LOCAL STORAGE CACHE HELPERS (Fallback Mode) ---
 
 const getCache = <T>(key: string, initialData: T[]): T[] => {
-  const cached = localStorage.getItem(`hr_tool_${key}`);
-  if (cached) {
-    try {
-      return JSON.parse(cached);
-    } catch {
-      return initialData;
-    }
-  }
-  localStorage.setItem(`hr_tool_${key}`, JSON.stringify(initialData));
-  return initialData;
+  return getCollection<T>(key, initialData);
 };
 
 const setCache = <T>(key: string, data: T[]): void => {
-  localStorage.setItem(`hr_tool_${key}`, JSON.stringify(data));
+  setCollection<T>(key, data);
 };
 
 // --- INITIAL MOCK DATA SEEDS ---

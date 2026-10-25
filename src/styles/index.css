@@ -4,6 +4,6 @@
 @import './print.css';
 
 /* Automatically align text to start according to document direction */
-p, span, h1, h2, h3, h4, h5, h6, input, textarea, th, td, li, label, div {
+p, span, h1, h2, h3, h4, h5, h6, input, textarea, th, td, li, label {
   text-align: start;
 }

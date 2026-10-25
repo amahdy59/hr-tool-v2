@@ -71,10 +71,19 @@ export default function App() {
   const [confirmMissionOpen, setConfirmMissionOpen] = useState(false);
   const [pendingLeaveData, setPendingLeaveData] = useState<any>(null);
   const [pendingMissionData, setPendingMissionData] = useState<any>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return typeof window !== 'undefined' && localStorage.getItem('hr_tool_auth') === 'true';
+  });
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const saved = localStorage.getItem('hr_tool_user');
+    if (saved) {
+      try { return JSON.parse(saved); } catch { return null; }
+    }
+    return null;
+  });
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [styleguideOpen, setStyleguideOpen] = useState(false);
@@ -213,18 +222,22 @@ export default function App() {
 
   const handleLogin = (email: string) => {
     setIsAuthenticated(true);
-
-    setCurrentUser({
+    const user: CurrentUser = {
       name: 'Ahmed Mahdy',
-      email: 'amahdy59@gmail.com',
+      email: email || 'amahdy59@gmail.com',
       position: 'UX Designer & Data Analyst',
       image: '',
-    });
+    };
+    setCurrentUser(user);
+    localStorage.setItem('hr_tool_auth', 'true');
+    localStorage.setItem('hr_tool_user', JSON.stringify(user));
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     setCurrentUser(null);
+    localStorage.removeItem('hr_tool_auth');
+    localStorage.removeItem('hr_tool_user');
     setActiveTab('dashboard');
   };
 

@@ -21,8 +21,9 @@ export const Logo: React.FC<{ className?: string; ariaLabel?: string }> = ({ cla
         fontWeight="600" 
         fill="currentColor" 
         letterSpacing="-0.05em"
+        aria-hidden="true"
       >
-        H<tspan>R</tspan>
+        H<tspan aria-hidden="true">R</tspan>
       </text>
     </svg>
   );

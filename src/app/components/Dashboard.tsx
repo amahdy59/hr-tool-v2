@@ -41,6 +41,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { localizeFirstName } from '@/lib/localizedNames';
 import { calculateAnnualEntitlement } from '@/lib/leaveCalculations';
+import { LeaveService, type LeaveRequest } from '@/lib/services/dbServices';
 import { exportToCSV, exportToExcel } from '@/lib/export';
 import {
   Drawer,
@@ -207,9 +208,32 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   const [historyEndDate, setHistoryEndDate] = useState('');
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
+  // Live leaves from Cloudflare R2 / storage
+  const [liveLeaves, setLiveLeaves] = useState<LeaveRequest[]>([]);
+  React.useEffect(() => {
+    LeaveService.getAll().then(setLiveLeaves).catch(console.warn);
+  }, []);
+
+  const activeHistoryData = useMemo(() => {
+    if (!liveLeaves || liveLeaves.length === 0) return historyData;
+    const convertedLive: HistoryItem[] = liveLeaves.map((l, idx) => ({
+      id: l.id || `live-${idx}`,
+      type: l.type || 'Leave',
+      reqDate: l.startDate || 'Recent',
+      range: l.range || 'N/A',
+      duration: l.duration || '1 day',
+      notes: l.notes || '',
+      status: (l.status === 'Approved' || l.status === 'approved') ? 'approved' : (l.status === 'Rejected' || l.status === 'rejected') ? 'noshow' : 'pending',
+      canEdit: l.status === 'pending',
+      canCancel: l.status === 'pending'
+    }));
+    const existingIds = new Set(convertedLive.map(c => c.id));
+    return [...convertedLive, ...historyData.filter(h => !existingIds.has(h.id))];
+  }, [liveLeaves]);
+
   // Filtered history items
   const filteredHistory = useMemo(() => {
-    return historyData.filter((item) => {
+    return activeHistoryData.filter((item) => {
       if (historyLeaveType && historyLeaveType !== 'all') {
         const itemType = item.type.toLowerCase();
         if (historyLeaveType === 'vacation' && !itemType.includes('vacation') && !itemType.includes('annual')) {
@@ -276,7 +300,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
     else if (item.status === 'noshow' || item.status === 'cancelled' || item.status === 'rejected') leaveStatus = 'cancelled';
 
     // Find matching history item to get full detail
-    const histItem = historyData.find(h => h.id === item.id);
+    const histItem = activeHistoryData.find(h => h.id === item.id);
     setSelectedLeave({
       ...mockLeaveDetail,
       id: item.id,
@@ -412,7 +436,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         </h3>
         <CalendarGrid
           onViewRequest={handleViewRequest}
-          events={historyData
+          events={activeHistoryData
             .filter(h => h.range)
             .map(h => {
               const dates = rangeToIso(h.range);
