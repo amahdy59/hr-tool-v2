@@ -259,7 +259,7 @@ const CustomBarTooltip = ({ active, payload }: any) => {
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   return (
-    <div className="rounded-[var(--radius)] border border-border bg-card p-3 shadow-[var(--elevation-sm)]">
+    <div className="rounded-2xl border border-border/80 bg-card p-3 shadow-2xs">
       <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{d.name}</p>
       <p className="text-[var(--text-xs)] text-muted-foreground">{d.hours} hours ({d.percentage}%)</p>
     </div>
@@ -650,7 +650,7 @@ export const Attendance: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoComplete="search"
-                className="w-full h-[44px] ps-10 pe-4 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow text-[var(--text-sm)]"
+                className="w-full h-[44px] ps-10 pe-4 border border-border/80 rounded-xl bg-card text-foreground focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 text-[var(--text-sm)]"
               />
             </form>
 
@@ -660,8 +660,8 @@ export const Attendance: React.FC = () => {
                 <button
                   aria-label={activeFiltersCount > 0 ? `Open filters, ${activeFiltersCount} active` : 'Open filters'}
                   className={cn(
-                    'relative h-[44px] px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center gap-1.5',
-                    activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground'
+                    'relative h-[44px] px-3.5 border rounded-xl bg-card hover:bg-muted transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs active:scale-95',
+                    activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border/80 text-muted-foreground'
                   )}
                 >
                   <Filter className="w-4 h-4" />
@@ -702,7 +702,7 @@ export const Attendance: React.FC = () => {
 
 
       {filteredEmployees.length === 0 ? (
-        <div className="bg-card border border-border rounded-2xl p-8 text-center shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl p-8 text-center shadow-sm">
           <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
             <Search className="w-6 h-6 text-muted-foreground" />
           </div>
@@ -721,7 +721,7 @@ export const Attendance: React.FC = () => {
                 setSearchQuery('');
                 clearFilters();
               }}
-              className="mt-4 rounded-[var(--radius-button)]"
+              className="mt-4 rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
             >
               {language === 'ar' ? 'إعادة تعيين البحث والفلاتر' : 'Reset Search & Filters'}
             </Button>
@@ -736,7 +736,7 @@ export const Attendance: React.FC = () => {
           </p>
 
       {/* ── Summary View ── */}
-      <section className="bg-card border border-border rounded-2xl p-4 shadow-[var(--elevation-sm)] sm:p-6" aria-labelledby="attendance-summary-heading">
+      <section className="bg-card border border-border rounded-2xl p-4 shadow-sm sm:p-6" aria-labelledby="attendance-summary-heading">
         <div className="mb-5 flex flex-col items-start gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-muted-foreground">
@@ -793,7 +793,7 @@ export const Attendance: React.FC = () => {
           </div>
           <span
             className={cn(
-              "rounded-full p-1.5 flex items-center justify-center shadow-[var(--elevation-sm)] border shrink-0",
+              "rounded-full p-1.5 flex items-center justify-center shadow-sm border shrink-0",
               meetsOfficeGoal 
                 ? "bg-[var(--chart-3)]/20 text-[var(--chart-3)] dark:text-emerald-300 border-[var(--chart-3)]/30" 
                 : "bg-destructive/20 text-destructive dark:text-red-300 border-destructive/30"
@@ -811,7 +811,7 @@ export const Attendance: React.FC = () => {
 
         <div className="grid grid-cols-1 gap-6 items-start xl:grid-cols-[minmax(430px,1fr)_minmax(340px,0.9fr)] xl:items-stretch xl:gap-8">
           {/* Left: summary table */}
-          <div className="hidden w-full overflow-x-auto sm:block bg-card border border-border rounded-2xl shadow-[var(--elevation-sm)] overflow-hidden">
+          <div className="hidden w-full overflow-x-auto sm:block bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
             <table className="w-full text-start border-collapse cursor-default text-[var(--text-sm)]" aria-label={`Attendance summary for ${monthLabel} ${selectedYear}`}>
               <caption className="sr-only">Attendance summary by category, hours, and percentage</caption>
               <thead>
@@ -822,7 +822,7 @@ export const Attendance: React.FC = () => {
                       Hours
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <button type="button" className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-sm)] hover:bg-muted" aria-label="Explain attendance hours">
+                          <button type="button" className="inline-flex h-7 w-7 items-center justify-center rounded-xl hover:bg-muted" aria-label="Explain attendance hours">
                             <HelpCircle className="h-3.5 w-3.5" aria-hidden="true" />
                           </button>
                         </TooltipTrigger>
@@ -880,7 +880,7 @@ export const Attendance: React.FC = () => {
             {translatedSummaryData.map((item) => (
               <div
                 key={item.id}
-                className="rounded-2xl border border-border bg-card p-3 shadow-[var(--elevation-sm)]"
+                className="rounded-2xl border border-border bg-card p-3 shadow-sm"
                 style={{ borderInlineStart: `4px solid ${item.cssColor}` }}
               >
                 <div className="flex items-center justify-between gap-3">
@@ -950,7 +950,7 @@ export const Attendance: React.FC = () => {
           </div>
 
           {/* Desktop: Bar Chart representing breakdown of logged hours */}
-          <div className="hidden min-w-0 xl:block bg-card border border-border rounded-2xl shadow-[var(--elevation-sm)] p-5 h-full">
+          <div className="hidden min-w-0 xl:block bg-card border border-border rounded-2xl shadow-sm p-5 h-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={translatedSummaryData}
@@ -986,7 +986,7 @@ export const Attendance: React.FC = () => {
       {/* ── Annual and Sick Leaves ── */}
       <section className="space-y-3" aria-labelledby="attendance-leave-balances-heading">
         <h3 id="attendance-leave-balances-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Annual and Sick Leaves</h3>
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">Annual and sick leave balance details</caption>
@@ -1052,7 +1052,7 @@ export const Attendance: React.FC = () => {
             <h3 id="attendance-days-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Days View</h3>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button className="h-11 w-11 cursor-pointer rounded-[var(--radius-sm)] hover:bg-muted" aria-label="Show daily attendance table details">
+                <button className="size-9 inline-flex items-center justify-center cursor-pointer rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all active:scale-95 shadow-2xs" aria-label="Show daily attendance table details">
                   <Info className="w-4 h-4 text-primary" aria-hidden="true" />
                 </button>
               </TooltipTrigger>
@@ -1104,7 +1104,7 @@ export const Attendance: React.FC = () => {
           {isArabic ? `عرض ${days.length} سجل حضور` : `Showing ${days.length} attendance records`}
         </div>
 
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">Daily attendance records for the selected employee and period</caption>
@@ -1232,7 +1232,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Filter Options</span>
-        <button onClick={onClose} className="h-11 w-11 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer" aria-label="Close filters">
+        <button onClick={onClose} className="p-1.5 hover:bg-muted rounded-full transition-colors cursor-pointer" aria-label="Close filters">
           <X className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
         </button>
       </div>
@@ -1241,7 +1241,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       <div className="space-y-1">
         <label htmlFor="attendance-filter-department" className="text-foreground">Department</label>
         <Select value={department} onValueChange={setDepartment}>
-          <SelectTrigger id="attendance-filter-department" className="min-h-[44px] rounded-[var(--radius-input)]" aria-label="Department">
+          <SelectTrigger id="attendance-filter-department" className="min-h-[44px] rounded-xl border-border/80" aria-label="Department">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -1256,7 +1256,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       <div className="space-y-1">
         <label htmlFor="attendance-filter-job-title" className="text-foreground">Job Title</label>
         <Select value={jobTitle} onValueChange={setJobTitle}>
-          <SelectTrigger id="attendance-filter-job-title" className="min-h-[44px] rounded-[var(--radius-input)]" aria-label="Job title">
+          <SelectTrigger id="attendance-filter-job-title" className="min-h-[44px] rounded-xl border-border/80" aria-label="Job title">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -1277,7 +1277,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           value={gradYear}
           onChange={(e) => setGradYear(e.target.value)}
           placeholder="e.g. 2013"
-          className="w-full min-h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow"
+          className="w-full min-h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700"
         />
       </div>
 
@@ -1325,10 +1325,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* Actions */}
       <div className="space-y-2 pt-2">
-        <Button onClick={onApply} className="w-full rounded-[var(--radius-button)]">
+        <Button onClick={onApply} className="w-full rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">
           Apply Filter
         </Button>
-        <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)]">
+        <Button variant="outline" onClick={onClear} className="w-full rounded-xl border-border/80 active:scale-[0.98]">
           Clear Filter
         </Button>
       </div>

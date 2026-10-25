@@ -23,9 +23,9 @@ const ProfessionalProfile = lazy(() =>
 );
 
 // ── Shared styles ──
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
-const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-95 shadow-2xs hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 
 interface DocumentItem {
   id: string;
@@ -168,7 +168,7 @@ export const Profile: React.FC<ProfileProps> = ({ currentUser, onUpdateImage }) 
         {activeTab === 'professional' && (
           <Suspense
             fallback={
-              <div className="rounded-[var(--radius-card)] border border-border bg-card p-6 text-[var(--text-sm)] text-muted-foreground">
+              <div className="rounded-2xl border border-border bg-card p-6 text-[var(--text-sm)] text-muted-foreground">
                 Loading professional profile...
               </div>
             }
@@ -246,7 +246,7 @@ const DownloadCenter: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
       <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h3 id="download-center-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">My Documents</h3>
-        <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => openPicker()}>
+        <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => openPicker()}>
           <Upload className="w-4 h-4" /> Upload Document
         </Button>
       </div>
@@ -262,7 +262,7 @@ const DownloadCenter: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
           />
         ))}
         {visibleDocuments.length === 0 && (
-          <div className="bg-card border border-border rounded-[var(--radius-card)] p-6 text-center text-muted-foreground">
+          <div className="bg-card border border-border rounded-2xl p-6 text-center text-muted-foreground">
             No documents match your search.
           </div>
         )}
@@ -275,7 +275,7 @@ const LegacyDownloadCenter = () => (
   <div className="space-y-6">
     <div className="flex items-center justify-between">
       <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">My Documents</h3>
-      <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => toast.success('Upload dialog would open')}>
+      <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => toast.success('Upload dialog would open')}>
         <Upload className="w-4 h-4" /> Upload Document
       </Button>
     </div>
@@ -285,7 +285,7 @@ const LegacyDownloadCenter = () => (
       <DocumentCard title="Passport" desc="Upload a clear copy of your passport main page." img="https://images.unsplash.com/photo-1593006517807-19c67fdc54b2?w=400&h=200&fit=crop" />
 
       {/* Upload progress */}
-      <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-3">
+      <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground">Uploading...</p>
@@ -328,7 +328,7 @@ const InfoItem: React.FC<{ label: string; value: string }> = ({ label, value }) 
 const ProfileCard: React.FC<{ title: string; children: React.ReactNode; onEdit?: () => void; showAdd?: boolean; onAdd?: () => void }> = ({ title, children, onEdit, showAdd, onAdd }) => {
   const headingId = `profile-card-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
-  <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+  <section aria-labelledby={headingId} className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
     <div className="flex items-center justify-between border-b border-border pb-2.5">
       <span id={headingId} className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{title}</span>
       <div className="flex gap-1">
@@ -434,7 +434,7 @@ const DocumentCard: React.FC<{
   };
 
   return (
-    <div className="flex flex-col md:flex-row bg-card border border-border rounded-[var(--radius-card)] overflow-hidden shadow-[var(--elevation-sm)]">
+    <div className="flex flex-col md:flex-row bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
       <div className="w-full md:w-60 h-36 bg-muted relative group shrink-0">
         <ImageWithFallback src={item.img} alt="" className="w-full h-full object-cover opacity-85" />
         <div className="absolute inset-0 flex items-center justify-between px-2">
@@ -526,7 +526,7 @@ const EditPersonalInfoModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
             <div className="space-y-1">
               <label className={labelClass}>Gender</label>
               <Select value={gender} onValueChange={setGender}>
-                <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
                 <SelectContent><SelectItem value="Male">Male</SelectItem><SelectItem value="Female">Female</SelectItem></SelectContent>
               </Select>
             </div>
@@ -536,8 +536,8 @@ const EditPersonalInfoModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Discard Changes</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Personal information updated successfully'); }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Discard Changes</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Personal information updated successfully'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -552,8 +552,8 @@ const EditNoteModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Edit Note</DialogTitle><DialogDescription className="sr-only">Edit about section</DialogDescription></DialogHeader>
         <div className="space-y-1"><label className={labelClass}>About</label><textarea dir="auto" value={note} onChange={e => setNote(e.target.value)} rows={5} className={cn(inputClass, 'h-auto py-2')} /></div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('About section updated'); }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('About section updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -592,8 +592,8 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
           </div>}
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Experience updated'); }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Experience updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -627,8 +627,8 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Education updated'); }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Education updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -658,8 +658,8 @@ const EditCertificationModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Certification updated'); }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Certification updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -684,12 +684,12 @@ const EditSkillsModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => v
           </div>
           <div className="flex gap-2">
             <input type="text" value={skill} onChange={e => setSkill(e.target.value)} placeholder="Add a skill..." className={inputClass} />
-            <Button variant="outline" className="shrink-0 rounded-[var(--radius-button)] border-border" onClick={() => { if (skill) { toast.success(`${skill} added`); setSkill(''); } }}>Add</Button>
+            <Button variant="outline" className="shrink-0 rounded-xl border-border" onClick={() => { if (skill) { toast.success(`${skill} added`); setSkill(''); } }}>Add</Button>
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Skills updated'); }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Skills updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -717,8 +717,8 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Project updated'); }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Project updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -760,7 +760,7 @@ const ChangeImageModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Change Profile Picture</DialogTitle><DialogDescription className="sr-only">Upload a new profile picture</DialogDescription></DialogHeader>
         <div className="space-y-4">
           <div className="flex flex-col items-center">
-            <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-card shadow-[var(--elevation-sm)] mb-3 mx-auto">
+            <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-card shadow-sm mb-3 mx-auto">
               {preview ? (
                 <img src={preview} alt="Preview" className="w-full h-full object-cover" />
               ) : (
@@ -780,13 +780,13 @@ const ChangeImageModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
             </div>
           </div>
           <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" id="profile-image-upload" />
-          <label htmlFor="profile-image-upload" className="w-full h-10 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow cursor-pointer flex items-center justify-center gap-2">
+          <label htmlFor="profile-image-upload" className="w-full h-10 border border-border rounded-xl bg-input-background text-foreground text-[var(--text-sm)] focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow cursor-pointer flex items-center justify-center gap-2">
             <Upload className="w-4 h-4" /> Upload Image
           </label>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleUpload}>Upload</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleUpload}>Upload</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -808,8 +808,8 @@ const EditEmergencyContactsModal: React.FC<{ open: boolean; onOpenChange: (v: bo
           <FormField label="Phone" value={phone} onChange={setPhone} />
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Emergency contacts updated'); }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Emergency contacts updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -830,7 +830,7 @@ const SelectField: React.FC<{ label: string; value: string; onChange: (v: string
   <div className="space-y-1">
     <label htmlFor={id} className={labelClass}>{label}</label>
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger id={id} className="h-10 rounded-[var(--radius-input)] border-border" aria-label={label}><SelectValue /></SelectTrigger>
+      <SelectTrigger id={id} className="min-h-[44px] rounded-xl border-border/80" aria-label={label}><SelectValue /></SelectTrigger>
       <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
     </Select>
   </div>

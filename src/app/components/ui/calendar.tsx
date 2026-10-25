@@ -166,9 +166,9 @@ function Calendar({
           table: "w-full border-collapse space-y-1",
           head_row: "flex w-full mb-1",
           head_cell:
-            "text-muted-foreground rounded-[var(--radius)] flex-1 font-[var(--font-weight-normal)] text-[10px] sm:text-xs flex items-center justify-center text-center h-11",
+            "text-muted-foreground rounded-xl flex-1 font-[var(--font-weight-normal)] text-[10px] sm:text-xs flex items-center justify-center text-center h-11",
           row: "flex w-full mt-1",
-          cell: "h-11 flex-1 text-center p-0 relative [&:has([aria-selected].day-range-end)]:rounded-e-[var(--radius)] [&:has([aria-selected].day-outside)]:bg-muted/50 [&:has([aria-selected])]:bg-muted first:[&:has([aria-selected])]:rounded-s-[var(--radius)] last:[&:has([aria-selected])]:rounded-e-[var(--radius)] focus-within:relative focus-within:z-20 flex items-center justify-center",
+          cell: "h-11 flex-1 text-center p-0 relative [&:has([aria-selected].day-range-end)]:rounded-e-xl [&:has([aria-selected].day-outside)]:bg-muted/50 [&:has([aria-selected])]:bg-muted first:[&:has([aria-selected])]:rounded-s-xl last:[&:has([aria-selected])]:rounded-e-xl focus-within:relative focus-within:z-20 flex items-center justify-center",
           day: cn(
             buttonVariants({ variant: "ghost", size: "icon" }),
             "h-11 w-11 p-0 font-[var(--font-weight-normal)] text-[var(--text-sm)] aria-selected:opacity-100 flex items-center justify-center"

@@ -444,7 +444,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
             <button
               onClick={goToPrev}
               aria-label={isArabic ? 'السابق' : 'Previous'}
-              className="w-11 h-11 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              className="w-11 h-11 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-xl transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
               {isArabic ? (
                 <ChevronRight className="calendar-nav-icon w-4.5 h-4.5 text-muted-foreground" />
@@ -455,7 +455,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
 
             <button
               onClick={goToToday}
-              className="min-h-11 text-[12px] font-semibold text-foreground hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] px-3.5 py-1.5 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              className="min-h-11 text-xs font-semibold text-foreground hover:bg-muted border border-border/80 bg-card rounded-xl px-4 py-2 transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
               {isArabic ? 'اليوم' : 'Today'}
             </button>
@@ -463,7 +463,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
             <button
               onClick={goToNext}
               aria-label={isArabic ? 'التالي' : 'Next'}
-              className="w-11 h-11 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-[var(--radius-sm)] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              className="w-11 h-11 flex items-center justify-center hover:bg-muted border border-border/80 bg-card rounded-xl transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
             >
               {isArabic ? (
                 <ChevronLeft className="calendar-nav-icon w-4.5 h-4.5 text-muted-foreground" />
@@ -482,11 +482,11 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
         </div>
 
         {/* View Switcher Segmented Control */}
-        <div className="flex items-center bg-muted/65 p-1 rounded-lg border border-border/60 self-center md:self-auto shadow-inner min-w-[210px] justify-between">
+        <div className="flex items-center bg-muted/60 backdrop-blur-md p-1 rounded-xl border border-border/70 self-center md:self-auto shadow-inner min-w-[210px] justify-between">
           <button
             onClick={() => setCalendarView('month')}
             className={cn(
-              "flex-1 text-center py-1.5 px-2.5 text-xs font-semibold rounded-md transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "flex-1 text-center py-2 px-3 text-xs font-semibold rounded-lg transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
               calendarView === 'month' 
                 ? "bg-card text-foreground shadow-sm" 
                 : "text-muted-foreground hover:text-foreground"
@@ -497,7 +497,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
           <button
             onClick={() => setCalendarView('week')}
             className={cn(
-              "flex-1 text-center py-1.5 px-2.5 text-xs font-semibold rounded-md transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "flex-1 text-center py-2 px-3 text-xs font-semibold rounded-lg transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
               calendarView === 'week' 
                 ? "bg-card text-foreground shadow-sm" 
                 : "text-muted-foreground hover:text-foreground"
@@ -508,7 +508,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
           <button
             onClick={() => setCalendarView('three-day')}
             className={cn(
-              "flex-1 text-center py-1.5 px-2.5 text-xs font-semibold rounded-md transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "flex-1 text-center py-2 px-3 text-xs font-semibold rounded-lg transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
               calendarView === 'three-day' 
                 ? "bg-card text-foreground shadow-sm" 
                 : "text-muted-foreground hover:text-foreground"
@@ -580,7 +580,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                       const eventLabel = getLocalizedEventLabel(ev.label, ev.type, isArabic);
                       
                       const eventClassName = cn(
-                        'text-[10px] leading-tight py-2 px-2.5 rounded-[var(--radius-sm)] font-semibold w-full text-start flex items-center gap-2 border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
+                        'text-[10px] leading-tight py-2 px-2.5 rounded-xl font-semibold w-full text-start flex items-center gap-2 border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
                         getAccessibleEventStyle(ev.type, isDimmed),
                         isInteractive
                           ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98] ring-1 ring-inset ring-white/10 dark:ring-white/5 shadow-sm'
@@ -702,7 +702,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
                       const eventLabel = getLocalizedEventLabel(ev.label, ev.type, isArabic);
                       
                       const eventClassName = cn(
-                        'text-[10px] leading-tight py-1.5 px-2 rounded-[var(--radius-sm)] font-semibold w-full text-start flex items-center gap-1.5 border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
+                        'text-[10px] leading-tight py-1.5 px-2 rounded-xl font-semibold w-full text-start flex items-center gap-1.5 border-none outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all',
                         getAccessibleEventStyle(ev.type, isDimmed),
                         isInteractive
                           ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98] ring-1 ring-inset ring-white/10 dark:ring-white/5 shadow-sm'
@@ -749,20 +749,22 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ events: externalEven
       )}
 
       {/* Interactive Legend with toggle filter functionality */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 px-4 py-3.5 border-t border-border bg-muted/10">
+      <div className="flex flex-wrap items-center gap-2.5 px-5 py-4 border-t border-border/70 bg-muted/20 backdrop-blur-md rounded-b-2xl">
         {legendItems.map(item => (
           <button
             key={item.key}
             onClick={() => toggleFilter(item.key)}
             className={cn(
-              "flex items-center gap-2 px-2 py-1 rounded-[var(--radius-sm)] border border-transparent transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none hover:bg-muted",
-              activeFilter === item.key && "bg-muted/80 border-border shadow-inner font-semibold"
+              "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 active:scale-95 shadow-2xs cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+              activeFilter === item.key 
+                ? "bg-primary/10 border-primary text-primary font-semibold ring-1 ring-primary/30 shadow-xs"
+                : "bg-card/90 hover:bg-card border-border/80 text-muted-foreground hover:text-foreground"
             )}
             aria-label={isArabic ? `تصفية حسب ${item.label}` : `Filter by ${item.label}`}
             aria-pressed={activeFilter === item.key}
           >
-            <div className={cn('w-3.5 h-3.5 rounded-sm shrink-0 border border-black/10 dark:border-white/10', item.color)} />
-            <span className="text-xs text-muted-foreground font-medium">{item.label}</span>
+            <span className={cn('w-2.5 h-2.5 rounded-full shrink-0 ring-1 ring-black/10 dark:ring-white/20 shadow-2xs', item.color)} aria-hidden="true" />
+            <span>{item.label}</span>
           </button>
         ))}
         <span className="text-[11px] text-muted-foreground ms-auto italic">

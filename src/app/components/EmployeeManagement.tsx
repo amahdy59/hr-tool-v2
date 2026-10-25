@@ -332,10 +332,10 @@ export const EmployeeManagement: React.FC = () => {
           <div className={tabActionsClass}>
             {activeSubTab === 'directory' && (
               <>
-                <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddEmpOpen(true)}>
+                <Button size="sm" className="w-full md:w-auto gap-2 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddEmpOpen(true)}>
                   <Plus className="w-4 h-4" /> {t('employeeManagement.addEmployee')}
                 </Button>
-                <Button variant="outline" size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] border-border" onClick={() => {
+                <Button variant="outline" size="sm" className="w-full md:w-auto gap-2 rounded-xl border-border/80 shadow-2xs active:scale-[0.98]" onClick={() => {
                   exportToCSV(filteredEmployees, 'Employees_Data');
                   toast.success(isArabic ? 'تم تنزيل البيانات بصيغة CSV' : 'Employee data exported to CSV.');
                 }}>
@@ -344,12 +344,12 @@ export const EmployeeManagement: React.FC = () => {
               </>
             )}
             {activeSubTab === 'departments' && (
-              <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddDeptOpen(true)}>
+              <Button size="sm" className="w-full md:w-auto gap-2 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddDeptOpen(true)}>
                 <Plus className="w-4 h-4" /> {t('employeeManagement.addDepartment')}
               </Button>
             )}
             {activeSubTab === 'jobtitles' && (
-              <Button size="sm" className="w-full md:w-auto gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => setAddJtOpen(true)}>
+              <Button size="sm" className="w-full md:w-auto gap-2 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddJtOpen(true)}>
                 <Plus className="w-4 h-4" /> {t('employeeManagement.addJobTitle')}
               </Button>
             )}
@@ -374,7 +374,7 @@ export const EmployeeManagement: React.FC = () => {
                 </form>
                 <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                   <PopoverTrigger asChild>
-                    <button type="button" aria-label="Open employee filters" className={cn('relative h-[44px] px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center justify-center', activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
+                    <button type="button" aria-label="Open employee filters" className={cn('relative h-[44px] px-3.5 border rounded-xl bg-card hover:bg-muted transition-all cursor-pointer flex items-center justify-center shadow-2xs active:scale-95', activeFiltersCount > 0 ? 'border-primary text-primary' : 'border-border/80 text-muted-foreground')}>
                       <Filter className="w-4 h-4" />
                       {activeFiltersCount > 0 && <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFiltersCount}</span>}
                     </button>
@@ -401,7 +401,7 @@ export const EmployeeManagement: React.FC = () => {
                       type="button"
                       aria-label="Customize visible columns"
                       title={t('common.columns', 'Columns')}
-                      className="relative h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-card hover:bg-muted text-muted-foreground transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                      className="relative h-[44px] px-3.5 border border-border/80 rounded-xl bg-card hover:bg-muted text-muted-foreground transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
                     >
                       <Columns3 className="w-4 h-4" />
                       <span className="hidden xl:inline text-[var(--text-xs)] font-medium">
@@ -440,7 +440,7 @@ export const EmployeeManagement: React.FC = () => {
                 </Popover>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button type="button" aria-label="Open manager actions" className="h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-card hover:bg-muted text-muted-foreground transition-colors cursor-pointer flex items-center justify-center gap-2">
+                    <button type="button" aria-label="Open manager actions" className="h-[44px] px-3.5 border border-border/80 rounded-xl bg-card hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 shadow-2xs hover:shadow-xs active:scale-95">
                       <MoreVertical className="w-4 h-4" />
                       <span className="hidden sm:inline">Manager Actions</span>
                     </button>
@@ -522,7 +522,7 @@ export const EmployeeManagement: React.FC = () => {
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
+                              <Button variant="outline" size="sm" className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-56">
                               <DropdownMenuItem onClick={() => { setEditEmpData(emp); setEditEmpOpen(true); }} className="cursor-pointer gap-2">
@@ -590,7 +590,16 @@ export const EmployeeManagement: React.FC = () => {
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Date:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{formatLocalizedDate(log.date, language)}</span></td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Affected:</span>{log.affectedCount}</td>
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
-                          <Button variant="outline" size="sm" onClick={() => { setActivityLogDetail(log); setActivityLogDetailOpen(true); }} className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">View Details</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => { setActivityLogDetail(log); setActivityLogDetailOpen(true); }}
+                            className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"
+                            aria-label="View Details"
+                          >
+                            <span className="md:hidden">View Details</span>
+                            <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
+                          </Button>
                         </td>
                       </tr>
                     ))}
@@ -640,7 +649,7 @@ export const EmployeeManagement: React.FC = () => {
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Total:</span>{dept.totalNumber}</td>
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                           <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
-                            <Button variant="outline" size="sm" aria-label={`Edit ${dept.name}`} onClick={() => { setEditDeptData(dept); setEditDeptOpen(true); }} className="w-full md:w-auto justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted">
+                            <Button variant="outline" size="sm" aria-label={`Edit ${dept.name}`} onClick={() => { setEditDeptData(dept); setEditDeptOpen(true); }} className="w-full md:w-auto justify-center rounded-xl transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted">
                               <span className="md:hidden">Edit</span>
                               <PenLine className="hidden md:block w-4 h-4 text-muted-foreground" />
                             </Button>
@@ -684,10 +693,10 @@ export const EmployeeManagement: React.FC = () => {
                       <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums">{jt.count}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-end">
                         <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
-                          <button type="button" aria-label={`Edit ${jt.title}`} onClick={() => { setEditJtData(jt); setEditJtOpen(true); }} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer">
+                          <button type="button" aria-label={`Edit ${jt.title}`} onClick={() => { setEditJtData(jt); setEditJtOpen(true); }} className="p-1.5 hover:bg-muted rounded-xl transition-colors cursor-pointer">
                             <Edit className="w-4 h-4 text-muted-foreground" />
                           </button>
-                          <button type="button" aria-label={`Delete ${jt.title}`} onClick={() => { setDeleteJtData(jt); setDeleteJtOpen(true); }} className="p-1.5 hover:bg-destructive/10 rounded-[var(--radius-sm)] transition-colors cursor-pointer">
+                          <button type="button" aria-label={`Delete ${jt.title}`} onClick={() => { setDeleteJtData(jt); setDeleteJtOpen(true); }} className="p-1.5 hover:bg-destructive/10 rounded-xl transition-colors cursor-pointer">
                             <Trash2 className="w-4 h-4 text-destructive" />
                           </button>
                         </div>
@@ -936,9 +945,9 @@ const EmployeeFilterPanel: React.FC<{
     <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
       <div className="flex items-center justify-between">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
-        <button type="button" aria-label="Close filters" onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
+        <button type="button" aria-label="Close filters" onClick={onClose} className="p-1.5 hover:bg-muted rounded-full transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
       </div>
-      <div className="p-3 bg-primary/5 rounded-[var(--radius)] border border-primary/20">
+      <div className="p-3 bg-primary/5 rounded-xl border border-primary/20">
         <ul className="space-y-1 text-[var(--text-xs)] text-foreground">
           <li>Search results are based on selected filters.</li>
           <li>To search all employees, <strong>clear all filters</strong>.</li>
@@ -958,8 +967,8 @@ const EmployeeFilterPanel: React.FC<{
       <CheckboxGroup label="Activity Type" items={activityTypesList.length ? activityTypesList : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
       <CheckboxGroup label="Employment Type" items={employmentTypesList.length ? employmentTypesList : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
       <div className="space-y-2 pt-2">
-        <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
-        <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)]">Clear Filter</Button>
+        <Button onClick={onApply} className="w-full rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">Apply Filter</Button>
+        <Button variant="outline" onClick={onClear} className="w-full rounded-xl border-border/80 active:scale-[0.98]">Clear Filter</Button>
       </div>
     </div>
   );
@@ -972,7 +981,7 @@ const FilterSelect: React.FC<{ label: string; value: string; onChange: (v: strin
     <div className="space-y-1">
       <label htmlFor={selectId} className={labelClass}>{label}</label>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger id={selectId} className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
+        <SelectTrigger id={selectId} className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
         <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
       </Select>
     </div>
@@ -1051,7 +1060,7 @@ const EmployeeFormModal: React.FC<{
             <div className="space-y-1">
               <label className={labelClass}>Gender</label>
               <Select value={gender} onValueChange={setGender}>
-                <SelectTrigger className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Male">Male</SelectItem>
                   <SelectItem value="Female">Female</SelectItem>
@@ -1071,7 +1080,7 @@ const EmployeeFormModal: React.FC<{
             <div className="space-y-1">
               <label className={labelClass}>Contract Type</label>
               <Select value={contractType} onValueChange={setContractType}>
-                <SelectTrigger className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Permanent">Permanent</SelectItem>
                   <SelectItem value="Contract">Contract</SelectItem>
@@ -1083,7 +1092,7 @@ const EmployeeFormModal: React.FC<{
             <div className="space-y-1">
               <label className={labelClass}>Activity Type</label>
               <Select value={activityType} onValueChange={setActivityType}>
-                <SelectTrigger className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Direct">Direct</SelectItem>
                   <SelectItem value="InDirect">InDirect</SelectItem>
@@ -1094,7 +1103,7 @@ const EmployeeFormModal: React.FC<{
         </div>
 
         <DialogFooter className="pt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Cancel</Button>
           <Button onClick={() => {
             onSave({
               name,
@@ -1110,7 +1119,7 @@ const EmployeeFormModal: React.FC<{
               isManager,
               img: employee?.img || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop'
             });
-          }} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
+          }} className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">
             {employee ? 'Save' : 'Add'}
           </Button>
         </DialogFooter>
@@ -1151,7 +1160,7 @@ const FormerEmployeeModal: React.FC<{
           </div>
 
           <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Former Employees</p>
-          <div className="border border-border rounded-[var(--radius-card)] overflow-hidden">
+          <div className="border border-border/80 rounded-2xl overflow-hidden shadow-2xs">
             <table className="w-full md:min-w-max text-[var(--text-sm)]">
               <thead>
                 <tr className="bg-muted border-b border-border">
@@ -1170,7 +1179,7 @@ const FormerEmployeeModal: React.FC<{
                     <td className="whitespace-nowrap px-4 py-3 text-foreground">{localizeDepartmentName(fe.dept, language)}</td>
                     <td className="whitespace-nowrap px-4 py-3 text-foreground">{localizeJobTitle(fe.title, language)}</td>
                     <td className="whitespace-nowrap px-4 py-3 text-end">
-                      <Button size="sm" variant="outline" className="gap-1.5 rounded-[var(--radius-button)]" onClick={() => { onOpenChange(false); toast.success(`${localizePersonName(fe.name, language)} added back as an employee`); }}>
+                      <Button size="sm" variant="outline" className="gap-1.5 rounded-xl shadow-2xs active:scale-95" onClick={() => { onOpenChange(false); toast.success(`${localizePersonName(fe.name, language)} added back as an employee`); }}>
                         <Plus className="w-3 h-3" /> Add
                       </Button>
                     </td>
@@ -1183,7 +1192,7 @@ const FormerEmployeeModal: React.FC<{
         </div>
 
         <DialogFooter className="pt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Close</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -1226,7 +1235,7 @@ const AccessCardsModal: React.FC<{
         {employee && (
           <div className="space-y-5">
             {/* Employee info */}
-            <div className="p-4 bg-muted rounded-[var(--radius-card)] space-y-2">
+            <div className="p-4 bg-muted/40 rounded-2xl border border-border/80 space-y-2">
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Employee Info</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[var(--text-sm)]">
                 <div><span className="text-muted-foreground">Name:</span> <span className="text-foreground ms-1">{localizePersonName(employee.name, language)}</span></div>
@@ -1254,7 +1263,7 @@ const AccessCardsModal: React.FC<{
                 <div className="space-y-1">
                   <label className={labelClass}>Card Type</label>
                   <Select value={cardType} onValueChange={setCardType}>
-                    <SelectTrigger className="h-10 rounded-[var(--radius-input)]"><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Permanent">Permanent</SelectItem>
                       <SelectItem value="Spring">Spring</SelectItem>
@@ -1263,13 +1272,13 @@ const AccessCardsModal: React.FC<{
                   </Select>
                 </div>
               </div>
-              <Button onClick={handleAddCard} className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Assign Card</Button>
+              <Button onClick={handleAddCard} className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">Assign Card</Button>
             </div>
 
             {/* Assigned Cards Table */}
             <div className="space-y-3">
               <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Assigned Cards</p>
-              <div className="border border-border rounded-[var(--radius)] overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
+              <div className="border border-border/80 rounded-2xl overflow-x-auto bg-card mt-2 shadow-2xs">
                 <table className="w-full md:min-w-max text-[var(--text-sm)]">
                   <thead>
                     <tr className="bg-muted border-b border-border">
@@ -1306,7 +1315,7 @@ const AccessCardsModal: React.FC<{
         )}
 
         <DialogFooter className="pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Close</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -1333,7 +1342,7 @@ const TerminateModal: React.FC<{
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="p-3 bg-destructive/5 rounded-[var(--radius)] border border-destructive/20">
+          <div className="p-4 bg-destructive/5 rounded-2xl border border-destructive/20">
             <p className="text-[var(--text-sm)] text-foreground">
               <strong>{localizePersonName(employee?.name, language)}</strong> is about to be terminated.
             </p>
@@ -1355,8 +1364,8 @@ const TerminateModal: React.FC<{
         </div>
 
         <DialogFooter className="pt-2 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
-          <Button variant="destructive" onClick={onConfirm} className="w-full sm:w-auto rounded-[var(--radius-button)]">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Cancel</Button>
+          <Button variant="destructive" onClick={onConfirm} className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]">
             Terminate Employee
           </Button>
         </DialogFooter>
@@ -1385,7 +1394,7 @@ const ActivityLogDetailModal: React.FC<{
 
         {entry && (
           <div className="space-y-4">
-            <div className="flex items-center gap-3 p-3 bg-muted rounded-[var(--radius)]">
+            <div className="flex items-center gap-3 p-3.5 bg-muted/50 rounded-2xl border border-border/80">
               <div>
                 <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{entry.admin}</p>
                 <p className="text-[var(--text-xs)] text-muted-foreground">{entry.action}</p>
@@ -1419,7 +1428,7 @@ const ActivityLogDetailModal: React.FC<{
         )}
 
         <DialogFooter className="pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Close</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -1459,8 +1468,8 @@ const DepartmentFormModal: React.FC<{
           <FormField label="Lead Count" value={leadCount} onChange={setLeadCount} placeholder="Number of employees" type="number" />
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
-          <Button onClick={() => onSave({ name, deptId })} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Cancel</Button>
+          <Button onClick={() => onSave({ name, deptId })} className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">
             {department ? 'Save Department' : 'Add Department'}
           </Button>
         </DialogFooter>
@@ -1494,8 +1503,8 @@ const JobTitleFormModal: React.FC<{
           <FormField label="Job Title" value={jtName} onChange={setJtName} placeholder="e.g. Software Developer" />
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
-          <Button onClick={() => onSave(jtName)} className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Cancel</Button>
+          <Button onClick={() => onSave(jtName)} className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">
             {jt ? 'Save Job Title' : 'Add Job Title'}
           </Button>
         </DialogFooter>
@@ -1518,15 +1527,15 @@ const DeleteConfirmModal: React.FC<{
         <DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Delete {itemType}</DialogTitle>
         <DialogDescription className="sr-only">Delete {itemType}</DialogDescription>
       </DialogHeader>
-      <div className="p-4 bg-destructive/5 rounded-[var(--radius)] border border-destructive/20 flex gap-3">
+      <div className="p-4 bg-destructive/5 rounded-2xl border border-destructive/20 flex gap-3">
         <Info className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
         <p className="text-[var(--text-sm)] text-foreground">
           <strong>{itemName}</strong> {itemType.toLowerCase()} will be deleted upon confirmation.
         </p>
       </div>
       <DialogFooter className="pt-2 gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)]">Cancel</Button>
-        <Button variant="destructive" onClick={onConfirm} className="w-full sm:w-auto rounded-[var(--radius-button)]">Confirm</Button>
+        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Cancel</Button>
+        <Button variant="destructive" onClick={onConfirm} className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]">Confirm</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

@@ -70,14 +70,14 @@ export const PwaInstallPrompt: React.FC = () => {
         <button
           type="button"
           onClick={handleInstallClick}
-          className="px-3 py-1 bg-primary text-primary-foreground text-xs font-semibold rounded-md shadow-xs hover:bg-primary/90 transition-colors cursor-pointer"
+          className="px-3.5 py-1.5 bg-primary text-primary-foreground text-xs font-semibold rounded-xl shadow-2xs hover:bg-primary/90 transition-all active:scale-95 cursor-pointer"
         >
           {isArabic ? 'تثبيت الآن' : 'Install Now'}
         </button>
         <button
           type="button"
           onClick={handleDismiss}
-          className="p-1 text-muted-foreground hover:text-foreground rounded transition-colors"
+          className="p-1.5 text-muted-foreground hover:text-foreground rounded-full hover:bg-primary/20 transition-all cursor-pointer"
           aria-label={t('common.close', 'Close')}
         >
           <X className="w-4 h-4" />

@@ -107,7 +107,7 @@ const SegmentedControl = <T extends string>({
       role="radiogroup"
       aria-label={ariaLabel}
       className={cn(
-        'grid rounded-[var(--radius-card)] bg-muted/35 p-1.5',
+        'grid rounded-2xl bg-muted/35 p-1.5',
         compact ? 'gap-1.5' : 'gap-2',
         columnsClassName
       )}
@@ -140,10 +140,10 @@ const SegmentedControl = <T extends string>({
             }}
             className={cn(
               iconOnly
-                ? 'flex h-10 w-10 items-center justify-center rounded-[calc(var(--radius-card)-4px)] border p-0 transition-all duration-200'
+                ? 'flex h-10 w-10 items-center justify-center rounded-xl border p-0 transition-all duration-200'
                 : compact
-                ? 'flex min-h-10 items-center justify-center gap-2 rounded-[calc(var(--radius-card)-4px)] border px-3 py-2 text-left transition-all duration-200'
-                : 'flex min-h-14 flex-col items-center justify-center gap-1 rounded-[calc(var(--radius-card)-4px)] border px-2 py-2 text-center transition-all duration-200',
+                ? 'flex min-h-10 items-center justify-center gap-2 rounded-xl border px-3 py-2 text-left transition-all duration-200'
+                : 'flex min-h-14 flex-col items-center justify-center gap-1 rounded-xl border px-2 py-2 text-center transition-all duration-200',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
               checked
                 ? 'border-primary/25 bg-background text-foreground shadow-sm'
@@ -172,7 +172,7 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
     <label
       htmlFor={id}
       className={cn(
-        'grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-[var(--radius-card)] px-3.5 py-2.5 cursor-pointer transition-all duration-200 border',
+        'grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl px-3.5 py-2.5 cursor-pointer transition-all duration-200 border',
         'has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2',
         checked
           ? 'border-primary/25 bg-primary/[0.08] shadow-sm'
@@ -336,7 +336,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       variant="ghost"
       size="sm"
       disabled={activeCount === 0}
-      className="h-10 w-full rounded-[var(--radius-sm)] px-4 text-sm text-muted-foreground hover:bg-muted hover:text-foreground disabled:cursor-default disabled:opacity-40 sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
+      className="h-10 w-full rounded-xl px-4 text-sm text-muted-foreground hover:bg-muted hover:text-foreground disabled:cursor-default disabled:opacity-40 sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
       onClick={() => resetAccessibilitySettings(settings)}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
@@ -365,7 +365,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       </div>
 
       <div className="flex-1 space-y-5 overflow-y-auto pe-1 min-h-0">
-        <section className="space-y-3 rounded-[var(--radius-card)] border border-border/70 bg-card/90 p-3.5">
+        <section className="space-y-3 rounded-2xl border border-border/70 bg-card/90 p-3.5">
           <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             {t('accessibility.appearance')}
           </p>
@@ -453,14 +453,14 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
             {triggerButton}
           </PopoverTrigger>
           <PopoverContent
-            className="z-[100] flex max-h-[85vh] w-[26rem] flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-card p-5 shadow-[var(--elevation-lg)]"
+            className="z-[100] flex max-h-[85vh] w-[26rem] flex-col overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-2xl"
             align="end"
             sideOffset={8}
             collisionPadding={16}
           >
             {renderPanelContent(
               <PopoverClose
-                className="flex min-h-8 min-w-8 items-center justify-center rounded border border-border/40 p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                className="flex min-h-8 min-w-8 items-center justify-center rounded-full border border-border/60 p-1 text-muted-foreground transition-all hover:bg-muted hover:text-foreground cursor-pointer active:scale-95"
                 aria-label={isArabic ? 'إغلاق أدوات إمكانية الوصول' : 'Close accessibility panel'}
               >
                 <X className="w-4 h-4" />

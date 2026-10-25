@@ -81,7 +81,7 @@ export function DatePicker({
           aria-expanded={open}
           className={cn(
             fieldControlClassName,
-            "w-full justify-start text-start min-h-[44px] h-[44px] px-3 font-normal text-[var(--text-sm)] hover:bg-input-background focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+            "w-full justify-start text-start min-h-[44px] h-[44px] px-3.5 font-normal text-[var(--text-sm)] hover:bg-card/95",
             !selectedDate && "text-muted-foreground",
             className
           )}

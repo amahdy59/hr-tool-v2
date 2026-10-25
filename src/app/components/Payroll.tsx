@@ -369,7 +369,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
     </div>
 
     {/* Quick Payslip Generator */}
-    <div className="bg-card border border-border rounded-2xl p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Quick Payslip Generator</span>
       </div>
@@ -414,7 +414,7 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
     </div>
 
     {/* Notifications */}
-    <div className="bg-card border border-border rounded-2xl p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Recent Activity</span>
       </div>
@@ -467,7 +467,7 @@ const EmployeesTab = ({
   <div className="space-y-6 max-w-6xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Employee Payroll</h3>
 
-    <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
+    <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full md:min-w-max text-[var(--text-sm)]">
           <thead className="bg-muted border-b border-border">
@@ -499,7 +499,7 @@ const EmployeesTab = ({
                 <td className="px-3 py-3 whitespace-nowrap">
                   <button
                     onClick={() => handleGeneratePayslip(employee)}
-                    className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-primary hover:text-chart-3 transition-colors cursor-pointer"
+                    className="size-9 inline-flex items-center justify-center hover:bg-muted/80 rounded-xl text-primary hover:text-chart-3 transition-all cursor-pointer active:scale-95 shadow-2xs"
                     aria-label="View payslip"
                   >
                     <Eye className="w-4 h-4" />
@@ -529,13 +529,13 @@ const CompensationTab = () => (
   <div className="space-y-6 max-w-3xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Compensation Structure</h3>
 
-    <div className="bg-card border border-border rounded-2xl p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Compensation Items</span>
       </div>
       <div className="space-y-3">
         {COMPENSATION_ITEMS.map((item) => (
-          <div key={item.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-[var(--radius)] border border-border">
+          <div key={item.id} className="flex items-center justify-between p-3.5 bg-muted/30 rounded-2xl border border-border/80">
             <div>
               <p className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
                 {item.name}
@@ -559,13 +559,13 @@ const DeductionsTab = () => (
   <div className="space-y-6 max-w-3xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Payroll Deductions</h3>
 
-    <div className="bg-card border border-border rounded-2xl p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-2.5">
         <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Deduction Items</span>
       </div>
       <div className="space-y-3">
         {DEDUCTION_ITEMS.map((item) => (
-          <div key={item.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-[var(--radius)] border border-border">
+          <div key={item.id} className="flex items-center justify-between p-3.5 bg-muted/30 rounded-2xl border border-border/80">
             <div>
               <p className="text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
                 {item.name}
@@ -634,7 +634,7 @@ const TableCell = ({ children, weight = 'normal', color = 'text-foreground' }: {
 // ════════════════════════════════════
 const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYear, language }: any) => (
   <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div className="bg-card border border-border rounded-2xl shadow-[var(--elevation-lg)] max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="bg-card border border-border rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-border sticky top-0 bg-card">
         <div>
@@ -645,7 +645,7 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
             {localizePersonName(employee.name, language)}
           </p>
         </div>
-        <button onClick={onClose} className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+        <button onClick={onClose} className="p-1.5 hover:bg-muted rounded-full text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
           <X className="w-5 h-5" />
         </button>
       </div>
@@ -653,7 +653,7 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
       {/* Content */}
       <div className="p-6 space-y-6">
         {/* Employee Info */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-[var(--radius)] border border-border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-2xl border border-border/80">
           <InfoRow label="SESA ID" value={employee.sesaId} noAutoTranslateValue />
           <InfoRow label="Position" value={localizeJobTitle(employee.position, language)} />
           <InfoRow label="Department" value={localizeDepartmentName(employee.department, language)} />
@@ -688,7 +688,7 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
         </div>
 
         {/* Net Pay */}
-        <div className="p-4 bg-chart-3/10 border border-chart-3/30 rounded-[var(--radius)]">
+        <div className="p-4 bg-chart-3/10 border border-chart-3/30 rounded-2xl">
           <div className="flex items-center justify-between">
             <span className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
               Net Pay
@@ -702,10 +702,10 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
 
       {/* Footer */}
       <div className="p-6 border-t border-border flex gap-3 justify-end">
-        <button onClick={onClose} className="h-10 px-4 border border-border rounded-[var(--radius-button)] text-[var(--text-sm)] font-[var(--font-weight-medium)] hover:bg-muted transition-colors cursor-pointer" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <button onClick={onClose} className="min-h-[44px] px-4 border border-border/80 rounded-xl text-[var(--text-sm)] font-[var(--font-weight-medium)] hover:bg-muted transition-all cursor-pointer active:scale-[0.98]" style={{ fontFamily: "'Inter', sans-serif" }}>
           Close
         </button>
-        <button onClick={onDownload} className="h-10 px-4 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white text-[var(--text-sm)] font-[var(--font-weight-medium)] flex items-center gap-2 transition-colors cursor-pointer" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <button onClick={onDownload} className="min-h-[44px] px-4 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white text-[var(--text-sm)] font-[var(--font-weight-medium)] flex items-center gap-2 transition-all cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.98]" style={{ fontFamily: "'Inter', sans-serif" }}>
           <Download className="w-4 h-4" /> Download Payslip
         </button>
       </div>

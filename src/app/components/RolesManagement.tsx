@@ -83,7 +83,7 @@ const SelectField: React.FC<{
   <div className="space-y-1">
     <label htmlFor={id} className={labelClass}>{label}</label>
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger id={id} className="h-10 rounded-[var(--radius-input)]" aria-label={label}>
+      <SelectTrigger id={id} className="min-h-[44px] rounded-xl" aria-label={label}>
         <SelectValue placeholder={placeholder || 'Select...'} />
       </SelectTrigger>
       <SelectContent>
@@ -235,7 +235,7 @@ export const RolesManagement: React.FC = () => {
         <div className="flex-1 max-w-md space-y-1">
           <label htmlFor="roles-department-filter" className={labelClass}>{t('roles.department')}</label>
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-            <SelectTrigger id="roles-department-filter" className="h-10 rounded-[var(--radius-input)]" aria-label={t('roles.department')}>
+            <SelectTrigger id="roles-department-filter" className="min-h-[44px] rounded-xl" aria-label={t('roles.department')}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -249,11 +249,11 @@ export const RolesManagement: React.FC = () => {
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-          <Button className="w-full sm:w-auto bg-chart-3 hover:bg-chart-3/90 text-white gap-2 rounded-[var(--radius-button)]" onClick={() => setAddRoleOpen(true)}>
+        <div className="flex flex-col sm:flex-row gap-2.5 w-full sm:w-auto">
+          <Button className="w-full sm:w-auto bg-chart-3 hover:bg-chart-3/90 text-white gap-2 rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddRoleOpen(true)}>
             <Plus className="w-4 h-4" /> {t('roles.addNewRole')}
           </Button>
-          <Button variant="outline" className="hidden sm:flex w-full sm:w-auto gap-2 rounded-[var(--radius-button)]" onClick={handleUploadData}>
+          <Button variant="outline" className="hidden sm:flex w-full sm:w-auto gap-2 rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={handleUploadData}>
             <Upload className="w-4 h-4" /> {t('roles.uploadData')}
           </Button>
         </div>
@@ -322,7 +322,7 @@ export const RolesManagement: React.FC = () => {
                       <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 w-full md:w-auto">
                         <button
                           onClick={() => handleEditRole(role)}
-                          className="w-full md:w-auto flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer border border-border md:border-none"
+                          className="w-full md:w-auto inline-flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 md:size-9 hover:bg-muted rounded-xl transition-all cursor-pointer border border-border/80 text-muted-foreground hover:text-foreground active:scale-95 shadow-2xs"
                           title={t('roles.editRole')}
                         >
                           <span className="md:hidden">{t('roles.editRole')}</span>
@@ -330,7 +330,7 @@ export const RolesManagement: React.FC = () => {
                         </button>
                         <button
                           onClick={() => handleDeleteRole(role)}
-                          className="w-full md:w-auto flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer border border-destructive text-destructive md:border-none"
+                          className="w-full md:w-auto inline-flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 md:size-9 hover:bg-destructive/10 rounded-xl transition-all cursor-pointer border border-destructive/40 text-destructive active:scale-95 shadow-2xs"
                           title={t('roles.deleteRole')}
                         >
                           <span className="md:hidden">{t('roles.deleteRole')}</span>
@@ -389,7 +389,7 @@ export const RolesManagement: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                className="bg-chart-3 hover:bg-chart-3/90 text-white rounded-[var(--radius-button)]"
+                className="bg-chart-3 hover:bg-chart-3/90 text-white rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
                 onClick={handleAddRole}
               >
                 Add New Role
@@ -429,11 +429,11 @@ export const RolesManagement: React.FC = () => {
               placeholder="Select manager"
             />
             <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
-              <Button variant="outline" onClick={() => setEditRoleOpen(false)}>
+              <Button variant="outline" className="rounded-xl" onClick={() => setEditRoleOpen(false)}>
                 Cancel
               </Button>
               <Button
-                className="bg-chart-3 hover:bg-chart-3/90 text-white rounded-[var(--radius-button)]"
+                className="bg-chart-3 hover:bg-chart-3/90 text-white rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
                 onClick={handleSaveEdit}
               >
                 Save Role
@@ -459,7 +459,7 @@ export const RolesManagement: React.FC = () => {
             <DialogDescription className="sr-only">Confirm role removal</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 pt-2">
-            <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-[var(--radius)] border border-border">
+            <div className="flex items-start gap-3 p-3.5 bg-muted/40 rounded-2xl border border-border/80">
               <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
               <p
                 style={{
@@ -473,12 +473,12 @@ export const RolesManagement: React.FC = () => {
               </p>
             </div>
             <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
-              <Button variant="outline" onClick={() => setDeleteRoleOpen(false)}>
+              <Button variant="outline" className="rounded-xl" onClick={() => setDeleteRoleOpen(false)}>
                 Dismiss
               </Button>
               <Button
                 variant="destructive"
-                className="rounded-[var(--radius-button)]"
+                className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
                 onClick={handleConfirmDelete}
               >
                 Remove

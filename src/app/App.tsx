@@ -592,12 +592,12 @@ const BottomToolbar: React.FC<{
   const { t } = useTranslation();
 
   return (
-    <div className="lg:hidden fixed bottom-0 start-0 end-0 z-30 h-16 border-t border-border bg-card flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)]">
+    <div className="lg:hidden fixed bottom-0 start-0 end-0 z-30 h-16 border-t border-border/80 bg-card/90 backdrop-blur-xl flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)] shadow-lg">
       <button
         onClick={() => setActiveTab('dashboard')}
         className={cn(
-          "flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-2 rounded-[var(--radius)] transition-colors cursor-pointer",
-          activeTab === 'dashboard' ? 'text-primary' : 'text-muted-foreground'
+          "flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl transition-all active:scale-95 cursor-pointer",
+          activeTab === 'dashboard' ? 'text-primary bg-primary/10' : 'text-muted-foreground hover:bg-muted/60'
         )}
       >
         <LayoutDashboard className="w-5 h-5" />
@@ -606,7 +606,7 @@ const BottomToolbar: React.FC<{
       
       <button
         onClick={onRequestLeave}
-        className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-2 rounded-[var(--radius)] text-muted-foreground transition-colors cursor-pointer hover:text-primary"
+        className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl text-muted-foreground transition-all active:scale-95 cursor-pointer hover:bg-muted/60 hover:text-primary"
       >
         <CalendarPlus className="w-5 h-5 text-chart-2" />
         <span>{t('dashboard.requestLeave')}</span>
@@ -614,7 +614,7 @@ const BottomToolbar: React.FC<{
 
       <button
         onClick={onRequestMission}
-        className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-2 rounded-[var(--radius)] text-muted-foreground transition-colors cursor-pointer hover:text-primary"
+        className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl text-muted-foreground transition-all active:scale-95 cursor-pointer hover:bg-muted/60 hover:text-primary"
       >
         <Rocket className="w-5 h-5 text-chart-3" />
         <span>{t('dashboard.requestMission')}</span>

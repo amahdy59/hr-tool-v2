@@ -1,7 +1,7 @@
 import React from 'react';
 import { ltrContentProps } from './ltrContent';
 
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700';
 const labelClass = 'block text-start w-full text-[var(--text-base)] font-[var(--font-weight-medium)] text-foreground';
 const LTR_INPUT_TYPES = new Set(['email', 'url', 'tel', 'password']);
 

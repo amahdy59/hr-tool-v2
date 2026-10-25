@@ -265,7 +265,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               Leave type
             </label>
             <Select value={leaveType} onValueChange={setLeaveType}>
-              <SelectTrigger id="leave-type" className="h-10 w-full rounded-[var(--radius-input)]" aria-label="Leave type">
+              <SelectTrigger id="leave-type" className="min-h-[44px] w-full rounded-xl" aria-label="Leave type">
                 <SelectValue placeholder="Select leave type" />
               </SelectTrigger>
               <SelectContent>
@@ -362,7 +362,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
           {fromDate && toDate && daysRequested > 0 && isVacationRequest && (
             <div
               className={cn(
-                "rounded-[var(--radius-card)] border p-3 text-start space-y-2 transition-all",
+                "rounded-2xl border p-3 text-start space-y-2 transition-all",
                 daysRequested > currentBalance 
                   ? "border-destructive/40 bg-destructive/5 text-destructive"
                   : "border-border/80 bg-muted/30 text-foreground"
@@ -380,19 +380,19 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 </span>
               </div>
               <div className="grid grid-cols-3 gap-2 text-center pt-1 border-t border-border/40">
-                <div className="bg-background/80 rounded-[var(--radius-sm)] p-2 border border-border/50">
+                <div className="bg-background/80 rounded-xl p-2 border border-border/50">
                   <span className="block text-[var(--text-xs)] text-muted-foreground truncate">{t('leave.currentBalance', 'Current Balance')}</span>
                   <span className="text-[var(--text-sm)] font-bold tabular-nums text-foreground">
                     {toEasternArabic(currentBalance)} {t('dashboard.days', 'days')}
                   </span>
                 </div>
-                <div className="bg-background/80 rounded-[var(--radius-sm)] p-2 border border-border/50">
+                <div className="bg-background/80 rounded-xl p-2 border border-border/50">
                   <span className="block text-[var(--text-xs)] text-muted-foreground truncate">{t('leave.requestedDays', 'Requested')}</span>
                   <span className={cn("text-[var(--text-sm)] font-bold tabular-nums", daysRequested > currentBalance ? "text-destructive" : "text-primary")}>
                     {toEasternArabic(daysRequested)} {t('dashboard.days', 'days')}
                   </span>
                 </div>
-                <div className="bg-background/80 rounded-[var(--radius-sm)] p-2 border border-border/50">
+                <div className="bg-background/80 rounded-xl p-2 border border-border/50">
                   <span className="block text-[var(--text-xs)] text-muted-foreground truncate">{t('leave.balanceAfter', 'Remaining After')}</span>
                   <span className={cn("text-[var(--text-sm)] font-bold tabular-nums", daysRequested > currentBalance ? "text-destructive font-extrabold" : "text-foreground")}>
                     {toEasternArabic(remainingBalance)} {t('dashboard.days', 'days')}
@@ -421,7 +421,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
               placeholder="Add any notes for your leave request..."
-              className="w-full px-3 py-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring resize-none transition-shadow"
+              className="w-full px-3.5 py-2.5 border border-border/80 rounded-xl bg-card text-foreground outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary resize-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontSize: 'var(--text-sm)',
@@ -451,7 +451,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               <label
                 htmlFor="leave-attachments"
                 className={cn(
-                  "flex w-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-[var(--radius)] border border-dashed py-4 text-muted-foreground transition-all duration-200 hover:border-primary/80 hover:bg-primary/5 hover:text-primary focus-within:ring-2 focus-within:ring-ring",
+                  "flex w-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed py-4 text-muted-foreground transition-all duration-200 hover:border-primary/80 hover:bg-primary/5 hover:text-primary focus-within:ring-2 focus-within:ring-ring",
                   hasAttachmentError ? "border-destructive bg-destructive/5 text-destructive" : "border-border/80"
                 )}
                 style={{ fontFamily: "'Inter', sans-serif" }}
@@ -485,7 +485,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               {attachments.length > 0 && (
                 <div className="space-y-2">
                   {attachments.map((file) => (
-                    <div key={`${file.name}-${file.size}`} className="flex items-center gap-2 rounded-[var(--radius-sm)] border border-border bg-muted/30 px-3 py-2">
+                    <div key={`${file.name}-${file.size}`} className="flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-3 py-2">
                       <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
                       <span className="min-w-0 flex-1 truncate text-[var(--text-xs)] text-foreground">
                         {file.name}

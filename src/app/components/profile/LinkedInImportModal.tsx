@@ -262,7 +262,7 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({ open, 
                 <p className="text-[var(--text-sm)] text-muted-foreground leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
                   To export your profile: Go to your LinkedIn profile page, click <strong>"More"</strong>, and choose <strong>"Save to PDF"</strong>. Then upload the downloaded PDF here.
                 </p>
-                <div className="border-2 border-dashed border-border rounded-xl p-8 text-center bg-muted/40 hover:bg-muted/65 transition-colors cursor-pointer relative">
+                <div className="border-2 border-dashed border-border/80 rounded-2xl p-8 text-center bg-muted/40 hover:bg-muted/65 transition-colors cursor-pointer relative shadow-2xs">
                   <input
                     type="file"
                     accept=".pdf"
@@ -326,11 +326,11 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({ open, 
 
         {parsingStep === 4 && parsedData && (
           <div className="space-y-6 py-4">
-            <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900 rounded-lg p-4 text-[var(--text-sm)] text-emerald-800 dark:text-emerald-300" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900 rounded-2xl p-4 text-[var(--text-sm)] text-emerald-800 dark:text-emerald-300 shadow-2xs" style={{ fontFamily: "'Inter', sans-serif" }}>
               <strong>LinkedIn import ready!</strong> We parsed {parsedData.experiences.length} Experiences, {parsedData.educations.length} Education items, {parsedData.projects.length} Projects, and {parsedData.skills.length} Skills. Review them below before merging.
             </div>
 
-            <div className="space-y-4 max-h-[40vh] overflow-y-auto pe-2 border border-border p-3 rounded-lg bg-muted/20">
+            <div className="space-y-4 max-h-[40vh] overflow-y-auto pe-2 border border-border/80 p-4 rounded-2xl bg-muted/20">
               <div className="space-y-1">
                 <span className="text-xs uppercase font-bold text-muted-foreground tracking-wider" style={{ fontFamily: "'Inter', sans-serif" }}>Summary / About</span>
                 <p className="text-[var(--text-sm)] line-clamp-2" style={{ fontFamily: "'Inter', sans-serif" }}>{parsedData.about}</p>

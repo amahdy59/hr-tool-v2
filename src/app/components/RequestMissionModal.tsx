@@ -145,7 +145,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
               Mission type
             </label>
             <Select value={missionType} onValueChange={setMissionType}>
-              <SelectTrigger id="mission-type" className="h-10 w-full rounded-[var(--radius-input)]" aria-label="Mission type">
+              <SelectTrigger id="mission-type" className="min-h-[44px] w-full rounded-xl" aria-label="Mission type">
                 <SelectValue placeholder="Select mission type" />
               </SelectTrigger>
               <SelectContent>
@@ -250,7 +250,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
               onChange={(event) => setNotes(event.target.value)}
               rows={3}
               placeholder="Add any notes for your mission request..."
-              className="w-full px-3 py-2 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring resize-none transition-shadow"
+              className="w-full px-3.5 py-2.5 border border-border/80 rounded-xl bg-card text-foreground outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary resize-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontSize: 'var(--text-sm)',
@@ -260,7 +260,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
           </div>
 
           <Button
-            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white"
+            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
             onClick={handleSubmit}
             disabled={daysRequested === 0}
           >

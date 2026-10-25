@@ -15,7 +15,7 @@ import { LanguageData } from './Types';
 import { FormField } from './FormField';
 
 const labelClass = 'block text-start w-full text-[var(--text-base)] font-[var(--font-weight-medium)] text-foreground';
-const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-95 shadow-2xs hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 
 interface LanguagesSectionProps {
   languages: LanguageData[];
@@ -32,7 +32,7 @@ const ProfileCard: React.FC<{
 }> = ({ title, showAdd = true, onAdd, children }) => {
   const headingId = `professional-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
-    <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <section aria-labelledby={headingId} className="bg-card border border-border/80 rounded-2xl p-6 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-3">
         <span id={headingId} className="text-[var(--text-lg)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
         <div className="flex gap-1">
@@ -155,7 +155,7 @@ const EditLanguageModal: React.FC<{
           <div className="space-y-1">
             <label id="language-proficiency-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Proficiency Level</label>
             <Select value={proficiency} onValueChange={setProficiency}>
-              <SelectTrigger aria-labelledby="language-proficiency-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger aria-labelledby="language-proficiency-label" className="min-h-[44px] rounded-xl border-border/80 text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Elementary">Elementary</SelectItem>
                 <SelectItem value="Limited Working">Limited Working</SelectItem>
@@ -167,8 +167,8 @@ const EditLanguageModal: React.FC<{
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
+          <Button variant="outline" className="rounded-xl" onClick={() => onOpenChange(false)}>Cancel</Button>
+          <Button className="rounded-xl" onClick={handleSave}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -15,8 +15,8 @@ import { SkillData } from './Types';
 import { FormField } from './FormField';
 
 const labelClass = 'block text-start w-full text-[var(--text-base)] font-[var(--font-weight-medium)] text-foreground';
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
-const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-95 shadow-2xs hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 
 interface SkillsSectionProps {
   skills: SkillData[];
@@ -33,7 +33,7 @@ const ProfileCard: React.FC<{
 }> = ({ title, showAdd = true, onAdd, children }) => {
   const headingId = `professional-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
-    <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <section aria-labelledby={headingId} className="bg-card border border-border/80 rounded-2xl p-6 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-3">
         <span id={headingId} className="text-[var(--text-lg)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
         <div className="flex gap-1">
@@ -225,7 +225,7 @@ const EditSkillModal: React.FC<{
             {isCustomCategory ? (
               <div className="flex gap-2">
                 <input id="custom-category-input" type="text" value={category} onChange={e => setCategory(e.target.value)} className={inputClass} placeholder="e.g., Programming" style={{ fontFamily: "'Inter', sans-serif" }} />
-                <Button variant="ghost" type="button" onClick={() => { setIsCustomCategory(false); setCategory(predefinedCategories[0]); }} className="rounded-[var(--radius-button)]">Cancel</Button>
+                <Button variant="ghost" type="button" onClick={() => { setIsCustomCategory(false); setCategory(predefinedCategories[0]); }} className="rounded-xl">Cancel</Button>
               </div>
             ) : (
               <Select value={category} onValueChange={(val) => {
@@ -236,7 +236,7 @@ const EditSkillModal: React.FC<{
                   setCategory(val);
                 }
               }}>
-                <SelectTrigger aria-labelledby="skill-category-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+                <SelectTrigger aria-labelledby="skill-category-label" className="min-h-[44px] rounded-xl border-border/80 text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
                 <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                   {predefinedCategories.map(cat => (
                     <SelectItem key={cat} value={cat}>{cat}</SelectItem>
@@ -249,7 +249,7 @@ const EditSkillModal: React.FC<{
           <div className="space-y-1">
             <label id="skill-level-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Proficiency Level</label>
             <Select value={level} onValueChange={setLevel}>
-              <SelectTrigger aria-labelledby="skill-level-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger aria-labelledby="skill-level-label" className="min-h-[44px] rounded-xl border-border/80 text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Expert">Expert</SelectItem>
                 <SelectItem value="Advanced">Advanced</SelectItem>
@@ -260,8 +260,8 @@ const EditSkillModal: React.FC<{
           </div>
         </div>
         <DialogFooter className="mt-6 flex gap-2 justify-end">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
+          <Button variant="outline" className="rounded-xl" onClick={() => onOpenChange(false)}>Cancel</Button>
+          <Button className="rounded-xl" onClick={handleSave}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

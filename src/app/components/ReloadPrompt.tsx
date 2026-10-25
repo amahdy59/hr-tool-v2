@@ -37,9 +37,9 @@ export const ReloadPrompt: React.FC = () => {
     <div
       role="alert"
       aria-live="assertive"
-      className="pwa-reload-prompt fixed bottom-5 end-5 z-50 max-w-md bg-card/95 backdrop-blur-md border border-primary/30 rounded-[var(--radius-card)] p-4 shadow-[var(--elevation-lg)] flex items-start gap-3 text-foreground animate-in fade-in slide-in-from-bottom-5 duration-300"
+      className="pwa-reload-prompt fixed bottom-5 end-5 z-50 max-w-md bg-card/95 backdrop-blur-md border border-primary/30 rounded-2xl p-4 shadow-2xl flex items-start gap-3 text-foreground animate-in fade-in slide-in-from-bottom-5 duration-300"
     >
-      <div className="p-2 rounded-[var(--radius-sm)] bg-primary/10 text-primary shrink-0 mt-0.5">
+      <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0 mt-0.5">
         <Sparkles className="w-5 h-5" aria-hidden="true" />
       </div>
 
@@ -74,7 +74,7 @@ export const ReloadPrompt: React.FC = () => {
 
       <button
         onClick={close}
-        className="text-muted-foreground hover:text-foreground p-1 rounded-[var(--radius-sm)] transition-colors cursor-pointer"
+        className="text-muted-foreground hover:text-foreground p-1 rounded-xl transition-colors cursor-pointer"
         aria-label={isArabic ? 'إغلاق الإشعار' : 'Dismiss notification'}
       >
         <X className="w-4 h-4" />

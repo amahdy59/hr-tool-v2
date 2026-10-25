@@ -57,7 +57,7 @@ const ScreenshotCard: React.FC<{
       </div>
       <div
         className={cn(
-          'relative aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-card)] border bg-card transition-all duration-300',
+          'relative aspect-[16/10] w-full overflow-hidden rounded-2xl border bg-card transition-all duration-300',
           isAfter
             ? 'border-emerald-500/30 shadow-sm group-hover:border-emerald-500/60 group-hover:shadow-md'
             : 'border-border/80 group-hover:border-border'
@@ -184,7 +184,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-[var(--elevation-sm)] transition-all duration-150 hover:bg-muted active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transform-none cursor-pointer"
+            className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-xl border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-all duration-150 hover:bg-muted active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transform-none cursor-pointer"
             aria-label={t('login.backToLogin')}
           >
             <BackIcon className="h-4 w-4" aria-hidden="true" />
@@ -195,7 +195,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
               <button
                 type="button"
                 onClick={onExploreDemo}
-                className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-150 hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transform-none cursor-pointer"
+                className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-150 hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transform-none cursor-pointer"
               >
                 <Sparkles className="h-4 w-4" aria-hidden="true" />
                 <span>{t('login.launchDemo')}</span>
@@ -212,7 +212,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
       >
         <section
           aria-labelledby="hero-heading"
-          className="space-y-6 rounded-[calc(var(--radius-card)+12px)] border border-border/70 bg-card/80 p-6 shadow-[var(--elevation-lg)] backdrop-blur sm:p-8 lg:p-10"
+          className="space-y-6 rounded-[calc(var(--radius-card)+12px)] border border-border/70 bg-card/80 p-6 shadow-2xl backdrop-blur sm:p-8 lg:p-10"
         >
           <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent shadow-sm">
             <Target className="h-3.5 w-3.5" aria-hidden="true" />
@@ -241,7 +241,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
             ].map(({ label, icon: Icon }) => (
               <div
                 key={label}
-                className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border/80 bg-background/80 px-3.5 py-2 text-sm font-medium shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 motion-reduce:transform-none"
+                className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-border/80 bg-background/80 px-3.5 py-2 text-sm font-medium shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 motion-reduce:transform-none"
               >
                 <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
                 {label}
@@ -252,9 +252,9 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
             {proofPoints.map(({ icon: Icon, value, label }) => (
               <div
                 key={value}
-                className="group rounded-[var(--radius-card)] border border-border/80 bg-background/80 p-5 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md motion-reduce:transform-none"
+                className="group rounded-2xl border border-border/80 bg-background/80 p-5 shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md motion-reduce:transform-none"
               >
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10 transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none">
                   <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
                 <p className="text-base font-bold text-foreground">{value}</p>
@@ -289,7 +289,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
                 type="button"
                 onClick={() => setActiveTab(i)}
                 className={cn(
-                  'shrink-0 inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border px-4 py-2 text-sm font-medium transition-all duration-150 active:scale-[0.98] motion-reduce:transform-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer',
+                  'shrink-0 inline-flex min-h-11 items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium transition-all duration-150 active:scale-[0.98] motion-reduce:transform-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer',
                   activeTab === i
                     ? 'border-primary bg-primary text-primary-foreground shadow-sm'
                     : 'border-border bg-card text-muted-foreground hover:border-border/90 hover:bg-muted hover:text-foreground'
@@ -321,7 +321,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
               type="button"
               onClick={() => setActiveTab((p) => Math.max(0, p - 1))}
               disabled={activeTab === 0}
-              className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-button)] border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
               aria-label={t('redesign.comparison.previousAriaLabel')}
             >
               <PreviousIcon className="h-4 w-4" aria-hidden="true" />
@@ -334,7 +334,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
               type="button"
               onClick={() => setActiveTab((p) => Math.min(comparisons.length - 1, p + 1))}
               disabled={activeTab === comparisons.length - 1}
-              className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-button)] border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-border px-3 py-2 text-sm font-medium disabled:opacity-40"
               aria-label={t('redesign.comparison.nextAriaLabel')}
             >
               {t('pagination.nextText')}
@@ -357,9 +357,9 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
             {outcomes.map(({ icon: Icon, label, desc }) => (
               <div
                 key={label}
-                className="group rounded-[var(--radius-card)] border border-border bg-card/90 p-5 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md motion-reduce:transform-none"
+                className="group rounded-2xl border border-border bg-card/90 p-5 shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md motion-reduce:transform-none"
               >
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10 transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none">
                   <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
                 <h3 className="text-sm font-semibold text-foreground">{label}</h3>
@@ -383,7 +383,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
             {improvements.map(({ label, detail }) => (
               <div
                 key={label}
-                className="flex gap-3 rounded-[var(--radius-card)] border border-border bg-card/90 p-4 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-sm motion-reduce:transform-none"
+                className="flex gap-3 rounded-2xl border border-border bg-card/90 p-4 shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-sm motion-reduce:transform-none"
               >
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                 <div>
@@ -410,9 +410,9 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-4 rounded-[var(--radius-card)] border border-border bg-card/90 p-6 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:border-primary/30 hover:shadow-md">
+            <div className="space-y-4 rounded-2xl border border-border bg-card/90 p-6 shadow-sm backdrop-blur transition-all duration-200 hover:border-primary/30 hover:shadow-md">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
                   <Database className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold">{t('redesign.roadmap.database.title')}</h3>
@@ -444,9 +444,9 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
               </div>
             </div>
 
-            <div className="space-y-4 rounded-[var(--radius-card)] border border-border bg-card/90 p-6 shadow-[var(--elevation-sm)] backdrop-blur transition-all duration-200 hover:border-primary/30 hover:shadow-md">
+            <div className="space-y-4 rounded-2xl border border-border bg-card/90 p-6 shadow-sm backdrop-blur transition-all duration-200 hover:border-primary/30 hover:shadow-md">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-accent/10">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
                   <Shield className="h-5 w-5 text-accent" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold">{t('redesign.roadmap.security.title')}</h3>
@@ -469,7 +469,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
         </section>
 
         <section
-          className="rounded-[calc(var(--radius-card)+8px)] border border-primary/25 bg-gradient-to-b from-card to-card/70 px-6 py-10 text-center shadow-[var(--elevation-lg)] backdrop-blur sm:px-10"
+          className="rounded-[calc(var(--radius-card)+8px)] border border-primary/25 bg-gradient-to-b from-card to-card/70 px-6 py-10 text-center shadow-2xl backdrop-blur sm:px-10"
           aria-labelledby="cta-heading"
         >
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
@@ -486,7 +486,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
               <button
                 type="button"
                 onClick={onExploreDemo}
-                className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all duration-150 hover:bg-primary/90 hover:shadow-lg active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none cursor-pointer"
+                className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all duration-150 hover:bg-primary/90 hover:shadow-lg active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none cursor-pointer"
               >
                 <Zap className="h-4 w-4" aria-hidden="true" />
                 <span>{t('login.launchDemo')}</span>
@@ -495,7 +495,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
             <button
               type="button"
               onClick={onBack}
-              className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-button)] border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground shadow-sm transition-all duration-150 hover:bg-muted active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none cursor-pointer"
+              className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground shadow-sm transition-all duration-150 hover:bg-muted active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none cursor-pointer"
             >
               <BackIcon className="h-4 w-4" aria-hidden="true" />
               <span>{t('login.backToLogin')}</span>

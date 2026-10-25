@@ -12,7 +12,7 @@ import { CertificationData } from './Types';
 import { FormField } from './FormField';
 import { useTranslation } from 'react-i18next';
 
-const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-95 shadow-2xs hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 
 interface CertificationsSectionProps {
   certifications: CertificationData[];
@@ -30,7 +30,7 @@ const ProfileCard: React.FC<{
 }> = ({ title, showAdd = true, onAdd, children }) => {
   const headingId = `professional-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
-    <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <section aria-labelledby={headingId} className="bg-card border border-border/80 rounded-2xl p-6 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-3">
         <span id={headingId} className="text-[var(--text-lg)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
         <div className="flex gap-1">
@@ -87,7 +87,7 @@ const CertificationItem: React.FC<{
           </Button>
         </div>
       )}
-      <div className="absolute top-0 ltr:right-0 rtl:left-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-xl">
         {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.title} certification up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
         {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.title} certification down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
         <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.title} certification`} title="Edit"><Pencil className="w-4 h-4" /></button>

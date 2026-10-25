@@ -49,7 +49,7 @@ export const ScrollToTop: React.FC<ScrollToTopProps> = ({ scrollContainerRef }) 
         onMouseLeave={() => setShowTooltip(false)}
         onFocus={() => setShowTooltip(true)}
         onBlur={() => setShowTooltip(false)}
-        className="group w-12 h-12 rounded-full bg-primary/20 backdrop-blur-md hover:bg-primary/30 border-2 border-primary/40 hover:border-primary/60 text-primary flex items-center justify-center shadow-[var(--elevation-lg)] transition-all duration-300 cursor-pointer hover:scale-110 focus-visible:ring-4 focus-visible:ring-primary/50 focus-visible:outline-none"
+        className="group w-12 h-12 rounded-full bg-primary/20 backdrop-blur-md hover:bg-primary/30 border-2 border-primary/40 hover:border-primary/60 text-primary flex items-center justify-center shadow-2xl transition-all duration-300 cursor-pointer hover:scale-110 focus-visible:ring-4 focus-visible:ring-primary/50 focus-visible:outline-none"
         aria-label={isArabic ? "العودة إلى الأعلى" : "Scroll to top"}
         style={{
           fontFamily: isArabic ? "'Cairo', sans-serif" : "'Inter', sans-serif",
@@ -61,7 +61,7 @@ export const ScrollToTop: React.FC<ScrollToTopProps> = ({ scrollContainerRef }) 
       {/* Tooltip */}
       {showTooltip && (
         <div 
-          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-foreground text-background text-[var(--text-xs)] font-[var(--font-weight-medium)] rounded-[var(--radius-sm)] shadow-[var(--elevation-md)] whitespace-nowrap animate-fadeIn z-50"
+          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-foreground text-background text-[var(--text-xs)] font-[var(--font-weight-medium)] rounded-xl shadow-md whitespace-nowrap animate-fadeIn z-50"
           style={{
             fontFamily: isArabic ? "'Cairo', sans-serif" : "'Inter', sans-serif",
           }}

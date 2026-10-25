@@ -12,8 +12,8 @@ import { EducationData } from './Types';
 import { FormField } from './FormField';
 
 const labelClass = 'block text-start w-full text-[var(--text-base)] font-[var(--font-weight-medium)] text-foreground';
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
-const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-95 shadow-2xs hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 
 interface EducationSectionProps {
   educations: EducationData[];
@@ -31,7 +31,7 @@ const ProfileCard: React.FC<{
 }> = ({ title, showAdd = true, onAdd, children }) => {
   const headingId = `professional-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
-    <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <section aria-labelledby={headingId} className="bg-card border border-border/80 rounded-2xl p-6 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-3">
         <span id={headingId} className="text-[var(--text-lg)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
         <div className="flex gap-1">
@@ -53,7 +53,7 @@ const EducationItem: React.FC<{
 }> = React.memo(({ data, isFirst, isLast, onEdit, onDelete, onMove }) => (
   <div className="relative group space-y-3 pb-6">
     <div className="flex items-center gap-3 relative z-10">
-      <div className="w-10 h-10 rounded-md border border-border bg-card shadow-sm flex flex-shrink-0 items-center justify-center font-bold text-muted-foreground text-lg uppercase">
+      <div className="w-10 h-10 rounded-xl border border-border/80 bg-card shadow-2xs flex flex-shrink-0 items-center justify-center font-bold text-muted-foreground text-lg uppercase">
         {data.school.charAt(0)}
       </div>
       <h3 className="text-base font-bold text-foreground">{data.school}</h3>
@@ -89,7 +89,7 @@ const EducationItem: React.FC<{
       </div>
     </div>
 
-    <div className="absolute top-0 ltr:right-0 rtl:left-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+    <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-xl">
       {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.school} education up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
       {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.school} education down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
       <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.school} education`} title="Edit"><Pencil className="w-4 h-4" /></button>

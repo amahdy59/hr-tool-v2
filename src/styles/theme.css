@@ -89,11 +89,11 @@
   /* The default border radius for elements such as buttons, tooltip, and other containers. */
   --radius: 12px;
   /* The border radius for buttons. */
-  --radius-button: 10px;
+  --radius-button: 12px;
   /* The border radius for cards and containers. */
   --radius-card: 16px;
   /* The border radius for input fields. */
-  --radius-input: 10px;
+  --radius-input: 12px;
   
   /* Spacing Tokens */
   --spacing-label-input: 4px;

@@ -286,14 +286,14 @@ export const LeavesManagement: React.FC = () => {
             </form>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
+            <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateLeaveOpen(true)}>
               <Plus className="w-4 h-4" /> {t('management.createLeave')}
             </Button>
             <Button 
               ref={approveButtonRef}
               variant={selectedPending.length > 0 ? "default" : "outline"} 
               size="sm" 
-              className="w-full sm:w-auto h-[44px] gap-2 rounded-[var(--radius-button)] cursor-pointer justify-center transition-all" 
+              className="w-full sm:w-auto h-[44px] gap-2 rounded-xl cursor-pointer justify-center transition-all" 
               onClick={() => { if (!selectedPending.length) { toast.error(t('management.selectAtLeastOne')); return; } setReviewOpen(true); }}
             >
               {selectedPending.length > 1 ? t('management.approveLeaves') : t('management.approveLeave')}
@@ -301,7 +301,7 @@ export const LeavesManagement: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             {pendingLeaves.length === 0 ? (
               <EmptyState 
@@ -339,7 +339,17 @@ export const LeavesManagement: React.FC = () => {
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>{leave.notes}</td>
                       <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">{t('management.actions')}</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"
+                              aria-label={t('management.actions')}
+                            >
+                              <span className="md:hidden">{t('management.actions')}</span>
+                              <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
+                            </Button>
+                          </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-56">
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewLeave')}</DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> {t('management.approveLeave')}</DropdownMenuItem>
@@ -365,7 +375,7 @@ export const LeavesManagement: React.FC = () => {
           <div className="flex items-center gap-2">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" className="h-10 w-10 p-0 rounded-[var(--radius-button)] border-border cursor-pointer flex items-center justify-center" aria-label="Filter Dates" title="Filter Dates">
+                <Button variant="outline" size="sm" className="size-10 p-0 rounded-xl border-border/80 cursor-pointer flex items-center justify-center active:scale-95 shadow-2xs" aria-label="Filter Dates" title="Filter Dates">
                   <Filter className="w-4 h-4" />
                 </Button>
               </PopoverTrigger>
@@ -373,14 +383,14 @@ export const LeavesManagement: React.FC = () => {
                 <div className="space-y-1">
                   <label htmlFor="holiday-month-filter" className={labelClass}>Month</label>
                   <Select value={holidayMonth} onValueChange={setHolidayMonth}>
-                    <SelectTrigger id="holiday-month-filter" className="h-10 rounded-[var(--radius-input)] border-border bg-card" aria-label="Holiday month"><SelectValue /></SelectTrigger>
+                    <SelectTrigger id="holiday-month-filter" className="min-h-[44px] rounded-xl border-border/80 bg-card" aria-label="Holiday month"><SelectValue /></SelectTrigger>
                     <SelectContent>{['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1">
                   <label htmlFor="holiday-year-filter" className={labelClass}>Year</label>
                   <Select value={holidayYear} onValueChange={setHolidayYear}>
-                    <SelectTrigger id="holiday-year-filter" className="h-10 rounded-[var(--radius-input)] border-border bg-card" aria-label="Holiday year"><SelectValue /></SelectTrigger>
+                    <SelectTrigger id="holiday-year-filter" className="min-h-[44px] rounded-xl border-border/80 bg-card" aria-label="Holiday year"><SelectValue /></SelectTrigger>
                     <SelectContent>{['2024', '2025', '2026'].map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
@@ -390,12 +400,12 @@ export const LeavesManagement: React.FC = () => {
               Filter: {holidayMonth} {holidayYear}
             </span>
           </div>
-          <Button variant="outline" size="sm" className="w-full sm:w-auto gap-2 rounded-[var(--radius-button)] border-border cursor-pointer justify-center" onClick={() => setAddHolidayOpen(true)}>
+          <Button variant="outline" size="sm" className="w-full sm:w-auto gap-2 rounded-xl border-border/80 cursor-pointer justify-center active:scale-[0.98] shadow-2xs hover:shadow-xs" onClick={() => setAddHolidayOpen(true)}>
             Assign Holiday / Bridge
           </Button>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[600px] text-[var(--text-sm)] text-start">
               <thead>
@@ -416,7 +426,7 @@ export const LeavesManagement: React.FC = () => {
                     <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{h.notes}</td>
                     <td className="whitespace-nowrap px-4 py-3 text-end">
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild><button className="p-1.5 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><MoreVertical className="w-4 h-4 text-muted-foreground" /></button></DropdownMenuTrigger>
+                        <DropdownMenuTrigger asChild><button className="inline-flex items-center justify-center size-9 hover:bg-muted/80 rounded-xl transition-all cursor-pointer border border-transparent hover:border-border/80 active:scale-95 text-muted-foreground hover:text-foreground shadow-2xs"><MoreVertical className="w-4 h-4" /></button></DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-44">
                           <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setEditHolidayData(h); setEditHolidayOpen(true); }}><Edit className="w-4 h-4" /> Edit</DropdownMenuItem>
                           <DropdownMenuSeparator />
@@ -446,7 +456,7 @@ export const LeavesManagement: React.FC = () => {
               </form>
               <Popover open={filterOpen} onOpenChange={setFilterOpen}>
                 <PopoverTrigger asChild>
-                  <button type="button" aria-label="Open history filters" className={cn('relative h-10 px-3 border rounded-[var(--radius-input)] bg-card hover:bg-muted transition-colors cursor-pointer flex items-center', activeFilters > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
+                  <button type="button" aria-label="Open history filters" className={cn('relative h-10 px-3 border rounded-xl bg-card hover:bg-muted transition-colors cursor-pointer flex items-center', activeFilters > 0 ? 'border-primary text-primary' : 'border-border text-muted-foreground')}>
                     <Filter className="w-4 h-4" />
                     {activeFilters > 0 && <span className="absolute -top-1.5 -end-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{activeFilters}</span>}
                   </button>
@@ -473,7 +483,7 @@ export const LeavesManagement: React.FC = () => {
             <Button
               variant="outline"
               size="sm"
-              className="gap-2 rounded-[var(--radius-button)] border-border"
+              className="gap-2 rounded-xl border-border"
               onClick={handlePdfExport}
             >
               <FileText className="w-4 h-4 text-primary" />
@@ -482,7 +492,7 @@ export const LeavesManagement: React.FC = () => {
             <Button
               variant="outline"
               size="sm"
-              className="gap-2 rounded-[var(--radius-button)] border-border"
+              className="gap-2 rounded-xl border-border"
               onClick={() => {
                 exportToCSV(filteredHistory, 'Leaves_History');
                 toast.success(isArabic ? 'تم تنزيل البيانات بصيغة CSV' : 'Leaves data exported to CSV.');
@@ -494,7 +504,7 @@ export const LeavesManagement: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-[var(--elevation-sm)]">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             {historyLeaves.length === 0 ? (
               <EmptyState 
@@ -527,7 +537,17 @@ export const LeavesManagement: React.FC = () => {
                       <td className="whitespace-nowrap px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('dashboard.status')}:</span><StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? (isArabic ? 'تمت الموافقة' : 'Approved') : (isArabic ? 'مرفوض' : 'Rejected')}</StatusBadge></td>
                       <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="md:w-auto w-full justify-center rounded-[var(--radius-sm)] transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted"><span className="md:hidden">{t('management.actions')}</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button></DropdownMenuTrigger>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"
+                              aria-label={t('management.actions')}
+                            >
+                              <span className="md:hidden">{t('management.actions')}</span>
+                              <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
+                            </Button>
+                          </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-56">
                             <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewLeave')}</DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer gap-2 whitespace-nowrap" onClick={() => toast.success('Details sent to employee')}><Download className="w-4 h-4" /> Download Letter</DropdownMenuItem>
@@ -708,7 +728,7 @@ const FilterPanel: React.FC<{
   <div className="p-4 space-y-4 max-h-[var(--radix-popover-content-available-height,480px)] overflow-y-auto">
     <div className="flex items-center justify-between">
       <span className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Search Options</span>
-      <button type="button" aria-label="Close filters" onClick={onClose} className="p-1 hover:bg-muted rounded-[var(--radius-sm)] transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
+      <button type="button" aria-label="Close filters" onClick={onClose} className="p-1.5 hover:bg-muted rounded-full transition-colors cursor-pointer"><X className="w-4 h-4 text-muted-foreground" /></button>
     </div>
     <SelectField label="Department" value={dept} onChange={setDept} options={departmentOptions} />
     <SelectField label="Leave Type" value={leaveType} onChange={setLeaveType} options={leaveTypeOptions.length > 1 ? leaveTypeOptions : LEAVE_TYPES} />
@@ -717,8 +737,8 @@ const FilterPanel: React.FC<{
     <CheckboxGroup label="Activity Type" items={activityTypeOptions.length ? activityTypeOptions : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
     <CheckboxGroup label="Employment Type" items={employmentTypeOptions.length ? employmentTypeOptions : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
     <div className="space-y-2 pt-2">
-      <Button onClick={onApply} className="w-full rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white">Apply Filter</Button>
-      <Button variant="outline" onClick={onClear} className="w-full rounded-[var(--radius-button)] border-border">Clear Filter</Button>
+      <Button onClick={onApply} className="w-full rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">Apply Filter</Button>
+      <Button variant="outline" onClick={onClear} className="w-full rounded-xl border-border/80 active:scale-[0.98]">Clear Filter</Button>
     </div>
   </div>
 );
@@ -729,7 +749,7 @@ const SelectField: React.FC<{ label: string; value: string; onChange: (v: string
   <div className="space-y-1">
     <label htmlFor={id} className={labelClass}>{label}</label>
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger id={id} className="h-10 rounded-[var(--radius-input)] border-border" aria-label={label}><SelectValue /></SelectTrigger>
+      <SelectTrigger id={id} className="min-h-[44px] rounded-xl border-border/80" aria-label={label}><SelectValue /></SelectTrigger>
       <SelectContent>{options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
     </Select>
   </div>
@@ -815,14 +835,14 @@ const CreateLeaveModal: React.FC<{
               className={inputClass}
             />
             {showNameSuggestions && nameSuggestions.length > 0 && (
-              <div className="absolute z-50 left-0 right-0 mt-1 bg-popover border border-border rounded-[var(--radius-input)] shadow-md overflow-hidden max-h-60">
+              <div className="absolute z-50 left-0 right-0 mt-1 bg-popover/95 backdrop-blur-2xl border border-border/80 rounded-2xl shadow-2xl overflow-hidden max-h-60 p-1">
                 {nameSuggestions.map((emp) => {
                   const displayName = typeof emp.name === 'string' ? emp.name : (language === 'ar' ? emp.name.nameAr : emp.name.nameEn);
                   return (
                     <button
                       key={emp.id}
                       type="button"
-                      className="w-full px-3 py-2 text-start hover:bg-muted/80 text-[var(--text-sm)] text-foreground flex justify-between items-center transition-colors border-b border-border/40 last:border-0 cursor-pointer"
+                      className="w-full px-3 py-2 text-start hover:bg-primary/10 hover:text-primary rounded-xl text-[var(--text-sm)] text-foreground flex justify-between items-center transition-colors cursor-pointer"
                       onMouseDown={() => {
                         setName(displayName);
                         setEmployeeNumber(emp.employeeNumber);
@@ -853,14 +873,14 @@ const CreateLeaveModal: React.FC<{
               className={inputClass}
             />
             {showNumberSuggestions && numberSuggestions.length > 0 && (
-              <div className="absolute z-50 left-0 right-0 mt-1 bg-popover border border-border rounded-[var(--radius-input)] shadow-md overflow-hidden max-h-60">
+              <div className="absolute z-50 left-0 right-0 mt-1 bg-popover/95 backdrop-blur-2xl border border-border/80 rounded-2xl shadow-2xl overflow-hidden max-h-60 p-1">
                 {numberSuggestions.map((emp) => {
                   const displayName = typeof emp.name === 'string' ? emp.name : (language === 'ar' ? emp.name.nameAr : emp.name.nameEn);
                   return (
                     <button
                       key={emp.id}
                       type="button"
-                      className="w-full px-3 py-2 text-start hover:bg-muted/80 text-[var(--text-sm)] text-foreground flex justify-between items-center transition-colors border-b border-border/40 last:border-0 cursor-pointer"
+                      className="w-full px-3 py-2 text-start hover:bg-primary/10 hover:text-primary rounded-xl text-[var(--text-sm)] text-foreground flex justify-between items-center transition-colors cursor-pointer"
                       onMouseDown={() => {
                         setName(displayName);
                         setEmployeeNumber(emp.employeeNumber);
@@ -883,8 +903,8 @@ const CreateLeaveModal: React.FC<{
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => {
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border">Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => {
             if (!employeeNumber.trim() || !startDate || !endDate) {
               toast.error('Employee number, start date, and end date are required');
               return;
@@ -926,7 +946,7 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Review Selected Requests</DialogTitle><DialogDescription className="sr-only">Review and approve selected leave requests</DialogDescription></DialogHeader>
-          <div className="border border-border rounded-xl overflow-x-auto bg-card mt-2 shadow-[var(--elevation-sm)]">
+          <div className="border border-border rounded-xl overflow-x-auto bg-card mt-2 shadow-sm">
             <table className="w-full md:min-w-max text-[var(--text-sm)]">
             <thead><tr className="bg-muted border-b border-border">
               <th className={thClass}>Employee Name</th><th className={thClass}>Leave Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
@@ -946,8 +966,8 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
           <Pagination currentPage={1} totalPages={1} itemsPerPage={15} onPageChange={() => {}} onItemsPerPageChange={() => {}} />
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border">Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -981,7 +1001,7 @@ const ViewLeaveDetailModal: React.FC<{ open: boolean; onOpenChange: (v: boolean)
             </div>
           </div>
         )}
-        <DialogFooter className="pt-2"><Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Close</Button></DialogFooter>
+        <DialogFooter className="pt-2"><Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border">Close</Button></DialogFooter>
       </DialogContent>
     </Dialog>
   );
@@ -1050,8 +1070,8 @@ const HolidayFormModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <div className="space-y-1"><label className={labelClass}>Notes</label><textarea dir="auto" value={notes} onChange={e => setNotes(e.target.value)} rows={3} className={cn(inputClass, 'h-auto py-2')} placeholder="Optional notes..." /></div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onSave}>{holiday ? 'Save' : 'Add'}</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border">Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onSave}>{holiday ? 'Save' : 'Add'}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -1068,8 +1088,8 @@ const ConfirmDialog: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
         <p className="text-[var(--text-sm)] text-foreground">{message}</p>
       </div>
       <DialogFooter className="pt-2 gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border">{cancelLabel}</Button>
-        <Button variant={variant === 'destructive' ? 'destructive' : 'default'} className={cn('w-full sm:w-auto rounded-[var(--radius-button)]', variant !== 'destructive' && 'bg-chart-3 hover:bg-chart-3/90 text-white')} onClick={onConfirm}>{confirmLabel}</Button>
+        <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border">{cancelLabel}</Button>
+        <Button variant={variant === 'destructive' ? 'destructive' : 'default'} className={cn('w-full sm:w-auto rounded-xl', variant !== 'destructive' && 'bg-chart-3 hover:bg-chart-3/90 text-white')} onClick={onConfirm}>{confirmLabel}</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

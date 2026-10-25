@@ -34,7 +34,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       {actionLabel && onAction && (
         <Button 
           onClick={onAction}
-          className="rounded-[var(--radius-button)]"
+          className="rounded-xl"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {actionLabel}

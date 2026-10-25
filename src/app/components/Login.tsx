@@ -159,7 +159,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
       {/* Login Card */}
       <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-md sm:mx-4 flex flex-col justify-center max-sm:w-full bg-card sm:bg-transparent">
-        <div className="bg-card sm:bg-card/95 sm:backdrop-blur-sm sm:shadow-[var(--elevation-lg)] h-full sm:h-auto w-full flex flex-col justify-center p-6 sm:p-8 rounded-none border-0 sm:rounded-[var(--radius-card)] sm:border border-border/50">
+        <div className="bg-card sm:bg-card/95 sm:backdrop-blur-xl sm:shadow-2xl h-full sm:h-auto w-full flex flex-col justify-center p-6 sm:p-8 rounded-none border-0 sm:rounded-3xl sm:border border-border/80">
           {/* Logo/Header */}
           <div className="text-center mb-8">
             <div
@@ -187,7 +187,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               <button
                 type="button"
                 onClick={() => setShowInfoPage(true)}
-                className="inline-flex min-h-11 h-11 flex-1 sm:flex-initial items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] border border-border/80 bg-card px-4 sm:px-5 text-[var(--text-sm)] font-medium text-foreground shadow-sm transition-all duration-200 hover:border-primary/50 hover:bg-muted/70 hover:text-primary active:scale-[0.98] cursor-pointer"
+                className="inline-flex min-h-11 h-11 flex-1 sm:flex-initial items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-border/80 bg-card px-4 sm:px-5 text-[var(--text-sm)] font-medium text-foreground shadow-2xs transition-all duration-200 hover:border-primary/50 hover:bg-muted/70 hover:text-primary active:scale-[0.98] cursor-pointer"
                 style={{ fontFamily: "'Inter', sans-serif" }}
                 aria-label={t('login.aboutRedesign')}
               >
@@ -198,7 +198,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 <AccessibilityPanel
                   settings={accessibility}
                   forceShowLabel
-                  triggerClassName="w-full sm:w-auto h-11 px-4 sm:px-5 text-[var(--text-sm)] font-medium text-foreground active:scale-[0.98] cursor-pointer"
+                  triggerClassName="w-full sm:w-auto h-11 px-4 sm:px-5 text-[var(--text-sm)] font-medium text-foreground rounded-xl active:scale-[0.98] cursor-pointer"
                 />
               </div>
             </div>
@@ -213,7 +213,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 id={loginErrorId}
                 role="alert"
                 aria-live="assertive"
-                className="rounded-[var(--radius)] border-2 border-[#B91C1C] bg-[#FDECEC] p-3 text-start text-[#7F1D1D]"
+                className="rounded-2xl border-2 border-[#B91C1C] bg-[#FDECEC] p-3.5 text-start text-[#7F1D1D]"
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',
@@ -265,7 +265,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   autoComplete="email"
                   inputMode="email"
                   className={cn(
-                    'w-full min-h-[44px] ps-3 pe-10 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                    'w-full min-h-[44px] ps-3 pe-10 border rounded-xl bg-input-background text-foreground outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700',
                     showUsernameError || errorField === 'username'
                       ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30'
                       : showUsernameSuccess
@@ -293,7 +293,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 <div
                   id={usernameErrorTextId}
                   role="alert"
-                  className="flex items-start gap-2 mt-1.5 p-2 rounded-[var(--radius-input)] bg-destructive/10 border border-destructive/20 text-destructive text-[var(--text-xs)] font-medium transition-all animate-fadeIn"
+                  className="flex items-start gap-2 mt-1.5 p-2 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-[var(--text-xs)] font-medium transition-all animate-fadeIn"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-destructive" aria-hidden="true" />
@@ -341,7 +341,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   aria-describedby={showPasswordError ? passwordErrorTextId : passwordHintId}
                   autoComplete="current-password"
                   className={cn(
-                    'w-full min-h-[44px] ps-3 pe-20 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                    'w-full min-h-[44px] ps-3 pe-20 border rounded-xl bg-input-background text-foreground outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700',
                     showPasswordError || errorField === 'password'
                       ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30'
                       : showPasswordSuccess
@@ -383,7 +383,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 <div
                   id={passwordErrorTextId}
                   role="alert"
-                  className="flex items-start gap-2 mt-1.5 p-2 rounded-[var(--radius-input)] bg-destructive/10 border border-destructive/20 text-destructive text-[var(--text-xs)] font-medium transition-all animate-fadeIn"
+                  className="flex items-start gap-2 mt-1.5 p-2 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-[var(--text-xs)] font-medium transition-all animate-fadeIn"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-destructive" aria-hidden="true" />
@@ -445,8 +445,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               type="submit"
               disabled={isLoading}
               className={cn(
-                'w-full min-h-[44px] rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white transition-colors shadow-sm',
-                isLoading && 'opacity-70 cursor-not-allowed'
+                'w-full min-h-[44px] rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white transition-all shadow-2xs hover:shadow-xs active:scale-[0.98] cursor-pointer',
+                isLoading && 'opacity-70 cursor-not-allowed active:scale-100'
               )}
               style={{
                 fontFamily: "'Inter', sans-serif",
@@ -459,7 +459,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
             {showTempLogin && (
               <div
-                className="rounded-[var(--radius-card)] border-2 border-dashed border-[#C2410C]/60 bg-[#FFF8EE] p-4 flex flex-col items-center justify-center gap-3 dark:border-[#FACC15] dark:bg-[#2A1B07]"
+                className="rounded-2xl border-2 border-dashed border-[#C2410C]/60 bg-[#FFF8EE] p-4 flex flex-col items-center justify-center gap-3 dark:border-[#FACC15] dark:bg-[#2A1B07] shadow-2xs"
                 role="region"
                 aria-labelledby="demo-access-heading"
               >
@@ -479,7 +479,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   onClick={handleQuickLogin}
                   aria-label={t('login.continueToDemo')}
                   className={cn(
-                    'relative flex min-h-[44px] w-full items-center justify-center gap-2 overflow-hidden rounded-[var(--radius-button)] border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-sm transition-all hover:bg-[#FDECC8] group dark:border-[#FACC15] dark:bg-[#3A2608] dark:text-[#FEF3C7] dark:hover:bg-[#4A310A]'
+                    'relative flex min-h-[44px] w-full items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-2xs transition-all hover:bg-[#FDECC8] active:scale-[0.98] group dark:border-[#FACC15] dark:bg-[#3A2608] dark:text-[#FEF3C7] dark:hover:bg-[#4A310A] cursor-pointer'
                   )}
                   style={{
                     fontFamily: "'Inter', sans-serif",
@@ -514,8 +514,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
       {/* Forgot Password Form */}
       {showForgotPassword && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-card/95 backdrop-blur-sm shadow-[var(--elevation-lg)] border border-border/50 w-full h-full sm:h-auto sm:max-w-md sm:mx-4 p-6 sm:p-8 rounded-none sm:rounded-[var(--radius-card)] border-0 sm:border flex flex-col justify-center">
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-card/95 backdrop-blur-2xl shadow-2xl border border-border/80 w-full h-full sm:h-auto sm:max-w-md sm:mx-4 p-6 sm:p-8 rounded-none sm:rounded-3xl border-0 sm:border flex flex-col justify-center">
             <h2
               style={{
                 fontFamily: "'Inter', sans-serif",
@@ -533,7 +533,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   id={resetErrorId}
                   role="alert"
                   aria-live="assertive"
-                  className="rounded-[var(--radius)] border-2 border-[#B91C1C] bg-[#FDECEC] p-3 text-start text-[#7F1D1D]"
+                  className="rounded-2xl border-2 border-[#B91C1C] bg-[#FDECEC] p-3 text-start text-[#7F1D1D] shadow-2xs"
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontSize: 'var(--text-sm)',
@@ -578,7 +578,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                     autoComplete="email"
                     inputMode="email"
                     className={cn(
-                      'w-full min-h-[44px] ps-3 pe-10 border rounded-[var(--radius-input)] bg-input-background text-foreground outline-none transition-all',
+                      'w-full min-h-[44px] ps-3 pe-10 border rounded-xl bg-input-background text-foreground outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700',
                       showResetEmailError || errorField === 'resetEmail'
                         ? 'border-destructive focus:border-destructive focus:ring-4 focus:ring-destructive/30'
                         : showResetEmailSuccess
@@ -606,7 +606,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   <div
                     id={resetEmailErrorTextId}
                     role="alert"
-                    className="flex items-start gap-2 mt-1.5 p-2 rounded-[var(--radius-input)] bg-destructive/10 border border-destructive/20 text-destructive text-[var(--text-xs)] font-medium transition-all animate-fadeIn"
+                    className="flex items-start gap-2 mt-1.5 p-2 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-[var(--text-xs)] font-medium transition-all animate-fadeIn"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-destructive" aria-hidden="true" />
@@ -629,8 +629,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 type="submit"
                 disabled={isLoading}
                 className={cn(
-                  'w-full min-h-[44px] rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white transition-colors shadow-sm',
-                  isLoading && 'opacity-70 cursor-not-allowed'
+                  'w-full min-h-[44px] rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white transition-all shadow-2xs hover:shadow-xs active:scale-[0.98] cursor-pointer',
+                  isLoading && 'opacity-70 cursor-not-allowed active:scale-100'
                 )}
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -645,7 +645,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             {/* Success Message */}
             {resetSuccess && (
               <div
-                className="mt-4 rounded-[var(--radius)] border border-[#047857] bg-[#E7F6EF] p-3 text-center text-[#064E3B]"
+                className="mt-4 rounded-2xl border border-[#047857] bg-[#E7F6EF] p-3 text-center text-[#064E3B] shadow-2xs"
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',

@@ -41,7 +41,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="flex min-h-screen items-center justify-center bg-background p-4 text-foreground" role="alert" aria-relevant="all">
-          <div className="max-w-md w-full text-center space-y-6 bg-card p-8 rounded-[var(--radius-card)] border border-border shadow-xl">
+          <div className="max-w-md w-full text-center space-y-6 bg-card p-8 rounded-2xl border border-border shadow-xl">
             <div className="flex justify-center">
               <div className="w-16 h-16 bg-destructive/10 text-destructive rounded-full flex items-center justify-center">
                 <AlertCircle className="w-8 h-8" aria-hidden="true" />

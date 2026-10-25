@@ -16,9 +16,9 @@ import { localizePersonName } from '@/lib/localizedNames';
 import { LtrInlineText, ltrContentProps } from './profile/ltrContent';
 
 // ── Shared styles ──
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background dark:bg-input/30 dark:hover:bg-input/50 text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
-const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-95 shadow-2xs hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 const sectionIdFromTitle = (title: string) => `basic-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
 // Helper function to get initials from name
@@ -313,7 +313,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
       </ProfileCard>
 
       {/* Employment Details - Read Only */}
-      <section aria-labelledby="basic-profile-employment-details" className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
+      <section aria-labelledby="basic-profile-employment-details" className="bg-card border border-border/80 rounded-2xl p-5 shadow-sm">
         {/* Card Header */}
         <div className="flex items-center justify-between border-b border-border pb-2.5 mb-6">
           <span id="basic-profile-employment-details" className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Employment Details</span>
@@ -396,7 +396,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
       <ProfileCard title="Bank Accounts" locked icon={<Shield className="w-4 h-4 text-muted-foreground" />}>
         <div className="space-y-3">
           {visibleBankAccounts.map((account) => (
-            <div key={account.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-[var(--radius-sm)] border border-border">
+            <div key={account.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-xl border border-border">
               <div className="flex-1">
                 <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
                   {account.currency} Account
@@ -414,7 +414,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
             </p>
           )}
         </div>
-        <div className="flex items-start gap-2 mt-4 p-3 bg-primary/5 rounded-[var(--radius-sm)] border border-primary/20">
+        <div className="flex items-start gap-2 mt-4 p-3 bg-primary/5 rounded-xl border border-primary/20">
           <AlertCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="text-[var(--text-xs)] text-foreground font-[var(--font-weight-medium)] mb-1" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -427,7 +427,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
         </div>
         <Button 
           variant="outline" 
-          className="w-full mt-3 rounded-[var(--radius-button)] border-border"
+          className="w-full mt-3 rounded-xl border-border"
           onClick={() => setBankRequestOpen(true)}
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
@@ -436,7 +436,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
       </ProfileCard>
 
       {/* Audit Trail Notice */}
-      <div className="flex items-start gap-2 p-4 bg-muted/30 rounded-[var(--radius-card)] border border-border">
+      <div className="flex items-start gap-2 p-4 bg-muted/30 rounded-2xl border border-border">
         <Clock className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
         <div>
           <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -462,8 +462,8 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({ currentUser, onUpdateImage
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="pt-4 gap-2">
-            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-            <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-destructive hover:bg-destructive/90 text-white" onClick={confirmDelete} style={{ fontFamily: "'Inter', sans-serif" }}>Delete</Button>
+            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+            <Button className="w-full sm:w-auto rounded-xl bg-destructive hover:bg-destructive/90 text-white" onClick={confirmDelete} style={{ fontFamily: "'Inter', sans-serif" }}>Delete</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -486,7 +486,7 @@ const ProfileCard: React.FC<{
 }> = ({ title, children, onEdit, showAdd, onAdd, locked, icon }) => {
   const headingId = sectionIdFromTitle(title);
   return (
-  <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+  <section aria-labelledby={headingId} className="bg-card border border-border/80 rounded-2xl p-5 shadow-sm space-y-4">
     <div className="flex items-center justify-between border-b border-border pb-2.5">
       <div className="flex items-center gap-2">
         <span id={headingId} className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
@@ -510,7 +510,7 @@ const InfoItem: React.FC<{ label: string; value: string; sensitive?: boolean; in
         <LtrInlineText className={cn(
           'text-foreground min-w-0',
           sensitive
-            ? 'inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide max-w-full truncate'
+            ? 'inline-flex items-center rounded-xl border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide max-w-full truncate'
             : 'break-all'
         )}>
           {value}
@@ -519,7 +519,7 @@ const InfoItem: React.FC<{ label: string; value: string; sensitive?: boolean; in
         <span className={cn(
           'text-foreground min-w-0',
           sensitive
-            ? 'inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide max-w-full truncate'
+            ? 'inline-flex items-center rounded-xl border border-border bg-muted/40 px-2 py-0.5 font-mono tracking-wide max-w-full truncate'
             : 'break-all'
         )}>
           {value}
@@ -599,7 +599,7 @@ const EditPersonalInfoModal: React.FC<{
           <div className="space-y-1">
             <label htmlFor="basic-gender" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Gender *</label>
             <Select value={gender} onValueChange={setGender}>
-              <SelectTrigger id="basic-gender" className="h-10 rounded-[var(--radius-input)] border-border" aria-label="Gender" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger id="basic-gender" className="min-h-[44px] rounded-xl border-border" aria-label="Gender" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Male">Male</SelectItem>
                 <SelectItem value="Female">Female</SelectItem>
@@ -609,7 +609,7 @@ const EditPersonalInfoModal: React.FC<{
           <div className="space-y-1">
             <label htmlFor="basic-nationality" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Nationality *</label>
             <Select value={nationality} onValueChange={setNationality}>
-              <SelectTrigger id="basic-nationality" className="h-10 rounded-[var(--radius-input)] border-border" aria-label="Nationality" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger id="basic-nationality" className="min-h-[44px] rounded-xl border-border" aria-label="Nationality" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Egyptian">Egyptian</SelectItem>
                 <SelectItem value="Saudi">Saudi</SelectItem>
@@ -624,8 +624,8 @@ const EditPersonalInfoModal: React.FC<{
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save Changes</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save Changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -671,7 +671,7 @@ const EditEmergencyModal: React.FC<{
           <div className="space-y-1">
             <label className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Relationship *</label>
             <Select value={relationship} onValueChange={setRelationship}>
-              <SelectTrigger className="h-10 rounded-[var(--radius-input)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger className="min-h-[44px] rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="Mother">Mother</SelectItem>
                 <SelectItem value="Father">Father</SelectItem>
@@ -685,8 +685,8 @@ const EditEmergencyModal: React.FC<{
           <FormField label="Phone Number *" value={phone} onChange={setPhone} type="tel" inputMode="tel" autoComplete="tel" placeholder="01XXXXXXXXX" />
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -745,7 +745,7 @@ const ChangeImageModal: React.FC<{
         </DialogHeader>
         <div className="space-y-4">
           <div className="flex justify-center">
-            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-card shadow-[var(--elevation-sm)]">
+            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-card shadow-sm">
               {currentUser?.image ? (
                 <img src={currentUser.image} alt={currentUser.name} className="w-full h-full object-cover" />
               ) : (
@@ -761,7 +761,7 @@ const ChangeImageModal: React.FC<{
                 type="file" 
                 accept="image/jpeg,image/png" 
                 onChange={handleFileChange}
-                className="block w-full text-[var(--text-sm)] file:me-4 file:py-2 file:px-4 file:rounded-[var(--radius-button)] file:border-0 file:text-[var(--text-sm)] file:font-[var(--font-weight-medium)] file:bg-chart-3 file:text-white hover:file:bg-chart-3/90 file:cursor-pointer cursor-pointer"
+                className="block w-full text-[var(--text-sm)] file:me-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[var(--text-sm)] file:font-[var(--font-weight-medium)] file:bg-chart-3 file:text-white hover:file:bg-chart-3/90 file:cursor-pointer cursor-pointer"
                 style={{ fontFamily: "'Inter', sans-serif" }}
                 disabled={uploading}
               />
@@ -773,7 +773,7 @@ const ChangeImageModal: React.FC<{
           {uploading && <p className="text-[var(--text-sm)] text-primary text-center" style={{ fontFamily: "'Inter', sans-serif" }}>Uploading...</p>}
         </div>
         <DialogFooter className="pt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -815,7 +815,7 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <div className="space-y-1">
             <label htmlFor="bank-currency" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Currency *</label>
             <Select value={currency} onValueChange={setCurrency}>
-              <SelectTrigger id="bank-currency" className="h-10 rounded-[var(--radius-input)] border-border" aria-label="Currency" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger id="bank-currency" className="min-h-[44px] rounded-xl border-border" aria-label="Currency" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="EGP">EGP</SelectItem>
                 <SelectItem value="USD">USD</SelectItem>
@@ -832,7 +832,7 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
               id="bank-statement-upload"
               type="file" 
               accept="application/pdf,image/*"
-              className="block w-full text-[var(--text-sm)] file:me-4 file:py-2 file:px-4 file:rounded-[var(--radius-button)] file:border-0 file:text-[var(--text-sm)] file:font-[var(--font-weight-medium)] file:bg-muted file:text-foreground hover:file:bg-muted/80 file:cursor-pointer cursor-pointer"
+              className="block w-full text-[var(--text-sm)] file:me-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[var(--text-sm)] file:font-[var(--font-weight-medium)] file:bg-muted file:text-foreground hover:file:bg-muted/80 file:cursor-pointer cursor-pointer"
               style={{ fontFamily: "'Inter', sans-serif" }}
             />
             <p className="text-[var(--text-xs)] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -841,8 +841,8 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>
             {uploading ? 'Submitting...' : 'Submit Request'}
           </Button>
         </DialogFooter>
@@ -892,7 +892,7 @@ const EmploymentUpdateModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
               placeholder="Example: My job title should be 'Senior UX Designer' instead of 'UX Designer'"
             />
           </div>
-          <div className="flex items-start gap-2 p-3 bg-muted/30 rounded-[var(--radius-sm)] border border-border">
+          <div className="flex items-start gap-2 p-3 bg-muted/30 rounded-xl border border-border">
             <Clock className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
             <div className="flex-1">
               <p className="text-[var(--text-xs)] text-foreground font-[var(--font-weight-medium)] mb-1" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -905,8 +905,8 @@ const EmploymentUpdateModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
           </div>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>Cancel</Button>
+          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>
             {submitting ? 'Submitting...' : 'Request Update'}
           </Button>
         </DialogFooter>
@@ -970,14 +970,14 @@ const EmploymentInfoItem: React.FC<{
       </span>
       <div className="flex items-center gap-2 shrink-0">
         {badge && (
-          <span className="rounded-[var(--radius-sm)] border border-[#2563EB] bg-[#EAF2FF] px-2 py-0.5 text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-[#1E3A8A] whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <span className="rounded-xl border border-[#2563EB] bg-[#EAF2FF] px-2 py-0.5 text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-[#1E3A8A] whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif" }}>
             {badge}
           </span>
         )}
         {clickable && (
           <button
             onClick={onClick}
-            className="p-1 hover:bg-muted rounded-[var(--radius-sm)] text-primary hover:text-primary/80 transition-colors cursor-pointer"
+            className="p-1 hover:bg-muted rounded-xl text-primary hover:text-primary/80 transition-colors cursor-pointer"
             title="View manager profile"
           >
             <ChevronRight className="w-4 h-4" />

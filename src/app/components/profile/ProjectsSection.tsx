@@ -15,8 +15,8 @@ import { ProjectData, ExperienceData, EducationData } from './Types';
 import { FormField } from './FormField';
 
 const labelClass = 'block text-start w-full text-[var(--text-base)] font-[var(--font-weight-medium)] text-foreground';
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
-const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-95 shadow-2xs hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 
 interface ProjectsSectionProps {
   projects: ProjectData[];
@@ -36,7 +36,7 @@ const ProfileCard: React.FC<{
 }> = ({ title, showAdd = true, onAdd, children }) => {
   const headingId = `professional-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
-    <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <section aria-labelledby={headingId} className="bg-card border border-border/80 rounded-2xl p-6 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-3">
         <span id={headingId} className="text-[var(--text-lg)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
         <div className="flex gap-1">
@@ -111,7 +111,7 @@ const ProjectItem: React.FC<{
           </Button>
         </div>
       )}
-      <div className="absolute top-0 ltr:right-0 rtl:left-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-md">
+      <div className="absolute top-0 end-0 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-card/80 backdrop-blur-sm p-1 rounded-xl">
         {!isFirst && <button onClick={() => onMove('up')} className={iconButtonClass} aria-label={`Move ${data.title} project up`} title="Move up"><ChevronUp className="w-4 h-4" /></button>}
         {!isLast && <button onClick={() => onMove('down')} className={iconButtonClass} aria-label={`Move ${data.title} project down`} title="Move down"><ChevronDown className="w-4 h-4" /></button>}
         <button onClick={onEdit} className={iconButtonClass} aria-label={`Edit ${data.title} project`} title="Edit"><Pencil className="w-4 h-4" /></button>
@@ -279,7 +279,7 @@ const EditProjectModal: React.FC<{
           <div className="space-y-1">
             <label htmlFor="project-category-select" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Category *</label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger id="project-category-select" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger id="project-category-select" className="min-h-[44px] rounded-xl border-border/80 text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="UX Projects">UX Projects</SelectItem>
                 <SelectItem value="Data Analysis & Visualization Projects">Data Analysis & Visualization Projects</SelectItem>
@@ -291,7 +291,7 @@ const EditProjectModal: React.FC<{
           <div className="space-y-1">
             <label id="project-associated-label" className={labelClass} style={{ fontFamily: "'Inter', sans-serif" }}>Associated With</label>
             <Select value={associatedWith || 'none'} onValueChange={setAssociatedWith}>
-              <SelectTrigger aria-labelledby="project-associated-label" className="h-10 rounded-[var(--radius-input)] border-border text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
+              <SelectTrigger aria-labelledby="project-associated-label" className="min-h-[44px] rounded-xl border-border/80 text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}><SelectValue /></SelectTrigger>
               <SelectContent style={{ fontFamily: "'Inter', sans-serif" }}>
                 <SelectItem value="none">None (Independent Project)</SelectItem>
                 {experiences.length > 0 && (

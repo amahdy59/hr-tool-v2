@@ -29,9 +29,9 @@ import { useTranslation } from 'react-i18next';
 import { LtrInlineText } from './profile/ltrContent';
 
 // ── Shared styles ──
-const inputClass = 'w-full h-[44px] px-3 border border-border rounded-[var(--radius-input)] bg-input-background text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-ring/50 focus:border-ring outline-none transition-shadow';
+const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-base)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700';
 const labelClass = 'block text-start w-full text-[var(--text-base)] font-[var(--font-weight-medium)] text-foreground';
-const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
+const iconButtonClass = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-95 shadow-2xs hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer';
 
 const maskPhoneNumber = (phone: string): string => {
   if (!phone || phone.includes('*')) return phone;
@@ -45,7 +45,7 @@ const ProfileCard: React.FC<{
 }> = ({ title, onEdit, children }) => {
   const headingId = `professional-profile-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
-    <section aria-labelledby={headingId} className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)] space-y-4">
+    <section aria-labelledby={headingId} className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-3">
         <span id={headingId} className="text-[var(--text-lg)] font-[var(--font-weight-bold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>{title}</span>
         <div className="flex gap-1">
@@ -551,7 +551,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
           <Button
             type="button"
             onClick={() => setLinkedInImportOpen(true)}
-            className="rounded-[var(--radius-button)] bg-[#0077b5] hover:bg-[#006297] text-white flex items-center gap-1.5 min-h-9 px-3 text-sm font-semibold cursor-pointer"
+            className="rounded-xl bg-[#0077b5] hover:bg-[#006297] text-white flex items-center gap-1.5 min-h-9 px-3 text-sm font-semibold cursor-pointer"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             <span className="font-bold text-xs tracking-tight bg-white text-[#0077b5] w-4.5 h-4.5 rounded flex items-center justify-center">in</span>
@@ -567,7 +567,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
         {/* Left Column */}
         <div className="space-y-6">
           {/* Profile Strength */}
-          <div className="bg-card border border-border rounded-[var(--radius-card)] p-5 shadow-[var(--elevation-sm)]">
+          <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Profile Strength</span>
               <span className="text-[var(--text-base)] font-[var(--font-weight-bold)] text-chart-3" style={{ fontFamily: "'Inter', sans-serif" }}>{completionScore}%</span>
@@ -590,7 +590,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
             <div className="space-y-2.5 text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}>
               <div className="flex items-center gap-2.5 text-foreground">
                 <Phone className="w-4 h-4 text-muted-foreground" />
-                <LtrInlineText className="inline-flex items-center rounded-[var(--radius-sm)] border border-border bg-muted/40 px-2.5 py-1 font-mono tracking-wide text-[var(--text-base)]">
+                <LtrInlineText className="inline-flex items-center rounded-xl border border-border bg-muted/40 px-2.5 py-1 font-mono tracking-wide text-[var(--text-base)]">
                   {maskPhoneNumber(contact.phone)}
                 </LtrInlineText>
               </div>
@@ -672,7 +672,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
 
           {/* Export Resume Button */}
           <div className="flex justify-end pt-1">
-            <Button className="w-full sm:w-auto rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white gap-2 whitespace-nowrap min-h-11 px-6 text-base font-semibold" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
+            <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white gap-2 whitespace-nowrap min-h-11 px-6 text-base font-semibold" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
               <Download className="w-5 h-5" /> Download PDF Resume
             </Button>
           </div>
@@ -761,8 +761,8 @@ const EditAboutModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
           </p>
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -805,8 +805,8 @@ const EditContactModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
           <FormField label="Dribbble Profile" value={dribbble} onChange={setDribbble} type="url" autoComplete="url" inputMode="url" />
         </div>
         <DialogFooter className="pt-4 gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-[var(--radius-button)] border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="rounded-[var(--radius-button)] bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
+          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

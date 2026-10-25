@@ -572,7 +572,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           {historyData.slice(0, 4).map((item) => (
             <div
               key={`agenda-${item.id}`}
-              className="flex items-center justify-between gap-3 rounded-[var(--radius-card)] border border-border bg-card p-3 shadow-sm"
+              className="flex items-center justify-between gap-3 rounded-2xl border border-border/80 bg-card p-3.5 shadow-2xs hover:shadow-xs transition-all"
             >
               <div className="min-w-0 flex-1 space-y-1 text-start">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -638,31 +638,31 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 p-4 bg-muted/30 rounded-[var(--radius)] xl:flex-row xl:items-end xl:justify-between">
-          <div className="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
+        <div className="flex flex-col gap-4 p-4.5 bg-card/70 backdrop-blur-md rounded-2xl border border-border/80 shadow-2xs xl:flex-row xl:items-end xl:justify-between">
+          <div className="flex flex-col sm:flex-row gap-2.5 w-full xl:w-auto">
             <Button
               variant="outline"
               onClick={handleDownloadHistory}
-              className="w-full sm:w-auto gap-2 cursor-pointer justify-center shrink-0 no-print"
+              className="w-full sm:w-auto gap-2 cursor-pointer justify-center shrink-0 no-print rounded-xl active:scale-[0.98]"
             >
               <Download className="w-4 h-4" /> {t('dashboard.downloadData', 'Download Data')}
             </Button>
             <Button
               variant="outline"
               onClick={() => window.print()}
-              className="w-full sm:w-auto gap-2 cursor-pointer justify-center shrink-0 no-print"
+              className="w-full sm:w-auto gap-2 cursor-pointer justify-center shrink-0 no-print rounded-xl active:scale-[0.98]"
             >
               <Printer className="w-4 h-4" /> {isArabic ? 'طباعة التقرير' : 'Print Report'}
             </Button>
           </div>
 
           {/* Filters for mobile/tablet (Drawer on mobile, Popover on tablet) and desktop (inline) */}
-          <div className="flex flex-wrap items-center justify-center xl:justify-end gap-3 pt-2 w-full">
+          <div className="flex flex-wrap items-center justify-center xl:justify-end gap-3 pt-2 xl:pt-0 w-full xl:w-auto">
             {/* Mobile Bottom-Sheet Drawer (< md) */}
             <div className="md:hidden w-full">
               <Drawer open={isFilterDrawerOpen} onOpenChange={setIsFilterDrawerOpen}>
                 <DrawerTrigger asChild>
-                  <Button variant="outline" className="w-full gap-2 cursor-pointer justify-center">
+                  <Button variant="outline" className="w-full gap-2 cursor-pointer justify-center rounded-xl">
                     <Filter className="w-4 h-4" /> {t('dashboard.filterHistory', 'Filter History')}
                   </Button>
                 </DrawerTrigger>
@@ -680,7 +680,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                         value={historyLeaveType}
                         onValueChange={setHistoryLeaveType}
                       >
-                        <SelectTrigger id="drawer-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-full rounded-[var(--radius-input)]">
+                        <SelectTrigger id="drawer-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-full rounded-xl">
                           <SelectValue placeholder={t('dashboard.selectType', 'Select type')} />
                         </SelectTrigger>
                         <SelectContent>
@@ -703,7 +703,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                     </div>
                   </div>
                   <DrawerFooter className="p-0 pt-2">
-                    <Button onClick={() => setIsFilterDrawerOpen(false)} className="w-full">
+                    <Button onClick={() => setIsFilterDrawerOpen(false)} className="w-full rounded-xl">
                       {isArabic ? 'تطبيق الفلتر' : 'Apply Filters'}
                     </Button>
                   </DrawerFooter>
@@ -715,7 +715,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             <div className="hidden md:block xl:hidden w-full">
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full gap-2 cursor-pointer justify-center">
+                  <Button variant="outline" className="w-full gap-2 cursor-pointer justify-center rounded-xl">
                     <Filter className="w-4 h-4" /> {t('dashboard.filterHistory', 'Filter History')}
                   </Button>
                 </PopoverTrigger>
@@ -726,7 +726,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                       value={historyLeaveType}
                       onValueChange={setHistoryLeaveType}
                     >
-                      <SelectTrigger id="mobile-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-full rounded-[var(--radius-input)]">
+                      <SelectTrigger id="mobile-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-full rounded-xl">
                         <SelectValue placeholder={t('dashboard.selectType', 'Select type')} />
                       </SelectTrigger>
                       <SelectContent>
@@ -759,7 +759,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                     value={historyLeaveType}
                     onValueChange={setHistoryLeaveType}
                   >
-                    <SelectTrigger id="desktop-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-44 rounded-[var(--radius-input)]">
+                    <SelectTrigger id="desktop-history-leave-type" aria-label={t('dashboard.leaveType', 'Filter by Leave Type')} className="min-h-[44px] w-44 rounded-xl">
                       <SelectValue placeholder={t('dashboard.selectType', 'Select type')} />
                     </SelectTrigger>
                     <SelectContent>
@@ -879,7 +879,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           >
             {t('dashboard.balancesTitle')}
           </h3>
-          <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
+          <div className="border border-border/80 rounded-2xl bg-card shadow-2xs overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">{t('dashboard.balancesTitle')}</caption>
               <thead className="bg-muted/50 border-b border-border">
@@ -928,7 +928,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               </tbody>
             </table>
           </div>
-          <div className="flex gap-3 p-4 bg-primary/5 rounded-[var(--radius)] border border-primary/15">
+          <div className="flex gap-3 p-4 bg-primary/5 rounded-2xl border border-primary/20 backdrop-blur-xs">
             <Info className="w-5 h-5 text-primary shrink-0" />
             <p className="text-[var(--text-sm)] font-[var(--font-weight-normal)] text-foreground">
               {isArabic ? 'يرجى التأكد من استخدام جميع أيام الاجازة المرحلة من العام الماضي قبل' : 'Please ensure all carried-over vacation days from last year are used before'}
@@ -954,7 +954,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           >
             {isArabic ? 'اجازات أخرى' : 'Other Leaves'}
           </h3>
-          <div className="border border-border rounded-[var(--radius)] overflow-x-auto">
+          <div className="border border-border/80 rounded-2xl bg-card shadow-2xs overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">{isArabic ? 'أرصدة الاجازات الأخرى' : 'Other leave balances'}</caption>
               <thead className="bg-muted/50 border-b border-border">
@@ -1110,7 +1110,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             <div className="grid grid-cols-1 gap-3">
               <Button
                 variant="outline"
-                className="w-full justify-between items-center text-foreground border border-border bg-card/40 hover:bg-muted/80 font-medium py-6 px-4 rounded-[var(--radius)] hover:border-primary/50 transition-all group cursor-pointer"
+                className="w-full justify-between items-center text-foreground border border-border/80 bg-card/60 hover:bg-muted font-medium py-6 px-4 rounded-2xl hover:border-primary/50 transition-all group cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.99]"
                 onClick={() => {
                   setChooseRequestOpen(false);
                   onRequestLeave({
@@ -1136,7 +1136,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
               
               <Button
                 variant="outline"
-                className="w-full justify-between items-center text-foreground border border-border bg-card/40 hover:bg-muted/80 font-medium py-6 px-4 rounded-[var(--radius)] hover:border-primary/50 transition-all group cursor-pointer"
+                className="w-full justify-between items-center text-foreground border border-border/80 bg-card/60 hover:bg-muted font-medium py-6 px-4 rounded-2xl hover:border-primary/50 transition-all group cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.99]"
                 onClick={() => {
                   setChooseRequestOpen(false);
                   onRequestMission({
@@ -1213,7 +1213,7 @@ const HistoryRow: React.FC<{
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="h-11 w-11 hover:bg-muted rounded-[var(--radius)]"
+              className="inline-flex items-center justify-center size-9 rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               aria-label={`Open actions for ${item.type} request from ${item.reqDate}`}
             >
               <MoreVertical className="w-4 h-4" aria-hidden="true" />

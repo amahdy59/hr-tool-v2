@@ -135,7 +135,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
         <div className="space-y-6">
           {/* Stepper (Only show if not cancelled) */}
           {leaveData.status !== 'cancelled' && (
-            <div className="p-4 rounded-[var(--radius)] border border-border bg-card shadow-[var(--elevation-sm)] space-y-3">
+            <div className="p-4 rounded-xl border border-border bg-card shadow-sm space-y-3">
               <span className="block text-[11px] text-muted-foreground font-[var(--font-weight-medium)] uppercase tracking-wider text-start">Request Flow</span>
               <div className="grid grid-cols-[auto_1fr_auto_1fr_auto] items-start pt-1">
                 {stepLabels.map((label, idx) => {
@@ -202,14 +202,14 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
 
           {/* Metadata Cards */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="flex items-center gap-3 p-3 rounded-[var(--radius)] border border-border/80 bg-muted/20">
+            <div className="flex items-center gap-3 p-3 rounded-xl border border-border/80 bg-muted/20">
               <Calendar className="w-5 h-5 text-muted-foreground shrink-0" />
               <div className="min-w-0">
                 <span className="block text-[10px] text-muted-foreground uppercase tracking-wider">Date Range</span>
                 <span className="block text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground truncate">{leaveData.dateRange}</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 rounded-[var(--radius)] border border-border/80 bg-muted/20">
+            <div className="flex items-center gap-3 p-3 rounded-xl border border-border/80 bg-muted/20">
               <Clock className="w-5 h-5 text-muted-foreground shrink-0" />
               <div className="min-w-0">
                 <span className="block text-[10px] text-muted-foreground uppercase tracking-wider">Duration</span>
@@ -234,7 +234,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
               {leaveData.attachments.map((file, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-3 p-3 border border-border/80 rounded-[var(--radius)] bg-card hover:bg-muted/10 hover:border-border transition-all duration-200 shadow-sm"
+                  className="flex items-center gap-3 p-3 border border-border/80 rounded-xl bg-card hover:bg-muted/10 hover:border-border transition-all duration-200 shadow-sm"
                 >
                   <div className="w-8 h-8 bg-muted rounded flex items-center justify-center shrink-0 text-muted-foreground">
                     <FileText className="w-4.5 h-4.5" />
@@ -282,7 +282,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
             <div className="flex flex-col gap-3 pt-2">
               <Button
                 variant="outline"
-                className="w-full rounded-[var(--radius-button)] h-[var(--button-height-default)]"
+                className="w-full rounded-xl h-[var(--button-height-default)]"
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',
@@ -294,7 +294,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
               </Button>
               <Button
                 variant="destructive"
-                className="w-full rounded-[var(--radius-button)] flex items-center justify-center gap-2 h-[var(--button-height-default)]"
+                className="w-full rounded-xl flex items-center justify-center gap-2 h-[var(--button-height-default)]"
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: 'var(--text-sm)',

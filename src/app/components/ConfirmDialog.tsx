@@ -74,7 +74,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             {message}
           </div>
         ) : (
-          <div className="flex gap-3 p-4 bg-primary/5 rounded-[var(--radius)] border border-primary/20">
+          <div className="flex gap-3 p-4 bg-primary/5 rounded-xl border border-primary/20">
             <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
             <div className="text-[var(--text-sm)] font-[var(--font-weight-normal)] text-foreground w-full">
               {message}
@@ -89,7 +89,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               onCancel?.();
               onOpenChange(false);
             }}
-            className="w-full sm:w-auto rounded-[var(--radius-button)]"
+            className="w-full sm:w-auto rounded-xl"
           >
             {cancelLabel}
           </Button>
@@ -100,7 +100,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
                 onConfirm();
                 onOpenChange(false);
               }}
-              className={cn("w-full sm:w-auto rounded-[var(--radius-button)]", confirmClassName)}
+              className={cn("w-full sm:w-auto rounded-xl", confirmClassName)}
             >
               {confirmLabel}
             </Button>

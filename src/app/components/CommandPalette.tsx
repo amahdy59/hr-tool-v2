@@ -113,7 +113,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onOpenChan
         aria-label="Command Palette"
         aria-modal="true"
         dir={isArabic ? 'rtl' : 'ltr'}
-        className="relative z-10 w-full max-w-xl overflow-hidden rounded-xl border border-border bg-card shadow-2xl animate-in fade-in zoom-in-95 duration-200 mx-4 focus:outline-none"
+        className="relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-border/80 bg-card/95 backdrop-blur-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 mx-4 focus:outline-none"
       >
         <div className="flex items-center border-b border-border px-3">
           <Search className="me-2 h-5 w-5 shrink-0 text-muted-foreground" />
@@ -148,8 +148,8 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onOpenChan
                     onOpenChange(false);
                   }}
                   className={cn(
-                    "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-foreground transition-colors cursor-pointer",
-                    idx === selectedIndex ? "bg-accent/15 text-accent font-medium" : "hover:bg-muted"
+                    "flex w-full items-center gap-3 rounded-xl min-h-[40px] px-3.5 py-2 text-sm text-foreground transition-all duration-150 cursor-pointer",
+                    idx === selectedIndex ? "bg-accent/15 text-accent font-medium shadow-2xs" : "hover:bg-muted"
                   )}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
