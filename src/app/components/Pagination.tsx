@@ -79,7 +79,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   return (
     <nav
       aria-label={t('pagination.label', 'Pagination')}
-      className="flex flex-col gap-4 border-t border-border/60 bg-muted/10 px-3 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-4"
+      className="flex flex-col gap-4 border-t border-border/70 bg-card/60 backdrop-blur-md px-4 py-4 sm:flex-row sm:items-center sm:justify-between rounded-b-2xl"
       dir={isArabic ? 'rtl' : 'ltr'}
     >
       <div className="flex w-full flex-col items-center justify-center gap-3 text-[var(--text-sm)] text-muted-foreground sm:w-auto sm:flex-row sm:justify-start">
@@ -89,7 +89,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             <Select value={itemsPerPage.toString()} onValueChange={(value) => onItemsPerPageChange(Number(value))}>
               <SelectTrigger
                 aria-labelledby={pageSizeLabelId}
-                className="h-11 min-h-[44px] w-[88px] bg-background dark:bg-card border-border text-foreground hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-md transition-colors shadow-none font-[var(--font-weight-medium)]"
+                className="h-11 min-h-[44px] w-[92px] bg-card border border-border/80 text-foreground hover:bg-muted/80 focus-visible:ring-4 focus-visible:ring-ring/30 focus-visible:border-ring rounded-xl transition-all shadow-2xs font-[var(--font-weight-medium)]"
               >
                 <SelectValue />
               </SelectTrigger>
@@ -119,28 +119,28 @@ export const Pagination: React.FC<PaginationProps> = ({
       </div>
 
       {hasPageNavigation && (
-        <ul className="m-0 flex w-full list-none flex-row items-center justify-center p-0 sm:w-auto sm:justify-end">
-          <li className="list-item z-0">
+        <ul className="m-0 flex w-full list-none flex-row items-center justify-center gap-1.5 p-1 bg-muted/40 backdrop-blur-md rounded-2xl border border-border/70 shadow-2xs sm:w-auto sm:justify-end">
+          <li className="list-item">
             <Button
               variant="outline"
               onClick={() => handlePageClick(normalizedCurrentPage - 1)}
               disabled={normalizedCurrentPage <= 1}
               aria-label={t('pagination.previous', 'Previous Page')}
               className={cn(
-                "h-11 px-4 bg-background dark:bg-card border border-border text-foreground hover:bg-muted/50 rounded-s-md rounded-e-none z-0 hover:z-10 focus:z-10 disabled:opacity-50 disabled:pointer-events-none disabled:bg-background disabled:text-muted-foreground/50 transition-colors flex items-center gap-1.5 shadow-none"
+                "h-10 px-3.5 bg-card/80 border border-border/70 hover:border-border text-foreground hover:bg-card rounded-xl disabled:opacity-40 disabled:pointer-events-none transition-all duration-200 active:scale-95 flex items-center gap-1.5 shadow-2xs cursor-pointer"
               )}
             >
-              <PreviousIcon className="pagination-nav-icon h-4.5 w-4.5" aria-hidden="true" />
-              <span className="hidden sm:inline">{t('pagination.previousText', 'Previous')}</span>
+              <PreviousIcon className="pagination-nav-icon h-4 w-4" aria-hidden="true" />
+              <span className="hidden sm:inline text-xs font-semibold">{t('pagination.previousText', 'Previous')}</span>
             </Button>
           </li>
 
           {pageNumbers.map((page, index) => {
             if (typeof page === 'string') {
               return (
-                <li key={`ellipsis-${index}`} className="-ms-[1px] list-item z-0">
+                <li key={`ellipsis-${index}`} className="list-item">
                   <span
-                    className="flex h-11 w-11 items-center justify-center border border-border bg-background dark:bg-card text-[var(--text-sm)] font-semibold text-muted-foreground"
+                    className="flex h-10 w-9 items-center justify-center text-xs font-semibold text-muted-foreground"
                     aria-hidden="true"
                   >
                     ...
@@ -156,7 +156,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                 key={`page-${page}`}
                 className={cn(
                   !isActive && page !== 1 && page !== pageCount ? 'hidden min-[380px]:list-item' : undefined,
-                  '-ms-[1px] list-item z-0'
+                  'list-item'
                 )}
               >
                 <Button
@@ -165,10 +165,10 @@ export const Pagination: React.FC<PaginationProps> = ({
                   aria-current={isActive ? 'page' : undefined}
                   aria-label={t('pagination.page', { defaultValue: 'Page {{page}}', page })}
                   className={cn(
-                    'h-11 w-11 rounded-none border border-border transition-colors text-[var(--text-sm)] font-medium shadow-none z-0 hover:z-10 focus:z-10',
+                    'h-10 min-w-10 px-3 rounded-xl text-xs font-semibold transition-all duration-200 active:scale-95 cursor-pointer shadow-2xs',
                     isActive
-                      ? 'bg-primary border-primary text-primary-foreground hover:bg-primary/90 z-10'
-                      : 'bg-background dark:bg-card text-foreground hover:bg-muted/50'
+                      ? 'bg-primary border-primary text-primary-foreground shadow-xs'
+                      : 'bg-card/80 border border-border/70 text-foreground hover:bg-card hover:border-border'
                   )}
                 >
                   {page}
@@ -177,18 +177,18 @@ export const Pagination: React.FC<PaginationProps> = ({
             );
           })}
 
-          <li className="-ms-[1px] list-item z-0">
+          <li className="list-item">
             <Button
               variant="outline"
               onClick={() => handlePageClick(normalizedCurrentPage + 1)}
               disabled={normalizedCurrentPage >= pageCount}
               aria-label={t('pagination.next', 'Next Page')}
               className={cn(
-                "h-11 px-4 bg-background dark:bg-card border border-border text-foreground hover:bg-muted/50 rounded-e-md rounded-s-none z-0 hover:z-10 focus:z-10 disabled:opacity-50 disabled:pointer-events-none disabled:bg-background disabled:text-muted-foreground/50 transition-colors flex items-center gap-1.5 shadow-none"
+                "h-10 px-3.5 bg-card/80 border border-border/70 hover:border-border text-foreground hover:bg-card rounded-xl disabled:opacity-40 disabled:pointer-events-none transition-all duration-200 active:scale-95 flex items-center gap-1.5 shadow-2xs cursor-pointer"
               )}
             >
-              <span className="hidden sm:inline">{t('pagination.nextText', 'Next')}</span>
-              <NextIcon className="pagination-nav-icon h-4.5 w-4.5" aria-hidden="true" />
+              <span className="hidden sm:inline text-xs font-semibold">{t('pagination.nextText', 'Next')}</span>
+              <NextIcon className="pagination-nav-icon h-4 w-4" aria-hidden="true" />
             </Button>
           </li>
         </ul>

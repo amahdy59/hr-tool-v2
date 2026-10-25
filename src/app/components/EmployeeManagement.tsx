@@ -476,18 +476,18 @@ export const EmployeeManagement: React.FC = () => {
               ) : (
                 <table className={dataTableClass}>
                   <thead className="hidden md:table-header-group">
-                    <tr className="bg-muted border-b border-border">
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">{isArabic ? 'الاسم' : 'Name'}</th>
+                    <tr className="bg-muted/50 border-b border-border/80">
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'الاسم' : 'Name'}</th>
                       {visibleColumns.empNumber && (
-                        <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">{isArabic ? 'الرقم الوظيفي' : 'Employee Number'}</th>
+                        <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'الرقم الوظيفي' : 'Employee Number'}</th>
                       )}
                       {visibleColumns.department && (
-                        <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">{isArabic ? 'القسم' : 'Department'}</th>
+                        <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'القسم' : 'Department'}</th>
                       )}
                       {visibleColumns.jobTitle && (
-                        <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">{isArabic ? 'المسمى الوظيفي' : 'Job Title'}</th>
+                        <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">{isArabic ? 'المسمى الوظيفي' : 'Job Title'}</th>
                       )}
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">{isArabic ? 'الإجراءات' : 'Actions'}</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">{isArabic ? 'الإجراءات' : 'Actions'}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -572,12 +572,12 @@ export const EmployeeManagement: React.FC = () => {
               ) : (
                 <table className={dataTableClass}>
                   <thead className="hidden md:table-header-group">
-                    <tr className="bg-muted border-b border-border">
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Admin</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Action Taken</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Date</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Amount Affected</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
+                    <tr className="bg-muted/50 border-b border-border/80">
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Admin</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Action Taken</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Date</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Amount Affected</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -634,11 +634,11 @@ export const EmployeeManagement: React.FC = () => {
               ) : (
                 <table className={dataTableClass}>
                   <thead className="hidden md:table-header-group">
-                    <tr className="bg-muted border-b border-border">
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Department</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground"><span data-no-auto-translate>Department ID</span></th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Total Number</th>
-                      <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
+                    <tr className="bg-muted/50 border-b border-border/80">
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Department</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"><span data-no-auto-translate>Department ID</span></th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Total Number</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -680,10 +680,10 @@ export const EmployeeManagement: React.FC = () => {
             <div className={tableScrollClass}>
               <table className={dataTableClass}>
                 <thead>
-                  <tr className="bg-muted border-b border-border">
-                    <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">Job Title</th>
-                    <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground"># Employees</th>
-                    <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">Actions</th>
+                  <tr className="bg-muted/50 border-b border-border/80">
+                    <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Job Title</th>
+                    <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"># Employees</th>
+                    <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -1163,12 +1163,12 @@ const FormerEmployeeModal: React.FC<{
           <div className="border border-border/80 rounded-2xl overflow-hidden shadow-2xs">
             <table className="w-full md:min-w-max text-[var(--text-sm)]">
               <thead>
-                <tr className="bg-muted border-b border-border">
-                  <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Name</th>
-                  <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Employee#</th>
-                  <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Dept</th>
-                  <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Title</th>
-                  <th className="whitespace-nowrap px-4 py-3 text-end font-[var(--font-weight-medium)] text-muted-foreground">Action</th>
+                <tr className="bg-muted/50 border-b border-border/80">
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Name</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Employee#</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Dept</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Title</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -1281,12 +1281,12 @@ const AccessCardsModal: React.FC<{
               <div className="border border-border/80 rounded-2xl overflow-x-auto bg-card mt-2 shadow-2xs">
                 <table className="w-full md:min-w-max text-[var(--text-sm)]">
                   <thead>
-                    <tr className="bg-muted border-b border-border">
-                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Number</th>
-                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Start Date</th>
-                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">End Date</th>
-                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Card Type</th>
-                      <th className="whitespace-nowrap px-4 py-3 text-start font-[var(--font-weight-medium)] text-muted-foreground">Status</th>
+                    <tr className="bg-muted/50 border-b border-border/80">
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Card Number</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Start Date</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">End Date</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Card Type</th>
+                      <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">

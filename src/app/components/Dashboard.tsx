@@ -37,6 +37,7 @@ import {
   ArrowUpRight,
   Sparkles,
 } from 'lucide-react';
+import { StatCard } from '@/app/components/design-system';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { format, parseISO, isValid } from 'date-fns';
@@ -440,75 +441,44 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         </div>
       </div>
 
-      {/* KPI Metric Cards (Google Material 3 + Fluent 2) */}
+      {/* KPI Metric Cards (Apple HIG & Material 3 Design System) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Team Size */}
-        <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{isArabic ? 'إجمالي الموظفين' : 'Total Employees'}</span>
-            <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-transform group-hover:scale-110">
-              <Users className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold tracking-tight text-foreground">142</span>
-            <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              +4.5%
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-muted-foreground">{isArabic ? '12 قسم نشط' : '12 active departments'}</p>
-        </div>
-
-        {/* Card 2: Attendance Rate */}
-        <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{isArabic ? 'حضور اليوم' : "Today's Attendance"}</span>
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center transition-transform group-hover:scale-110">
-              <CheckCircle2 className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold tracking-tight text-foreground">94.8%</span>
-            <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              +1.2%
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-muted-foreground">{isArabic ? '135 موظف حاضر' : '135 checked-in on time'}</p>
-        </div>
-
-        {/* Card 3: Pending Leaves */}
-        <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{isArabic ? 'طلبات قيد الانتظار' : 'Pending Leaves'}</span>
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center transition-transform group-hover:scale-110">
-              <Clock className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold tracking-tight text-foreground">3</span>
-            <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-              {isArabic ? 'بانتظار المراجعة' : 'Review'}
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-muted-foreground">{isArabic ? 'أحدث طلب منذ ساعتين' : 'Latest requested 2h ago'}</p>
-        </div>
-
-        {/* Card 4: Active Missions */}
-        <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{isArabic ? 'مأموريات نشطة' : 'Active Missions'}</span>
-            <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center transition-transform group-hover:scale-110">
-              <Briefcase className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold tracking-tight text-foreground">5</span>
-            <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
-              {isArabic ? 'ميداني' : 'Field'}
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-muted-foreground">{isArabic ? '2 خارجية، 3 محلية' : '2 external, 3 domestic'}</p>
-        </div>
+        <StatCard
+          title={isArabic ? 'إجمالي الموظفين' : 'Total Employees'}
+          value={142}
+          icon={<Users className="w-5 h-5" />}
+          iconBgClassName="bg-blue-500/10"
+          iconColorClassName="text-blue-600 dark:text-blue-400"
+          badge={{ text: '+4.5%', variant: 'positive' }}
+          subtitle={isArabic ? '12 قسم نشط' : '12 active departments'}
+        />
+        <StatCard
+          title={isArabic ? 'حضور اليوم' : "Today's Attendance"}
+          value="94.8%"
+          icon={<CheckCircle2 className="w-5 h-5" />}
+          iconBgClassName="bg-emerald-500/10"
+          iconColorClassName="text-emerald-600 dark:text-emerald-400"
+          badge={{ text: '+1.2%', variant: 'positive' }}
+          subtitle={isArabic ? '135 موظف حاضر' : '135 checked-in on time'}
+        />
+        <StatCard
+          title={isArabic ? 'طلبات قيد الانتظار' : 'Pending Leaves'}
+          value={3}
+          icon={<Clock className="w-5 h-5" />}
+          iconBgClassName="bg-amber-500/10"
+          iconColorClassName="text-amber-600 dark:text-amber-400"
+          badge={{ text: isArabic ? 'بانتظار المراجعة' : 'Review', variant: 'warning' }}
+          subtitle={isArabic ? 'أحدث طلب منذ ساعتين' : 'Latest requested 2h ago'}
+        />
+        <StatCard
+          title={isArabic ? 'مأموريات نشطة' : 'Active Missions'}
+          value={5}
+          icon={<Briefcase className="w-5 h-5" />}
+          iconBgClassName="bg-violet-500/10"
+          iconColorClassName="text-violet-600 dark:text-violet-400"
+          badge={{ text: isArabic ? 'ميداني' : 'Field', variant: 'neutral' }}
+          subtitle={isArabic ? '2 خارجية، 3 محلية' : '2 external, 3 domestic'}
+        />
       </div>
 
       {/* Timesheet Section (Desktop / Tablet >= 990px) */}
@@ -795,7 +765,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-[var(--text-sm)] text-start">
               <caption className="sr-only">{t('dashboard.historyTitle', 'Leaves and mission history requests')}</caption>
-              <thead className="bg-muted/60 border-b border-border/80">
+              <thead className="bg-muted/50 border-b border-border/80">
                 <tr>
                   {[
                     t('dashboard.leaveType', 'Leave Type'),
@@ -809,21 +779,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                     <th
                       key={header}
                       className={cn(
-                        'px-4 py-3',
+                        'whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start',
                         header === t('dashboard.actions', 'Actions') && 'text-end'
                       )}
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: 'var(--text-sm)',
-                        fontWeight: 'var(--font-weight-medium)',
-                      }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       {header}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-border/60">
                 {paginatedHistory.map((item) => (
                   <HistoryRow
                     key={item.id}
@@ -879,10 +845,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           >
             {t('dashboard.balancesTitle')}
           </h3>
-          <div className="border border-border/80 rounded-2xl bg-card shadow-2xs overflow-x-auto">
+          <div className="border border-border/80 rounded-2xl bg-card shadow-sm overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">{t('dashboard.balancesTitle')}</caption>
-              <thead className="bg-muted/50 border-b border-border">
+              <thead className="bg-muted/50 border-b border-border/80">
                 <tr>
                   {[
                     t('dashboard.leaveType'),
@@ -894,36 +860,40 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                   ].map((h) => (
                     <th
                       key={h}
-                      className="px-4 py-3"
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: 'var(--text-sm)',
-                        fontWeight: 'var(--font-weight-medium)',
-                      }}
+                      className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
-                <tr>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">{t('leave.annualLeave')}</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">{calculateAnnualEntitlement(2013)} {t('dashboard.days')}</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">5</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">4</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">6</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)] font-semibold text-[var(--chart-3)]">
-                    {calculateAnnualEntitlement(2013) - 5 + 4 - 6} {t('dashboard.days')}
+              <tbody className="divide-y divide-border/60">
+                <tr className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-3.5 text-foreground font-medium">{t('leave.annualLeave')}</td>
+                  <td className="px-4 py-3.5 text-foreground">{calculateAnnualEntitlement(2013)} {t('dashboard.days')}</td>
+                  <td className="px-4 py-3.5 text-foreground">5</td>
+                  <td className="px-4 py-3.5 text-foreground">4</td>
+                  <td className="px-4 py-3.5">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">6</span>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      {calculateAnnualEntitlement(2013) - 5 + 4 - 6} {t('dashboard.days')}
+                    </span>
                   </td>
                 </tr>
-                <tr>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">{t('leave.sickLeave')}</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">45 {t('dashboard.days')}</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">--</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">--</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)]">5</td>
-                  <td className="px-4 py-3 text-[var(--text-sm)] font-semibold text-[var(--chart-3)]">40</td>
+                <tr className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-3.5 text-foreground font-medium">{t('leave.sickLeave')}</td>
+                  <td className="px-4 py-3.5 text-foreground">45 {t('dashboard.days')}</td>
+                  <td className="px-4 py-3.5 text-muted-foreground">--</td>
+                  <td className="px-4 py-3.5 text-muted-foreground">--</td>
+                  <td className="px-4 py-3.5">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">5</span>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">40 days</span>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -954,27 +924,23 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           >
             {isArabic ? 'اجازات أخرى' : 'Other Leaves'}
           </h3>
-          <div className="border border-border/80 rounded-2xl bg-card shadow-2xs overflow-x-auto">
+          <div className="border border-border/80 rounded-2xl bg-card shadow-sm overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">{isArabic ? 'أرصدة الاجازات الأخرى' : 'Other leave balances'}</caption>
-              <thead className="bg-muted/50 border-b border-border">
+              <thead className="bg-muted/50 border-b border-border/80">
                 <tr>
                   {(isArabic ? ['نوع الاجازة', 'الرصيد'] : ['Leave Type', 'Balance']).map((h) => (
                     <th
                       key={h}
-                      className="px-4 py-3"
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: 'var(--text-sm)',
-                        fontWeight: 'var(--font-weight-medium)',
-                      }}
+                      className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start"
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-border/60">
                 {[
                   // Show Paternity for male user, Maternity for female user
                   {
@@ -1002,19 +968,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                     balance: isArabic ? 'حسب الحالة / بدون حد أقصى' : 'Case-by-case / No limit',
                   },
                 ].map((row) => (
-                  <tr key={row.type}>
-                    <td className="px-4 py-3" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+                  <tr key={row.type} className="hover:bg-muted/30 transition-colors">
+                    <td className="px-4 py-3.5 font-medium text-foreground" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
                       {row.type}
                     </td>
-                    <td
-                      className="px-4 py-3"
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: 'var(--text-sm)',
-                        fontWeight: 'var(--font-weight-medium)',
-                      }}
-                    >
-                      {row.balance}
+                    <td className="px-4 py-3.5" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted/60 text-foreground border border-border/70">
+                        {row.balance}
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -1180,22 +1141,22 @@ const HistoryRow: React.FC<{
 }> = ({ item, onView, onCancel, onEdit }) => {
   return (
     <tr className="hover:bg-muted/30 transition-colors">
-      <td className="px-4 py-3" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+      <td className="px-4 py-3.5 align-middle font-medium text-foreground text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
         {item.type}
       </td>
-      <td className="px-4 py-3 whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+      <td className="px-4 py-3.5 align-middle whitespace-nowrap text-sm text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
         {item.reqDate}
       </td>
-      <td className="px-4 py-3 whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+      <td className="px-4 py-3.5 align-middle whitespace-nowrap text-sm text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
         {item.range}
       </td>
-      <td className="px-4 py-3" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+      <td className="px-4 py-3.5 align-middle text-sm text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
         {item.duration}
       </td>
-      <td className="px-4 py-3 text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+      <td className="px-4 py-3.5 align-middle text-sm text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
         {item.notes}
       </td>
-      <td className="px-4 py-3">
+      <td className="px-4 py-3.5 align-middle text-sm">
         <div className="flex items-center gap-2">
           <StatusBadge
             variant={item.status as any}
@@ -1209,7 +1170,7 @@ const HistoryRow: React.FC<{
           )}
         </div>
       </td>
-      <td className="px-4 py-3 text-end">
+      <td className="px-4 py-3.5 align-middle text-end">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button

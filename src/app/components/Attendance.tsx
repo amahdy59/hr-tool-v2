@@ -256,12 +256,20 @@ const statusVariantMap: Record<DayStatus, { variant: 'success' | 'warning' | 'er
 
 // ── Custom Recharts Tooltip ──
 const CustomBarTooltip = ({ active, payload }: any) => {
+  const { i18n } = useTranslation();
+  const isArabic = (i18n.resolvedLanguage || i18n.language || '').startsWith('ar');
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   return (
-    <div className="rounded-2xl border border-border/80 bg-card p-3 shadow-2xs">
-      <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">{d.name}</p>
-      <p className="text-[var(--text-xs)] text-muted-foreground">{d.hours} hours ({d.percentage}%)</p>
+    <div className="rounded-2xl border border-border/80 bg-popover/95 p-3.5 shadow-2xl backdrop-blur-2xl ring-1 ring-black/5 dark:ring-white/10 text-xs transition-all duration-200">
+      <p className="font-semibold text-foreground border-b border-border/60 pb-1.5 mb-2">{d.name}</p>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full shrink-0 shadow-2xs" style={{ backgroundColor: d.cssColor || d.color }} aria-hidden="true" />
+          <span className="text-muted-foreground">{isArabic ? 'الساعات المسجلة' : 'Logged Hours'}</span>
+        </div>
+        <span className="font-bold text-foreground tabular-nums">{d.hours}h ({d.percentage}%)</span>
+      </div>
     </div>
   );
 };
@@ -811,13 +819,13 @@ export const Attendance: React.FC = () => {
 
         <div className="grid grid-cols-1 gap-6 items-start xl:grid-cols-[minmax(430px,1fr)_minmax(340px,0.9fr)] xl:items-stretch xl:gap-8">
           {/* Left: summary table */}
-          <div className="hidden w-full overflow-x-auto sm:block bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
+          <div className="hidden w-full overflow-x-auto sm:block bg-card border border-border/80 rounded-2xl shadow-sm overflow-hidden">
             <table className="w-full text-start border-collapse cursor-default text-[var(--text-sm)]" aria-label={`Attendance summary for ${monthLabel} ${selectedYear}`}>
               <caption className="sr-only">Attendance summary by category, hours, and percentage</caption>
-              <thead>
-                <tr className="bg-muted/50 border-b border-border">
-                  <th scope="col" className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start min-w-[180px]">Category</th>
-                  <th scope="col" className={cn('px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground min-w-[150px]', isArabic ? 'text-start' : 'text-end')}>
+              <thead className="bg-muted/50 border-b border-border/80">
+                <tr>
+                  <th scope="col" className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start min-w-[180px]">Category</th>
+                  <th scope="col" className={cn('px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[150px]', isArabic ? 'text-start' : 'text-end')}>
                     <span className={cn('inline-flex items-center gap-1.5 w-full', isArabic ? 'justify-start' : 'justify-end')}>
                       Hours
                       <Tooltip>
@@ -832,16 +840,16 @@ export const Attendance: React.FC = () => {
                       </Tooltip>
                     </span>
                   </th>
-                  <th scope="col" className={cn('px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground min-w-[120px]', isArabic ? 'text-start' : 'text-end')}>Percentage</th>
+                  <th scope="col" className={cn('px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[120px]', isArabic ? 'text-start' : 'text-end')}>Percentage</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/50">
+              <tbody className="divide-y divide-border/60">
                 {translatedSummaryData.map((item) => (
                   <tr
                     key={item.id}
                     className="hover:bg-muted/30 transition-colors"
                   >
-                    <th scope="row" className="px-4 py-3 text-start font-[var(--font-weight-normal)]">
+                    <th scope="row" className="px-4 py-3.5 text-start font-[var(--font-weight-normal)]">
                       <div className="flex items-center gap-2.5">
                         <div
                           className="w-3 h-3 rounded-sm shrink-0"
@@ -850,14 +858,14 @@ export const Attendance: React.FC = () => {
                         <span className="text-foreground">{item.name}</span>
                       </div>
                     </th>
-                    <td className={cn('px-4 py-3 font-[var(--font-weight-medium)]', isArabic ? 'text-start' : 'text-end', severityHoursClass(item.severity))}>
+                    <td className={cn('px-4 py-3.5 font-[var(--font-weight-medium)]', isArabic ? 'text-start' : 'text-end', severityHoursClass(item.severity))}>
                       {item.hours}{isArabic ? 'س' : 'h'}
                     </td>
-                    <td className={cn('px-4 py-3 text-muted-foreground', isArabic ? 'text-start' : 'text-end')}>{item.percentage}%</td>
+                    <td className={cn('px-4 py-3.5 text-muted-foreground', isArabic ? 'text-start' : 'text-end')}>{item.percentage}%</td>
                   </tr>
                 ))}
                 {/* Total */}
-                <tr className="font-[var(--font-weight-semibold)] text-foreground bg-muted/10 border-t border-border">
+                <tr className="font-[var(--font-weight-semibold)] text-foreground bg-muted/25 border-t border-border/80">
                   <th scope="row" className="px-4 py-4 text-start font-semibold">{isArabic ? 'إجمالي الساعات' : 'Total Hours'}</th>
                   <td className={cn('px-4 py-4 font-semibold', isArabic ? 'text-start' : 'text-end')}>{totalHours}{isArabic ? 'س' : 'h'}</td>
                   <td className={cn('px-4 py-4 font-semibold', isArabic ? 'text-start' : 'text-end')}>100%</td>
@@ -950,7 +958,7 @@ export const Attendance: React.FC = () => {
           </div>
 
           {/* Desktop: Bar Chart representing breakdown of logged hours */}
-          <div className="hidden min-w-0 xl:block bg-card border border-border rounded-2xl shadow-sm p-5 h-full">
+          <div className="hidden min-w-0 xl:block bg-card border border-border/80 rounded-2xl shadow-sm p-5 h-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={translatedSummaryData}
@@ -971,7 +979,7 @@ export const Attendance: React.FC = () => {
                   orientation={language === 'ar' ? 'right' : 'left'}
                 />
                 <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.15 }} />
-                <Bar dataKey="hours" radius={[4, 4, 0, 0]} maxBarSize={45}>
+                <Bar dataKey="hours" radius={[6, 6, 0, 0]} maxBarSize={45}>
                   {translatedSummaryData.map((entry) => (
                     <Cell key={entry.id} fill={entry.cssColor} />
                   ))}
@@ -986,43 +994,43 @@ export const Attendance: React.FC = () => {
       {/* ── Annual and Sick Leaves ── */}
       <section className="space-y-3" aria-labelledby="attendance-leave-balances-heading">
         <h3 id="attendance-leave-balances-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Annual and Sick Leaves</h3>
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">Annual and sick leave balance details</caption>
-              <thead>
-                <tr className="bg-muted border-b border-border">
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Leave Type</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Total Balance</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Bridge</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">From Last Year</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Used Balance</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Remaining Balance</th>
+              <thead className="bg-muted/50 border-b border-border/80">
+                <tr>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Leave Type</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Total Balance</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Bridge</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">From Last Year</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Used Balance</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Remaining Balance</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-border/60">
                 <tr className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">Annual Leave</td>
-                  <td className="px-4 py-3 text-foreground text-start">21 days</td>
-                  <td className="px-4 py-3 text-foreground text-start">5</td>
-                  <td className="px-4 py-3 text-foreground text-start">4</td>
-                  <td className="px-4 py-3 text-start">
-                    <span className="text-[var(--chart-4)] dark:text-orange-300 font-[var(--font-weight-medium)]">6</span>
+                  <td className="px-4 py-3.5 text-foreground font-[var(--font-weight-medium)]">Annual Leave</td>
+                  <td className="px-4 py-3.5 text-foreground text-start">21 days</td>
+                  <td className="px-4 py-3.5 text-foreground text-start">5</td>
+                  <td className="px-4 py-3.5 text-foreground text-start">4</td>
+                  <td className="px-4 py-3.5 text-start">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">6</span>
                   </td>
-                  <td className="px-4 py-3 text-start">
-                    <span className="text-[var(--chart-3)] dark:text-emerald-300 font-[var(--font-weight-semibold)]">14</span>
+                  <td className="px-4 py-3.5 text-start">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">14 days</span>
                   </td>
                 </tr>
                 <tr className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 text-foreground font-[var(--font-weight-medium)]">Sick Leave</td>
-                  <td className="px-4 py-3 text-foreground text-start">14 days</td>
-                  <td className="px-4 py-3 text-foreground text-start">0</td>
-                  <td className="px-4 py-3 text-foreground text-start">2</td>
-                  <td className="px-4 py-3 text-start">
-                    <span className="text-[var(--chart-4)] dark:text-orange-300 font-[var(--font-weight-medium)]">3</span>
+                  <td className="px-4 py-3.5 text-foreground font-[var(--font-weight-medium)]">Sick Leave</td>
+                  <td className="px-4 py-3.5 text-foreground text-start">14 days</td>
+                  <td className="px-4 py-3.5 text-foreground text-start">0</td>
+                  <td className="px-4 py-3.5 text-foreground text-start">2</td>
+                  <td className="px-4 py-3.5 text-start">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">3</span>
                   </td>
-                  <td className="px-4 py-3 text-start">
-                    <span className="text-[var(--chart-3)] dark:text-emerald-300 font-[var(--font-weight-semibold)]">13</span>
+                  <td className="px-4 py-3.5 text-start">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">13 days</span>
                   </td>
                 </tr>
               </tbody>
@@ -1104,21 +1112,21 @@ export const Attendance: React.FC = () => {
           {isArabic ? `عرض ${days.length} سجل حضور` : `Showing ${days.length} attendance records`}
         </div>
 
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">Daily attendance records for the selected employee and period</caption>
-              <thead>
-                <tr className="bg-muted border-b border-border">
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Day</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Date</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Time In</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Time Out</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Total Hours</th>
-                  <th className="px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-start">Day Status</th>
+              <thead className="bg-muted/50 border-b border-border/80">
+                <tr>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Day</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Date</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Time In</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Time Out</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Total Hours</th>
+                  <th className="px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Day Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-border/60">
                 {paginatedDays.map((row) => {
                   const statusConfig = statusVariantMap[row.status];
                   const isWeekend = row.status === 'Weekend';
@@ -1130,14 +1138,14 @@ export const Attendance: React.FC = () => {
                         isWeekend ? 'bg-muted/20' : 'hover:bg-muted/30'
                       )}
                     >
-                      <td className={cn('px-4 py-3', isWeekend ? 'text-muted-foreground' : 'text-foreground')}>{row.day}</td>
-                      <td className={cn('px-4 py-3', isWeekend ? 'text-muted-foreground' : 'text-foreground')}>{row.date}</td>
-                      <td className={cn('px-4 py-3 tabular-nums', isWeekend ? 'text-muted-foreground' : 'text-foreground')}>{row.timeIn}</td>
-                      <td className={cn('px-4 py-3 tabular-nums', isWeekend ? 'text-muted-foreground' : 'text-foreground')}>{row.timeOut}</td>
-                      <td className={cn('px-4 py-3 tabular-nums', isWeekend ? 'text-muted-foreground' : 'text-foreground font-[var(--font-weight-medium)]')}>
+                      <td className={cn('px-4 py-3.5 text-sm align-middle', isWeekend ? 'text-muted-foreground' : 'text-foreground font-medium')}>{row.day}</td>
+                      <td className={cn('px-4 py-3.5 text-sm align-middle', isWeekend ? 'text-muted-foreground' : 'text-foreground')}>{row.date}</td>
+                      <td className={cn('px-4 py-3.5 text-sm align-middle tabular-nums', isWeekend ? 'text-muted-foreground' : 'text-foreground font-mono')}>{row.timeIn}</td>
+                      <td className={cn('px-4 py-3.5 text-sm align-middle tabular-nums', isWeekend ? 'text-muted-foreground' : 'text-foreground font-mono')}>{row.timeOut}</td>
+                      <td className={cn('px-4 py-3.5 text-sm align-middle tabular-nums font-semibold', isWeekend ? 'text-muted-foreground' : 'text-foreground')}>
                         {row.totalHours}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3.5 text-sm align-middle">
                         <StatusBadge variant={statusConfig.variant}>
                           {statusConfig.label}
                         </StatusBadge>

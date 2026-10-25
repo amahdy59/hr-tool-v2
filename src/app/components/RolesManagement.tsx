@@ -281,44 +281,44 @@ export const RolesManagement: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <thead className="hidden md:table-header-group">
-                <tr className="bg-muted border-b border-border">
-                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
+                <tr className="bg-muted/50 border-b border-border/80">
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
                     {t('roles.employeeName')}
                   </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
                     {t('roles.dateEnrolled')}
                   </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
                     {t('roles.dateLeft')}
                   </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground">
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">
                     {t('roles.jobTitle')}
                   </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-end">
+                  <th className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">
                     {t('roles.actions')}
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-border/60">
                 {paginatedRoles.map((role) => (
                   <tr key={role.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
-                    <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)] flex justify-between md:table-cell">
+                    <td className="whitespace-nowrap px-4 py-2 md:py-3.5 text-foreground font-[var(--font-weight-medium)] flex justify-between md:table-cell align-middle">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.employeeName')}:</span>
                       <span>{localizePersonName(role.employeeName, language)}</span>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
+                    <td className="whitespace-nowrap px-4 py-1 md:py-3.5 text-foreground flex justify-between md:table-cell align-middle">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.dateEnrolled')}:</span>
                       <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'}>{displayDate(role.dateEnrolled)}</span>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground flex justify-between md:table-cell">
+                    <td className="whitespace-nowrap px-4 py-1 md:py-3.5 text-muted-foreground flex justify-between md:table-cell align-middle">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.dateLeft')}:</span>
                       <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'}>{displayDate(role.dateLeft)}</span>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground flex justify-between md:table-cell">
+                    <td className="whitespace-nowrap px-4 py-1 md:py-3.5 text-foreground flex justify-between md:table-cell align-middle">
                       <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.jobTitle')}:</span>
                       <span>{localizeJobTitle(role.jobTitle, language)}</span>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
+                    <td className="whitespace-nowrap px-4 py-3.5 md:text-end mt-2 md:mt-0 align-middle">
                       <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 w-full md:w-auto">
                         <button
                           onClick={() => handleEditRole(role)}

@@ -467,10 +467,10 @@ const EmployeesTab = ({
   <div className="space-y-6 max-w-6xl mx-auto">
     <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">Employee Payroll</h3>
 
-    <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+    <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full md:min-w-max text-[var(--text-sm)]">
-          <thead className="bg-muted border-b border-border">
+          <thead className="bg-muted/50 border-b border-border/80">
             <tr>
               <TableHeader>SESA ID</TableHeader>
               <TableHeader>Name</TableHeader>
@@ -478,25 +478,25 @@ const EmployeesTab = ({
               <TableHeader>Gross Salary</TableHeader>
               <TableHeader>Total Deductions</TableHeader>
               <TableHeader>Net Pay</TableHeader>
-              <TableHeader>Actions</TableHeader>
+              <TableHeader className="text-end">Actions</TableHeader>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-border/60">
             {filteredEmployees.map((employee: any, index: number) => (
               <tr
                 key={employee.id}
                 className={cn(
-                  'border-b border-border last:border-0 hover:bg-muted/50 transition-colors',
-                  index % 2 === 0 ? 'bg-card' : 'bg-muted/20'
+                  'hover:bg-muted/30 transition-colors',
+                  index % 2 === 0 ? 'bg-card' : 'bg-muted/15'
                 )}
               >
-                <TableCell><span data-no-auto-translate>{employee.sesaId}</span></TableCell>
+                <TableCell><span data-no-auto-translate className="font-mono text-xs text-muted-foreground">{employee.sesaId}</span></TableCell>
                 <TableCell weight="medium">{localizePersonName(employee.name, language)}</TableCell>
                 <TableCell>{localizeDepartmentName(employee.department, language)}</TableCell>
                 <TableCell>${employee.grossSalary.toLocaleString()}</TableCell>
                 <TableCell>${employee.totalDeductions.toLocaleString()}</TableCell>
                 <TableCell weight="semibold" color="text-chart-3">${employee.netPay.toLocaleString()}</TableCell>
-                <td className="px-3 py-3 whitespace-nowrap">
+                <td className="px-4 py-3.5 whitespace-nowrap text-end">
                   <button
                     onClick={() => handleGeneratePayslip(employee)}
                     className="size-9 inline-flex items-center justify-center hover:bg-muted/80 rounded-xl text-primary hover:text-chart-3 transition-all cursor-pointer active:scale-95 shadow-2xs"
@@ -617,14 +617,14 @@ const NotificationItem = ({ icon: Icon, iconColor, bgColor, borderColor, title, 
   </div>
 );
 
-const TableHeader = ({ children }: { children: React.ReactNode }) => (
-  <th className="text-start px-3 py-3 whitespace-nowrap text-[var(--text-sm)] font-[var(--font-weight-semibold)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+const TableHeader = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+  <th className={cn("text-start px-4 py-3.5 whitespace-nowrap text-xs font-semibold uppercase tracking-wider text-muted-foreground", className)} style={{ fontFamily: "'Inter', sans-serif" }}>
     {children}
   </th>
 );
 
-const TableCell = ({ children, weight = 'normal', color = 'text-foreground' }: { children: React.ReactNode; weight?: 'normal' | 'medium' | 'semibold'; color?: string }) => (
-  <td className={cn("px-3 py-3 whitespace-nowrap text-[var(--text-sm)]", color)} style={{ fontFamily: "'Inter', sans-serif", fontWeight: weight === 'normal' ? 'var(--font-weight-normal)' : weight === 'medium' ? 'var(--font-weight-medium)' : 'var(--font-weight-semibold)' }}>
+const TableCell = ({ children, weight = 'normal', color = 'text-foreground', className }: { children: React.ReactNode; weight?: 'normal' | 'medium' | 'semibold'; color?: string; className?: string }) => (
+  <td className={cn("px-4 py-3.5 whitespace-nowrap text-sm align-middle", color, className)} style={{ fontFamily: "'Inter', sans-serif", fontWeight: weight === 'normal' ? 'var(--font-weight-normal)' : weight === 'medium' ? 'var(--font-weight-medium)' : 'var(--font-weight-semibold)' }}>
     {children}
   </td>
 );

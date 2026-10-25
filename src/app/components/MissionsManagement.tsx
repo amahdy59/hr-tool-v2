@@ -29,7 +29,7 @@ import { formatLocalizedDate, localizePersonName } from '@/lib/localizedNames';
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs';
 const labelClass = 'block text-start w-full text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground';
-const thClass = 'px-4 py-3 font-[var(--font-weight-medium)] text-muted-foreground text-[var(--text-sm)] whitespace-nowrap';
+const thClass = 'px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground whitespace-nowrap text-start';
 const getErrorMessage = (error: unknown) =>
   error instanceof Error ? error.message : String((error as any)?.message || 'Please check the request details and try again.');
 
@@ -223,7 +223,7 @@ export const MissionsManagement: React.FC = () => {
               ) : (
                 <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                   <thead className="hidden md:table-header-group">
-                    <tr className="bg-muted border-b border-border">
+                    <tr className="bg-muted/50 border-b border-border/80">
                       <th className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingMissions.length && pendingMissions.length > 0} onCheckedChange={toggleAll} /></th>
                       <th className={thClass}>{t('management.employeeName')}</th>
                       <th className={thClass}>{t('management.missionType')}</th>
@@ -333,7 +333,7 @@ export const MissionsManagement: React.FC = () => {
             ) : (
               <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
                 <thead className="hidden md:table-header-group">
-                  <tr className="bg-muted border-b border-border">
+                  <tr className="bg-muted/50 border-b border-border/80">
                     <th className={thClass}>{t('management.employeeName')}</th>
                     <th className={thClass}>{t('management.missionType')}</th>
                     <th className={thClass}>{t('management.dateRange')}</th>
@@ -729,9 +729,9 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader><DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">Review Selected Requests</DialogTitle><DialogDescription className="sr-only">Review and approve selected mission requests</DialogDescription></DialogHeader>
-          <div className="border border-border rounded-xl overflow-x-auto bg-card mt-2 shadow-sm">
+          <div className="border border-border/80 rounded-2xl overflow-x-auto bg-card mt-2 shadow-2xs">
             <table className="w-full md:min-w-max text-[var(--text-sm)]">
-            <thead><tr className="bg-muted border-b border-border">
+            <thead><tr className="bg-muted/50 border-b border-border/80">
               <th className={thClass}>Employee Name</th><th className={thClass}>Mission Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
             </tr></thead>
             <tbody className="divide-y divide-border">
