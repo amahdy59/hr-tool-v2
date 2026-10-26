@@ -1,5 +1,250 @@
 [
   {
+    "English Text": "Clearer grouping, readable status, and focused actions. Compare the same task on both screens.",
+    "Arabic Translation": "تجميع أوضح، وحالة سهلة القراءة، وإجراءات مركزة. قارن المهمة نفسها على الشاشتين.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "What changed",
+    "Arabic Translation": "ما الذي تغير",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Screenshot",
+    "Arabic Translation": "لقطة شاشة",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Open full screenshot",
+    "Arabic Translation": "فتح لقطة الشاشة كاملة",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "This is an interactive portfolio demo. Screenshots show design changes; automated checks support implementation quality. No measured reduction in task time or business impact is claimed. Physical-device and spoken screen-reader evaluation still require validation.",
+    "Arabic Translation": "هذا عرض تفاعلي ضمن ملف الأعمال. توضح لقطات الشاشة تغييرات التصميم، وتدعم الفحوصات الآلية جودة التنفيذ. لا ندّعي انخفاضاً مقاساً في وقت إنجاز المهام أو أثراً تجارياً. ما زال التقييم على أجهزة فعلية وبقارئات الشاشة الصوتية يحتاج إلى تحقق.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "What this demonstrates",
+    "Arabic Translation": "ما يوضحه هذا المشروع",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Validation",
+    "Arabic Translation": "التحقق",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Before and after",
+    "Arabic Translation": "قبل وبعد",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Overview",
+    "Arabic Translation": "نظرة عامة",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Explore the case study",
+    "Arabic Translation": "استكشف دراسة الحالة",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Track the status",
+    "Arabic Translation": "متابعة الحالة",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Review and submit",
+    "Arabic Translation": "المراجعة والإرسال",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Add dates and details",
+    "Arabic Translation": "إضافة التواريخ والتفاصيل",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Choose a type",
+    "Arabic Translation": "اختيار النوع",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "The interface keeps the next step visible throughout a request.",
+    "Arabic Translation": "تبقي الواجهة الخطوة التالية واضحة طوال مسار الطلب.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "A clearer request journey",
+    "Arabic Translation": "مسار أوضح للطلبات",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Compare the screens, try the demo, and inspect the keyboard, language, and mobile states.",
+    "Arabic Translation": "قارن الشاشات وجرّب العرض التجريبي وتحقق من حالات لوحة المفاتيح واللغة والجوال.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "What you can inspect",
+    "Arabic Translation": "ما يمكنك التحقق منه",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Prioritize frequent tasks, reveal details when needed, and adapt navigation and records to smaller screens.",
+    "Arabic Translation": "تقديم المهام المتكررة، وإظهار التفاصيل عند الحاجة، وتكييف التنقل والسجلات مع الشاشات الصغيرة.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "The design response",
+    "Arabic Translation": "الاستجابة التصميمية",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Employees had to navigate dense screens to find a request, understand its status, or update their information.",
+    "Arabic Translation": "اضطر الموظفون إلى التنقل بين شاشات مزدحمة للعثور على طلب أو فهم حالته أو تحديث معلوماتهم.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "The problem",
+    "Arabic Translation": "المشكلة",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "The redesign at a glance",
+    "Arabic Translation": "نظرة سريعة على إعادة التصميم",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "{{count}} days available",
+    "Arabic Translation": "{{count}} يوم متاح",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Sample entitlement",
+    "Arabic Translation": "رصيد نموذجي",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Annual leave balance",
+    "Arabic Translation": "رصيد الإجازة السنوية",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Simulated sign-in: demo@example.com / 123456. Do not use your work password.",
+    "Arabic Translation": "تسجيل دخول محاكى: demo@example.com / 123456. لا تستخدم كلمة مرور عملك.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Explore the HR workspace instantly with sample data.",
+    "Arabic Translation": "استكشف مساحة الموارد البشرية فوراً باستخدام بيانات نموذجية.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Drafts stay in this browser tab. Attachments must be selected again.",
+    "Arabic Translation": "تبقى المسودات في علامة التبويب هذه. يجب اختيار المرفقات مجدداً.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Recent requests",
+    "Arabic Translation": "الطلبات الأخيرة",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "View details",
+    "Arabic Translation": "عرض التفاصيل",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Clear search and filters",
+    "Arabic Translation": "مسح البحث وعوامل التصفية",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "No requests match your search or filters.",
+    "Arabic Translation": "لا توجد طلبات تطابق البحث أو عوامل التصفية.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Results: {{count}}",
+    "Arabic Translation": "عدد النتائج: {{count}}",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Request type",
+    "Arabic Translation": "نوع الطلب",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Search requests",
+    "Arabic Translation": "البحث في الطلبات",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Try again",
+    "Arabic Translation": "حاول مجدداً",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Requests could not be loaded. Please try again.",
+    "Arabic Translation": "تعذّر تحميل الطلبات. حاول مجدداً.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Review leave and mission requests in one place.",
+    "Arabic Translation": "راجع طلبات الإجازات والمأموريات في مكان واحد.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Current status",
+    "Arabic Translation": "الحالة الحالية",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Under review",
+    "Arabic Translation": "قيد المراجعة",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Request journey",
+    "Arabic Translation": "مسار الطلب",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "No requests yet. Your request summary will appear here.",
+    "Arabic Translation": "لا توجد طلبات بعد. سيظهر ملخص طلباتك هنا.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Total: {{total}}",
+    "Arabic Translation": "الإجمالي: {{total}}",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Request overview",
+    "Arabic Translation": "نظرة على الطلبات",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Choose the request you want to create.",
+    "Arabic Translation": "اختر نوع الطلب الذي تريد إنشاءه.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "New request",
+    "Arabic Translation": "طلب جديد",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "More",
+    "Arabic Translation": "المزيد",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Requests",
+    "Arabic Translation": "الطلبات",
+    "UI Category": "Interface"
+  },
+  {
     "English Text": "Sample notifications. Browser storage is unavailable; changes last for this session only.",
     "Arabic Translation": "إشعارات نموذجية. مساحة تخزين المتصفح غير متاحة؛ ستبقى التغييرات لهذه الجلسة فقط.",
     "UI Category": "Interface"
@@ -4437,8 +4682,8 @@
   },
   {
     "Source Index": 758,
-    "English Text": "redesigned for clarity.",
-    "Arabic Translation": "أُعيد تصميمه لمزيد من الوضوح.",
+    "English Text": "from request to decision.",
+    "Arabic Translation": "أُعيد تصميمه من الطلب إلى القرار.",
     "UI Category": "Label",
     "Localization Note": "Sentence fragment — verify grammar in the final assembled sentence."
   },

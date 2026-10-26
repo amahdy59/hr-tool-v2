@@ -1,3 +1,4 @@
+const { openPreferences, navigate } = require('./browser_ui_helpers.cjs');
 const puppeteer = require('puppeteer');
 const http = require('http');
 const path = require('path');
@@ -73,6 +74,10 @@ const TEST_SCENARIOS = [
   { name: 'search_mobile_en_dark', width: 375, height: 667, lang: 'en', theme: 'dark', action: 'search' },
   { name: 'preferences_desktop_ar_light', width: 1280, height: 650, lang: 'ar', theme: 'light', action: 'preferences' },
   { name: 'request_leave_mobile_ar', width: 375, height: 667, lang: 'ar', theme: 'light', action: 'request-leave' },
+  { name: 'requests_mobile_en_light', width: 390, height: 844, lang: 'en', theme: 'light', action: 'requests' },
+  { name: 'requests_mobile_ar_dark', width: 390, height: 844, lang: 'ar', theme: 'dark', action: 'requests' },
+  { name: 'case_study_mobile_ar', width: 390, height: 844, lang: 'ar', theme: 'light', action: 'case_study' },
+
 ];
 
 server.listen(0, '127.0.0.1', async () => {
@@ -102,7 +107,9 @@ server.listen(0, '127.0.0.1', async () => {
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
     });
 
-    const scenarios = scenarioName ? TEST_SCENARIOS.filter(scenario => scenario.name === scenarioName) : TEST_SCENARIOS;
+    const requested = scenarioName?.split(',');
+    if (requested?.some(name => !TEST_SCENARIOS.some(scenario => scenario.name === name))) throw new Error(`Unknown visual scenario: ${scenarioName}`);
+    const scenarios = requested ? TEST_SCENARIOS.filter(scenario => requested.includes(scenario.name)) : TEST_SCENARIOS;
     if (scenarios.length === 0) throw new Error(`Unknown visual scenario: ${scenarioName}`);
     for (const sc of scenarios) {
       // Create an isolated incognito browser context for every scenario
@@ -200,7 +207,7 @@ server.listen(0, '127.0.0.1', async () => {
           await page.waitForSelector('main, h1', { timeout: 10000 });
           await new Promise(r => setTimeout(r, 600));
         }
-      } else if (['dashboard', 'navigation', 'preferences', 'search', 'request-leave'].includes(sc.action)) {
+      } else if (['dashboard', 'navigation', 'preferences', 'search', 'request-leave', 'requests'].includes(sc.action)) {
         const quickLoginBtn = await page.evaluateHandle(() => {
           const btns = Array.from(document.querySelectorAll('button'));
           return btns.find(b => {
@@ -223,14 +230,20 @@ server.listen(0, '127.0.0.1', async () => {
           await page.waitForSelector('[data-panel="search"]');
           await page.focus('[data-slot="command-input"]');
         }
+        if (sc.action === 'requests') { await navigate(page, 'requests'); await page.waitForSelector('[data-screen="requests"] figure'); }
         if (sc.action === 'request-leave') {
-          const request = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content button')].find(b => /Request Leave|طلب إجازة/.test(b.textContent)));
-          if (!request.asElement()) throw new Error('Missing request leave action');
-          await request.asElement().click();
+          if (sc.width < 1024) {
+            await page.click('[data-slot="new-request"]'); await page.waitForSelector('[data-panel="new-request"]');
+            await page.click('[data-panel="new-request"] button:has(.lucide-calendar-plus)');
+          } else {
+            const request = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content [data-screen]:not([hidden]) button')].find(b => /Request Leave|طلب إجازة/.test(b.textContent)));
+            if (!request.asElement()) throw new Error('Missing request leave action');
+            await request.asElement().click();
+          }
           await page.waitForSelector('[role="dialog"] #leave-submit-button');
         }
         if (sc.action === 'preferences') {
-          await page.click('header [data-slot="dialog-trigger"]');
+          await openPreferences(page);
           await page.waitForSelector('[data-panel="accessibility"]');
         }
       }
@@ -255,7 +268,13 @@ server.listen(0, '127.0.0.1', async () => {
       const baselinePath = path.join(baselinesDir, `${sc.name}.png`);
 
       if (shouldUpdate || !fs.existsSync(baselinePath)) {
-        fs.writeFileSync(baselinePath, currentBuffer);
+        for (let attempt = 0; ; attempt++) {
+          try { fs.writeFileSync(baselinePath, currentBuffer); break; }
+          catch (error) {
+            if (attempt >= 4 || !['EBUSY', 'EPERM', 'UNKNOWN'].includes(error.code)) throw error;
+            await new Promise(resolve => setTimeout(resolve, 250));
+          }
+        }
         console.log(`   📸 [Captured Baseline] ${sc.name} (${sc.width}x${sc.height})`);
       } else {
         comparisons++;

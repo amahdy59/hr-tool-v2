@@ -1,3 +1,4 @@
+import { readFormDraft, saveFormDraft } from '@/lib/formDraft';
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -6,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 } from './ui/dialog';
 import { Button } from './ui/button';
 import {
@@ -94,16 +96,23 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
   const [attachments, setAttachments] = useState<File[]>([]);
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
+  const [draftReady, setDraftReady] = useState(false);
   React.useEffect(() => {
+    if (!open) { setDraftReady(false); return; }
     if (open) {
-      setLeaveType(initialData?.leaveType || 'Annual Leave');
-      setFromDate(initialData?.fromDate || '');
-      setToDate(initialData?.toDate || '');
-      setNotes(initialData?.notes || '');
+      const draft = mode === 'edit' ? {} : readFormDraft('leave');
+      setLeaveType(initialData?.leaveType || draft.leaveType || 'Annual Leave');
+      setFromDate(initialData?.fromDate || draft.fromDate || '');
+      setToDate(initialData?.toDate || draft.toDate || '');
+      setNotes(initialData?.notes || draft.notes || '');
       setAttachments([]);
       setAttemptedSubmit(false);
+      setDraftReady(true);
     }
-  }, [open, initialData]);
+  }, [open, initialData, mode]);
+  React.useEffect(() => {
+    if (open && draftReady && mode !== 'edit') saveFormDraft('leave', { leaveType, fromDate, toDate, notes });
+  }, [open, draftReady, leaveType, fromDate, toDate, notes, mode]);
 
   const annualEntitlement = calculateAnnualEntitlement(graduationYear);
 
@@ -234,7 +243,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[420px] max-h-[90vh] overflow-y-auto">
+      <DialogContent data-layout="form" className="sm:max-w-[420px] max-h-[90vh]">
         <DialogHeader>
           <DialogTitle
             style={{
@@ -557,6 +566,10 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
           </div>
 
           {/* Submit Button */}
+
+        </div>
+        <DialogFooter className="border-t border-border pt-3">
+          {mode !== 'edit' && <p className="text-xs text-muted-foreground">{t('mobile.draftHint')}</p>}
           <Button
             id="leave-submit-button"
             className="w-full shadow-2xs hover:shadow-xs active:scale-[0.98] cursor-pointer"
@@ -573,7 +586,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
               </span>
             )}
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

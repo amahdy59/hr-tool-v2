@@ -14,6 +14,8 @@ import {
   UserCircle,
   CloudOff,
   Banknote,
+  Files,
+  Settings,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
@@ -53,6 +55,8 @@ interface HeaderProps {
   activeTab: AppTab;
   setActiveTab: (tab: AppTab) => void;
   onLogout?: () => void;
+  mobileMenuOpen?: boolean;
+  onMobileMenuChange?: (open: boolean) => void;
 }
 
 // Helper function to get initials from name
@@ -66,6 +70,7 @@ const getInitials = (name: string): string => {
 
 const tabIcons: Record<AppTab, React.ComponentType<{ className?: string }>> = {
   dashboard: LayoutDashboard,
+  requests: Files,
   attendance: CalendarCheck,
   employees: Users,
   leaves: FileText,
@@ -83,9 +88,15 @@ export const Header: React.FC<HeaderProps> = ({
   activeTab,
   setActiveTab,
   onLogout,
+  mobileMenuOpen, onMobileMenuChange,
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [internalMenuOpen, setInternalMenuOpen] = React.useState(false);
+  const isMenuOpen = mobileMenuOpen ?? internalMenuOpen;
+  const setIsMenuOpen = (value: boolean) => { setInternalMenuOpen(value); onMobileMenuChange?.(value); };
+  const [preferencesOpen, setPreferencesOpen] = React.useState(false);
+  const menuTriggerRef = React.useRef<HTMLButtonElement>(null);
   const openingShortcuts = React.useRef(false);
+  const openingPreferences = React.useRef(false);
   const [offlinePendingCount, setOfflinePendingCount] = useState(0);
   const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
@@ -125,6 +136,7 @@ export const Header: React.FC<HeaderProps> = ({
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <button
+              ref={menuTriggerRef}
               className="lg:hidden flex items-center justify-center w-11 h-11 border border-border/80 bg-card/70 backdrop-blur-md shadow-2xs rounded-xl hover:bg-muted text-foreground transition-all duration-200 active:scale-95 cursor-pointer relative overflow-hidden shrink-0"
               aria-label={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
               title={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
@@ -145,6 +157,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </SheetTrigger>
           <SheetContent
+            onCloseAutoFocus={(event) => { if (openingPreferences.current) { event.preventDefault(); openingPreferences.current = false; setPreferencesOpen(true); } }}
             side={isArabic ? 'right' : 'left'}
             dir={isArabic ? 'rtl' : 'ltr'}
             className="w-80 max-w-[calc(100vw-1rem)] p-0 flex flex-col gap-0 h-dvh bg-card/95 backdrop-blur-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
@@ -158,7 +171,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="p-4 pe-16 border-b border-border/50 shrink-0">
               <SheetClose asChild>
                 <button
-                  onClick={() => setActiveTab('profile')}
+                  data-nav="profile" onClick={() => setActiveTab('profile')}
                   className="flex w-full items-center justify-start gap-3 p-2 rounded-xl text-start hover:bg-muted/70 active:scale-[0.98] transition-all cursor-pointer group"
                   aria-label={t('header.goProfile')}
                   title={t('header.goProfile')}
@@ -196,7 +209,7 @@ export const Header: React.FC<HeaderProps> = ({
                       <SheetClose asChild>
                         <button
                           type="button"
-                          onClick={() => setActiveTab(tab)}
+                          data-nav={tab} onClick={() => setActiveTab(tab)}
                           aria-current={isActive ? 'page' : undefined}
                           className={cn(
                             'flex min-h-11 w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-start text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
@@ -213,6 +226,9 @@ export const Header: React.FC<HeaderProps> = ({
               </ul>
             </nav>
 
+            <div className="border-t border-border p-3 lg:hidden">
+              <button type="button" className="flex min-h-11 w-full items-center justify-start gap-3 rounded-xl px-3 text-sm hover:bg-muted" onClick={() => { openingPreferences.current = true; setIsMenuOpen(false); }}><Settings className="h-5 w-5" aria-hidden="true" />{t('header.accessibility')}</button>
+            </div>
             {/* Drawer Bottom Actions */}
             <div className="border-t border-border/60 p-3 mt-auto space-y-2 shrink-0">
               {offlinePendingCount > 0 && (
@@ -258,13 +274,13 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         )}
         <NotificationCenter accountId={currentUser?.email || 'demo'} />
-        <AccessibilityPanel settings={accessibility} compact />
+        <AccessibilityPanel settings={accessibility} compact open={preferencesOpen} onOpenChange={setPreferencesOpen} triggerClassName="hidden lg:inline-flex" mobileReturnFocus={menuTriggerRef} />
 
         {/* User Account Menu Hub */}
         <DropdownMenu dir={isArabic ? 'rtl' : 'ltr'}>
           <DropdownMenuTrigger asChild>
             <button
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:flex"
               aria-label={t('header.userMenu', 'User account menu')}
               title={displayName}
             >
@@ -297,7 +313,7 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             )}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setActiveTab('profile')} className="cursor-pointer">
+            <DropdownMenuItem data-nav="profile" onClick={() => setActiveTab('profile')} className="cursor-pointer">
               <UserCircle className="w-4 h-4 me-2 text-primary shrink-0" />
               <span>{t('header.myProfile', 'My Profile')}</span>
             </DropdownMenuItem>

@@ -49,7 +49,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[440px]">
+      <DialogContent data-layout="compact" className="sm:max-w-[440px]">
         <DialogHeader>
           <DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)] flex items-center gap-2">
             <span>{title}</span>
@@ -109,4 +109,4 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       </DialogContent>
     </Dialog>
   );
-};
+};

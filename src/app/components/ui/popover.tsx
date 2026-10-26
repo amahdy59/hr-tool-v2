@@ -4,10 +4,12 @@ import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
 import { cn } from "./utils";
+import { useOverlayHistory } from '@/lib/useOverlayHistory';
 
 function Popover({
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
+  useOverlayHistory(props.open, () => props.onOpenChange?.(false));
   return <PopoverPrimitive.Root data-slot="popover" {...props} />;
 }
 

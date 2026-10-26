@@ -6,10 +6,12 @@ import { XIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { cn } from "./utils";
+import { useOverlayHistory } from '@/lib/useOverlayHistory';
 
 function Dialog({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
+  useOverlayHistory(props.open, () => props.onOpenChange?.(false));
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
 }
 
@@ -52,6 +54,12 @@ const DialogContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => {
   const { t } = useTranslation();
+  const parts = React.Children.toArray(children);
+  const isForm = (props as Record<string, unknown>)['data-layout'] === 'form';
+  const isPart = (part: React.ReactNode, type: unknown) => React.isValidElement(part) && part.type === type;
+  const header = isForm ? parts.find(part => isPart(part, DialogHeader)) : null;
+  const footer = isForm ? parts.find(part => isPart(part, DialogFooter)) : null;
+  const body = isForm ? parts.filter(part => part !== header && part !== footer) : children;
   return (
   <DialogPortal>
     <DialogOverlay />
@@ -68,9 +76,11 @@ const DialogContent = React.forwardRef<
       )}
       {...props}
     >
+      {header}
       <div data-slot="dialog-scroll" className="dialog-scroll flex min-h-0 flex-col gap-[inherit] overflow-y-auto overscroll-contain p-1">
-        {children}
+        {body}
       </div>
+      {footer}
       <DialogPrimitive.Close data-slot="dialog-dismiss" className="ring-offset-background focus-visible:ring-ring absolute top-3 end-3 inline-flex h-11 w-11 items-center justify-center rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none cursor-pointer">
         <XIcon className="h-4 w-4" aria-hidden="true" />
         <span className="sr-only">{t('common.close', 'Close')}</span>

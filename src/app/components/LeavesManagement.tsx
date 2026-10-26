@@ -495,7 +495,7 @@ export const LeavesManagement: React.FC = () => {
 
         <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[600px] text-[var(--text-sm)] text-start">
+            <table className="mobile-record-table w-full md:min-w-[600px] text-[var(--text-sm)] text-start">
               <caption className="sr-only">Holiday and seasonal leave list</caption>
               <thead>
                 <tr className="bg-muted/50 border-b border-border/80">
@@ -510,12 +510,12 @@ export const LeavesManagement: React.FC = () => {
                 {paginatedHolidays.map(h => (
                   <tr key={h.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors">
                     <th scope="row" className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)] text-start font-normal">{h.type}</th>
-                    <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums font-mono text-xs">{h.range}</td>
-                    <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums font-semibold">{h.duration}</td>
-                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{h.notes}</td>
+                    <td data-label={t('mobile.dates')} className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums font-mono text-xs">{h.range}</td>
+                    <td data-label={t('dashboard.duration')} className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums font-semibold">{h.duration}</td>
+                    <td data-label={t('mobile.notes')} className="whitespace-nowrap px-4 py-3 text-muted-foreground">{h.notes}</td>
                     <td className="whitespace-nowrap px-4 py-3 text-end">
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild><button className="inline-flex items-center justify-center size-9 hover:bg-muted/80 rounded-xl transition-all cursor-pointer border border-transparent hover:border-border/80 active:scale-95 text-muted-foreground hover:text-foreground shadow-2xs"><MoreVertical className="w-4 h-4" /></button></DropdownMenuTrigger>
+                        <DropdownMenuTrigger asChild><button aria-label={t('management.actions')} className="inline-flex items-center justify-center size-9 hover:bg-muted/80 rounded-xl transition-all cursor-pointer border border-transparent hover:border-border/80 active:scale-95 text-muted-foreground hover:text-foreground shadow-2xs"><MoreVertical className="w-4 h-4" /></button></DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="min-w-[12rem]">
                           <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setEditHolidayData(h); setEditHolidayOpen(true); }}><Edit className="w-4 h-4" /> Edit</DropdownMenuItem>
                           <DropdownMenuSeparator />

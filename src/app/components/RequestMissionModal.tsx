@@ -1,3 +1,4 @@
+import { readFormDraft, saveFormDraft } from '@/lib/formDraft';
 import React, { useState, useMemo } from 'react';
 import {
   Dialog,
@@ -5,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 } from './ui/dialog';
 import { Button } from './ui/button';
 import {
@@ -50,7 +52,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
   onSubmit,
   initialData,
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
   const [missionType, setMissionType] = useState('Work From Home');
@@ -59,15 +61,23 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
   const [notes, setNotes] = useState('');
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
+  const [draftReady, setDraftReady] = useState(false);
   React.useEffect(() => {
+    if (!open) { setDraftReady(false); return; }
     if (open) {
-      setMissionType(initialData?.missionType || 'Work From Home');
-      setFromDate(initialData?.fromDate || '');
-      setToDate(initialData?.toDate || '');
-      setNotes(initialData?.notes || '');
+      const draft = readFormDraft('mission');
+      setMissionType(initialData?.missionType || draft.missionType || 'Work From Home');
+      setFromDate(initialData?.fromDate || draft.fromDate || '');
+      setToDate(initialData?.toDate || draft.toDate || '');
+      setNotes(initialData?.notes || draft.notes || '');
+
       setAttemptedSubmit(false);
+      setDraftReady(true);
     }
   }, [open, initialData]);
+  React.useEffect(() => {
+    if (open && draftReady) saveFormDraft('mission', { missionType, fromDate, toDate, notes });
+  }, [open, draftReady, missionType, fromDate, toDate, notes]);
 
   const daysRequested = useMemo(() => {
     if (!fromDate || !toDate) return 0;
@@ -115,7 +125,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[420px] max-h-[90vh] overflow-y-auto">
+      <DialogContent data-layout="form" className="sm:max-w-[420px] max-h-[90vh]">
         <DialogHeader>
           <DialogTitle
             style={{
@@ -259,6 +269,10 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
             />
           </div>
 
+
+        </div>
+        <DialogFooter className="border-t border-border pt-3">
+          <p className="text-xs text-muted-foreground">{t('mobile.draftHint')}</p>
           <Button
             className="w-full rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
             onClick={handleSubmit}
@@ -271,7 +285,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
               </span>
             )}
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

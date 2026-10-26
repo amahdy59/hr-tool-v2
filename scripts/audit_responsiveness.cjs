@@ -1,3 +1,4 @@
+const { openPreferences, navigate } = require('./browser_ui_helpers.cjs');
 const puppeteer = require('puppeteer');
 const http = require('http');
 const path = require('path');
@@ -210,22 +211,9 @@ server.listen(0, '127.0.0.1', async () => {
     console.log(`Auditing ${VIEWPORTS.length} standard viewports across multiple routes and locales...\n`);
 
     async function checkModules(vp, language) {
-      const modules = ['dashboard', 'attendance', 'employees', 'leaves', 'missions', 'roles', 'payrolls', 'profile'];
+      const modules = ['dashboard', 'attendance', 'employees', 'leaves', 'missions', 'roles', 'payrolls', 'profile', 'requests'];
       for (const [index, name] of modules.entries()) {
-        if (vp.width < 1024) {
-          await page.click('header button[aria-haspopup="dialog"]');
-          await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
-          await page.evaluate(() => Promise.all(document.querySelector('[data-slot="sheet-content"]').getAnimations().map(animation => animation.finished)));
-          await checkDialogOverflow(`[${vp.name}] Navigation drawer (${language})`);
-          const buttons = await page.$$(name === 'profile' ? '[data-slot="sheet-content"] button' : '[data-slot="sheet-content"] nav button');
-          if (!buttons[name === 'profile' ? 0 : index]) throw new Error(`Missing mobile destination: ${name}`);
-          await buttons[name === 'profile' ? 0 : index].click();
-          await page.waitForSelector('[data-slot="sheet-content"]', { hidden: true });
-        } else {
-          const buttons = await page.$$('aside button');
-          if (!buttons[index]) throw new Error(`Missing desktop destination: ${name}`);
-          await buttons[index].click();
-        }
+        await navigate(page, name);
         await new Promise(r => setTimeout(r, 350));
         await page.waitForFunction(() => !document.querySelector('#main-content > .animate-fadeIn > [role="status"]'));
         await checkPageOverflow(`[${vp.name}] Module: ${name} (${language})`);
@@ -233,11 +221,11 @@ server.listen(0, '127.0.0.1', async () => {
         if (!paginationFits) failures.push(`[${vp.name}] Pagination overflows in ${name} (${language})`);
         else checksPassed++;
       }
-      console.log(`   Checked all eight sections (${language}).`);
+      console.log(`   Checked all nine sections (${language}).`);
     }
 
     async function checkPreferences(vp, language) {
-      await page.click('header [data-slot="dialog-trigger"]');
+      await openPreferences(page);
       await page.waitForSelector('[data-panel="accessibility"]');
       await checkDialogOverflow(`[${vp.name}] Preferences (${language})`);
       const options = await page.$$('[data-panel="accessibility"] [role="checkbox"]');
@@ -350,18 +338,19 @@ server.listen(0, '127.0.0.1', async () => {
         await checkPageOverflow(`[${vp.name}] Dashboard Overview (EN)`);
         await checkHeaderResponsiveness(`[${vp.name}] Header (EN)`);
 
-        // Check Request Leave Modal
-        const reqLeaveBtn = await page.evaluateHandle(() => {
-          const btns = Array.from(document.querySelectorAll('button'));
-          return btns.find(b => (b.textContent || '').toLowerCase().includes('request leave') || (b.textContent || '').toLowerCase().includes('طلب إجازة'));
-        });
-        if (reqLeaveBtn && reqLeaveBtn.asElement()) {
-          await reqLeaveBtn.asElement().click();
-          await new Promise(r => setTimeout(r, 400));
-          await checkDialogOverflow(`[${vp.name}] Request Leave Dialog (EN)`);
-          await page.keyboard.press('Escape');
-          await new Promise(r => setTimeout(r, 300));
+        // Request creation uses the floating action on compact screens.
+        if (vp.width < 1024) {
+          await page.click('[data-slot="new-request"]');
+          await page.waitForSelector('[data-panel="new-request"]');
+          await page.click('[data-panel="new-request"] button:has(.lucide-calendar-plus)');
+        } else {
+          const action = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content button')].find(b => b.getBoundingClientRect().width > 0 && /Request Leave|طلب إجازة/.test(b.textContent)));
+          await action.asElement().click();
         }
+        await page.waitForSelector('#leave-submit-button');
+        await checkDialogOverflow(`[${vp.name}] Request Leave Dialog`);
+        await page.keyboard.press('Escape');
+        await page.waitForSelector('#leave-submit-button', { hidden: true });
 
         // Navigate modules
         await checkModules(vp, 'EN');

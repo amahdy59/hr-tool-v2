@@ -22,6 +22,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { AccessibilityPanel, type AccessibilitySettings } from './AccessibilityPanel';
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
@@ -32,6 +33,8 @@ const ScreenshotCard: React.FC<{
   label: string;
   variant: 'before' | 'after';
 }> = ({ src, caption, label, variant }) => {
+  const { t } = useTranslation();
+  const [expanded, setExpanded] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   const isAfter = variant === 'after';
@@ -55,7 +58,7 @@ const ScreenshotCard: React.FC<{
           <span>{label}</span>
         </div>
       </div>
-      <div
+      <button type="button" onClick={() => setExpanded(true)} aria-label={t('mobile.caseImageHint') + ': ' + label}
         className={cn(
           'relative aspect-[16/10] w-full overflow-hidden rounded-2xl border bg-card transition-all duration-300',
           isAfter
@@ -84,8 +87,9 @@ const ScreenshotCard: React.FC<{
             )}
           />
         )}
-      </div>
+      </button>
       <p className="text-xs leading-5 text-muted-foreground">{caption}</p>
+      <Dialog open={expanded} onOpenChange={setExpanded}><DialogContent className="sm:max-w-6xl"><DialogHeader><DialogTitle>{label}</DialogTitle><DialogDescription>{caption}</DialogDescription></DialogHeader><img src={src} alt={`${label}: ${caption}`} className="w-full h-auto rounded-xl" /></DialogContent></Dialog>
     </div>
   );
 };
@@ -168,7 +172,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
 
   const proofPoints = [
     { icon: Globe2, value: t('redesign.proofPoints.languages.value'), label: t('redesign.proofPoints.languages.label') },
-    { icon: BadgeCheck, value: t('redesign.proofPoints.accessibility.value'), label: t('redesign.proofPoints.accessibility.label') },
+    { icon: BadgeCheck, value: t('mobile.caseValidation'), label: t('mobile.caseEvidenceBody') },
     { icon: Database, value: t('redesign.proofPoints.schema.value'), label: t('redesign.proofPoints.schema.label') },
   ];
 
@@ -212,7 +216,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
       >
         <section
           aria-labelledby="hero-heading"
-          className="space-y-6 rounded-[calc(var(--radius-card)+12px)] border border-border/70 bg-card/80 p-6 shadow-2xl backdrop-blur sm:p-8 lg:p-10"
+          className="space-y-5 rounded-2xl border border-border bg-card p-5 sm:p-8 lg:p-10"
         >
           <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent shadow-sm">
             <Target className="h-3.5 w-3.5" aria-hidden="true" />
@@ -221,7 +225,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
           <div className="max-w-4xl space-y-5">
             <h1
               id="hero-heading"
-              className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl lg:text-5xl"
+              className="text-2xl font-semibold leading-snug text-foreground sm:text-4xl lg:text-5xl"
             >
               {t('redesign.hero.titlePrefix')} <span className="text-accent">{t('redesign.hero.titleAccent')}</span>
             </h1>
@@ -248,20 +252,22 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
               </div>
             ))}
           </div>
+        </section>
+
+        <nav aria-label={t('mobile.caseContents')} className="flex flex-wrap gap-2">
+          {[['hero-heading', 'caseOverview'], ['comparison-heading', 'caseCompare'], ['case-validation', 'caseValidation']].map(([id, key]) => <button key={id} type="button" onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' })} className="inline-flex min-h-11 items-center rounded-full border border-border bg-card px-4 text-sm">{t('mobile.' + key)}</button>)}
+        </nav>
+        <section aria-labelledby="case-story-heading" className="space-y-4">
+          <h2 id="case-story-heading" className="text-2xl font-semibold">{t('mobile.caseSummary')}</h2>
           <div className="grid gap-4 md:grid-cols-3">
-            {proofPoints.map(({ icon: Icon, value, label }) => (
-              <div
-                key={value}
-                className="group rounded-2xl border border-border/80 bg-background/80 p-5 shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md motion-reduce:transform-none"
-              >
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none">
-                  <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
-                </div>
-                <p className="text-base font-bold text-foreground">{value}</p>
-                <p className="mt-1 text-xs leading-5 text-muted-foreground">{label}</p>
-              </div>
-            ))}
+            {([{ key: 'caseProblem', icon: Target }, { key: 'caseDecision', icon: Layers }, { key: 'caseEvidence', icon: Eye }]).map(({ key, icon: Icon }) => <article key={key} className="rounded-2xl border border-border bg-card p-5"><Icon className="h-6 w-6 text-primary" aria-hidden="true" /><h3 className="mt-3 text-base font-semibold">{t('mobile.' + key)}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t('mobile.' + key + 'Body')}</p></article>)}
           </div>
+          <figure className="rounded-2xl border border-border bg-card p-5">
+            <figcaption className="font-semibold">{t('mobile.caseJourney')}</figcaption><p className="mt-1 text-sm text-muted-foreground">{t('mobile.caseJourneyIntro')}</p>
+            <ol className="mt-5 grid gap-3 sm:grid-cols-4" data-no-auto-translate>
+              {['choose', 'complete', 'confirm', 'track'].map((key, index) => <li key={key} className="flex min-w-0 items-center gap-3 rounded-xl border border-border p-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">{new Intl.NumberFormat(i18n.language).format(index + 1)}</span><span className="text-sm">{t('mobile.' + key)}</span></li>)}
+            </ol>
+          </figure>
         </section>
 
         <section aria-labelledby="comparison-heading" className="space-y-6">
@@ -284,6 +290,16 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
                 key={c.id}
                 role="tab"
                 aria-selected={activeTab === i}
+                tabIndex={activeTab === i ? 0 : -1}
+                onKeyDown={event => {
+                  let next = i;
+                  if (event.key === 'Home') next = 0;
+                  else if (event.key === 'End') next = comparisons.length - 1;
+                  else if (event.key === 'ArrowRight') next = (i + (isArabic ? -1 : 1) + comparisons.length) % comparisons.length;
+                  else if (event.key === 'ArrowLeft') next = (i + (isArabic ? 1 : -1) + comparisons.length) % comparisons.length;
+                  else return;
+                  event.preventDefault(); setActiveTab(next); document.getElementById('tab-' + comparisons[next].id)?.focus();
+                }}
                 aria-controls={`tabpanel-${c.id}`}
                 id={`tab-${c.id}`}
                 type="button"
@@ -312,6 +328,7 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
                 activeTab === i && 'animate-fadeIn'
               )}
             >
+              <p className="sm:col-span-2 rounded-xl bg-muted p-3 text-sm"><strong>{t('mobile.caseChangeTitle')}: </strong>{t('mobile.caseChangeBody')}</p>
               <ScreenshotCard src={c.before.src} caption={c.before.caption} label={t('redesign.comparison.beforeLabel')} variant="before" />
               <ScreenshotCard src={c.after.src} caption={c.after.caption} label={t('redesign.comparison.afterLabel')} variant="after" />
             </div>
@@ -343,6 +360,22 @@ export const RedesignInfoPage: React.FC<RedesignInfoPageProps> = ({
           </div>
         </section>
 
+        <section id="case-validation" className="scroll-mt-28 rounded-2xl border border-border bg-card p-5 sm:p-6" aria-labelledby="case-validation-heading"><h2 id="case-validation-heading" className="text-xl font-semibold">{t('mobile.caseLimits')}</h2><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t('mobile.caseLimitsBody')}</p></section>
+        <div className="space-y-3">          <div className="grid gap-4 md:grid-cols-3">
+            {proofPoints.map(({ icon: Icon, value, label }) => (
+              <div
+                key={value}
+                className="group rounded-2xl border border-border/80 bg-background/80 p-5 shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md motion-reduce:transform-none"
+              >
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none">
+                  <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
+                </div>
+                <p className="text-base font-bold text-foreground">{value}</p>
+                <p className="mt-1 text-xs leading-5 text-muted-foreground">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
         <section aria-labelledby="outcomes-heading">
           <div className="mb-6 space-y-2">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent">

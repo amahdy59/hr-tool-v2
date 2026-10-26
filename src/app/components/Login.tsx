@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Info, KeyRound, Zap, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Info, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
-import { RedesignInfoPage } from './RedesignInfoPage';
+import { useOverlayHistory } from '@/lib/useOverlayHistory';
+const RedesignInfoPage = React.lazy(() => import('./RedesignInfoPage').then(module => ({ default: module.RedesignInfoPage })));
 import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 
@@ -39,7 +40,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   const [resetEmailTouched, setResetEmailTouched] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
   const [showInfoPage, setShowInfoPage] = useState(false);
-  const showTempLogin = true;
+  useOverlayHistory(showInfoPage, () => setShowInfoPage(false));
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isUsernameValid = emailRegex.test(username);
@@ -108,14 +109,14 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
   if (showInfoPage) {
     return (
-      <RedesignInfoPage
+      <React.Suspense fallback={<div role="status" className="p-6">{t('common.loading')}</div>}><RedesignInfoPage
         onBack={() => setShowInfoPage(false)}
         onExploreDemo={() => {
           setShowInfoPage(false);
           handleQuickLogin();
         }}
         accessibility={accessibility}
-      />
+      /></React.Suspense>
     );
   }
 
@@ -129,7 +130,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
           <div className="absolute top-0 -end-4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" />
           <div className="absolute -bottom-8 start-20 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" />
         </div>
-        
+
         {/* Grid pattern overlay */}
         <div
           className="absolute inset-0 opacity-10"
@@ -139,7 +140,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             backgroundSize: '50px 50px',
           }}
         />
-        
+
         {/* Subtle vignette */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
       </div>
@@ -153,10 +154,16 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
       </div>
 
       {/* Login Card */}
-      <div className="relative z-10 w-full min-h-[100dvh] sm:min-h-0 sm:max-w-md sm:mx-4 sm:my-8 flex flex-col bg-card sm:bg-transparent">
-        <div className="bg-card sm:bg-card/95 sm:backdrop-blur-xl sm:shadow-2xl w-full flex flex-col p-6 sm:p-8 rounded-none border-0 sm:rounded-3xl sm:border border-border/80">
+      <div className="relative z-10 w-full max-w-md px-4 py-6 sm:my-8 flex flex-col gap-4">
+        <aside aria-labelledby="demo-access-heading" className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+          <h2 id="demo-access-heading" className="text-base font-semibold">{t('login.demoAccess')}</h2>
+          <p data-no-auto-translate className="mt-2 text-sm leading-relaxed text-muted-foreground">{t('mobile.demoIntro')}</p>
+          <button type="button" onClick={handleQuickLogin} aria-label={t('login.continueToDemo')} className="mt-4 flex min-h-12 w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{t('login.quickLogin')}</button>
+          <p data-no-auto-translate className="mt-3 text-xs leading-relaxed text-muted-foreground">{t('mobile.demoCredentials')}</p>
+        </aside>
+        <div data-slot="login-card" className="bg-card sm:bg-card/95 sm:backdrop-blur-xl sm:shadow-2xl w-full flex flex-col p-5 sm:p-8 rounded-2xl border sm:rounded-3xl border-border/80">
           {/* Logo/Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-5">
             <div
               style={{
                 fontFamily: "'Orbitron', sans-serif",
@@ -174,7 +181,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 fontSize: 'var(--text-xs)',
                 fontWeight: 'var(--font-weight-normal)',
               }}
-              className="text-muted-foreground mb-5"
+              className="text-muted-foreground mb-3"
             >
               {t('login.tagline')}
             </p>
@@ -193,47 +200,9 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             </div>
           </div>
 
-          <p data-no-auto-translate className="mb-5 rounded-xl border border-border bg-muted p-3 text-sm text-foreground">{t('reliability.demoDescription')}</p>
-          <div className="mb-5">
-            {showTempLogin && (
-              <div
-                className="rounded-2xl border-2 border-dashed border-[#C2410C]/60 bg-[#FFF8EE] p-4 flex flex-col items-center justify-center gap-3 dark:border-[#FACC15] dark:bg-[#2A1B07] shadow-2xs"
-                role="region"
-                aria-labelledby="demo-access-heading"
-              >
-                <div className="flex items-center gap-2">
-                  <KeyRound className="h-4 w-4 text-[#C2410C] dark:text-[#FACC15]" aria-hidden="true" />
-                  <h2
-                    id="demo-access-heading"
-                    className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-[#7C2D12] dark:text-[#FEF3C7]"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    {t('login.demoAccess')}
-                  </h2>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleQuickLogin}
-                  aria-label={t('login.continueToDemo')}
-                  className={cn(
-                    'relative flex min-h-[44px] w-full items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-2xs transition-all hover:bg-[#FDECC8] active:scale-[0.98] group dark:border-[#FACC15] dark:bg-[#3A2608] dark:text-[#FEF3C7] dark:hover:bg-[#4A310A] cursor-pointer'
-                  )}
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 'var(--text-sm)',
-                    fontWeight: 'var(--font-weight-semibold)',
-                  }}
-                >
-                  <Zap className="h-4 w-4 transition-transform group-hover:scale-110" aria-hidden="true" />
-                  <span>{t('login.quickLogin')}</span>
-                </button>
-              </div>
-            )}
-          </div>
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-5" aria-labelledby={loginHeadingId} noValidate>
-            <h1 id={loginHeadingId} className="sr-only">{t('login.signInHeading')}</h1>
+            <h1 id={loginHeadingId} className="text-lg font-semibold">{t('login.signInHeading')}</h1>
             {/* Error Message */}
             {error && (
               <div

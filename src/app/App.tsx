@@ -1,8 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState, Suspense } from 'react';
 import { Toaster, toast } from 'sonner';
 import { format, parseISO, isValid } from 'date-fns';
-import { LayoutDashboard, CalendarPlus, Rocket } from 'lucide-react';
+import { LayoutDashboard, CalendarCheck, MoreHorizontal, Files, Plus, CalendarPlus, Rocket } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { clearFormDraft } from '@/lib/formDraft';
+import { useAppNavigation } from '@/lib/useAppNavigation';
+import { useKeyboardViewport } from '@/lib/useKeyboardViewport';
+const Requests = React.lazy(() => import('./components/Requests').then(module => ({ default: module.Requests })));
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './components/ui/dialog';
+import { Button } from './components/ui/button';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { Dashboard } from './components/Dashboard';
@@ -31,6 +37,7 @@ import { DirectionProvider } from '@radix-ui/react-direction';
 import { EmployeeService, LeaveService, MissionService } from '@/lib/services/dbServices';
 
 export type AppTab =
+  | 'requests'
   | 'dashboard'
   | 'attendance'
   | 'employees'
@@ -74,7 +81,17 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return typeof window !== 'undefined' && localStorage.getItem('hr_tool_auth') === 'true';
   });
-  const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
+  const [activeTab, navigate] = useAppNavigation();
+  useKeyboardViewport();
+  const [visitedTabs, setVisitedTabs] = useState<AppTab[]>([activeTab]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [newRequestOpen, setNewRequestOpen] = useState(false);
+  const scrollPositions = useRef<Partial<Record<AppTab, number>>>({});
+  const previousTab = useRef(activeTab);
+  const setActiveTab = React.useCallback((tab: AppTab) => {
+    if (mainRef.current) scrollPositions.current[previousTab.current] = mainRef.current.scrollTop;
+    navigate(tab);
+  }, [navigate]);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(() => {
     if (typeof window === 'undefined') return null;
@@ -96,7 +113,7 @@ export default function App() {
   const [dyslexic, setDyslexic] = useState(() => localStorage.getItem('accessibility-dyslexic') === 'true');
   const [focusHeavy, setFocusHeavy] = useState(() => localStorage.getItem('accessibility-focus-heavy') === 'true');
   const [announcement, setAnnouncement] = useState('');
-  
+
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -109,8 +126,11 @@ export default function App() {
     }
   }, [activeTab, isAuthenticated, t]);
 
-  useEffect(() => {
-    mainRef.current?.scrollTo({ top: 0, behavior: 'instant' });
+  React.useLayoutEffect(() => {
+    previousTab.current = activeTab;
+    setVisitedTabs(tabs => tabs.includes(activeTab) ? tabs : [...tabs, activeTab]);
+    mainRef.current?.scrollTo({ top: scrollPositions.current[activeTab] || 0, behavior: 'instant' });
+    window.dispatchEvent(new CustomEvent('hr-screen-visible', { detail: activeTab }));
   }, [activeTab, isAuthenticated]);
 
   useEffect(() => {
@@ -240,6 +260,8 @@ export default function App() {
   };
 
   const handleLogout = () => {
+    clearFormDraft('leave'); clearFormDraft('mission');
+    setVisitedTabs(['dashboard']); scrollPositions.current = {};
     setIsAuthenticated(false);
     setCurrentUser(null);
     localStorage.removeItem('hr_tool_auth');
@@ -268,7 +290,7 @@ export default function App() {
       try {
         const allEmployees = await EmployeeService.getAll();
         const matchingEmployee = allEmployees.find(
-          emp => 
+          emp =>
             emp.email.toLowerCase() === currentUser?.email?.toLowerCase() ||
             (typeof emp.name === 'string' ? emp.name : emp.name.nameEn).toLowerCase() === currentUser?.name?.toLowerCase()
         ) || allEmployees[0];
@@ -295,6 +317,8 @@ export default function App() {
           status: 'pending'
         });
 
+        clearFormDraft('leave');
+        window.dispatchEvent(new Event('hr-data-changed'));
         if (type === 'Sick') {
           toast.success(
             `Your sick leave request (${days} day${days !== 1 ? 's' : ''}) has been submitted. Take care! 🤗`,
@@ -319,7 +343,7 @@ export default function App() {
       try {
         const allEmployees = await EmployeeService.getAll();
         const matchingEmployee = allEmployees.find(
-          emp => 
+          emp =>
             emp.email.toLowerCase() === currentUser?.email?.toLowerCase() ||
             (typeof emp.name === 'string' ? emp.name : emp.name.nameEn).toLowerCase() === currentUser?.name?.toLowerCase()
         ) || allEmployees[0];
@@ -346,6 +370,8 @@ export default function App() {
           status: 'pending'
         });
 
+        clearFormDraft('mission');
+        window.dispatchEvent(new Event('hr-data-changed'));
         toast.success(
           `${mType} from ${fromStr} to ${toStr} (${days} day${days !== 1 ? 's' : ''}) submitted successfully.`,
           { duration: 5000 }
@@ -378,9 +404,9 @@ export default function App() {
     return null;
   }
 
-  const renderContent = () => {
+  const renderContent = (tab: AppTab) => {
     let content: React.ReactNode = null;
-    switch (activeTab) {
+    switch (tab) {
       case 'dashboard':
         content = (
           <Dashboard
@@ -395,6 +421,9 @@ export default function App() {
             currentUser={currentUser}
           />
         );
+        break;
+      case 'requests':
+        content = <Requests active={activeTab === 'requests'} onNew={() => setNewRequestOpen(true)} />;
         break;
       case 'attendance':
         content = <Attendance />;
@@ -464,34 +493,40 @@ export default function App() {
         currentUser={currentUser}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        <Header 
-          currentUser={currentUser} 
-          accessibility={accessibility} 
+        <Header
+          currentUser={currentUser}
+          accessibility={accessibility}
           onOpenCommandPalette={() => setCommandPaletteOpen(true)}
           onOpenShortcuts={() => setShortcutsOpen(true)}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           onLogout={handleLogout}
+          mobileMenuOpen={mobileMenuOpen}
+          onMobileMenuChange={setMobileMenuOpen}
         />
         <div data-slot="app-notices" className="shrink-0 max-h-[40dvh] overflow-y-auto">
           <OfflineBanner />
           <ReloadPrompt />
           <PwaInstallPrompt />
         </div>
-        <main ref={mainRef} id="main-content" tabIndex={-1} aria-label={t('common.mainContent', 'Main content')} className="app-main-scroll min-h-0 flex-1 overflow-y-auto bg-muted cursor-default pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-6 outline-none">
+        <main onScroll={() => { if (mainRef.current) scrollPositions.current[activeTab] = mainRef.current.scrollTop; }} ref={mainRef} id="main-content" tabIndex={-1} aria-label={t('common.mainContent', 'Main content')} className="app-main-scroll min-h-0 flex-1 overflow-y-auto bg-muted cursor-default mb-[calc(4.25rem+env(safe-area-inset-bottom))] pb-24 lg:mb-0 lg:pb-6 outline-none">
           <h1 className="sr-only">{t(`pages.${activeTab}`)}</h1>
-          {renderContent()}
+          {Array.from(new Set([...visitedTabs, activeTab])).map(tab => (
+            <section key={tab} data-screen={tab} hidden={tab !== activeTab} aria-label={t(`pages.${tab}`)}>
+              {renderContent(tab)}
+            </section>
+          ))}
         </main>
       </div>
       <ScrollToTop scrollContainerRef={mainRef} />
-      <CommandPalette 
-        open={commandPaletteOpen} 
-        onOpenChange={setCommandPaletteOpen} 
+      <CommandPalette
+        open={commandPaletteOpen}
+        onOpenChange={setCommandPaletteOpen}
         onSelectTab={setActiveTab}
       />
-      <KeyboardShortcutsPanel 
-        open={shortcutsOpen} 
-        onOpenChange={setShortcutsOpen} 
+      <KeyboardShortcutsPanel
+        open={shortcutsOpen}
+        onOpenChange={setShortcutsOpen}
       />
       {import.meta.env.DEV && <ComponentStyleguideModal
         open={styleguideOpen}
@@ -578,55 +613,34 @@ export default function App() {
       <BottomToolbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onRequestLeave={() => setRequestLeaveOpen(true)}
-        onRequestMission={() => setRequestMissionOpen(true)}
+        onMore={() => setMobileMenuOpen(true)}
+        onNew={() => setNewRequestOpen(true)}
       />
+      <Dialog open={newRequestOpen} onOpenChange={setNewRequestOpen}>
+        <DialogContent data-layout="compact" data-panel="new-request">
+          <DialogHeader><DialogTitle>{t('mobile.newRequest')}</DialogTitle><DialogDescription>{t('mobile.chooseRequest')}</DialogDescription></DialogHeader>
+          <div className="grid gap-3">
+            <Button className="justify-start gap-3 min-h-14" onClick={() => { setNewRequestOpen(false); setRequestLeaveData(null); setRequestLeaveOpen(true); }}><CalendarPlus className="h-5 w-5" aria-hidden="true" />{t('dashboard.requestLeave')}</Button>
+            <Button variant="outline" className="justify-start gap-3 min-h-14" onClick={() => { setNewRequestOpen(false); setRequestMissionData(null); setRequestMissionOpen(true); }}><Rocket className="h-5 w-5" aria-hidden="true" />{t('dashboard.requestMission')}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
     </DirectionProvider>
   );
 }
 
-// ── Bottom Toolbar Component ──
+// Mobile destinations stay consistent across all screens.
 const BottomToolbar: React.FC<{
-  activeTab: AppTab;
-  setActiveTab: (tab: AppTab) => void;
-  onRequestLeave: () => void;
-  onRequestMission: () => void;
-}> = ({ activeTab, setActiveTab, onRequestLeave, onRequestMission }) => {
+  activeTab: AppTab; setActiveTab: (tab: AppTab) => void;
+  onMore: () => void; onNew: () => void;
+}> = ({ activeTab, setActiveTab, onMore, onNew }) => {
   const { t } = useTranslation();
-
-  return (
-    <nav aria-label={t('navigation.bottomNavigation', 'Bottom mobile navigation')} className="lg:hidden fixed bottom-0 start-0 end-0 z-30 h-[calc(4rem+env(safe-area-inset-bottom))] border-t border-border/80 bg-card/90 backdrop-blur-xl flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)] shadow-lg">
-      <button
-        onClick={() => setActiveTab('dashboard')}
-        aria-current={activeTab === 'dashboard' ? 'page' : undefined}
-        aria-label={t('dashboard.home')}
-        className={cn(
-          "flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl transition-all active:scale-95 cursor-pointer",
-          activeTab === 'dashboard' ? 'text-blue-700 dark:text-primary bg-primary/10' : 'text-muted-foreground hover:bg-muted/60'
-        )}
-      >
-        <LayoutDashboard className="w-5 h-5" />
-        <span>{t('dashboard.home')}</span>
-      </button>
-      
-      <button
-        onClick={onRequestLeave}
-        aria-label={t('dashboard.requestLeave')}
-        className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl text-muted-foreground transition-all active:scale-95 cursor-pointer hover:bg-muted/60 hover:text-primary"
-      >
-        <CalendarPlus className="w-5 h-5 text-chart-2" />
-        <span>{t('dashboard.requestLeave')}</span>
-      </button>
-
-      <button
-        onClick={onRequestMission}
-        aria-label={t('dashboard.requestMission')}
-        className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl text-muted-foreground transition-all active:scale-95 cursor-pointer hover:bg-muted/60 hover:text-primary"
-      >
-        <Rocket className="w-5 h-5 text-chart-3" />
-        <span>{t('dashboard.requestMission')}</span>
-      </button>
+  return <div className="mobile-navigation lg:hidden">
+    <button type="button" data-slot="new-request" onClick={onNew} className="mobile-create fixed end-4 z-30 flex min-h-12 items-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-lg"><Plus className="h-5 w-5" aria-hidden="true" />{t('mobile.newRequest')}</button>
+    <nav aria-label={t('navigation.bottomNavigation')} className="mobile-bottom-bar fixed bottom-0 start-0 end-0 z-30 grid grid-cols-4 border-t border-border bg-card px-2 pb-[env(safe-area-inset-bottom)]">
+      {([{ tab: 'dashboard', icon: LayoutDashboard, label: 'home' }, { tab: 'requests', icon: Files, label: 'requests' }, { tab: 'attendance', icon: CalendarCheck, label: 'attendance' }] as const).map(({ tab, icon: Icon, label }) => <button key={tab} data-nav={tab} type="button" onClick={() => setActiveTab(tab)} aria-current={activeTab === tab ? 'page' : undefined} className="flex min-h-16 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-xs font-medium text-muted-foreground aria-[current=page]:text-blue-800 dark:aria-[current=page]:text-primary aria-[current=page]:bg-primary/10"><Icon className="h-5 w-5" aria-hidden="true" /><span className="text-center">{t('mobile.' + label)}</span></button>)}
+      <button type="button" aria-current={!['dashboard', 'requests', 'attendance'].includes(activeTab) ? 'page' : undefined} onClick={onMore} className="flex min-h-16 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-xs font-medium text-muted-foreground aria-[current=page]:text-blue-800 dark:aria-[current=page]:text-primary aria-[current=page]:bg-primary/10" aria-haspopup="dialog"><MoreHorizontal className="h-5 w-5" aria-hidden="true" /><span>{t('mobile.more')}</span></button>
     </nav>
-  );
-}
+  </div>;
+};

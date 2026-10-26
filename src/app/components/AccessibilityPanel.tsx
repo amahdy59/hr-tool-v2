@@ -31,11 +31,12 @@ interface AccessibilityPanelProps {
   compact?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  mobileReturnFocus?: React.RefObject<HTMLButtonElement>;
 }
 
 export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({
   settings, triggerClassName, forceShowLabel = false, compact = false,
-  open: controlledOpen, onOpenChange,
+  open: controlledOpen, onOpenChange, mobileReturnFocus,
 }) => {
   const [internalOpen, setInternalOpen] = React.useState(false);
   const instanceId = React.useId();
@@ -70,6 +71,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({
         </Button>
       </DialogTrigger>
       <DialogContent
+        onCloseAutoFocus={(event) => { if (mobileReturnFocus && window.innerWidth < 1024) { event.preventDefault(); mobileReturnFocus.current?.focus(); } }}
         dir={direction}
         data-panel="accessibility"
         className="gap-6 bg-card pt-[max(3.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:max-w-lg sm:p-6"

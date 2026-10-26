@@ -1,3 +1,4 @@
+const { openPreferences, navigate } = require('./browser_ui_helpers.cjs');
 const puppeteer = require('puppeteer');
 const axeCore = require('axe-core');
 const http = require('http');
@@ -207,13 +208,26 @@ server.listen(0, '127.0.0.1', async () => {
         await page.waitForSelector('#main-content');
         await page.waitForFunction((settings) => document.documentElement.lang === settings.language && document.documentElement.classList.contains('dark') === (settings.theme === 'dark'), {}, { language, theme });
         await auditCurrentState(`Mobile dashboard (${language}, ${theme})`);
+        await navigate(page, 'requests');
+        await page.waitForSelector('[data-screen="requests"] figure');
+        await auditCurrentState(`Request cards and chart (${language}, ${theme})`);
+        await page.click('[data-screen="requests"] ul > li button');
+        await page.waitForSelector('[role="dialog"] ol');
+        await auditCurrentState(`Request progress (${language}, ${theme})`);
+        await page.keyboard.press('Escape'); await page.waitForSelector('[role="dialog"]', { hidden: true });
+        await page.click('[data-slot="new-request"]'); await page.waitForSelector('[data-panel="new-request"]');
+        await page.click('[data-panel="new-request"] button:has(.lucide-calendar-plus)'); await page.waitForSelector('#leave-submit-button');
+        await auditCurrentState(`Pinned mobile request form (${language}, ${theme})`);
+        await page.keyboard.press('Escape'); await page.waitForSelector('#leave-submit-button', { hidden: true });
+        await navigate(page, 'dashboard');
+
         await page.click('header button[aria-haspopup="dialog"]');
         await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
         await page.evaluate(() => document.fonts.ready);
         await auditCurrentState(`Mobile navigation (${language}, ${theme})`);
         await page.keyboard.press('Escape');
         await page.waitForSelector('[data-slot="sheet-content"]', { hidden: true });
-        await page.click('header [data-slot="dialog-trigger"]');
+        await openPreferences(page);
         await page.waitForSelector('[data-panel="accessibility"]');
         await auditCurrentState(`Preferences (${language}, ${theme})`);
         const readingOptions = await page.$$('[data-panel="accessibility"] [role="checkbox"]');

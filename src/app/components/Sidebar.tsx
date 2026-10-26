@@ -12,6 +12,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
   Banknote,
+  Files,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -50,6 +51,7 @@ const navItems = [
   { id: 'missions', label: 'Missions Management', icon: Briefcase },
   { id: 'roles', label: 'Roles Management', icon: ShieldCheck },
   { id: 'payrolls', label: 'Payroll', icon: Banknote },
+  { id: 'requests', label: 'Requests', icon: Files },
 ] as const satisfies ReadonlyArray<{ id: AppTab; label: string; icon: React.ComponentType<{ className?: string }> }>;
 
 const footerItems = [
@@ -69,7 +71,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
     const itemLabel = t(`sidebar.${item.id}`);
     const button = (
       <button
-        onClick={() => setActiveTab(item.id)}
+        data-nav={item.id} onClick={() => setActiveTab(item.id)}
         aria-current={isActive ? 'page' : undefined}
         aria-label={itemLabel}
         className={cn(
@@ -207,7 +209,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
                 <Tooltip key={item.id}>
                   <TooltipTrigger asChild>
                     <button
-                      onClick={handleClick}
+                      data-nav={item.id} onClick={handleClick}
                       aria-label={itemLabel}
                       className={cn(
                         'w-full min-h-11 flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-slate-300 hover:text-white hover:bg-white/10 cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
@@ -227,7 +229,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             return (
               <button
                 key={item.id}
-                onClick={handleClick}
+                data-nav={item.id} onClick={handleClick}
                 aria-label={itemLabel}
                 className={cn(
                   'w-full min-h-11 flex items-center justify-start gap-3 px-3 py-2.5 rounded-xl transition-all text-slate-300 hover:text-white hover:bg-white/10 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring text-start',

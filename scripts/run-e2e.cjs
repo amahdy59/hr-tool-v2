@@ -1,3 +1,4 @@
+const { openPreferences, navigate } = require('./browser_ui_helpers.cjs');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -238,7 +239,7 @@ server.listen(0, '127.0.0.1', async () => {
     const tabs = ['dashboard', 'attendance', 'employees', 'leaves', 'missions', 'roles', 'profile'];
     for (const tab of tabs) {
       await page.evaluate((t) => {
-        const links = Array.from(document.querySelectorAll('button, a'));
+        const links = Array.from(document.querySelectorAll('button, a')).filter(element => element.getBoundingClientRect().width > 0);
         const link = links.find(el => (el.textContent || '').toLowerCase().includes(t));
         if (link) link.click();
       }, tab);
@@ -251,7 +252,7 @@ server.listen(0, '127.0.0.1', async () => {
 
     console.log('\n--- Test 4: Print & Download Report Actions in Attendance ---');
     await page.evaluate(() => {
-      const links = Array.from(document.querySelectorAll('button, a'));
+      const links = Array.from(document.querySelectorAll('button, a')).filter(element => element.getBoundingClientRect().width > 0);
       const att = links.find(el => (el.textContent || '').toLowerCase().includes('attendance'));
       if (att) att.click();
     });
@@ -272,7 +273,7 @@ server.listen(0, '127.0.0.1', async () => {
 
     console.log('\n--- Test 5: Form Accessibility in Request Leave Modal ---');
     await page.evaluate(() => {
-      const links = Array.from(document.querySelectorAll('button, a'));
+      const links = Array.from(document.querySelectorAll('button, a')).filter(element => element.getBoundingClientRect().width > 0);
       const dash = links.find(el => (el.textContent || '').toLowerCase().includes('dashboard'));
       if (dash) dash.click();
     });
@@ -330,7 +331,7 @@ server.listen(0, '127.0.0.1', async () => {
     const employeeNavigation = await page.$$('aside button');
     await employeeNavigation[2].click();
     await page.waitForSelector('#employee-directory-search');
-    const addEmployee = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content button')].find(b => b.textContent.includes('Add an Employee')));
+    const addEmployee = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content [data-screen]:not([hidden]) button')].find(b => b.textContent.includes('Add an Employee')));
     await addEmployee.asElement().click();
     await page.waitForSelector('[role="dialog"] input');
     for (const size of [{ width: 1280, height: 600 }, { width: 375, height: 667 }, { width: 667, height: 375 }]) {
@@ -342,14 +343,14 @@ server.listen(0, '127.0.0.1', async () => {
     await page.setViewport({ width: 1280, height: 800 });
     const dashboardNavigation = await page.$$('aside button');
     await dashboardNavigation[0].click();
-    const mission = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content button')].find(b => b.textContent.includes('Request Mission')));
+    const mission = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content [data-screen]:not([hidden]) button')].find(b => b.textContent.includes('Request Mission')));
     await mission.asElement().click();
     await page.waitForSelector('[role="dialog"]');
     await checkModalSurface('Mission form');
     await page.keyboard.press('Escape');
     await page.waitForSelector('[role="dialog"]', { hidden: true });
     await page.setViewport({ width: 375, height: 375 });
-    const filterDrawer = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content button')].find(b => b.textContent.includes('Filter History') && b.getBoundingClientRect().width > 0));
+    const filterDrawer = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content [data-screen]:not([hidden]) button')].find(b => b.textContent.includes('Filter History') && b.getBoundingClientRect().width > 0));
     await filterDrawer.asElement().click();
     await page.waitForSelector('[data-slot="drawer-scroll"]');
     await page.evaluate(() => Promise.all(document.querySelector('[data-slot="drawer-content"]').getAnimations().map(a => a.finished)));
@@ -478,17 +479,17 @@ server.listen(0, '127.0.0.1', async () => {
       await page.setViewport({ width, height: 800 });
       const trigger = 'header [data-slot="dialog-trigger"]';
       for (let attempt = 0; attempt < 3; attempt++) {
-        await page.click(trigger);
+        await openPreferences(page);
         await page.waitForSelector('[data-panel="accessibility"]');
         await new Promise(r => setTimeout(r, 400));
         assert(await page.evaluate(() => document.querySelectorAll('[role="dialog"]').length === 1), 'Preferences remains open as one dialog at ' + width + 'px, attempt ' + (attempt + 1));
         assert(await page.evaluate(() => document.querySelector('[data-panel="accessibility"]').contains(document.activeElement)), 'Preferences owns focus at ' + width + 'px');
         await page.keyboard.press('Escape');
         await page.waitForSelector('[data-panel="accessibility"]', { hidden: true });
-        assert(await page.evaluate(() => document.activeElement?.getAttribute('data-slot') === 'dialog-trigger'), 'Preferences restores trigger focus at ' + width + 'px');
+        assert(await page.evaluate(() => document.activeElement?.getAttribute('data-slot') === 'dialog-trigger' || document.activeElement?.getAttribute('aria-haspopup') === 'dialog'), 'Preferences restores trigger focus at ' + width + 'px');
       }
 
-      await page.click(trigger);
+      await openPreferences(page);
       await page.waitForSelector('[data-panel="accessibility"]');
       for (const language of ['en', 'ar']) {
         await page.click('[data-panel="accessibility"] [role="radio"][lang="' + language + '"]');
@@ -550,7 +551,7 @@ server.listen(0, '127.0.0.1', async () => {
     await page.keyboard.press('a');
     await page.keyboard.up('Control');
     await page.keyboard.press('Backspace');
-    await page.waitForFunction(() => document.querySelectorAll('[data-panel="search"] [role="option"]').length === 8);
+    await page.waitForFunction(() => document.querySelectorAll('[data-panel="search"] [role="option"]').length === 9);
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('Enter');
     await page.waitForSelector('[data-panel="search"]', { hidden: true });
@@ -583,7 +584,7 @@ server.listen(0, '127.0.0.1', async () => {
         fits: rect.left >= 0 && rect.right <= innerWidth,
       };
     });
-    assert(drawerState.sections === 7, 'Mobile drawer provides all seven main sections');
+    assert(drawerState.sections === 8, 'Mobile drawer provides all eight main sections');
     assert(drawerState.current === 1, 'Mobile drawer identifies the current section');
     assert(drawerState.focusInside, 'Opening mobile navigation moves focus inside the drawer');
     assert(drawerState.fits, 'Mobile drawer fits the viewport');
@@ -597,7 +598,7 @@ server.listen(0, '127.0.0.1', async () => {
     await page.waitForFunction(() => document.querySelector('#main-content').scrollTop > 300);
     await page.click('header button[aria-haspopup="dialog"]');
     await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
-    await page.click('[data-slot="sheet-content"] nav button:not([aria-current="page"])');
+    await page.click('[data-slot="sheet-content"] [data-nav="requests"]');
     await page.waitForSelector('[data-slot="sheet-content"]', { hidden: true });
     await page.waitForFunction(() => document.querySelector('#main-content').scrollTop === 0);
     assert(await page.evaluate(() => {
@@ -670,7 +671,7 @@ server.listen(0, '127.0.0.1', async () => {
     assert(await page.evaluate(() => document.querySelector('[data-slot="app-notices"]').contains(document.querySelector('.pwa-reload-prompt'))), 'Update notice reserves space inside the application shell');
     for (const language of ['en', 'ar']) {
       if (language === 'ar') {
-        await page.click('header [data-slot="dialog-trigger"]');
+        await openPreferences(page);
         await page.waitForSelector('[data-panel="accessibility"]');
         await page.click('[data-panel="accessibility"] [role="radio"][lang="ar"]');
         await page.keyboard.press('Escape');
@@ -695,6 +696,8 @@ server.listen(0, '127.0.0.1', async () => {
         assert(layout.ordered && layout.available && layout.fits, `Offline, install, and update notices preserve navigation and content (${language}, ${size.width}×${size.height})`, JSON.stringify(layout));
       }
     }
+    await require('./mobile_experience_checks.cjs')({ browser, baseUrl: `http://127.0.0.1:${PORT}/hr-tool-v2/`, assert });
+
     console.log('\n--- E2E Test Summary ---');
     const passed = report.filter(r => r.status === 'PASS').length;
     const failed = report.filter(r => r.status === 'FAIL').length;

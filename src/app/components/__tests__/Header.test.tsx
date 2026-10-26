@@ -45,7 +45,7 @@ describe('Header Component (State of the Art Toolbar & A11y)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Open navigation menu' }));
     const dialog = screen.getByRole('dialog');
     const navigation = within(dialog).getByRole('navigation', { name: 'Navigation menu' });
-    expect(within(navigation).getAllByRole('button')).toHaveLength(7);
+    expect(within(navigation).getAllByRole('button')).toHaveLength(8);
     expect(within(navigation).getByRole('button', { name: 'Leaves Management' }).getAttribute('aria-current')).toBe('page');
 
     fireEvent.click(within(navigation).getByRole('button', { name: 'Employees' }));

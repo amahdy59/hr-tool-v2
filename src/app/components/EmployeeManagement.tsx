@@ -360,7 +360,7 @@ export const EmployeeManagement: React.FC = () => {
         <TabsContent value="directory" className={tabContentClass}>
           {/* Search row */}
           <div className="flex flex-wrap items-end gap-3">
-            <div className="w-full min-w-[280px] space-y-1">
+            <div className="w-full min-w-0 space-y-1">
               <div className="inline-flex items-center gap-1.5">
                 <label htmlFor="employee-directory-search" className={cn(labelClass, 'sr-only md:not-sr-only md:inline-block')}>Search Employees</label>
                 <InfoTooltip ariaLabel="Search help" contentClassName="max-w-[240px]">
@@ -502,7 +502,7 @@ export const EmployeeManagement: React.FC = () => {
                         .toUpperCase();
                       return (
                         <tr key={emp.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
-                          <th scope="row" className="whitespace-nowrap px-4 py-2 md:py-3.5 text-start font-normal">
+                          <th scope="row" className="break-words px-0 py-2 md:px-4 md:py-3.5 text-start font-normal">
                             <div className="flex items-center gap-3">
                               <div className="relative w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600/10 to-indigo-600/20 text-blue-600 dark:text-blue-300 font-bold flex items-center justify-center text-xs border border-blue-500/20 shrink-0">
                                 {initials}
@@ -512,15 +512,15 @@ export const EmployeeManagement: React.FC = () => {
                             </div>
                           </th>
                         {visibleColumns.empNumber && (
-                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span><span data-no-auto-translate>{emp.employeeNumber}</span></td>
+                          <td className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span><span data-no-auto-translate>{emp.employeeNumber}</span></td>
                         )}
                         {visibleColumns.department && (
-                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Department:</span>{localizeDepartmentName(emp.department, language)}</td>
+                          <td className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Department:</span>{localizeDepartmentName(emp.department, language)}</td>
                         )}
                         {visibleColumns.jobTitle && (
-                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Title:</span>{localizeJobTitle(emp.jobTitle, language)}</td>
+                          <td className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Title:</span>{localizeJobTitle(emp.jobTitle, language)}</td>
                         )}
-                        <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
+                        <td className="px-0 md:px-4 py-3 md:text-end mt-2 md:mt-0">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="outline" size="sm" className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"><span className="md:hidden">Actions</span><MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" /></Button>
@@ -585,13 +585,13 @@ export const EmployeeManagement: React.FC = () => {
                   <tbody className="divide-y divide-border/60">
                     {paginatedActivityLog.map((log) => (
                       <tr key={log.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                        <th scope="row" className="whitespace-nowrap px-4 py-1 md:py-3 text-start font-normal">
+                        <th scope="row" className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-start font-normal">
                           <span className="font-[var(--font-weight-medium)] text-foreground">{log.admin}</span>
                         </th>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Action:</span>{log.action}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Date:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{formatLocalizedDate(log.date, language)}</span></td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Affected:</span>{log.affectedCount}</td>
-                        <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
+                        <td className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Action:</span>{log.action}</td>
+                        <td className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Date:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{formatLocalizedDate(log.date, language)}</span></td>
+                        <td className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Affected:</span>{log.affectedCount}</td>
+                        <td className="px-0 md:px-4 py-3 md:text-end mt-2 md:mt-0">
                           <Button
                             variant="outline"
                             size="sm"
@@ -647,10 +647,10 @@ export const EmployeeManagement: React.FC = () => {
                   <tbody className="divide-y divide-border/60">
                     {paginatedDepartments.map((dept) => (
                       <tr key={dept.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                        <th scope="row" className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)] text-start font-normal">{localizeDepartmentName(dept.name, language)}</th>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium" data-no-auto-translate>Department ID:</span><span data-no-auto-translate>{dept.deptId}</span></td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Total:</span>{dept.totalNumber}</td>
-                        <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
+                        <th scope="row" className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-foreground font-[var(--font-weight-medium)] text-start font-normal">{localizeDepartmentName(dept.name, language)}</th>
+                        <td className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium" data-no-auto-translate>Department ID:</span><span data-no-auto-translate>{dept.deptId}</span></td>
+                        <td className="break-words px-0 py-1 md:px-4 md:whitespace-nowrap md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Total:</span>{dept.totalNumber}</td>
+                        <td className="px-0 md:px-4 py-3 md:text-end mt-2 md:mt-0">
                           <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
                             <Button variant="outline" size="sm" aria-label={`Edit ${dept.name}`} onClick={() => { setEditDeptData(dept); setEditDeptOpen(true); }} className="w-full md:w-auto justify-center rounded-xl transition-colors cursor-pointer md:bg-transparent md:border-0 md:p-1.5 md:hover:bg-muted">
                               <span className="md:hidden">Edit</span>

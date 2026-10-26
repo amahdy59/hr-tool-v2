@@ -188,3 +188,14 @@ Before pushing UI or localization changes:
 - Confirm contact values such as phone numbers, emails, URLs, and identifiers still display Western numerals in Arabic mode.
 - Confirm pagination arrows point in the correct direction in Arabic and English.
 - Do not commit generated `dist/` preview/build output unless the release process explicitly requires it.
+
+
+### Mobile Navigation, Forms, And Visual Summaries
+
+- Keep Home, Requests, Attendance, and More in the same four mobile positions. Use one persistent New request action; put preferences and account actions inside More.
+- Keep destination state and scroll position when navigating back. Back dismisses the current overlay before leaving the screen. Closing one overlay and opening another must not race focus or browser history.
+- Request forms use `data-layout="form"`: header and footer stay outside the inset content scroller. Respect `visualViewport` height while the keyboard is open, dynamic viewport units, and safe areas. Mobile fields render at 16px or larger without disabling browser zoom.
+- Save unfinished leave and mission drafts per account and form in session storage. Clear after successful creation and logout. Explain that files must be selected again; do not claim attachments are saved.
+- Use labeled cards for individual mobile records where comparison across columns is unnecessary. Payroll and assigned-holiday records reflow into labeled rows below 768px.
+- Charts must show exact values and textual status labels. Treat the SVG as decorative when an adjacent description list provides equivalent information. Progress diagrams must state current status in text and avoid invented processing times.
+- Keep demo entry and credentials outside the sign-in form card. Case studies explain the problem, decisions, user journey, inspectable comparisons, and validation limits. Do not imply measured outcomes or conformance without supporting evidence.

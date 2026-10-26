@@ -4,10 +4,12 @@ import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
 import { cn } from "./utils";
+import { useOverlayHistory } from '@/lib/useOverlayHistory';
 
 function Drawer({
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
+  useOverlayHistory(props.open, () => props.onOpenChange?.(false));
   return <DrawerPrimitive.Root data-slot="drawer" {...props} />;
 }
 

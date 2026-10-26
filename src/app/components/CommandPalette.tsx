@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, Users, LayoutDashboard, CalendarCheck, ShieldCheck, Rocket, UserCircle, Banknote } from 'lucide-react';
+import { FileText, Users, LayoutDashboard, CalendarCheck, ShieldCheck, Rocket, UserCircle, Banknote, Files } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { AppTab } from '../App';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
@@ -18,8 +18,9 @@ const destinations = [
   { id: 'leaves', icon: FileText },
   { id: 'missions', icon: Rocket },
   { id: 'roles', icon: ShieldCheck },
-  { id: 'payrolls', icon: Banknote },
+  { id: 'payrolls', icon: Banknote, Files },
   { id: 'profile', icon: UserCircle },
+  { id: 'requests', icon: Files },
 ] as const;
 
 export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onOpenChange, onSelectTab }) => {

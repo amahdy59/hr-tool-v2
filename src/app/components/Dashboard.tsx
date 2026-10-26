@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { RequestStatusChart, requestStatus } from './RequestVisuals';
 import { CalendarGrid } from './CalendarGrid';
 import { StatusBadge } from './StatusBadge';
 import { RequestLeaveModal, type LeaveFormData } from './RequestLeaveModal';
@@ -72,18 +73,14 @@ interface HistoryItem {
 // --- Mock Data ---
 // Helper to convert a date range string like "Sep 10 - Sep 14" (with current year) to YYYY-MM-DD
 const rangeToIso = (rangeStr: string): { start: string; end: string } | null => {
-  try {
-    const year = new Date().getFullYear();
-    const parts = rangeStr.split(' - ');
-    if (parts.length !== 2) return null;
-    const s = new Date(`${parts[0]} ${year}`);
-    const e = new Date(`${parts[1]} ${year}`);
-    if (isNaN(s.getTime()) || isNaN(e.getTime())) return null;
-    return {
-      start: s.toISOString().split('T')[0],
-      end: e.toISOString().split('T')[0],
-    };
-  } catch { return null; }
+  const iso = rangeStr.match(/^(\d{4}-\d{2}-\d{2}) - (\d{4}-\d{2}-\d{2})$/);
+  if (iso) return { start: iso[1], end: iso[2] };
+  const parts = rangeStr.split(' - '); if (parts.length !== 2) return null;
+  const year = new Date().getFullYear();
+  const start = new Date(`${parts[0]} ${year}`); const end = new Date(`${parts[1]} ${year}`);
+  if (!isValid(start) || !isValid(end)) return null;
+  if (end < start) end.setFullYear(year + 1);
+  return { start: format(start, 'yyyy-MM-dd'), end: format(end, 'yyyy-MM-dd') };
 };
 const historyData: HistoryItem[] = [
   {
@@ -212,7 +209,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   // Live leaves from Cloudflare R2 / storage
   const [liveLeaves, setLiveLeaves] = useState<LeaveRequest[]>([]);
   React.useEffect(() => {
-    LeaveService.getAll().then(setLiveLeaves).catch(console.warn);
+    const load = () => LeaveService.getAll().then(setLiveLeaves).catch(console.warn);
+    void load(); window.addEventListener('hr-data-changed', load);
+    return () => window.removeEventListener('hr-data-changed', load);
   }, []);
 
   const activeHistoryData = useMemo(() => {
@@ -228,8 +227,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
       canEdit: l.status === 'pending',
       canCancel: l.status === 'pending'
     }));
-    const existingIds = new Set(convertedLive.map(c => c.id));
-    return [...convertedLive, ...historyData.filter(h => !existingIds.has(h.id))];
+    return convertedLive;
   }, [liveLeaves]);
 
   // Filtered history items
@@ -249,9 +247,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           return false;
         }
       }
+      const dates = rangeToIso(item.range);
+      if (historyStartDate && (!dates || dates.end < historyStartDate)) return false;
+      if (historyEndDate && (!dates || dates.start > historyEndDate)) return false;
       return true;
     });
-  }, [historyLeaveType]);
+  }, [historyLeaveType, historyStartDate, historyEndDate, activeHistoryData]);
+
+  React.useEffect(() => { setHistoryPage(1); }, [historyLeaveType, historyStartDate, historyEndDate]);
 
   const historyTotalPages = Math.max(1, Math.ceil(filteredHistory.length / historyPerPage));
   const paginatedHistory = useMemo(() => {
@@ -389,25 +392,25 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   };
 
   return (
-    <div className="space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 sm:space-y-8 max-w-7xl mx-auto">
+    <div className="mobile-page space-y-5 sm:space-y-8 max-w-7xl mx-auto">
 
-      <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
+      <div className="dashboard-welcome sm:rounded-2xl sm:border sm:border-border sm:bg-card sm:p-6">
         <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
           <div className="space-y-2">
             <h1
               style={{
                 fontFamily: "'Inter', sans-serif",
               }}
-              className="text-2xl font-semibold text-foreground"
+              className="text-xl sm:text-2xl font-semibold text-foreground"
             >
               {t('dashboard.welcome', 'Welcome')}, {localizeFirstName(currentUser?.name || 'Ahmed', i18n.resolvedLanguage || i18n.language)}!
             </h1>
-            <p className="text-sm text-muted-foreground max-w-xl">
+            <p className="hidden lg:block text-sm text-muted-foreground max-w-xl">
               {t('dashboard.overviewDescription')}
             </p>
           </div>
 
-          <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center shrink-0">
+          <div className="hidden lg:flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center shrink-0">
             <Button
               className="w-full sm:w-auto cursor-pointer shadow-2xs hover:shadow-xs rounded-xl"
               onClick={onRequestLeave}
@@ -423,6 +426,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             </Button>
           </div>
         </div>
+      </div>
+
+      <div className="lg:hidden space-y-3">
+        <section aria-label={t('mobile.balanceLabel')} className="rounded-2xl border border-border bg-card p-4">
+          <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-sm font-semibold">{t('mobile.balanceLabel')}</h2><span className="text-xs text-muted-foreground">{t('mobile.balanceSample')}</span></div>
+          <p className="mt-2 text-xl font-semibold">{t('mobile.availableDays', { count: calculateAnnualEntitlement(2013) - 5 + 4 - 6 })}</p>
+          <div role="meter" aria-label={t('mobile.balanceLabel')} aria-valuemin={0} aria-valuemax={calculateAnnualEntitlement(2013) - 5 + 4} aria-valuenow={calculateAnnualEntitlement(2013) - 5 + 4 - 6} className="mt-3 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary" style={{ width: `${(calculateAnnualEntitlement(2013) - 5 + 4 - 6) / (calculateAnnualEntitlement(2013) - 5 + 4) * 100}%` }} /></div>
+        </section>
+        <RequestStatusChart items={activeHistoryData} compact />
       </div>
 
       {/* Timesheet Section (Desktop / Tablet >= 990px) */}
@@ -476,21 +488,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
             }}
             className="text-foreground"
           >
-            {t('dashboard.agendaSchedule', 'Upcoming Schedule')}
+            {t('mobile.recentRequests')}
           </h3>
           <span className="text-[var(--text-xs)] font-medium text-muted-foreground">
             {t('dashboard.timesheet', 'Timesheet')}
           </span>
         </div>
         <div className="space-y-2">
-          {historyData.slice(0, 4).map((item) => (
+          {activeHistoryData.filter(item => item.status === 'pending' || item.status === 'approved').slice(0, 2).map((item) => (
             <div
               key={`agenda-${item.id}`}
               className="flex items-center justify-between gap-3 rounded-2xl border border-border/80 bg-card p-3.5 shadow-2xs hover:shadow-xs transition-all"
             >
               <div className="min-w-0 flex-1 space-y-1 text-start">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[var(--text-sm)] font-semibold text-foreground truncate">
+                  <span className="text-[var(--text-sm)] font-semibold text-foreground break-words">
                     {item.labelOverride ?? item.type}
                   </span>
                   <StatusBadge
@@ -506,14 +518,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                     {t(`status.${item.status}`, item.status)}
                   </StatusBadge>
                 </div>
-                <p className="text-[var(--text-xs)] text-muted-foreground truncate">
+                <p className="text-[var(--text-xs)] text-muted-foreground break-words">
                   {item.range} • {item.duration}
                 </p>
               </div>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-0 text-muted-foreground hover:text-foreground shrink-0 rounded-full"
+                className="h-11 w-11 p-0 text-muted-foreground hover:text-foreground shrink-0 rounded-full"
                 onClick={() => handleViewRequest(item)}
                 aria-label={`View ${item.type} details`}
               >
@@ -706,7 +718,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         </div>
 
         <div className="border border-border/80 rounded-2xl bg-card shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
+          <ul data-slot="history-cards" className="divide-y divide-border md:hidden">
+            {paginatedHistory.map(item => <li key={item.id} className="p-4 space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-2"><h4 className="text-sm font-semibold">{item.type}</h4><StatusBadge variant={requestStatus(item.status)}>{t('status.' + requestStatus(item.status), item.status)}</StatusBadge></div>
+              <p className="text-sm break-words">{item.range} · {item.duration}</p>
+              <div className="flex flex-wrap gap-2"><Button variant="outline" size="sm" className="gap-2" onClick={() => handleViewRequest(item)}><Eye className="h-4 w-4" aria-hidden="true" />{t('mobile.viewDetails')}</Button>
+                {item.canEdit && <Button variant="ghost" size="sm" onClick={() => handleEditRequest(item.id)}>{t('mobile.edit')}</Button>}
+              </div>
+            </li>)}
+            {paginatedHistory.length === 0 && <li className="p-6 text-sm text-muted-foreground">{t('mobile.noMatchingRequests')}</li>}
+          </ul>
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full min-w-[760px] text-[var(--text-sm)] text-start">
               <caption className="sr-only">{t('dashboard.historyTitle', 'Leaves and mission history requests')}</caption>
               <thead className="bg-muted/50 border-b border-border/80">

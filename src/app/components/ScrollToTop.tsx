@@ -41,7 +41,7 @@ export const ScrollToTop: React.FC<ScrollToTopProps> = ({ scrollContainerRef }) 
     <nav
       hidden={!isVisible}
       aria-label={isArabic ? "العودة إلى الأعلى" : "Back to top"}
-      className={`fixed bottom-24 z-50 transition-all duration-300 transform end-5 rtl:end-12 sm:bottom-8 sm:end-8 sm:rtl:end-16 ${
+      className={`fixed bottom-[calc(9.25rem+env(safe-area-inset-bottom))] z-50 transition-all duration-300 transform end-4 lg:bottom-8 lg:end-8 lg:rtl:end-16 ${
         isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
       }`}
     >

@@ -6,8 +6,10 @@ import { XIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { cn } from "./utils";
+import { useOverlayHistory } from "@/lib/useOverlayHistory";
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
+  useOverlayHistory(props.open, () => props.onOpenChange?.(false));
   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
 }
 

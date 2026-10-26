@@ -475,7 +475,7 @@ const EmployeesTab = ({
 
     <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
-        <table className="w-full md:min-w-max text-[var(--text-sm)]">
+        <table className="mobile-record-table w-full md:min-w-max text-[var(--text-sm)]">
           <caption className="sr-only">Monthly employee payroll records</caption>
           <thead className="bg-muted/50 border-b border-border/80">
             <tr>
@@ -497,11 +497,11 @@ const EmployeesTab = ({
                 <th scope="row" className="px-4 py-3.5 whitespace-nowrap text-sm align-middle text-start font-normal">
                   <span data-no-auto-translate className="font-mono text-xs text-muted-foreground">{employee.sesaId}</span>
                 </th>
-                <TableCell weight="medium">{localizePersonName(employee.name, language)}</TableCell>
-                <TableCell>{localizeDepartmentName(employee.department, language)}</TableCell>
-                <TableCell className="tabular-nums">${employee.grossSalary.toLocaleString()}</TableCell>
-                <TableCell className="tabular-nums">${employee.totalDeductions.toLocaleString()}</TableCell>
-                <TableCell weight="semibold" color="text-chart-3" className="tabular-nums">${employee.netPay.toLocaleString()}</TableCell>
+                <TableCell data-label={language.startsWith('ar') ? 'الاسم' : 'Name'} weight="medium">{localizePersonName(employee.name, language)}</TableCell>
+                <TableCell data-label={language.startsWith('ar') ? 'القسم' : 'Department'}>{localizeDepartmentName(employee.department, language)}</TableCell>
+                <TableCell data-label={language.startsWith('ar') ? 'الراتب الإجمالي' : 'Gross Salary'} className="tabular-nums">${employee.grossSalary.toLocaleString()}</TableCell>
+                <TableCell data-label={language.startsWith('ar') ? 'إجمالي الاستقطاعات' : 'Total Deductions'} className="tabular-nums">${employee.totalDeductions.toLocaleString()}</TableCell>
+                <TableCell data-label={language.startsWith('ar') ? 'صافي الراتب' : 'Net Pay'} weight="semibold" color="text-chart-3" className="tabular-nums">${employee.netPay.toLocaleString()}</TableCell>
                 <td className="px-4 py-3.5 whitespace-nowrap text-end">
                   <button
                     onClick={() => handleGeneratePayslip(employee)}
@@ -629,8 +629,8 @@ const TableHeader = ({ children, className }: { children: React.ReactNode; class
   </th>
 );
 
-const TableCell = ({ children, weight = 'normal', color = 'text-foreground', className }: { children: React.ReactNode; weight?: 'normal' | 'medium' | 'semibold'; color?: string; className?: string }) => (
-  <td className={cn("px-4 py-3.5 whitespace-nowrap text-sm align-middle", color, className)} style={{ fontFamily: "'Inter', sans-serif", fontWeight: weight === 'normal' ? 'var(--font-weight-normal)' : weight === 'medium' ? 'var(--font-weight-medium)' : 'var(--font-weight-semibold)' }}>
+const TableCell = ({ children, weight = 'normal', color = 'text-foreground', className, ...props }: React.ComponentProps<'td'> & { weight?: 'normal' | 'medium' | 'semibold'; color?: string }) => (
+  <td {...props} className={cn("px-4 py-3.5 whitespace-nowrap text-sm align-middle", color, className)} style={{ fontFamily: "'Inter', sans-serif", fontWeight: weight === 'normal' ? 'var(--font-weight-normal)' : weight === 'medium' ? 'var(--font-weight-medium)' : 'var(--font-weight-semibold)' }}>
     {children}
   </td>
 );
