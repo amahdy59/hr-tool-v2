@@ -94,8 +94,10 @@ export const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     const updateCount = async () => {
-      const queue = await getPendingOfflineQueue();
-      setOfflinePendingCount(queue.length);
+      try {
+        const queue = await getPendingOfflineQueue();
+        setOfflinePendingCount(queue.length);
+      } catch { /* Keep the last known count when offline storage is unavailable. */ }
     };
     updateCount();
 
@@ -115,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header
       role="banner"
-      className="absolute inset-x-0 top-0 z-[60] flex h-16 w-full items-center justify-between gap-2 border-b border-border bg-card px-3 sm:gap-4 sm:px-6"
+      className="relative z-[60] flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b border-border bg-card px-3 sm:gap-4 sm:px-6"
     >
       {/* 1. Left Zone: Mobile Nav, Brand Mark (mobile), Search & Breadcrumbs */}
       <div className="flex min-w-0 items-center justify-start gap-2 sm:gap-3 flex-1">
@@ -255,7 +257,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="hidden text-sm md:inline">{t('header.search')}</span>
           </button>
         )}
-        <NotificationCenter />
+        <NotificationCenter accountId={currentUser?.email || 'demo'} />
         <AccessibilityPanel settings={accessibility} compact />
 
         {/* User Account Menu Hub */}
@@ -286,6 +288,7 @@ export const Header: React.FC<HeaderProps> = ({
             <DropdownMenuLabel className="px-3 py-2">
               <span className="block truncate text-sm font-semibold">{displayName}</span>
               <span className="mt-1 block truncate text-xs font-normal text-muted-foreground" dir="ltr" data-no-auto-translate>{currentUser?.email}</span>
+              <span className="mt-2 block text-xs font-normal text-muted-foreground">{t('reliability.demoWorkspace')}</span>
             </DropdownMenuLabel>
             {offlinePendingCount > 0 && (
               <div role="status" className="flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground">

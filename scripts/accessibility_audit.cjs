@@ -113,6 +113,22 @@ server.listen(0, '127.0.0.1', async () => {
     await page.evaluate(() => (document.fonts ? document.fonts.ready : Promise.resolve()));
     await auditCurrentState('1. Login Screen (English)');
 
+    for (const language of ['en', 'ar']) {
+      await page.evaluate(lang => localStorage.setItem('i18nextLng', lang), language);
+      await page.reload({ waitUntil: 'networkidle0' });
+      await page.waitForFunction(lang => document.documentElement.lang === lang, {}, language);
+      const resetTrigger = await page.evaluateHandle(() => [...document.querySelectorAll('button')].find(b => /Preview password reset|معاينة إعادة تعيين كلمة المرور/.test(b.textContent)));
+      await resetTrigger.asElement().click();
+      await page.waitForSelector('[role="dialog"]');
+      await auditCurrentState(`Demo password reset (${language})`);
+      await page.click('[role="dialog"] button[type="submit"]');
+      await auditCurrentState(`Demo password reset validation (${language})`);
+      await page.keyboard.press('Escape');
+      await page.waitForSelector('[role="dialog"]', { hidden: true });
+    }
+    await page.evaluate(() => localStorage.setItem('i18nextLng', 'en'));
+    await page.reload({ waitUntil: 'networkidle0' });
+
     // 2. Audit Login Screen (Arabic)
     const langBtn = await page.$('button[aria-label="Switch language to Arabic"], button[aria-label*="العربية"]');
     if (langBtn) {
@@ -209,6 +225,17 @@ server.listen(0, '127.0.0.1', async () => {
         await page.click('header [data-slot="popover-trigger"]');
         await page.waitForSelector('[data-slot="popover-content"][data-state="open"]');
         await auditCurrentState(`Notifications (${language}, ${theme})`);
+        await page.keyboard.press('Escape');
+        await page.evaluate(() => {
+          window.dispatchEvent(new Event('offline'));
+          const prompt = new Event('beforeinstallprompt');
+          prompt.prompt = async () => {};
+          prompt.userChoice = Promise.resolve({ outcome: 'dismissed' });
+          window.dispatchEvent(prompt);
+        });
+        await auditCurrentState(`Offline and install notices (${language}, ${theme})`);
+        await page.evaluate(() => window.dispatchEvent(new Event('online')));
+
         await page.keyboard.press('Escape');
         await page.waitForSelector('[data-slot="popover-content"]', { hidden: true });
       }

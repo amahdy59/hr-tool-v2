@@ -20,6 +20,7 @@ const mimeTypes = {
   '.webmanifest': 'application/manifest+json',
 };
 
+let workerRevision = 0;
 const server = http.createServer((req, res) => {
   let cleanUrl = req.url.split('?')[0];
   if (cleanUrl.startsWith('/hr-tool-v2/')) {
@@ -40,7 +41,7 @@ const server = http.createServer((req, res) => {
       res.end('Error loading file');
     } else {
       res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content);
+      res.end(cleanUrl === '/sw.js' ? Buffer.concat([content, Buffer.from(`\n// QA revision ${workerRevision}`)]) : content);
     }
   });
 });
@@ -170,6 +171,22 @@ server.listen(0, '127.0.0.1', async () => {
     });
     assert(backToLoginClicked, 'Returned to Login page from Case Study');
     await new Promise(r => setTimeout(r, 600));
+
+    // The reset preview must be honest, named, and fully keyboard dismissible.
+    const resetTrigger = await page.evaluateHandle(() => [...document.querySelectorAll('button')].find(b => b.textContent.includes('Preview password reset')));
+    await resetTrigger.asElement().click();
+    await page.waitForSelector('[role="dialog"]');
+    assert(await page.evaluate(() => document.querySelector('[role="dialog"]').textContent.includes('No email will be sent.')), 'Reset preview explains that no email is sent');
+    await page.type('[role="dialog"] input[type="email"]', 'demo@example.com');
+    await page.click('[role="dialog"] button[type="submit"]');
+    await page.waitForSelector('[role="dialog"] [role="status"]');
+    assert(await page.evaluate(() => document.querySelector('[role="dialog"] [role="status"]').textContent.includes('No reset email was sent')), 'Reset result does not claim a real password reset');
+    await page.keyboard.press('Tab');
+    assert(await page.evaluate(() => document.querySelector('[role="dialog"]').contains(document.activeElement)), 'Reset dialog contains keyboard focus');
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('[role="dialog"]', { hidden: true });
+
+    assert(await page.evaluate(() => document.activeElement?.textContent.includes('Preview password reset')), 'Closing reset restores focus to its trigger');
 
     console.log('\n--- Test 2: Authentication & Demo Login ---');
     const demoBtn = await page.evaluate(() => {
@@ -501,6 +518,96 @@ server.listen(0, '127.0.0.1', async () => {
       return !control || control.closest('[hidden]') !== null;
     }), 'Section navigation resets scroll and hides the inactive back-to-top control');
 
+    console.log('\n--- Reliability and stacked notices ---');
+    await page.evaluate(() => localStorage.setItem('i18nextLng', 'en'));
+    await page.reload({ waitUntil: 'networkidle0' });
+    await page.waitForSelector('#main-content');
+    // Isolate this test's write when CI builds with Supabase credentials.
+    // Only the synthetic record is intercepted; no QA decision reaches production.
+    let remoteDecisionSaved = false;
+    await page.setRequestInterception(true);
+    const replayRequest = async request => {
+      const url = new URL(request.url());
+      if (url.pathname.endsWith('/rest/v1/leaves') && url.searchParams.get('id') === 'eq.qa-leave') {
+        const headers = { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'PATCH, OPTIONS', 'access-control-allow-headers': 'authorization, apikey, content-type, prefer, x-client-info' };
+        if (request.method() === 'OPTIONS') return request.respond({ status: 204, headers });
+        if (request.method() === 'PATCH' && JSON.parse(request.postData() || '{}').status === 'Approved') {
+          remoteDecisionSaved = true;
+          return request.respond({ status: 200, contentType: 'application/json', headers, body: JSON.stringify({ id: 'qa-leave' }) });
+        }
+        return request.respond({ status: 400, headers, body: '{}' });
+      }
+      return request.continue();
+    };
+    page.on('request', replayRequest);
+    // Queue a real decision in real IndexedDB, then reconnect and verify persistence.
+    await page.evaluate(async () => {
+      localStorage.setItem('hr_tool_leaves', JSON.stringify([{ id: 'qa-leave', name: 'Sample', type: 'Vacation', range: '2026-10-26 - 2026-10-27', duration: '2 days', notes: '', status: 'pending' }]));
+      Object.defineProperty(navigator, 'onLine', { value: false, configurable: true });
+      window.dispatchEvent(new Event('offline'));
+      const db = await new Promise((resolve, reject) => {
+        const request = indexedDB.open('hr_tool_offline_db', 1);
+        request.onupgradeneeded = () => request.result.createObjectStore('pending_requests', { keyPath: 'id' });
+        request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
+      });
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction('pending_requests', 'readwrite');
+        tx.objectStore('pending_requests').add({ id: 'qa-action', type: 'APPROVE_LEAVE', payload: { leaveId: 'qa-leave' }, timestamp: Date.now(), retryCount: 0 });
+        tx.oncomplete = resolve; tx.onerror = () => reject(tx.error);
+      });
+      db.close(); window.dispatchEvent(new Event('hr-offline-queue-changed'));
+      Object.defineProperty(navigator, 'onLine', { value: true, configurable: true });
+      window.dispatchEvent(new Event('online'));
+    });
+    await page.waitForFunction(async () => {
+      const db = await new Promise(resolve => { const r = indexedDB.open('hr_tool_offline_db', 1); r.onsuccess = () => resolve(r.result); });
+      const count = await new Promise(resolve => { const tx = db.transaction('pending_requests'); const r = tx.objectStore('pending_requests').count(); tx.oncomplete = () => resolve(r.result); });
+      db.close(); return count === 0;
+    });
+    const localDecisionSaved = await page.evaluate(() => JSON.parse(localStorage.getItem('hr_tool_leaves') || '[]').some(l => l.id === 'qa-leave' && l.status === 'approved'));
+    assert(localDecisionSaved || remoteDecisionSaved, 'Reconnection replays the queued decision into persistent storage');
+    await page.setRequestInterception(false);
+    page.off('request', replayRequest);
+    const queueCount = await page.evaluate(async () => {
+      const db = await new Promise(resolve => { const r = indexedDB.open('hr_tool_offline_db', 1); r.onsuccess = () => resolve(r.result); });
+      const count = await new Promise(resolve => { const tx = db.transaction('pending_requests'); const r = tx.objectStore('pending_requests').count(); tx.oncomplete = () => resolve(r.result); });
+      db.close(); return count;
+    });
+    assert(queueCount === 0, 'Only the successfully persisted decision is removed from IndexedDB');
+
+    // A real waiting service worker renders the real update notice.
+    await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
+    workerRevision++;
+    await page.evaluate(async () => { const r = await navigator.serviceWorker.getRegistration(); await r.update(); });
+    await page.waitForSelector('.pwa-reload-prompt');
+    assert(await page.evaluate(() => document.querySelector('[data-slot="app-notices"]').contains(document.querySelector('.pwa-reload-prompt'))), 'Update notice reserves space inside the application shell');
+    for (const language of ['en', 'ar']) {
+      if (language === 'ar') {
+        await page.click('header [data-slot="dialog-trigger"]');
+        await page.waitForSelector('[data-panel="accessibility"]');
+        await page.click('[data-panel="accessibility"] [role="radio"][lang="ar"]');
+        await page.keyboard.press('Escape');
+        await page.waitForSelector('[data-panel="accessibility"]', { hidden: true });
+      }
+      for (const size of [{ width: 320, height: 568 }, { width: 667, height: 375 }, { width: 1280, height: 800 }]) {
+        await page.setViewport(size);
+        await page.evaluate(() => {
+          Object.defineProperty(navigator, 'onLine', { value: false, configurable: true });
+          window.dispatchEvent(new Event('offline'));
+          const event = new Event('beforeinstallprompt');
+          event.prompt = async () => {}; event.userChoice = Promise.resolve({ outcome: 'dismissed' });
+          window.dispatchEvent(event);
+        });
+        await page.waitForSelector('aside.offline-banner');
+        const layout = await page.evaluate(() => {
+          const header = document.querySelector('header').getBoundingClientRect();
+          const notices = document.querySelector('[data-slot="app-notices"]').getBoundingClientRect();
+          const main = document.querySelector('#main-content').getBoundingClientRect();
+          return { ordered: header.bottom <= notices.top + 1 && notices.bottom <= main.top + 1, available: main.height > 80, fits: document.documentElement.scrollWidth <= innerWidth };
+        });
+        assert(layout.ordered && layout.available && layout.fits, `Offline, install, and update notices preserve navigation and content (${language}, ${size.width}×${size.height})`, JSON.stringify(layout));
+      }
+    }
     console.log('\n--- E2E Test Summary ---');
     const passed = report.filter(r => r.status === 'PASS').length;
     const failed = report.filter(r => r.status === 'FAIL').length;

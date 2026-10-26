@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Download, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -14,10 +15,7 @@ export const PwaInstallPrompt: React.FC = () => {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    const isDismissed = localStorage.getItem('pwa_prompt_dismissed');
-    if (isDismissed) {
-      setDismissed(true);
-    }
+    try { setDismissed(Boolean(localStorage.getItem('pwa_prompt_dismissed'))); } catch { /* Keep the prompt usable without storage. */ }
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -25,9 +23,12 @@ export const PwaInstallPrompt: React.FC = () => {
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    const installed = () => setDeferredPrompt(null);
+    window.addEventListener('appinstalled', installed);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', installed);
     };
   }, []);
 
@@ -37,32 +38,29 @@ export const PwaInstallPrompt: React.FC = () => {
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
-    await deferredPrompt.prompt();
-    const choice = await deferredPrompt.userChoice;
-    if (choice.outcome === 'accepted') {
-      setDeferredPrompt(null);
-    }
+    const prompt = deferredPrompt;
+    setDeferredPrompt(null); // Install prompts are single use, including dismissal.
+    try { await prompt.prompt(); await prompt.userChoice; }
+    catch { toast.error(isArabic ? 'تعذّر فتح التثبيت. استخدم قائمة المتصفح للمحاولة مجدداً.' : 'Could not open installation. Use the browser menu to try again.'); }
   };
 
   const handleDismiss = () => {
     setDismissed(true);
-    localStorage.setItem('pwa_prompt_dismissed', 'true');
+    try { localStorage.setItem('pwa_prompt_dismissed', 'true'); } catch { /* Dismiss for this session. */ }
   };
 
   return (
     <aside
       role="region"
       aria-label={isArabic ? 'تثبيت التطبيق' : 'Install Application'}
-      className="bg-primary/10 border-b border-primary/20 px-4 py-2 flex items-center justify-between gap-3 text-xs sm:text-sm text-foreground select-none transition-all z-40"
+      className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-border bg-muted px-4 py-3 text-sm text-foreground"
     >
-      <div className="flex items-center gap-2 min-w-0">
+      <div className="flex min-w-0 flex-[1_1_12rem] items-start gap-2">
         <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
           <Download className="w-3.5 h-3.5" aria-hidden="true" />
         </div>
-        <p className="truncate font-medium">
-          {isArabic
-            ? 'قم بتثبيت HR Tool على جهازك لتجربة أسرع ودعم وضع عدم الاتصال.'
-            : 'Install HR Tool on your device for faster access and full offline support.'}
+        <p className="min-w-0 break-words font-medium">
+          {t('reliability.installDescription')}
         </p>
       </div>
 
@@ -80,7 +78,7 @@ export const PwaInstallPrompt: React.FC = () => {
           className="p-1.5 text-muted-foreground hover:text-foreground rounded-full hover:bg-primary/20 transition-all cursor-pointer"
           aria-label={t('common.close', 'Close')}
         >
-          <X className="w-4 h-4" />
+          <X className="w-4 h-4" aria-hidden="true" />
         </button>
       </div>
     </aside>

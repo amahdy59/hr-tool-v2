@@ -7,6 +7,10 @@ import { Button } from './ui/button';
 export const ReloadPrompt: React.FC = () => {
   const { i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
+  const updateTimer = React.useRef<ReturnType<typeof setInterval>>();
+  const [updating, setUpdating] = React.useState(false);
+  const [updateFailed, setUpdateFailed] = React.useState(false);
+  React.useEffect(() => () => clearInterval(updateTimer.current), []);
 
   const {
     needRefresh: [needRefresh, setNeedRefresh],
@@ -15,7 +19,8 @@ export const ReloadPrompt: React.FC = () => {
     onRegistered(r) {
       if (r) {
         // Periodically check for SW updates every hour
-        setInterval(() => {
+        clearInterval(updateTimer.current);
+        updateTimer.current = setInterval(() => {
           r.update().catch(() => {});
         }, 60 * 60 * 1000);
       }
@@ -35,27 +40,34 @@ export const ReloadPrompt: React.FC = () => {
 
   return (
     <div
-      role="alert"
-      aria-live="assertive"
-      className="pwa-reload-prompt fixed bottom-5 end-5 z-50 max-w-md bg-card/95 backdrop-blur-md border border-primary/30 rounded-2xl p-4 shadow-2xl flex items-start gap-3 text-foreground animate-in fade-in slide-in-from-bottom-5 duration-300"
+      role="status"
+      aria-live="polite"
+      className="pwa-reload-prompt w-full border-b border-border bg-card p-4 flex items-start gap-3 text-foreground"
     >
       <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0 mt-0.5">
         <Sparkles className="w-5 h-5" aria-hidden="true" />
       </div>
 
-      <div className="flex-1 text-start space-y-1">
+      <div className="min-w-0 flex-1 text-start space-y-1 break-words">
         <h4 className="text-[var(--text-sm)] font-[var(--font-weight-semibold)]">
           {isArabic ? 'تحديث جديد متوفر!' : 'New Version Available!'}
         </h4>
         <p className="text-[var(--text-xs)] text-muted-foreground">
           {isArabic
-            ? 'تم نشر تحديث جديد لنظام الموارد البشرية. انقر لتحديث التطبيق فوراً.'
-            : 'A newer version of the HR portal is ready. Click to refresh and activate.'}
+            ? 'احفظ عملك قبل التحديث. سيُعاد تحميل التطبيق.'
+            : 'Save your work before updating. The app will reload.'}
         </p>
-        <div className="flex items-center gap-2 pt-2">
+        {updateFailed && <p className="text-sm text-destructive">{isArabic ? 'تعذّر التحديث. حاول مرة أخرى.' : 'Update failed. Please try again.'}</p>}
+        <div className="flex flex-wrap items-center gap-2 pt-2">
           <Button
             size="sm"
-            onClick={() => updateServiceWorker(true)}
+            disabled={updating}
+            onClick={async () => {
+              setUpdating(true); setUpdateFailed(false);
+              try { await updateServiceWorker(true); }
+              catch { setUpdateFailed(true); }
+              finally { setUpdating(false); }
+            }}
             className="gap-1.5 h-8 text-xs font-medium cursor-pointer"
           >
             <RefreshCw className="w-3.5 h-3.5" aria-hidden="true" />
@@ -77,7 +89,7 @@ export const ReloadPrompt: React.FC = () => {
         className="text-muted-foreground hover:text-foreground p-1 rounded-xl transition-colors cursor-pointer"
         aria-label={isArabic ? 'إغلاق الإشعار' : 'Dismiss notification'}
       >
-        <X className="w-4 h-4" />
+        <X className="w-4 h-4" aria-hidden="true" />
       </button>
     </div>
   );

@@ -1,79 +1,53 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, act, fireEvent } from '@testing-library/react';
+import '@/i18n';
+import { toast } from 'sonner';
 import { OfflineBanner } from '../OfflineBanner';
-import * as offlineQueue from '@/lib/offlineQueue';
-
-vi.mock('sonner', () => ({
-  toast: {
-    success: vi.fn(),
-  },
-}));
-
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string, defaultVal?: string) => defaultVal || key,
-    i18n: { resolvedLanguage: 'en', language: 'en' },
-  }),
-}));
-
-describe('OfflineBanner Component (Resilience & Sync UI)', () => {
+import * as queue from '@/lib/offlineQueue';
+import { replayOfflineAction } from '@/lib/services/offlineReplay';
+vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
+vi.mock('@/lib/services/offlineReplay', () => ({ replayOfflineAction: vi.fn() }));
+vi.mock('@/lib/supabaseClient', () => ({ isSupabaseConfigured: false }));
+const pending: queue.QueuedOfflineRequest[] = [{ id: '1', type: 'APPROVE_LEAVE', payload: { leaveId: 'l1' }, timestamp: 1, retryCount: 0 }];
+describe('truthful offline status', () => {
   beforeEach(() => {
-    vi.restoreAllMocks();
+    vi.restoreAllMocks(); vi.clearAllMocks();
     Object.defineProperty(navigator, 'onLine', { value: true, configurable: true });
+    vi.spyOn(queue, 'getPendingOfflineQueue').mockResolvedValue([]);
+    vi.spyOn(queue, 'flushOfflineQueue').mockResolvedValue({ processed: 0, failed: 0 });
   });
-
-  it('renders nothing when browser is online and pending queue is empty', async () => {
-    vi.spyOn(offlineQueue, 'getPendingOfflineQueue').mockResolvedValue([]);
-
-    const { container } = render(<OfflineBanner />);
-    await act(async () => {});
-
+  it('does not show status when online with an empty queue', async () => {
+    const { container } = render(<OfflineBanner />); await act(async () => {});
     expect(container.firstChild).toBeNull();
   });
-
-  it('renders offline warning when navigator is offline', async () => {
+  it('shows an offline warning and pending count', async () => {
     Object.defineProperty(navigator, 'onLine', { value: false, configurable: true });
-    vi.spyOn(offlineQueue, 'getPendingOfflineQueue').mockResolvedValue([]);
-
-    render(<OfflineBanner />);
-    await act(async () => {});
-
-    expect(screen.getByRole('status')).toBeTruthy();
-    expect(screen.getByText(/offline/i)).toBeTruthy();
+    vi.mocked(queue.getPendingOfflineQueue).mockResolvedValue(pending);
+    render(<OfflineBanner />); await act(async () => {});
+    expect(screen.getByRole('status').textContent).toContain('1 pending.');
+    expect(screen.getByRole('status').textContent).toContain('You are offline');
+    expect(queue.flushOfflineQueue).not.toHaveBeenCalled();
   });
-
-  it('renders pending count badge when offline and queue has items', async () => {
-    Object.defineProperty(navigator, 'onLine', { value: false, configurable: true });
-    vi.spyOn(offlineQueue, 'getPendingOfflineQueue').mockResolvedValue([
-      { id: '1', type: 'APPROVE_LEAVE', payload: {}, timestamp: Date.now(), retryCount: 0 },
-      { id: '2', type: 'CREATE_MISSION', payload: {}, timestamp: Date.now(), retryCount: 0 },
-    ]);
-
-    render(<OfflineBanner />);
-    await act(async () => {});
-
-    expect(screen.getByRole('status')).toBeTruthy();
-    expect(screen.getByText(/2 pending/i)).toBeTruthy();
+  it('replays requests found on load using the verified handler', async () => {
+    vi.mocked(queue.getPendingOfflineQueue).mockResolvedValueOnce(pending);
+    vi.mocked(queue.flushOfflineQueue).mockResolvedValue({ processed: 1, failed: 0 });
+    render(<OfflineBanner />); await act(async () => {});
+    expect(queue.flushOfflineQueue).toHaveBeenCalledWith(replayOfflineAction);
+    expect(toast.success).toHaveBeenCalledWith('Pending requests saved in this browser: 1.');
   });
-
-  it('triggers flushOfflineQueue when reconnected online with pending items', async () => {
-    vi.spyOn(offlineQueue, 'getPendingOfflineQueue').mockResolvedValue([
-      { id: '1', type: 'APPROVE_LEAVE', payload: {}, timestamp: Date.now(), retryCount: 0 },
-    ]);
-    const flushSpy = vi.spyOn(offlineQueue, 'flushOfflineQueue').mockResolvedValue({
-      processed: 1,
-      failed: 0,
-    });
-
-    render(<OfflineBanner />);
-    await act(async () => {});
-
-    // Trigger online reconnection
-    await act(async () => {
-      window.dispatchEvent(new Event('online'));
-    });
-
-    expect(flushSpy).toHaveBeenCalled();
+  it('does not announce successful sync when nothing was processed', async () => {
+    render(<OfflineBanner />); await act(async () => { window.dispatchEvent(new Event('online')); });
+    expect(toast.success).not.toHaveBeenCalled();
+  });
+  it('retains an actionable error after failure and permits retry', async () => {
+    vi.mocked(queue.getPendingOfflineQueue).mockResolvedValue(pending);
+    vi.mocked(queue.flushOfflineQueue).mockRejectedValueOnce(new Error('storage failure'));
+    render(<OfflineBanner />); await act(async () => {});
+    expect(screen.getByRole('status').textContent).toContain('They remain on this device');
+    expect(screen.getByRole('button', { name: 'Retry saving' }).hasAttribute('disabled')).toBe(false);
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Retry saving' })); });
+    expect(queue.flushOfflineQueue).toHaveBeenCalledTimes(2);
+    expect(toast.success).not.toHaveBeenCalled();
   });
 });

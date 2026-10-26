@@ -391,11 +391,12 @@ export const LeaveService = {
     return getCache('leaves', INITIAL_LEAVES);
   },
 
-  async create(leave: Omit<LeaveRequest, 'id'> & { employeeId: string }): Promise<LeaveRequest> {
+  async create(leave: Omit<LeaveRequest, 'id'> & { employeeId: string }, submissionId?: string): Promise<LeaveRequest> {
     if (isSupabaseConfigured) {
       const [start_date, end_date] = leave.range.split(' - ');
       const days_count = parseInt(leave.duration) || 1;
       const payload = {
+        ...(submissionId ? { id: submissionId } : {}),
         employee_id: leave.employeeId,
         leave_type: leave.type,
         start_date: start_date || new Date().toISOString().split('T')[0],
@@ -410,7 +411,15 @@ export const LeaveService = {
         .select()
         .single();
 
-      if (error && isRowLevelSecurityError(error)) {
+      if (error?.code === '23505' && submissionId) {
+        const existing = await supabase.from('leaves').select('*').eq('id', submissionId).single();
+        if (existing.error) throw existing.error;
+        if (Object.entries(payload).some(([key, value]) => (existing.data[key] ?? '') !== (value ?? ''))) throw new Error('Submission ID belongs to a different request');
+        data = existing.data;
+        error = null;
+      }
+
+      if (error && isRowLevelSecurityError(error) && !submissionId) {
         const rpcResult = await supabase.rpc('create_leave_for_employee', {
           p_employee_id: payload.employee_id,
           p_leave_type: payload.leave_type,
@@ -442,7 +451,9 @@ export const LeaveService = {
     }
 
     const cached = getCache('leaves', INITIAL_LEAVES);
-    const newLeave = { ...leave, id: Math.random().toString(36).substr(2, 9), status: 'pending' };
+    const existing = submissionId && cached.find(item => item.id === submissionId);
+    if (existing) return existing;
+    const newLeave = { ...leave, id: submissionId || Math.random().toString(36).substr(2, 9), status: 'pending' };
     cached.push(newLeave);
     setCache('leaves', cached);
     return newLeave;
@@ -454,13 +465,16 @@ export const LeaveService = {
       const { error } = await supabase
         .from('leaves')
         .update({ status: dbStatus })
-        .eq('id', id);
+        .eq('id', id)
+        .select('id')
+        .single();
       if (error) throw error;
       return;
     }
 
     const cached = getCache('leaves', INITIAL_LEAVES);
     const index = cached.findIndex(l => l.id === id);
+    if (index === -1) throw new Error('Leave request was not found');
     if (index !== -1) {
       cached[index].status = status;
       setCache('leaves', cached);
@@ -523,11 +537,12 @@ export const MissionService = {
     return getCache('missions', INITIAL_MISSIONS);
   },
 
-  async create(mission: Omit<MissionRequest, 'id'> & { employeeId: string }): Promise<MissionRequest> {
+  async create(mission: Omit<MissionRequest, 'id'> & { employeeId: string }, submissionId?: string): Promise<MissionRequest> {
     if (isSupabaseConfigured) {
       const [start_date, end_date] = mission.range.split(' - ');
       const duration_days = parseInt(mission.duration) || 1;
       const payload = {
+        ...(submissionId ? { id: submissionId } : {}),
         employee_id: mission.employeeId,
         title: mission.type,
         start_date: start_date || new Date().toISOString().split('T')[0],
@@ -543,7 +558,15 @@ export const MissionService = {
         .select()
         .single();
 
-      if (error && isRowLevelSecurityError(error)) {
+      if (error?.code === '23505' && submissionId) {
+        const existing = await supabase.from('missions').select('*').eq('id', submissionId).single();
+        if (existing.error) throw existing.error;
+        if (Object.entries(payload).some(([key, value]) => (existing.data[key] ?? '') !== (value ?? ''))) throw new Error('Submission ID belongs to a different request');
+        data = existing.data;
+        error = null;
+      }
+
+      if (error && isRowLevelSecurityError(error) && !submissionId) {
         const rpcResult = await supabase.rpc('create_mission_for_employee', {
           p_employee_id: payload.employee_id,
           p_title: payload.title,
@@ -576,7 +599,9 @@ export const MissionService = {
     }
 
     const cached = getCache('missions', INITIAL_MISSIONS);
-    const newMission = { ...mission, id: Math.random().toString(36).substr(2, 9), status: 'pending' };
+    const existing = submissionId && cached.find(item => item.id === submissionId);
+    if (existing) return existing;
+    const newMission = { ...mission, id: submissionId || Math.random().toString(36).substr(2, 9), status: 'pending' };
     cached.push(newMission);
     setCache('missions', cached);
     return newMission;
@@ -588,13 +613,16 @@ export const MissionService = {
       const { error } = await supabase
         .from('missions')
         .update({ status: dbStatus })
-        .eq('id', id);
+        .eq('id', id)
+        .select('id')
+        .single();
       if (error) throw error;
       return;
     }
 
     const cached = getCache('missions', INITIAL_MISSIONS);
     const index = cached.findIndex(m => m.id === id);
+    if (index === -1) throw new Error('Mission request was not found');
     if (index !== -1) {
       cached[index].status = status;
       setCache('missions', cached);

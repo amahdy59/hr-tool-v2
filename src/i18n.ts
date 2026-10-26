@@ -962,6 +962,80 @@ const ar = {
   },
 };
 
+(en.translation as Record<string, unknown>).reliability = {
+  "demoWorkspace": "Demo workspace",
+  "demoDescription": "This is a demo with simulated sign-in. Use a sample email and password 123456, or continue to the demo. Do not enter your work password.",
+  "resetPreview": "Preview password reset",
+  "resetDescription": "Demo preview only. Password reset is not connected to an email service. No email will be sent.",
+  "linkedinDemo": "This demo uses a sample profile. LinkedIn connection and PDF import are not available. No file or LinkedIn account is needed.",
+  "sampleProfile": "Sample profile",
+  "sampleAbout": "Sample UX designer profile for exploring the demo.",
+  "sampleReplace": "Adding this sample replaces your profile summary and skills. Your other profile sections stay as they are.",
+  "sampleAdded": "Sample added to this profile. No LinkedIn connection was made.",
+  "addSample": "Use sample summary and skills",
+  "previewSample": "Preview sample",
+  "notificationStorageUnavailable": "Sample notifications. Browser storage is unavailable; changes last for this session only.",
+  "sampleNotifications": "Sample notifications. Read and dismissed states are saved for this account on this device.",
+  "offline": "You are offline. Some actions need an internet connection.",
+  "syncFailed": "Could not save pending requests. They remain on this device. Reconnect and try again.",
+  "syncing": "Saving pending requests…",
+  "pending": "Requests are waiting to be saved.",
+  "reconnected": "Internet connection restored.",
+  "pendingCount": "{{count}} pending.",
+  "retry": "Retry saving",
+  "synced": "Pending requests saved to the server: {{count}}.",
+  "savedLocally": "Pending requests saved in this browser: {{count}}.",
+  "installDescription": "Install the app for home-screen access. Some actions require an internet connection."
+};
+
+Object.assign(en.translation.login, {
+  "signInHeading": "Try demo sign-in",
+  "emailHint": "Use a sample email, for example demo@example.com.",
+  "passwordHint": "Demo password: 123456. Do not use your work password.",
+  "resetEmailHint": "Use a sample email to preview this form.",
+  "resetSuccess": "Preview complete. No reset email was sent and no password was changed.",
+  "signIn": "Enter demo"
+});
+
+(ar.translation as Record<string, unknown>).reliability = {
+  "demoWorkspace": "مساحة عمل تجريبية",
+  "demoDescription": "هذه نسخة تجريبية بتسجيل دخول محاكى. استخدم بريداً نموذجياً وكلمة المرور 123456، أو تابع إلى العرض التجريبي. لا تدخل كلمة مرور عملك.",
+  "resetPreview": "معاينة إعادة تعيين كلمة المرور",
+  "resetDescription": "هذه معاينة تجريبية فقط. إعادة تعيين كلمة المرور غير متصلة بخدمة بريد إلكتروني، ولن تُرسل أي رسالة.",
+  "linkedinDemo": "يستخدم هذا العرض ملفاً شخصياً نموذجياً. الاتصال بلينكدإن واستيراد ملفات PDF غير متاحين. لا تحتاج إلى ملف أو حساب لينكدإن.",
+  "sampleProfile": "ملف شخصي نموذجي",
+  "sampleAbout": "ملف نموذجي لمصمم تجربة مستخدم لاستكشاف العرض التجريبي.",
+  "sampleReplace": "ستؤدي إضافة هذا النموذج إلى استبدال نبذة ملفك ومهاراتك. ستبقى أقسام ملفك الأخرى كما هي.",
+  "sampleAdded": "تمت إضافة النموذج إلى هذا الملف الشخصي دون الاتصال بلينكدإن.",
+  "addSample": "استخدام النبذة والمهارات النموذجية",
+  "previewSample": "معاينة النموذج",
+  "notificationStorageUnavailable": "إشعارات نموذجية. مساحة تخزين المتصفح غير متاحة؛ ستبقى التغييرات لهذه الجلسة فقط.",
+  "sampleNotifications": "إشعارات نموذجية. تُحفظ حالات القراءة والإخفاء لهذا الحساب على هذا الجهاز.",
+  "offline": "أنت غير متصل بالإنترنت. بعض الإجراءات تحتاج إلى اتصال.",
+  "syncFailed": "تعذّر حفظ الطلبات المعلّقة. ما زالت محفوظة على هذا الجهاز. اتصل بالإنترنت وحاول مجدداً.",
+  "syncing": "جارٍ حفظ الطلبات المعلّقة…",
+  "pending": "توجد طلبات تنتظر الحفظ.",
+  "reconnected": "تمت استعادة الاتصال بالإنترنت.",
+  "pendingCount": "عدد الطلبات المعلّقة: {{count}}.",
+  "retry": "إعادة محاولة الحفظ",
+  "synced": "تم حفظ {{count}} من الطلبات المعلّقة على الخادم.",
+  "savedLocally": "تم حفظ {{count}} من الطلبات المعلّقة في هذا المتصفح.",
+  "installDescription": "ثبّت التطبيق للوصول إليه من الشاشة الرئيسية. بعض الإجراءات تحتاج إلى اتصال بالإنترنت."
+};
+
+Object.assign((ar.translation as unknown as typeof en.translation).login, {
+  "signInHeading": "تجربة تسجيل الدخول التجريبي",
+  "emailHint": "استخدم بريداً نموذجياً، مثل demo@example.com.",
+  "passwordHint": "كلمة المرور التجريبية: 123456. لا تستخدم كلمة مرور عملك.",
+  "resetEmailHint": "استخدم بريداً نموذجياً لمعاينة هذا النموذج.",
+  "resetSuccess": "اكتملت المعاينة. لم تُرسل رسالة إعادة تعيين ولم تتغير أي كلمة مرور.",
+  "signIn": "الدخول إلى العرض التجريبي"
+});
+
+en.translation.login.errors.incorrectPassword = 'Use the demo password 123456, or continue to the demo.';
+
+(ar.translation as typeof en.translation).login.errors.incorrectPassword = 'استخدم كلمة المرور التجريبية 123456، أو تابع إلى العرض التجريبي.';
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)

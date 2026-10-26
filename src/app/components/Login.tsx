@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { AccessibilityPanel, AccessibilitySettings } from './AccessibilityPanel';
 import { RedesignInfoPage } from './RedesignInfoPage';
 import { useTranslation } from 'react-i18next';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 
 interface LoginProps {
   onLogin: (email: string) => void;
@@ -13,9 +14,9 @@ interface LoginProps {
 export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   const { t } = useTranslation();
   const loginHeadingId = React.useId();
+  const resetTriggerRef = React.useRef<HTMLButtonElement>(null);
   const usernameId = React.useId();
   const passwordId = React.useId();
-  const rememberMeId = React.useId();
   const loginErrorId = React.useId();
   const usernameErrorTextId = React.useId();
   const usernameHintId = React.useId();
@@ -98,13 +99,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
 
     setError('');
     setErrorField('');
-    setIsLoading(true);
-
-    // Simulate a small delay for better UX
-    setTimeout(() => {
-      setResetSuccess(true);
-      setIsLoading(false);
-    }, 600);
+    setResetSuccess(true);
   };
 
   const handleQuickLogin = () => {
@@ -198,6 +193,44 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             </div>
           </div>
 
+          <p data-no-auto-translate className="mb-5 rounded-xl border border-border bg-muted p-3 text-sm text-foreground">{t('reliability.demoDescription')}</p>
+          <div className="mb-5">
+            {showTempLogin && (
+              <div
+                className="rounded-2xl border-2 border-dashed border-[#C2410C]/60 bg-[#FFF8EE] p-4 flex flex-col items-center justify-center gap-3 dark:border-[#FACC15] dark:bg-[#2A1B07] shadow-2xs"
+                role="region"
+                aria-labelledby="demo-access-heading"
+              >
+                <div className="flex items-center gap-2">
+                  <KeyRound className="h-4 w-4 text-[#C2410C] dark:text-[#FACC15]" aria-hidden="true" />
+                  <h2
+                    id="demo-access-heading"
+                    className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-[#7C2D12] dark:text-[#FEF3C7]"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    {t('login.demoAccess')}
+                  </h2>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleQuickLogin}
+                  aria-label={t('login.continueToDemo')}
+                  className={cn(
+                    'relative flex min-h-[44px] w-full items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-2xs transition-all hover:bg-[#FDECC8] active:scale-[0.98] group dark:border-[#FACC15] dark:bg-[#3A2608] dark:text-[#FEF3C7] dark:hover:bg-[#4A310A] cursor-pointer'
+                  )}
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: 'var(--font-weight-semibold)',
+                  }}
+                >
+                  <Zap className="h-4 w-4 transition-transform group-hover:scale-110" aria-hidden="true" />
+                  <span>{t('login.quickLogin')}</span>
+                </button>
+              </div>
+            )}
+          </div>
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-5" aria-labelledby={loginHeadingId} noValidate>
             <h1 id={loginHeadingId} className="sr-only">{t('login.signInHeading')}</h1>
@@ -333,7 +366,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   aria-required="true"
                   aria-invalid={showPasswordError || errorField === 'password'}
                   aria-describedby={showPasswordError ? passwordErrorTextId : passwordHintId}
-                  autoComplete="current-password"
+                  autoComplete="off"
                   className={cn(
                     'w-full min-h-[44px] ps-3 pe-20 border rounded-xl bg-input-background text-foreground outline-none transition-all shadow-2xs hover:border-slate-300 dark:hover:border-slate-700',
                     showPasswordError || errorField === 'password'
@@ -390,32 +423,15 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/70" aria-hidden="true" />
-                  <span className="leading-snug text-start">{t('login.passwordHint')}</span>
+                  <span data-no-auto-translate className="leading-snug text-start">{t('login.passwordHint')}</span>
                 </p>
               )}
             </div>
 
-            {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id={rememberMeId}
-                  className="h-5 w-5 rounded border-border accent-primary cursor-pointer"
-                />
-                <label
-                  htmlFor={rememberMeId}
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 'var(--text-sm)',
-                    fontWeight: 'var(--font-weight-normal)',
-                  }}
-                  className="text-foreground cursor-pointer"
-                >
-                  {t('login.rememberMe')}
-                </label>
-              </div>
+            {/* Demo password reset preview */}
+            <div className="flex items-center justify-end">
               <button
+                ref={resetTriggerRef}
                 type="button"
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -430,7 +446,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   setShowForgotPassword(true);
                 }}
               >
-                {t('login.forgotPassword')}
+                {t('reliability.resetPreview')}
               </button>
             </div>
 
@@ -451,41 +467,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               {isLoading ? t('login.signingIn') : t('login.signIn')}
             </button>
 
-            {showTempLogin && (
-              <div
-                className="rounded-2xl border-2 border-dashed border-[#C2410C]/60 bg-[#FFF8EE] p-4 flex flex-col items-center justify-center gap-3 dark:border-[#FACC15] dark:bg-[#2A1B07] shadow-2xs"
-                role="region"
-                aria-labelledby="demo-access-heading"
-              >
-                <div className="flex items-center gap-2">
-                  <KeyRound className="h-4 w-4 text-[#C2410C] dark:text-[#FACC15]" aria-hidden="true" />
-                  <h2
-                    id="demo-access-heading"
-                    className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-[#7C2D12] dark:text-[#FEF3C7]"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    {t('login.demoAccess')}
-                  </h2>
-                </div>
 
-                <button
-                  type="button"
-                  onClick={handleQuickLogin}
-                  aria-label={t('login.continueToDemo')}
-                  className={cn(
-                    'relative flex min-h-[44px] w-full items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-[#C2410C] bg-[#FFF4DE] text-[#7C2D12] shadow-2xs transition-all hover:bg-[#FDECC8] active:scale-[0.98] group dark:border-[#FACC15] dark:bg-[#3A2608] dark:text-[#FEF3C7] dark:hover:bg-[#4A310A] cursor-pointer'
-                  )}
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 'var(--text-sm)',
-                    fontWeight: 'var(--font-weight-semibold)',
-                  }}
-                >
-                  <Zap className="h-4 w-4 transition-transform group-hover:scale-110" aria-hidden="true" />
-                  <span>{t('login.quickLogin')}</span>
-                </button>
-              </div>
-            )}
           </form>
 
 
@@ -499,7 +481,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               fontSize: 'var(--text-xs)',
               fontWeight: 'var(--font-weight-normal)',
             }}
-            className="text-white/70 drop-shadow-lg"
+            className="text-muted-foreground sm:text-white/70 sm:drop-shadow-lg"
           >
             {t('login.footer')}
           </p>
@@ -507,10 +489,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
       </div>
 
       {/* Forgot Password Form */}
-      {showForgotPassword && (
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-card/95 backdrop-blur-2xl shadow-2xl border border-border/80 w-full h-full sm:h-auto sm:max-w-md sm:mx-4 p-6 sm:p-8 rounded-none sm:rounded-3xl border-0 sm:border flex flex-col justify-center">
-            <h2
+      <Dialog open={showForgotPassword} onOpenChange={(open) => { setShowForgotPassword(open); setError(''); setErrorField(''); }}>
+          <DialogContent className="sm:max-w-md max-h-[90dvh] overflow-y-auto" onCloseAutoFocus={(event) => { event.preventDefault(); resetTriggerRef.current?.focus(); }}>
+            <DialogHeader>
+            <DialogTitle
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontSize: 'var(--section-heading-size)',
@@ -518,8 +500,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               }}
               className="text-foreground mb-4"
             >
-              {t('login.resetPassword')}
-            </h2>
+              {t('reliability.resetPreview')}
+            </DialogTitle>
+            <DialogDescription>{t('reliability.resetDescription')}</DialogDescription>
+            </DialogHeader>
             <form onSubmit={handleForgotPassword} className="space-y-5" noValidate>
               {/* Error Message */}
               {error && (
@@ -632,13 +616,14 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                   fontWeight: 'var(--font-weight-semibold)',
                 }}
               >
-                {isLoading ? t('login.resetPasswordLoading') : t('login.resetPassword')}
+                {t('reliability.resetPreview')}
               </button>
             </form>
 
             {/* Success Message */}
             {resetSuccess && (
               <div
+                role="status"
                 className="mt-4 rounded-2xl border border-[#047857] bg-[#E7F6EF] p-3 text-center text-[#064E3B] shadow-2xs"
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -669,9 +654,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 {t('login.backToLogin')}
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </DialogContent>
+      </Dialog>
     </div>
   );
 };

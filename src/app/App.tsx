@@ -455,7 +455,6 @@ export default function App() {
         toastOptions={toasterOptions}
         closeButton
       />
-      <ReloadPrompt />
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -465,8 +464,6 @@ export default function App() {
         currentUser={currentUser}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        <PwaInstallPrompt />
-        <OfflineBanner />
         <Header 
           currentUser={currentUser} 
           accessibility={accessibility} 
@@ -476,7 +473,12 @@ export default function App() {
           setActiveTab={setActiveTab}
           onLogout={handleLogout}
         />
-        <main ref={mainRef} id="main-content" tabIndex={-1} aria-label={t('common.mainContent', 'Main content')} className="app-main-scroll flex-1 overflow-y-auto bg-muted cursor-default pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-6 pt-16 outline-none">
+        <div data-slot="app-notices" className="shrink-0 max-h-[40dvh] overflow-y-auto">
+          <OfflineBanner />
+          <ReloadPrompt />
+          <PwaInstallPrompt />
+        </div>
+        <main ref={mainRef} id="main-content" tabIndex={-1} aria-label={t('common.mainContent', 'Main content')} className="app-main-scroll min-h-0 flex-1 overflow-y-auto bg-muted cursor-default pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-6 outline-none">
           <h1 className="sr-only">{t(`pages.${activeTab}`)}</h1>
           {renderContent()}
         </main>

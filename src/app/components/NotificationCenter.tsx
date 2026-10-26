@@ -3,6 +3,7 @@ import { Bell, CheckCheck, Calendar, FileText, Briefcase, X } from 'lucide-react
 import { useTranslation } from 'react-i18next';
 import { Popover, PopoverContent, PopoverTrigger, PopoverClose } from './ui/popover';
 import { cn } from '@/lib/utils';
+import { readNotificationPreferences, writeNotificationPreferences, notificationStorageKey } from '@/lib/notificationPreferences';
 
 export interface NotificationItem {
   id: string;
@@ -52,10 +53,26 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   },
 ];
 
-export const NotificationCenter: React.FC<{ triggerClassName?: string }> = ({ triggerClassName }) => {
+export const NotificationCenter: React.FC<{ triggerClassName?: string; accountId?: string }> = ({ accountId = 'demo', ...props }) => (
+  <NotificationCenterContent key={accountId.trim().toLowerCase()} accountId={accountId} {...props} />
+);
+
+const NotificationCenterContent: React.FC<{ triggerClassName?: string; accountId: string }> = ({ triggerClassName, accountId }) => {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
-  const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
+  const [preferences, setPreferences] = useState(() => readNotificationPreferences(accountId));
+  const [persisted, setPersisted] = useState(true);
+  const notifications = INITIAL_NOTIFICATIONS.filter(item => !preferences[item.id]?.dismissed).map(item => ({
+    ...item, unread: preferences[item.id]?.read === undefined ? item.unread : !preferences[item.id].read,
+  }));
+  React.useEffect(() => { setPersisted(writeNotificationPreferences(accountId, preferences)); }, [accountId, preferences]);
+  React.useEffect(() => {
+    const update = (event: StorageEvent) => {
+      if (event.key === notificationStorageKey(accountId) || event.key === null) setPreferences(readNotificationPreferences(accountId));
+    };
+    window.addEventListener('storage', update);
+    return () => window.removeEventListener('storage', update);
+  }, [accountId]);
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
   const [isOpen, setIsOpen] = useState(false);
   const filtersRef = React.useRef<HTMLDivElement>(null);
@@ -67,19 +84,22 @@ export const NotificationCenter: React.FC<{ triggerClassName?: string }> = ({ tr
 
   const markAllAsRead = () => {
     focusFilters();
-    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
+    setPreferences(previous => {
+      const next = { ...previous };
+      INITIAL_NOTIFICATIONS.forEach(item => { next[item.id] = { ...next[item.id], read: true }; });
+      return next;
+    });
   };
 
   const toggleRead = (id: string) => {
     if (filter === 'unread') focusFilters();
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, unread: !n.unread } : n))
-    );
+    const item = notifications.find(notification => notification.id === id);
+    if (item) setPreferences(previous => ({ ...previous, [id]: { ...previous[id], read: item.unread } }));
   };
 
   const deleteNotification = (id: string) => {
     focusFilters();
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    setPreferences(previous => ({ ...previous, [id]: { ...previous[id], dismissed: true } }));
   };
 
   const getIcon = (type: NotificationItem['type']) => {
@@ -126,6 +146,7 @@ export const NotificationCenter: React.FC<{ triggerClassName?: string }> = ({ tr
             </PopoverClose>
           </div>
         </div>
+        <p className="px-4 pt-3 text-xs text-muted-foreground">{t(persisted ? 'reliability.sampleNotifications' : 'reliability.notificationStorageUnavailable')}</p>
         <div ref={filtersRef} className="flex shrink-0 gap-2 border-b border-border px-3 py-2" role="group" aria-label={t('notifications.title')}>
           {(['all', 'unread'] as const).map((value) => (
             <button key={value} type="button" aria-pressed={filter === value} onClick={() => setFilter(value)} className="min-h-11 rounded-lg px-3 text-sm text-muted-foreground transition-colors hover:bg-muted aria-pressed:bg-muted aria-pressed:font-semibold aria-pressed:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">

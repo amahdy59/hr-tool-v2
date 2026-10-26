@@ -1,133 +1,85 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import {
-  enqueueOfflineAction,
-  getPendingOfflineQueue,
-  removeOfflineAction,
-  flushOfflineQueue,
-  subscribeOfflineQueue,
-} from '../offlineQueue';
+import { enqueueOfflineAction, getPendingOfflineQueue, removeOfflineAction, flushOfflineQueue, subscribeOfflineQueue } from '../offlineQueue';
 
-describe('offlineQueue (IndexedDB Resilience & Sync)', () => {
-  let mockStore: Map<string, any>;
-
+describe('offline queue committed storage and replay', () => {
+  let records: Map<string, any>;
+  let abortNext: string | undefined;
+  let close: ReturnType<typeof vi.fn>;
   beforeEach(() => {
-    mockStore = new Map();
-
-    const mockIDB = {
-      open: vi.fn().mockImplementation(() => {
-        const req: any = {};
-        setTimeout(() => {
-          const fakeDB: any = {
-            objectStoreNames: { contains: () => true },
-            createObjectStore: vi.fn(),
-            transaction: (storeName: string, mode: string) => ({
-              objectStore: () => ({
-                add: (item: any) => {
-                  mockStore.set(item.id, item);
-                  const r: any = {};
-                  setTimeout(() => r.onsuccess && r.onsuccess(), 0);
-                  return r;
-                },
-                getAll: () => {
-                  const r: any = { result: Array.from(mockStore.values()) };
-                  setTimeout(() => r.onsuccess && r.onsuccess(), 0);
-                  return r;
-                },
-                delete: (id: string) => {
-                  mockStore.delete(id);
-                  const r: any = {};
-                  setTimeout(() => r.onsuccess && r.onsuccess(), 0);
-                  return r;
-                },
-              }),
-            }),
+    records = new Map(); abortNext = undefined; close = vi.fn();
+    Object.defineProperty(navigator, 'onLine', { value: true, configurable: true });
+    const indexedDB = { open: () => {
+      const request: any = {};
+      queueMicrotask(() => {
+        request.result = { close, objectStoreNames: { contains: () => true }, transaction: () => {
+          const tx: any = {};
+          const operation = (kind: string, value?: any) => {
+            const result: any = {};
+            setTimeout(() => {
+              if (abortNext === kind) { abortNext = undefined; tx.onabort?.(); return; }
+              if (kind === 'getAll') result.result = [...records.values()].map(v => structuredClone(v));
+              if (kind === 'add' || kind === 'put') records.set(value.id, structuredClone(value));
+              if (kind === 'delete') records.delete(value);
+              result.onsuccess?.(); tx.oncomplete?.();
+            }, 0);
+            return result;
           };
-          req.result = fakeDB;
-          if (req.onsuccess) req.onsuccess();
-        }, 0);
-        return req;
-      }),
-    };
-
-    // Attach mock indexedDB to window
-    (window as any).indexedDB = mockIDB;
+          tx.objectStore = () => ({ add: (v: any) => operation('add', v), put: (v: any) => operation('put', v), delete: (v: any) => operation('delete', v), getAll: () => operation('getAll') });
+          return tx;
+        } };
+        request.onsuccess?.();
+      });
+      return request;
+    } };
+    Object.defineProperty(window, 'indexedDB', { value: indexedDB, configurable: true });
   });
-
-  it('enqueues an offline action into the storage and generates an ID', async () => {
-    const id = await enqueueOfflineAction({
-      type: 'APPROVE_LEAVE',
-      payload: { leaveId: 'lv-101' },
-    });
-
-    expect(id).toMatch(/^off_\d+_[a-z0-9]+$/);
-    const queue = await getPendingOfflineQueue();
-    expect(queue.length).toBe(1);
-    expect(queue[0].type).toBe('APPROVE_LEAVE');
-    expect(queue[0].payload.leaveId).toBe('lv-101');
+  const add = () => enqueueOfflineAction({ type: 'APPROVE_LEAVE', payload: { leaveId: 'leave-1' } });
+  it('commits the action with a stable submission ID and notifies subscribers', async () => {
+    const changed = vi.fn(); const unsubscribe = subscribeOfflineQueue(changed);
+    const id = await add();
+    expect((await getPendingOfflineQueue())[0]).toMatchObject({ id, retryCount: 0, submissionId: expect.any(String) });
+    expect(changed).toHaveBeenCalledOnce();
+    await removeOfflineAction(id); expect(await getPendingOfflineQueue()).toEqual([]);
+    unsubscribe(); expect(close).toHaveBeenCalledTimes(4);
   });
-
-  it('retrieves all pending offline actions', async () => {
-    await enqueueOfflineAction({ type: 'CREATE_LEAVE', payload: { days: 3 } });
-    await enqueueOfflineAction({ type: 'CREATE_MISSION', payload: { days: 5 } });
-
-    const queue = await getPendingOfflineQueue();
-    expect(queue.length).toBe(2);
-    expect(queue.map((q) => q.type)).toEqual(['CREATE_LEAVE', 'CREATE_MISSION']);
+  it('rejects an aborted write instead of pretending it was saved', async () => {
+    abortNext = 'add'; await expect(add()).rejects.toThrow('aborted');
+    expect(await getPendingOfflineQueue()).toEqual([]);
   });
-
-  it('removes an offline action by ID', async () => {
-    const id1 = await enqueueOfflineAction({ type: 'APPROVE_LEAVE', payload: { id: 1 } });
-    const id2 = await enqueueOfflineAction({ type: 'REJECT_LEAVE', payload: { id: 2 } });
-
-    await removeOfflineAction(id1);
-
-    const queue = await getPendingOfflineQueue();
-    expect(queue.length).toBe(1);
-    expect(queue[0].id).toBe(id2);
+  it('retains failed requests and prevents later decisions overtaking them', async () => {
+    await add(); await add(); const handler = vi.fn().mockRejectedValue(new Error('network'));
+    expect(await flushOfflineQueue(handler)).toEqual({ processed: 0, failed: 1 });
+    expect(handler).toHaveBeenCalledOnce();
+    expect((await getPendingOfflineQueue()).map(v => v.retryCount)).toEqual([1, 0]);
   });
-
-  it('flushes queue and deletes items when sync handler succeeds', async () => {
-    await enqueueOfflineAction({ type: 'APPROVE_LEAVE', payload: { id: 10 } });
-    await enqueueOfflineAction({ type: 'CREATE_MISSION', payload: { id: 20 } });
-
-    const handler = vi.fn().mockResolvedValue(true);
-
-    const result = await flushOfflineQueue(handler);
-
-    expect(result.processed).toBe(2);
-    expect(result.failed).toBe(0);
-    expect(handler).toHaveBeenCalledTimes(2);
-
-    const remaining = await getPendingOfflineQueue();
-    expect(remaining.length).toBe(0);
+  it('does not count success when queue deletion aborts and reuses the same ID on retry', async () => {
+    await add(); const handler = vi.fn().mockResolvedValue(true); abortNext = 'delete';
+    expect(await flushOfflineQueue(handler)).toEqual({ processed: 0, failed: 1 });
+    const original = handler.mock.calls[0][0].submissionId;
+    expect(await flushOfflineQueue(handler)).toEqual({ processed: 1, failed: 0 });
+    expect(handler.mock.calls[1][0].submissionId).toBe(original);
+    expect(await getPendingOfflineQueue()).toEqual([]);
   });
-
-  it('retains item in queue when sync handler fails', async () => {
-    await enqueueOfflineAction({ type: 'APPROVE_LEAVE', payload: { id: 99 } });
-
-    const handler = vi.fn().mockResolvedValue(false);
-
-    const result = await flushOfflineQueue(handler);
-
-    expect(result.processed).toBe(0);
-    expect(result.failed).toBe(1);
-
-    const remaining = await getPendingOfflineQueue();
-    expect(remaining.length).toBe(1);
-    expect(remaining[0].payload.id).toBe(99);
+  it('serializes overlapping retries so an action is submitted once', async () => {
+    await add(); let finish!: (value: boolean) => void;
+    const handler = vi.fn(() => new Promise<boolean>(resolve => { finish = resolve; }));
+    const first = flushOfflineQueue(handler); const second = flushOfflineQueue(handler);
+    expect(second).toBe(first);
+    await vi.waitFor(() => expect(handler).toHaveBeenCalledOnce()); finish(true);
+    expect(await first).toEqual({ processed: 1, failed: 0 });
   });
-
-  it('notifies subscribers when items are added or removed', async () => {
-    const subscriber = vi.fn();
-    const unsubscribe = subscribeOfflineQueue(subscriber);
-
-    const id = await enqueueOfflineAction({ type: 'APPROVE_LEAVE', payload: {} });
-    expect(subscriber).toHaveBeenCalled();
-
-    subscriber.mockClear();
-    await removeOfflineAction(id);
-    expect(subscriber).toHaveBeenCalled();
-
-    unsubscribe();
+  it('persists IDs for legacy requests before submitting', async () => {
+    records.set('old', { id: 'old', type: 'APPROVE_LEAVE', payload: {}, timestamp: 1, retryCount: 0 });
+    await flushOfflineQueue(async item => { expect(records.get('old').submissionId).toBe(item.submissionId); return true; });
+    expect(records.size).toBe(0);
+  });
+  it('keeps requests queued while offline', async () => {
+    await add(); Object.defineProperty(navigator, 'onLine', { value: false, configurable: true });
+    const handler = vi.fn(); expect(await flushOfflineQueue(handler)).toEqual({ processed: 0, failed: 0 });
+    expect(handler).not.toHaveBeenCalled(); expect(records.size).toBe(1);
+  });
+  it('exposes unavailable storage rather than returning an empty queue', async () => {
+    Object.defineProperty(window, 'indexedDB', { value: undefined, configurable: true });
+    await expect(getPendingOfflineQueue()).rejects.toThrow('not supported');
   });
 });

@@ -1,5 +1,175 @@
 [
   {
+    "English Text": "Sample notifications. Browser storage is unavailable; changes last for this session only.",
+    "Arabic Translation": "إشعارات نموذجية. مساحة تخزين المتصفح غير متاحة؛ ستبقى التغييرات لهذه الجلسة فقط.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Use the demo password 123456, or continue to the demo.",
+    "Arabic Translation": "استخدم كلمة المرور التجريبية 123456، أو تابع إلى العرض التجريبي.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Could not open installation. Use the browser menu to try again.",
+    "Arabic Translation": "تعذّر فتح التثبيت. استخدم قائمة المتصفح للمحاولة مجدداً.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Update failed. Please try again.",
+    "Arabic Translation": "تعذّر التحديث. حاول مرة أخرى.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Save your work before updating. The app will reload.",
+    "Arabic Translation": "احفظ عملك قبل التحديث. سيُعاد تحميل التطبيق.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Try a sample profile",
+    "Arabic Translation": "تجربة ملف شخصي نموذجي",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Enter demo",
+    "Arabic Translation": "الدخول إلى العرض التجريبي",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Preview complete. No reset email was sent and no password was changed.",
+    "Arabic Translation": "اكتملت المعاينة. لم تُرسل رسالة إعادة تعيين ولم تتغير أي كلمة مرور.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Use a sample email to preview this form.",
+    "Arabic Translation": "استخدم بريداً نموذجياً لمعاينة هذا النموذج.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Demo password: 123456. Do not use your work password.",
+    "Arabic Translation": "كلمة المرور التجريبية: 123456. لا تستخدم كلمة مرور عملك.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Use a sample email, for example demo@example.com.",
+    "Arabic Translation": "استخدم بريداً نموذجياً، مثل demo@example.com.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Try demo sign-in",
+    "Arabic Translation": "تجربة تسجيل الدخول التجريبي",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Install the app for home-screen access. Some actions require an internet connection.",
+    "Arabic Translation": "ثبّت التطبيق للوصول إليه من الشاشة الرئيسية. بعض الإجراءات تحتاج إلى اتصال بالإنترنت.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Pending requests saved in this browser: {{count}}.",
+    "Arabic Translation": "تم حفظ {{count}} من الطلبات المعلّقة في هذا المتصفح.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Pending requests saved to the server: {{count}}.",
+    "Arabic Translation": "تم حفظ {{count}} من الطلبات المعلّقة على الخادم.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Retry saving",
+    "Arabic Translation": "إعادة محاولة الحفظ",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "{{count}} pending.",
+    "Arabic Translation": "عدد الطلبات المعلّقة: {{count}}.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Internet connection restored.",
+    "Arabic Translation": "تمت استعادة الاتصال بالإنترنت.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Requests are waiting to be saved.",
+    "Arabic Translation": "توجد طلبات تنتظر الحفظ.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Saving pending requests…",
+    "Arabic Translation": "جارٍ حفظ الطلبات المعلّقة…",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Could not save pending requests. They remain on this device. Reconnect and try again.",
+    "Arabic Translation": "تعذّر حفظ الطلبات المعلّقة. ما زالت محفوظة على هذا الجهاز. اتصل بالإنترنت وحاول مجدداً.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "You are offline. Some actions need an internet connection.",
+    "Arabic Translation": "أنت غير متصل بالإنترنت. بعض الإجراءات تحتاج إلى اتصال.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Sample notifications. Read and dismissed states are saved for this account on this device.",
+    "Arabic Translation": "إشعارات نموذجية. تُحفظ حالات القراءة والإخفاء لهذا الحساب على هذا الجهاز.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Preview sample",
+    "Arabic Translation": "معاينة النموذج",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Use sample summary and skills",
+    "Arabic Translation": "استخدام النبذة والمهارات النموذجية",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Sample added to this profile. No LinkedIn connection was made.",
+    "Arabic Translation": "تمت إضافة النموذج إلى هذا الملف الشخصي دون الاتصال بلينكدإن.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Adding this sample replaces your profile summary and skills. Your other profile sections stay as they are.",
+    "Arabic Translation": "ستؤدي إضافة هذا النموذج إلى استبدال نبذة ملفك ومهاراتك. ستبقى أقسام ملفك الأخرى كما هي.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Sample UX designer profile for exploring the demo.",
+    "Arabic Translation": "ملف نموذجي لمصمم تجربة مستخدم لاستكشاف العرض التجريبي.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Sample profile",
+    "Arabic Translation": "ملف شخصي نموذجي",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "This demo uses a sample profile. LinkedIn connection and PDF import are not available. No file or LinkedIn account is needed.",
+    "Arabic Translation": "يستخدم هذا العرض ملفاً شخصياً نموذجياً. الاتصال بلينكدإن واستيراد ملفات PDF غير متاحين. لا تحتاج إلى ملف أو حساب لينكدإن.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Demo preview only. Password reset is not connected to an email service. No email will be sent.",
+    "Arabic Translation": "هذه معاينة تجريبية فقط. إعادة تعيين كلمة المرور غير متصلة بخدمة بريد إلكتروني، ولن تُرسل أي رسالة.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Preview password reset",
+    "Arabic Translation": "معاينة إعادة تعيين كلمة المرور",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "This is a demo with simulated sign-in. Use a sample email and password 123456, or continue to the demo. Do not enter your work password.",
+    "Arabic Translation": "هذه نسخة تجريبية بتسجيل دخول محاكى. استخدم بريداً نموذجياً وكلمة المرور 123456، أو تابع إلى العرض التجريبي. لا تدخل كلمة مرور عملك.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Demo workspace",
+    "Arabic Translation": "مساحة عمل تجريبية",
+    "UI Category": "Interface"
+  },
+  {
     "English Text": "Done",
     "Arabic Translation": "تم",
     "UI Category": "Button"

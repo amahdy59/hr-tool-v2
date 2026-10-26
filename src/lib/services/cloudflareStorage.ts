@@ -81,14 +81,18 @@ export async function initializeCloudflareData(forceRefresh = false): Promise<vo
 
   const remoteData = await fetchRemoteSampleData();
   if (remoteData) {
-    if (remoteData.employees) setCollection('employees', remoteData.employees);
-    if (remoteData.departments) setCollection('departments', remoteData.departments);
-    if (remoteData.jobTitles) setCollection('job_titles', remoteData.jobTitles);
-    if (remoteData.leaves) setCollection('leaves', remoteData.leaves);
-    if (remoteData.missions) setCollection('missions', remoteData.missions);
-    if (remoteData.attendance) setCollection('attendance', remoteData.attendance);
-    if (remoteData.payroll) setCollection('payroll', remoteData.payroll);
-    if (remoteData.activityLog) setCollection('activity_log', remoteData.activityLog);
+    // Initial sample loading must never overwrite a saved or replayed local change.
+    const seed = (name: string, data: unknown[]) => {
+      if (data && (forceRefresh || localStorage.getItem(`${STORAGE_PREFIX}${name}`) === null)) setCollection(name, data);
+    };
+    seed('employees', remoteData.employees);
+    seed('departments', remoteData.departments);
+    seed('job_titles', remoteData.jobTitles);
+    seed('leaves', remoteData.leaves);
+    seed('missions', remoteData.missions);
+    seed('attendance', remoteData.attendance);
+    seed('payroll', remoteData.payroll);
+    seed('activity_log', remoteData.activityLog);
 
     localStorage.setItem(INITIALIZED_FLAG_KEY, 'true');
     console.info('✓ Initialized data store from Cloudflare R2 edge sample dataset.');
@@ -99,17 +103,17 @@ export async function initializeCloudflareData(forceRefresh = false): Promise<vo
  * Reads a collection from local cache, with fallback to initial data
  */
 export function getCollection<T>(collectionName: string, fallback: T[]): T[] {
-  if (typeof window === 'undefined') return fallback;
+  if (typeof window === 'undefined') return structuredClone(fallback);
   const raw = localStorage.getItem(`${STORAGE_PREFIX}${collectionName}`);
   if (raw) {
     try {
       return JSON.parse(raw);
     } catch {
-      return fallback;
+      return structuredClone(fallback);
     }
   }
-  localStorage.setItem(`${STORAGE_PREFIX}${collectionName}`, JSON.stringify(fallback));
-  return fallback;
+  // A read must not persist placeholder data or mutate shared seed objects.
+  return structuredClone(fallback);
 }
 
 /**

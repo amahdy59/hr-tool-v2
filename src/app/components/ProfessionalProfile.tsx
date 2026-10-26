@@ -546,16 +546,16 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
   return (
     <section aria-labelledby="professional-profile-heading" className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <h3 id="professional-profile-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground font-bold">Professional Profile</h3>
           <Button
             type="button"
             onClick={() => setLinkedInImportOpen(true)}
-            className="rounded-xl bg-[#0077b5] hover:bg-[#006297] text-white flex items-center gap-1.5 min-h-9 px-3 text-sm font-semibold cursor-pointer"
+            variant="outline"
+            className="rounded-xl gap-2 min-h-11 px-3 text-sm font-semibold cursor-pointer"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            <span className="font-bold text-xs tracking-tight bg-white text-[#0077b5] w-4.5 h-4.5 rounded flex items-center justify-center">in</span>
-            <span data-no-auto-translate>{isArabic ? 'تحميل البيانات من لينكدإن' : 'Import from LinkedIn'}</span>
+            <span data-no-auto-translate>{isArabic ? 'تجربة ملف شخصي نموذجي' : 'Try a sample profile'}</span>
           </Button>
         </div>
         <p className="text-[var(--text-sm)] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
