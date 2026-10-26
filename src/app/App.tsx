@@ -534,7 +534,6 @@ export default function App() {
         confirmLabel={t('common.submit')}
         cancelLabel={t('common.cancel')}
         confirmVariant="default"
-        confirmClassName="bg-chart-3 hover:bg-chart-3/90 text-white"
         onConfirm={handleConfirmLeave}
       />
       <ConfirmDialog
@@ -566,7 +565,6 @@ export default function App() {
         confirmLabel={t('common.submit')}
         cancelLabel={t('common.cancel')}
         confirmVariant="default"
-        confirmClassName="bg-chart-3 hover:bg-chart-3/90 text-white"
         onConfirm={handleConfirmMission}
       />
 
@@ -592,9 +590,11 @@ const BottomToolbar: React.FC<{
   const { t } = useTranslation();
 
   return (
-    <div className="lg:hidden fixed bottom-0 start-0 end-0 z-30 h-16 border-t border-border/80 bg-card/90 backdrop-blur-xl flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)] shadow-lg">
+    <nav aria-label={t('navigation.bottomNavigation', 'Bottom mobile navigation')} className="lg:hidden fixed bottom-0 start-0 end-0 z-30 h-16 border-t border-border/80 bg-card/90 backdrop-blur-xl flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)] shadow-lg">
       <button
         onClick={() => setActiveTab('dashboard')}
+        aria-current={activeTab === 'dashboard' ? 'page' : undefined}
+        aria-label={t('dashboard.home')}
         className={cn(
           "flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl transition-all active:scale-95 cursor-pointer",
           activeTab === 'dashboard' ? 'text-primary bg-primary/10' : 'text-muted-foreground hover:bg-muted/60'
@@ -606,6 +606,7 @@ const BottomToolbar: React.FC<{
       
       <button
         onClick={onRequestLeave}
+        aria-label={t('dashboard.requestLeave')}
         className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl text-muted-foreground transition-all active:scale-95 cursor-pointer hover:bg-muted/60 hover:text-primary"
       >
         <CalendarPlus className="w-5 h-5 text-chart-2" />
@@ -614,11 +615,12 @@ const BottomToolbar: React.FC<{
 
       <button
         onClick={onRequestMission}
+        aria-label={t('dashboard.requestMission')}
         className="flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl text-muted-foreground transition-all active:scale-95 cursor-pointer hover:bg-muted/60 hover:text-primary"
       >
         <Rocket className="w-5 h-5 text-chart-3" />
         <span>{t('dashboard.requestMission')}</span>
       </button>
-    </div>
+    </nav>
   );
 }

@@ -247,11 +247,11 @@ export const MissionsManagement: React.FC = () => {
             </form>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-xl cursor-pointer justify-center" onClick={() => setCreateMissionOpen(true)}>
+              <Plus className="w-4 h-4" /> {t('management.createMission')}
+            </Button>
             <Button variant={selectedPending.length > 0 ? "default" : "outline"} size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-xl cursor-pointer justify-center transition-all" onClick={() => { if (!selectedPending.length) { toast.error(t('management.selectAtLeastOne')); return; } setReviewOpen(true); }}>
               {selectedPending.length > 1 ? t('management.approveMissions') : t('management.approveMission')}
-            </Button>
-            <Button size="sm" className="w-full sm:w-auto h-[44px] gap-2 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer justify-center" onClick={() => setCreateMissionOpen(true)}>
-              <Plus className="w-4 h-4" /> {t('management.createMission')}
             </Button>
           </div>
         </div>
@@ -346,12 +346,14 @@ export const MissionsManagement: React.FC = () => {
                               <div className="size-8 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center shrink-0 border border-primary/20" aria-hidden="true">
                                 {displayEmployeeName(m.name).split(' ').slice(0, 2).map(n => n[0]).join('')}
                               </div>
-                              <span 
-                                className="text-primary font-medium hover:underline cursor-pointer"
+                              <button 
+                                type="button"
+                                className="text-primary font-medium hover:underline cursor-pointer text-start p-0 h-auto bg-transparent border-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xs"
                                 onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}
+                                aria-label={`${t('management.viewDetails', 'View details of')} ${displayEmployeeName(m.name)}`}
                               >
                                 {displayEmployeeName(m.name)}
-                              </span>
+                              </button>
                             </div>
                           </th>
                           <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground">
@@ -479,12 +481,14 @@ export const MissionsManagement: React.FC = () => {
                           <div className="size-8 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center shrink-0 border border-primary/20" aria-hidden="true">
                             {displayEmployeeName(m.name).split(' ').slice(0, 2).map(n => n[0]).join('')}
                           </div>
-                          <span 
-                            className="text-primary font-medium hover:underline cursor-pointer"
+                          <button 
+                            type="button"
+                            className="text-primary font-medium hover:underline cursor-pointer text-start p-0 h-auto bg-transparent border-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xs"
                             onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}
+                            aria-label={`${t('management.viewDetails', 'View details of')} ${displayEmployeeName(m.name)}`}
                           >
                             {displayEmployeeName(m.name)}
-                          </span>
+                          </button>
                         </div>
                       </th>
                       <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground">
@@ -674,7 +678,7 @@ const FilterPanel: React.FC<{
       <CheckboxGroup label="Activity Type" items={activityTypeOptions.length ? activityTypeOptions : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
       <CheckboxGroup label="Employment Type" items={employmentTypeOptions.length ? employmentTypeOptions : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
       <div className="space-y-2 pt-2">
-        <Button onClick={onApply} className="w-full rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">Apply Filter</Button>
+        <Button onClick={onApply} className="w-full rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]">Apply Filter</Button>
         <Button variant="outline" onClick={onClear} className="w-full rounded-xl border-border/80 active:scale-[0.98]">Clear Filter</Button>
       </div>
     </div>
@@ -843,7 +847,7 @@ const CreateMissionModal: React.FC<{
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border">Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => {
+          <Button className="w-full sm:w-auto rounded-xl" onClick={() => {
             if (!employeeNumber.trim() || !startDate || !endDate) {
               toast.error('Employee number, start date, and end date are required');
               return;
@@ -906,7 +910,7 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border">Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={onApprove}>Approve All ({items.length})</Button>
+          <Button className="w-full sm:w-auto rounded-xl" onClick={onApprove}>Approve All ({items.length})</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -971,7 +975,7 @@ const ConfirmDialog: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
       </div>
       <DialogFooter className="pt-2 gap-2">
         <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border">{cancelLabel}</Button>
-        <Button variant={variant === 'destructive' ? 'destructive' : 'default'} className={cn('w-full sm:w-auto rounded-xl', variant !== 'destructive' && 'bg-chart-3 hover:bg-chart-3/90 text-white')} onClick={onConfirm}>{confirmLabel}</Button>
+        <Button variant={variant === 'destructive' ? 'destructive' : 'default'} className="w-full sm:w-auto rounded-xl" onClick={onConfirm}>{confirmLabel}</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

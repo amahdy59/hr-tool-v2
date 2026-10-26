@@ -93,7 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
             fontFamily: "'Inter', sans-serif",
           }}
           className={cn(
-            "max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap transition-all duration-200 sm:max-w-none sm:text-start",
+            "max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap transition-all duration-200 sm:max-w-none sm:text-start flex-1 min-w-0",
             isActive ? "text-white font-semibold" : "text-slate-300",
             collapsed && "sm:hidden"
           )}
@@ -129,7 +129,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         dir={isArabic ? 'rtl' : 'ltr'}
         className={cn(
           'hidden lg:flex lg:flex-col border-e border-slate-800/80 bg-slate-900/95 dark:bg-[#070C18]/95 backdrop-blur-2xl text-slate-100 transition-all duration-300 h-screen shrink-0 shadow-lg',
-          collapsed ? 'lg:w-[72px]' : 'lg:w-64'
+          collapsed ? 'lg:w-[72px]' : 'lg:w-[268px]'
         )}
       >
         {/* Logo */}

@@ -137,15 +137,15 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header
       role="banner"
-      className="grid h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 bg-background/80 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/80 border-b border-border/60 shadow-xs px-3 absolute top-0 left-0 right-0 z-[60] w-full sm:px-6 transition-all"
+      className="flex h-16 items-center justify-between gap-2 sm:gap-4 bg-background/80 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/80 border-b border-border/60 shadow-xs px-3 sm:px-6 absolute top-0 left-0 right-0 z-[60] w-full transition-all"
     >
-      {/* 1. Left Zone: Mobile Nav & Search */}
-      <div className="flex min-w-0 items-center justify-start gap-2">
+      {/* 1. Left Zone: Mobile Nav, Brand Mark (mobile), Search & Breadcrumbs */}
+      <div className="flex min-w-0 items-center justify-start gap-2 sm:gap-3 flex-1">
         {/* Hamburger Menu on Mobile/Tablet */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen} modal={false}>
           <SheetTrigger asChild>
             <button
-              className="lg:hidden flex items-center justify-center w-11 h-11 border border-border/80 bg-card/70 backdrop-blur-md shadow-2xs rounded-xl hover:bg-muted text-foreground transition-all duration-200 active:scale-95 cursor-pointer relative overflow-hidden"
+              className="lg:hidden flex items-center justify-center w-11 h-11 border border-border/80 bg-card/70 backdrop-blur-md shadow-2xs rounded-xl hover:bg-muted text-foreground transition-all duration-200 active:scale-95 cursor-pointer relative overflow-hidden shrink-0"
               aria-label={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
               title={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
               aria-expanded={isMenuOpen}
@@ -234,10 +234,20 @@ export const Header: React.FC<HeaderProps> = ({
           </SheetContent>
         </Sheet>
 
+        {/* Mobile/Tablet Brand Logo - Only when desktop sidebar is hidden */}
+        <button
+          onClick={() => setActiveTab('dashboard')}
+          className="lg:hidden flex items-center justify-center p-1 rounded-xl text-primary hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring shrink-0"
+          aria-label={t('header.goDashboard')}
+          title={t('header.goDashboard')}
+        >
+          <Logo variant="icon" size="sm" ariaLabel={t('common.appName')} />
+        </button>
+
         {/* Universal Search Button */}
         <button
           onClick={onOpenCommandPalette}
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-muted-foreground hover:bg-card hover:text-foreground hover:border-primary/40 shadow-2xs transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-56 md:justify-between md:px-3.5 xl:w-72 cursor-pointer"
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-muted-foreground hover:bg-card hover:text-foreground hover:border-primary/40 shadow-2xs transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-52 lg:w-56 xl:w-72 md:justify-between md:px-3.5 cursor-pointer shrink-0"
           aria-label={t('header.searchCommand')}
           title={`${t('header.search')} (Ctrl+K)`}
         >
@@ -257,11 +267,11 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Contextual Breadcrumb */}
         <nav
           aria-label={t('header.breadcrumb', 'Current location')}
-          className="hidden lg:flex items-center gap-2 select-none ms-2"
+          className="hidden lg:flex items-center gap-1.5 xl:gap-2 select-none ms-1 min-w-0"
         >
           <button
             onClick={() => setActiveTab('dashboard')}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/70 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/70 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring shrink-0"
             aria-label={t('header.goDashboard')}
             title={t('header.goDashboard')}
           >
@@ -269,36 +279,24 @@ export const Header: React.FC<HeaderProps> = ({
             <span style={{ fontFamily: "'Inter', sans-serif" }}>HR Tool</span>
           </button>
           <ChevronRight
-            className="w-3.5 h-3.5 text-muted-foreground/50 rtl:rotate-180"
+            className="w-3.5 h-3.5 text-muted-foreground/50 rtl:rotate-180 shrink-0"
             aria-hidden="true"
           />
           <div
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/10 text-primary border border-primary/20 text-xs font-bold shadow-2xs"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/10 text-primary border border-primary/20 text-xs font-bold shadow-2xs min-w-0"
             aria-current="page"
           >
             <ActiveIcon className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-            <span style={{ fontFamily: "'Inter', sans-serif" }}>{activeTabLabel}</span>
+            <span className="truncate max-w-[120px] xl:max-w-none" style={{ fontFamily: "'Inter', sans-serif" }}>{activeTabLabel}</span>
           </div>
         </nav>
       </div>
 
-      {/* 2. Center Zone: Brand Identity Logo */}
-      <div className="flex justify-center">
-        <button
-          onClick={() => setActiveTab('dashboard')}
-          className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-xl hover:opacity-85 hover:scale-105 active:scale-95 transition-all flex items-center justify-center p-1 min-h-11 min-w-11"
-          aria-label={t('header.goDashboard')}
-          title={t('header.goDashboard')}
-        >
-          <Logo className="w-12 h-12 text-primary" ariaLabel={t('common.appName')} />
-        </button>
-      </div>
-
-      {/* 3. Right Zone: Action Controls & User Account Hub */}
+      {/* 2. Right Zone: Action Controls & User Account Hub */}
       <div
         role="toolbar"
         aria-label={t('header.toolbar', 'Application toolbar')}
-        className="flex min-w-0 items-center justify-end gap-1.5 sm:gap-2"
+        className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2"
       >
         {offlinePendingCount > 0 && (
           <div
@@ -348,7 +346,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenStyleguide}
-            className="hidden lg:flex w-11 h-11 items-center justify-center rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-muted-foreground hover:bg-card hover:text-foreground shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            className="hidden xl:flex w-11 h-11 items-center justify-center rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-muted-foreground hover:bg-card hover:text-foreground shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
             aria-label={t('header.styleguide', 'Component Styleguide')}
             title={`${t('header.styleguide', 'Component Styleguide')} (Alt+S)`}
           >
@@ -360,7 +358,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenShortcuts}
-            className="hidden lg:flex w-11 h-11 items-center justify-center rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-muted-foreground hover:bg-card hover:text-foreground shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            className="hidden xl:flex w-11 h-11 items-center justify-center rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-muted-foreground hover:bg-card hover:text-foreground shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
             aria-label={t('header.shortcutsTitle')}
             title={t('header.shortcutsTitle')}
           >

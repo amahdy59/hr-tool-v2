@@ -240,9 +240,18 @@ export const NotificationCenter: React.FC<{ triggerClassName?: string }> = ({ tr
             filteredList.map((item) => (
               <div
                 key={item.id}
+                role="button"
+                tabIndex={0}
                 onClick={() => toggleRead(item.id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleRead(item.id);
+                  }
+                }}
+                aria-label={`${item.unread ? (isArabic ? 'غير مقروء: ' : 'Unread: ') : ''}${isArabic ? item.titleAr : item.title}`}
                 className={cn(
-                  'flex items-start gap-3 p-3 transition-colors cursor-pointer hover:bg-muted/40 relative group',
+                  'flex items-start gap-3 p-3 transition-colors cursor-pointer hover:bg-muted/40 relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg',
                   item.unread ? 'bg-primary/[0.04]' : 'opacity-80'
                 )}
               >

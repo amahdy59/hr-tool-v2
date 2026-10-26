@@ -326,7 +326,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({
       variant="outline"
       className={cn(
         "relative flex h-11 items-center justify-center border-border/80 text-foreground transition-all duration-200 hover:border-primary/50 hover:shadow-xs",
-        compact ? "w-11 px-0" : forceShowLabel ? "w-auto gap-2 px-4" : "w-11 xl:w-auto xl:gap-2 xl:px-4",
+        compact ? "w-11 px-0" : forceShowLabel ? "w-auto gap-2 px-4" : "w-11 2xl:w-auto 2xl:gap-2 2xl:px-4",
         triggerClassName
       )}
       aria-label={
@@ -337,7 +337,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({
       title={t('header.accessibility')}
     >
       <Accessibility className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
-      <span className={cn(compact ? "hidden" : forceShowLabel ? "inline" : "hidden xl:inline")} style={{ fontFamily: "'Inter', sans-serif" }}>
+      <span className={cn(compact ? "hidden" : forceShowLabel ? "inline" : "hidden 2xl:inline")} style={{ fontFamily: "'Inter', sans-serif" }}>
         {t('header.accessibility')}
       </span>
       {activeCount > 0 && (

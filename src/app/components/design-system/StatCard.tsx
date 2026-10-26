@@ -45,6 +45,12 @@ export const StatCard: React.FC<StatCardProps> = ({
       onClick={onClick}
       role={onClick ? 'button' : 'region'}
       tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      } : undefined}
       aria-label={`${title}: ${value}`}
       className={cn(
         'group relative overflow-hidden rounded-2xl border border-border/80 bg-card p-5 shadow-sm transition-all duration-200',

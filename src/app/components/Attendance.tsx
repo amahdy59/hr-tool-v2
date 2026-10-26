@@ -181,10 +181,14 @@ const getCategoryName = (name: string, lang: string) => {
 // ── Mock day rows ──
 type DayStatus =
   | 'In-office'
+  | 'Present'
   | 'Weekend'
   | 'No Show'
+  | 'Absent'
+  | 'Late'
   | 'Mission'
   | 'Annual Leave'
+  | 'On Leave'
   | 'Sick Leave'
   | 'Unfilled'
   | 'Holiday';
@@ -251,10 +255,14 @@ const employeeNames = [
 // ── Status badge variant map ──
 const statusVariantMap: Record<DayStatus, { variant: 'success' | 'warning' | 'error' | 'info' | 'muted' | 'pending' | 'noshow' | 'approved' | 'inoffice' | 'weekend'; label: string }> = {
   'In-office': { variant: 'inoffice', label: 'In-office' },
+  'Present': { variant: 'inoffice', label: 'In-office' },
   'Weekend': { variant: 'weekend', label: 'Weekend' },
   'No Show': { variant: 'noshow', label: 'No Show' },
+  'Absent': { variant: 'noshow', label: 'Absent' },
+  'Late': { variant: 'warning', label: 'Late' },
   'Mission': { variant: 'info', label: 'Mission' },
   'Annual Leave': { variant: 'approved', label: 'Annual Leave' },
+  'On Leave': { variant: 'approved', label: 'On Leave' },
   'Sick Leave': { variant: 'warning', label: 'Sick Leave' },
   'Unfilled': { variant: 'muted', label: 'Unfilled' },
   'Holiday': { variant: 'success', label: 'Holiday' },
@@ -1189,7 +1197,7 @@ export const Attendance: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-border/60">
                 {paginatedDays.map((row) => {
-                  const statusConfig = statusVariantMap[row.status];
+                  const statusConfig = (row.status && statusVariantMap[row.status]) || { variant: 'muted' as const, label: row.status || 'Unfilled' };
                   const isWeekend = row.status === 'Weekend';
                   return (
                     <tr

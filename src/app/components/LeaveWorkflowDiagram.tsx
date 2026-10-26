@@ -112,6 +112,7 @@ export const LeaveWorkflowDiagram: React.FC<LeaveWorkflowDiagramProps> = ({
           onClick={() => setIsExpanded(!isExpanded)}
           className="gap-2 rounded-xl text-xs font-semibold cursor-pointer shrink-0 self-start sm:self-auto hover:bg-muted"
           aria-expanded={isExpanded}
+          aria-controls="leave-lifecycle-content"
         >
           <span>{isExpanded ? (isArabic ? 'إخفاء المسار' : 'Hide Lifecycle') : (isArabic ? 'عرض مسار الاعتماد' : 'View Lifecycle')}</span>
           {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -120,7 +121,7 @@ export const LeaveWorkflowDiagram: React.FC<LeaveWorkflowDiagramProps> = ({
 
       {/* Expanded Diagram Body */}
       {isExpanded && (
-        <div className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
+        <div id="leave-lifecycle-content" className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
           {/* Workflow Stepper Grid */}
           <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {steps.map((st, idx) => {
