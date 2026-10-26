@@ -245,7 +245,10 @@ server.listen(0, '127.0.0.1', async () => {
       const result = await page.evaluate(() => {
         const dialog = document.querySelector('[data-panel="accessibility"]');
         return {
-          overflow: dialog.scrollWidth > dialog.clientWidth + 1,
+          overflow: dialog.scrollWidth > dialog.clientWidth + 1 || (() => {
+            const scroll = dialog.querySelector('[data-slot="dialog-scroll"]');
+            return !scroll || scroll.scrollWidth > scroll.clientWidth + 1 || dialog.scrollHeight > dialog.clientHeight + 1;
+          })(),
           clipped: [...dialog.querySelectorAll('button[role="radio"], label')].filter(control => control.scrollWidth > control.clientWidth + 1).map(control => control.textContent.trim()),
         };
       });

@@ -69,6 +69,10 @@ const TEST_SCENARIOS = [
   { name: 'preferences_desktop_en_dark', width: 1280, height: 800, lang: 'en', theme: 'dark', action: 'preferences' },
   { name: 'preferences_mobile_ar_light', width: 375, height: 667, lang: 'ar', theme: 'light', action: 'preferences' },
   { name: 'preferences_mobile_ar_dark', width: 375, height: 667, lang: 'ar', theme: 'dark', action: 'preferences' },
+  { name: 'search_desktop_ar_light', width: 1280, height: 800, lang: 'ar', theme: 'light', action: 'search' },
+  { name: 'search_mobile_en_dark', width: 375, height: 667, lang: 'en', theme: 'dark', action: 'search' },
+  { name: 'preferences_desktop_ar_light', width: 1280, height: 650, lang: 'ar', theme: 'light', action: 'preferences' },
+  { name: 'request_leave_mobile_ar', width: 375, height: 667, lang: 'ar', theme: 'light', action: 'request-leave' },
 ];
 
 server.listen(0, '127.0.0.1', async () => {
@@ -92,6 +96,7 @@ server.listen(0, '127.0.0.1', async () => {
     const uniqueUserDir = path.join(os.tmpdir(), `puppeteer_vis_${Date.now()}_${Math.random().toString(36).slice(2)}`);
     browser = await puppeteer.launch({
       headless: true,
+      ignoreDefaultArgs: ['--hide-scrollbars'],
       executablePath,
       userDataDir: uniqueUserDir,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
@@ -195,7 +200,7 @@ server.listen(0, '127.0.0.1', async () => {
           await page.waitForSelector('main, h1', { timeout: 10000 });
           await new Promise(r => setTimeout(r, 600));
         }
-      } else if (['dashboard', 'navigation', 'preferences'].includes(sc.action)) {
+      } else if (['dashboard', 'navigation', 'preferences', 'search', 'request-leave'].includes(sc.action)) {
         const quickLoginBtn = await page.evaluateHandle(() => {
           const btns = Array.from(document.querySelectorAll('button'));
           return btns.find(b => {
@@ -213,6 +218,17 @@ server.listen(0, '127.0.0.1', async () => {
           await page.click('header button[aria-haspopup="dialog"]');
           await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
         }
+        if (sc.action === 'search') {
+          await page.keyboard.down('Control'); await page.keyboard.press('k'); await page.keyboard.up('Control');
+          await page.waitForSelector('[data-panel="search"]');
+          await page.focus('[data-slot="command-input"]');
+        }
+        if (sc.action === 'request-leave') {
+          const request = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content button')].find(b => /Request Leave|طلب إجازة/.test(b.textContent)));
+          if (!request.asElement()) throw new Error('Missing request leave action');
+          await request.asElement().click();
+          await page.waitForSelector('[role="dialog"] #leave-submit-button');
+        }
         if (sc.action === 'preferences') {
           await page.click('header [data-slot="dialog-trigger"]');
           await page.waitForSelector('[data-panel="accessibility"]');
@@ -220,12 +236,12 @@ server.listen(0, '127.0.0.1', async () => {
       }
 
       // Settle layout, blur active inputs/buttons, and verify fonts
-      await page.evaluate(() => {
-        if (document.activeElement && document.activeElement.blur) {
+      await page.evaluate((keepFocus) => {
+        if (!keepFocus && document.activeElement && document.activeElement.blur) {
           document.activeElement.blur();
         }
         document.documentElement.style.scrollBehavior = 'auto';
-      });
+      }, sc.action === 'search');
       await page.mouse.move(0, 0);
       await page.evaluate(async (language) => {
         const family = language === 'ar' ? 'Noto Sans Arabic' : 'Inter';

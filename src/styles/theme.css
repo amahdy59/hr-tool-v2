@@ -480,7 +480,6 @@
     outline: 2px solid var(--ring);
     outline-offset: 2px;
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--ring) 22%, transparent);
-    border-radius: var(--radius-sm, 4px);
     scroll-margin: 96px;
   }
 
@@ -541,8 +540,8 @@
   /* Modern, stylish scrollbar styles */
   /* Webkit browsers (Chrome, Safari, Edge) */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
   }
   
   ::-webkit-scrollbar-track {
@@ -550,24 +549,34 @@
   }
   
   ::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--foreground) 18%, transparent);
+    background: color-mix(in srgb, var(--foreground) 38%, transparent);
     border-radius: 9999px;
-    border: 1.5px solid transparent;
+    border: 2px solid transparent;
     background-clip: padding-box;
     transition: background 0.2s ease;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in srgb, var(--foreground) 38%, transparent);
+    background: color-mix(in srgb, var(--foreground) 55%, transparent);
     background-clip: padding-box;
   }
   
   /* Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--foreground) 20%, transparent) transparent;
+    scrollbar-color: color-mix(in srgb, var(--foreground) 45%, transparent) transparent;
   }
   
+  /* Chromium uses these rounded, inset rails; Firefox retains its thin native rail. */
+  @supports selector(::-webkit-scrollbar) {
+    * { scrollbar-width: auto; scrollbar-color: auto; }
+  }
+  ::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+  ::-webkit-scrollbar-corner { background: transparent; }
+  :where(.dialog-scroll, [data-slot="command-list"], [data-slot="popover-content"], [data-slot="sheet-content"])::-webkit-scrollbar-track {
+    margin-block: 8px;
+  }
+
   /* Hide scrollbar class */
   .hide-scrollbar {
     -ms-overflow-style: none;  /* IE and Edge */
@@ -1155,7 +1164,7 @@ select,
 [data-slot="date-picker-trigger"] {
   border: 1px solid var(--field-border);
   background-color: var(--input-background);
-  box-shadow: inset 0 0 0 1px var(--field-border);
+  box-shadow: none;
 }
 
 .field-control:focus,
@@ -1172,5 +1181,44 @@ select:focus,
 [data-state="open"].field-control,
 [data-state="open"][data-slot="select-trigger"] {
   border-color: var(--ring);
-  box-shadow: inset 0 0 0 2px var(--ring), 0 0 0 4px color-mix(in srgb, var(--ring) 34%, transparent);
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+/* Composite controls have one boundary, including their icon and clear action. */
+.input-shell {
+  position: relative;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.input-shell:focus-within {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 2px var(--ring);
+}
+.input-shell input:not([type="checkbox"]):not([type="radio"]),
+.input-shell input:not([type="checkbox"]):not([type="radio"]):focus,
+.input-shell input:not([type="checkbox"]):not([type="radio"]):focus-visible {
+  border: 0 !important;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+/* Keep the optional stronger focus indicator around the complete field as well. */
+.accessibility-focus-heavy .input-shell:has(input:focus-visible) {
+  outline: 3px solid var(--ring);
+  outline-offset: -3px;
+}
+.accessibility-focus-heavy .input-shell input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+/* Scroll inside the padded modal, leaving its corners and close button intact. */
+[data-slot="dialog-content"] { overflow: hidden; }
+.dialog-scroll { scroll-padding-block: 12px; }
+[data-slot="dialog-scroll"]::-webkit-scrollbar-track { margin-block-start: 40px; margin-block-end: 8px; }
+.dialog-scroll > :not([data-slot="command"]) { flex-shrink: 0; }
+.dialog-scroll > [data-slot="command"] { min-height: 0; }
+@media (width < 640px) {
+  [data-slot="dialog-content"] { height: 100dvh; max-height: 100dvh; }
+}
+@media (forced-colors: active) {
+  .input-shell:focus-within { outline: 2px solid Highlight; outline-offset: -2px; }
 }

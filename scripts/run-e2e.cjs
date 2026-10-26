@@ -88,6 +88,30 @@ server.listen(0, '127.0.0.1', async () => {
       }
     };
 
+    async function checkModalSurface(label) {
+      await page.evaluate(() => Promise.all(document.querySelector('[data-slot="dialog-content"]').getAnimations().map(animation => animation.finished)));
+      const result = await page.evaluate(() => {
+        const frame = document.querySelector('[data-slot="dialog-content"]');
+        const scroll = frame?.querySelector('[data-slot="dialog-scroll"]');
+        if (!scroll) return { found: false };
+        const f = frame.getBoundingClientRect(), r = scroll.getBoundingClientRect();
+        const close = frame.querySelector('[data-slot="dialog-dismiss"]');
+        const before = close?.getBoundingClientRect().top;
+        scroll.scrollTop = scroll.scrollHeight;
+        const after = close?.getBoundingClientRect().top;
+        const last = scroll.lastElementChild?.getBoundingClientRect();
+        return { found: true, fits: f.top >= -1 && f.bottom <= innerHeight + 1 && f.left >= -1 && f.right <= innerWidth + 1,
+          inset: r.top >= f.top + 4 && r.bottom <= f.bottom - 4 && r.left >= f.left + 4 && r.right <= f.right - 4,
+          noOuterScroll: frame.scrollHeight <= frame.clientHeight + 1,
+          noHorizontalScroll: scroll.scrollWidth <= scroll.clientWidth + 1,
+          reachable: !last || last.bottom <= r.bottom + 1,
+          closeStable: !!close && before === after };
+      });
+      assert(result.found && result.fits && result.inset && result.noOuterScroll && result.noHorizontalScroll && result.reachable && result.closeStable,
+        label + ' has an inset scroll area, reachable bottom, and a stable close control', JSON.stringify(result));
+      await page.evaluate(() => { const scroll = document.querySelector('[data-slot="dialog-scroll"]'); if (scroll) scroll.scrollTop = 0; });
+    }
+
     console.log('\n--- Test 1: Page Initialization ---');
     await page.goto(`http://127.0.0.1:${PORT}/hr-tool-v2/`, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForSelector('#root', { timeout: 15000 });
@@ -265,6 +289,8 @@ server.listen(0, '127.0.0.1', async () => {
       return false;
     });
     assert(openedModal, 'Request Leave button clicked');
+    await page.waitForSelector('[role="dialog"] #leave-submit-button');
+    await checkModalSurface('Request leave');
     await new Promise(r => setTimeout(r, 600));
 
     // Click submit without dates to trigger validation
@@ -299,6 +325,47 @@ server.listen(0, '127.0.0.1', async () => {
     // Close modal
     await page.keyboard.press('Escape');
     await new Promise(r => setTimeout(r, 400));
+
+    console.log('\n--- Long form and drawer surfaces ---');
+    const employeeNavigation = await page.$$('aside button');
+    await employeeNavigation[2].click();
+    await page.waitForSelector('#employee-directory-search');
+    const addEmployee = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content button')].find(b => b.textContent.includes('Add an Employee')));
+    await addEmployee.asElement().click();
+    await page.waitForSelector('[role="dialog"] input');
+    for (const size of [{ width: 1280, height: 600 }, { width: 375, height: 667 }, { width: 667, height: 375 }]) {
+      await page.setViewport(size);
+      await checkModalSurface('Employee form at ' + size.width + '×' + size.height);
+    }
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('[role="dialog"]', { hidden: true });
+    await page.setViewport({ width: 1280, height: 800 });
+    const dashboardNavigation = await page.$$('aside button');
+    await dashboardNavigation[0].click();
+    const mission = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content button')].find(b => b.textContent.includes('Request Mission')));
+    await mission.asElement().click();
+    await page.waitForSelector('[role="dialog"]');
+    await checkModalSurface('Mission form');
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('[role="dialog"]', { hidden: true });
+    await page.setViewport({ width: 375, height: 375 });
+    const filterDrawer = await page.evaluateHandle(() => [...document.querySelectorAll('#main-content button')].find(b => b.textContent.includes('Filter History') && b.getBoundingClientRect().width > 0));
+    await filterDrawer.asElement().click();
+    await page.waitForSelector('[data-slot="drawer-scroll"]');
+    await page.evaluate(() => Promise.all(document.querySelector('[data-slot="drawer-content"]').getAnimations().map(a => a.finished)));
+    const drawerSurface = await page.evaluate(() => {
+      const frame = document.querySelector('[data-slot="drawer-content"]');
+      const scroll = frame.querySelector('[data-slot="drawer-scroll"]');
+      scroll.scrollTop = scroll.scrollHeight;
+      // Vaul adds a below-screen filler pseudo-element; it must not move the frame.
+      frame.scrollTop = 100;
+      const r = frame.getBoundingClientRect(), viewport = scroll.getBoundingClientRect();
+      return frame.scrollTop === 0 && scroll.scrollWidth <= scroll.clientWidth + 1 && viewport.bottom <= r.bottom && scroll.lastElementChild.getBoundingClientRect().bottom <= viewport.bottom + 1;
+    });
+    assert(drawerSurface, 'History drawer keeps its final action reachable on a short screen');
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('[data-slot="drawer-content"]', { hidden: true });
+    await page.setViewport({ width: 1280, height: 800 });
 
     console.log('\n--- Test 6: RTL & Bilingual Layout ---');
     await page.evaluate(() => {
@@ -443,6 +510,7 @@ server.listen(0, '127.0.0.1', async () => {
       assert(await page.evaluate(() => ['accessibility-aaa-contrast', 'accessibility-aaa-targets', 'accessibility-large-text', 'accessibility-dyslexic', 'accessibility-focus-heavy'].every(key => localStorage.getItem(key) === 'false')), 'Reset persists disabled accessibility options');
       for (let index = 0; index < 15; index++) await page.keyboard.press('Tab');
       assert(await page.evaluate(() => document.querySelector('[data-panel="accessibility"]').contains(document.activeElement)), 'Tab stays inside preferences');
+      await checkModalSurface('Preferences at ' + width + 'px');
       await page.keyboard.press('Escape');
       await page.waitForSelector('[data-panel="accessibility"]', { hidden: true });
     }
@@ -455,6 +523,25 @@ server.listen(0, '127.0.0.1', async () => {
     await page.keyboard.press('k');
     await page.keyboard.up('Control');
     await page.waitForSelector('[data-panel="search"] input');
+    await page.focus('[data-slot="command-input"]');
+    const searchFocus = await page.evaluate(() => {
+      const input = document.querySelector('[data-slot="command-input"]');
+      const frame = input.closest('[data-slot="command-input-wrapper"]');
+      const child = getComputedStyle(input), parent = getComputedStyle(frame);
+      return { childRing: child.boxShadow, childBorder: child.borderWidth, parentRing: parent.boxShadow, iconIncluded: !!frame.querySelector('svg') };
+    });
+    assert(searchFocus.childRing === 'none' && searchFocus.childBorder === '0px' && searchFocus.parentRing !== 'none' && searchFocus.iconIncluded,
+      'Search highlights its complete field once, including the icon', JSON.stringify(searchFocus));
+    const strongerSearchFocus = await page.evaluate(() => {
+      document.documentElement.classList.add('accessibility-focus-heavy');
+      const input = document.querySelector('[data-slot="command-input"]');
+      const shell = getComputedStyle(input.parentElement);
+      const visible = shell.outlineStyle !== 'none' && parseFloat(shell.outlineWidth) >= 3 && parseFloat(shell.outlineOffset) <= -3 && getComputedStyle(input).boxShadow === 'none';
+      document.documentElement.classList.remove('accessibility-focus-heavy');
+      return visible;
+    });
+    assert(strongerSearchFocus, 'Stronger keyboard focus stays inside the complete search field without clipping');
+    await checkModalSurface('Section search');
     await page.type('[data-panel="search"] input', 'zzzz-no-matching-section');
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowUp');

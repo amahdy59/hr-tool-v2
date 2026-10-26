@@ -45,7 +45,7 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
     >
       <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2.5">
         {onSearchChange && (
-          <div className="relative min-w-0 w-full basis-full sm:basis-[220px] flex-1 max-w-md">
+          <div data-slot="search-field" className="input-shell relative min-w-0 w-full basis-full sm:basis-[220px] flex-1 max-w-md rounded-xl border border-border bg-input-background">
             <label htmlFor={searchInputId} className="sr-only">
               {searchPlaceholder}
             </label>
@@ -59,7 +59,7 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={searchPlaceholder}
-              className="h-11 min-h-[44px] w-full rounded-xl border border-border/80 bg-card ps-9 pe-12 text-sm text-foreground shadow-2xs outline-none transition-all placeholder:text-muted-foreground hover:border-slate-300 focus-visible:border-ring focus-visible:ring-4 focus-visible:ring-ring/30 dark:hover:border-slate-700 [&::-webkit-search-cancel-button]:appearance-none"
+              className="h-11 min-h-[44px] w-full rounded-[inherit] border-0 bg-transparent ps-9 pe-12 text-sm text-foreground shadow-2xs outline-none transition-all placeholder:text-muted-foreground hover:border-slate-300 focus-visible:border-ring focus-visible:ring-4 focus-visible:ring-ring/30 dark:hover:border-slate-700 [&::-webkit-search-cancel-button]:appearance-none"
             />
             {searchQuery && (
               <button

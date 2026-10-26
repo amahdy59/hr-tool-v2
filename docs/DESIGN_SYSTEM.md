@@ -145,6 +145,16 @@ To prevent duplication and maintain consistent wording across components, we fol
 - Put optional workflow explanations in compact help disclosures. Keep operational forms, filters, and records visually primary.
 - Horizontally scrollable tables must be keyboard-focusable and have an accessible region name and visible focus indicator.
 
+### Modal Scrolling And Field Focus
+
+- Shared dialogs keep a clipped outer frame and an inset `dialog-scroll` viewport. Long content scrolls inside the padding; the close button remains outside the viewport and in place. Mobile dialogs fill the dynamic viewport.
+- Use the shared dialog for forms and confirmations. Avoid adding a second scroller to ordinary form bodies; section search and independent lists may keep their own bounded viewport.
+- Modal headers reserve space for the close control. Preserve the field and control corner radius when focus changes.
+- Composite search controls use `input-shell`: focus surrounds the whole field, including its icon and clear action. The child input has no separate border or ring. The stronger-focus setting and forced-colors mode retain a visible indicator around the shell.
+- Editable fields use one idle border and one solid focus ring. Avoid stacked inset borders and large focus glows.
+- Native scrollbars use a visible rounded thumb, transparent rail, and no arrow buttons in Chromium. Rails are inset from modal corners and the close control; Firefox retains its native thin scrollbar. Visual checks must keep scrollbars enabled.
+- The HR mark uses simple vector strokes and separate, readable letters. Keep the lockup LTR in both languages, with spacing between HR and Tool; avoid decorative nodes, filter effects, and shared SVG resource IDs.
+
 ### Form Labels And Field Accessibility
 
 - Every visible label must be associated with its field using `htmlFor` and `id`, or an equivalent ARIA pattern.

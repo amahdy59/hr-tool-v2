@@ -222,6 +222,11 @@ server.listen(0, '127.0.0.1', async () => {
         await page.click('[data-panel="accessibility"] button[data-slot="button"]');
         await page.keyboard.press('Escape');
         await page.waitForSelector('[data-panel="accessibility"]', { hidden: true });
+        await page.keyboard.down('Control'); await page.keyboard.press('k'); await page.keyboard.up('Control');
+        await page.waitForSelector('[data-panel="search"]');
+        await auditCurrentState(`Section search (${language}, ${theme})`);
+        await page.keyboard.press('Escape');
+        await page.waitForSelector('[data-panel="search"]', { hidden: true });
         await page.click('header [data-slot="popover-trigger"]');
         await page.waitForSelector('[data-slot="popover-content"][data-state="open"]');
         await auditCurrentState(`Notifications (${language}, ${theme})`);
