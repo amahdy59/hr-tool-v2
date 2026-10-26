@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { EmptyState } from '@/app/components/EmptyState';
 import { Pagination } from '@/app/components/Pagination';
 import { Button } from '@/app/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 export interface ColumnDef<T> {
   key: string;
@@ -73,6 +74,7 @@ export function DataTable<T>({
   rowClassName,
   headerSlot,
 }: DataTableProps<T>) {
+  const { t } = useTranslation();
   const selectedSet = React.useMemo(
     () => new Set(selectedRowKeys ?? []),
     [selectedRowKeys]
@@ -117,7 +119,7 @@ export function DataTable<T>({
         </div>
       )}
 
-      <div className="overflow-x-auto w-full">
+      <div role="region" aria-label={caption || t('common.scrollableTable', 'Scrollable table')} tabIndex={0} className="overflow-x-auto w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
         <table className={cn('w-full border-collapse text-start text-sm', tableClassName)}>
           {caption && <caption className="sr-only">{caption}</caption>}
           <thead className="bg-muted/50 border-b border-border/80 sticky top-0 z-10 backdrop-blur-md">

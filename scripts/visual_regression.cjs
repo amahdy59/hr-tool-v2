@@ -62,6 +62,12 @@ const TEST_SCENARIOS = [
   { name: 'dashboard_mobile_ar', width: 375, height: 667, lang: 'ar', action: 'dashboard' },
   { name: 'navigation_mobile_en', width: 375, height: 667, lang: 'en', action: 'navigation' },
   { name: 'navigation_mobile_ar', width: 375, height: 667, lang: 'ar', action: 'navigation' },
+  { name: 'dashboard_desktop_ar', width: 1280, height: 800, lang: 'ar', action: 'dashboard' },
+  { name: 'dashboard_mobile_en', width: 375, height: 667, lang: 'en', action: 'dashboard' },
+  { name: 'preferences_desktop_en_light', width: 1280, height: 800, lang: 'en', theme: 'light', action: 'preferences' },
+  { name: 'preferences_desktop_en_dark', width: 1280, height: 800, lang: 'en', theme: 'dark', action: 'preferences' },
+  { name: 'preferences_mobile_ar_light', width: 375, height: 667, lang: 'ar', theme: 'light', action: 'preferences' },
+  { name: 'preferences_mobile_ar_dark', width: 375, height: 667, lang: 'ar', theme: 'dark', action: 'preferences' },
 ];
 
 server.listen(0, '127.0.0.1', async () => {
@@ -100,7 +106,7 @@ server.listen(0, '127.0.0.1', async () => {
       await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
 
       // Inject deterministic MockDate, locale, and freeze styles on new document
-      await page.evaluateOnNewDocument((lang) => {
+      await page.evaluateOnNewDocument((lang, theme) => {
         // Freeze system clock for deterministic calendar & date math (2026-09-01T12:00:00Z)
         const FIXED_TIME = 1788264000000;
         const OriginalDate = window.Date;
@@ -123,6 +129,7 @@ server.listen(0, '127.0.0.1', async () => {
         // Ensure language is set in localStorage before React/i18next boot
         try {
           localStorage.setItem('i18nextLng', lang);
+          localStorage.setItem('app-theme', theme);
         } catch (e) {}
 
         const injectStyles = () => {
@@ -150,7 +157,7 @@ server.listen(0, '127.0.0.1', async () => {
           }
         };
         injectStyles();
-      }, sc.lang);
+      }, sc.lang, sc.theme || 'dark');
 
       await page.setViewport({ width: sc.width, height: sc.height });
       await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
@@ -185,7 +192,7 @@ server.listen(0, '127.0.0.1', async () => {
           await page.waitForSelector('main, h1', { timeout: 10000 });
           await new Promise(r => setTimeout(r, 600));
         }
-      } else if (sc.action === 'dashboard' || sc.action === 'navigation') {
+      } else if (['dashboard', 'navigation', 'preferences'].includes(sc.action)) {
         const quickLoginBtn = await page.evaluateHandle(() => {
           const btns = Array.from(document.querySelectorAll('button'));
           return btns.find(b => {
@@ -202,6 +209,10 @@ server.listen(0, '127.0.0.1', async () => {
         if (sc.action === 'navigation') {
           await page.click('header button[aria-haspopup="dialog"]');
           await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
+        }
+        if (sc.action === 'preferences') {
+          await page.click('header [data-slot="dialog-trigger"]');
+          await page.waitForSelector('[data-panel="accessibility"]');
         }
       }
 

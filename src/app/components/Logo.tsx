@@ -128,7 +128,7 @@ export const Logo: React.FC<LogoProps> = ({
   className,
   ariaLabel = "HR Tool",
   variant = 'full',
-  showSubtitle = true,
+  showSubtitle = false,
   size = 'md',
 }) => {
   const iconSizes = {
@@ -169,9 +169,6 @@ export const Logo: React.FC<LogoProps> = ({
         <div className="flex items-center gap-1.5 whitespace-nowrap">
           <span className={cn("font-black tracking-tight text-foreground whitespace-nowrap", textSizes[size])}>
             HR<span className="text-primary font-bold">Tool</span>
-          </span>
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold tracking-wider uppercase bg-primary/10 text-primary border border-primary/20 shrink-0">
-            PRO
           </span>
         </div>
         {showSubtitle && (

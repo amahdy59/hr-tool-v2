@@ -32,7 +32,6 @@ import {
   Calendar,
   Umbrella,
   Printer,
-  Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -392,43 +391,32 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
   return (
     <div className="space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 sm:space-y-8 max-w-7xl mx-auto">
 
-      {/* Modern Hero Greeting Banner (Apple HIG + Fluent Glass) */}
-      <div className="relative overflow-hidden rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-600/10 via-indigo-600/5 to-card p-6 sm:p-8 shadow-sm backdrop-blur-sm">
-        {/* Ambient background decoration */}
-        <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-600 dark:text-blue-400">
-              <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-              <span>{isArabic ? 'بوابة الموارد البشرية الذكية' : 'Enterprise HR Suite'}</span>
-            </div>
             <h1
               style={{
                 fontFamily: "'Inter', sans-serif",
               }}
-              className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground"
+              className="text-2xl font-semibold text-foreground"
             >
               {t('dashboard.welcome', 'Welcome')}, {localizeFirstName(currentUser?.name || 'Ahmed', i18n.resolvedLanguage || i18n.language)}!
             </h1>
             <p className="text-sm text-muted-foreground max-w-xl">
-              {isArabic 
-                ? 'لوحة تحكم تفاعلية متكاملة لمتابعة الحضور، الإجازات، المأموريات والمستحقات بكل سهولة ودقة.' 
-                : 'Here is your unified overview for timesheets, leave balances, team presence, and payroll.'}
+              {t('dashboard.overviewDescription')}
             </p>
           </div>
 
           <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center shrink-0">
             <Button
-              variant="outline"
               className="w-full sm:w-auto cursor-pointer shadow-2xs hover:shadow-xs rounded-xl"
               onClick={onRequestLeave}
             >
               {t('dashboard.requestLeave', 'Request Leave')}
             </Button>
             <Button
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white sm:w-auto cursor-pointer shadow-sm rounded-xl border border-blue-400/30"
+              variant="outline"
+              className="w-full sm:w-auto"
               onClick={onRequestMission}
             >
               {t('dashboard.requestMission', 'Request Mission')}
@@ -802,7 +790,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           >
             {t('dashboard.balancesTitle')}
           </h3>
-          <div className="border border-border/80 rounded-2xl bg-card shadow-sm overflow-x-auto">
+          <div role="region" aria-labelledby="annual-sick-leaves-heading" tabIndex={0} className="border border-border/80 rounded-2xl bg-card shadow-sm overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">{t('dashboard.balancesTitle')}</caption>
               <thead className="bg-muted/50 border-b border-border/80">
@@ -882,7 +870,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
           >
             {isArabic ? 'اجازات أخرى' : 'Other Leaves'}
           </h3>
-          <div className="border border-border/80 rounded-2xl bg-card shadow-sm overflow-x-auto">
+          <div role="region" aria-labelledby="other-leaves-heading" tabIndex={0} className="border border-border/80 rounded-2xl bg-card shadow-sm overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <table className="w-full md:min-w-max text-[var(--text-sm)] text-start">
               <caption className="sr-only">{isArabic ? 'أرصدة الاجازات الأخرى' : 'Other leave balances'}</caption>
               <thead className="bg-muted/50 border-b border-border/80">

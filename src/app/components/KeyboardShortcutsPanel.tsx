@@ -36,7 +36,6 @@ export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({ 
   const globalShortcuts = [
     { keys: ['Ctrl', 'K'], desc: t('shortcuts.openCommandPalette', 'Open command palette') },
     { keys: ['?'], desc: t('shortcuts.showShortcuts', 'Show keyboard shortcuts') },
-    { keys: ['Alt', 'S'], desc: t('shortcuts.openStyleguide', 'Open Design Styleguide (Alt+S)') },
     { keys: ['Esc'], desc: t('shortcuts.closeModals', 'Close modals/menus') },
     { keys: ['Enter'], desc: t('shortcuts.confirmAction', 'Confirm action / Submit form') },
     { keys: ['Tab'], desc: t('shortcuts.navForward', 'Navigate focus forward') },
@@ -45,7 +44,7 @@ export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({ 
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      if (e.defaultPrevented || e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || (e.target as HTMLElement)?.isContentEditable || (e.target as HTMLElement)?.closest('[role="dialog"], [role="menu"]')) {
         return;
       }
       if (e.key === '?') {
@@ -60,7 +59,10 @@ export const KeyboardShortcutsPanel: React.FC<KeyboardShortcutsPanelProps> = ({ 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto" onCloseAutoFocus={(event) => {
+        const accountTrigger = document.querySelector<HTMLButtonElement>('header [data-slot="dropdown-menu-trigger"]');
+        if (accountTrigger) { event.preventDefault(); accountTrigger.focus(); }
+      }}>
         <DialogHeader>
           <div className="flex items-center gap-2">
             <Keyboard className="h-5 w-5 text-primary" />

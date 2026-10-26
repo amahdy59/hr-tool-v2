@@ -125,7 +125,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
   }
 
   return (
-    <div className="min-h-[100dvh] flex items-center justify-center relative overflow-hidden bg-background">
+    <div className="min-h-[100dvh] flex items-center justify-center relative overflow-x-clip bg-background">
       {/* Animated Gradient Background */}
       <div className="hidden sm:block absolute inset-0 bg-gradient-to-br from-[#1a237e] via-[#283593] to-[#3949ab]">
         {/* Animated overlay gradients */}
@@ -158,8 +158,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
       </div>
 
       {/* Login Card */}
-      <div className="relative z-10 w-full h-[100dvh] sm:h-auto sm:max-w-md sm:mx-4 flex flex-col justify-center max-sm:w-full bg-card sm:bg-transparent">
-        <div className="bg-card sm:bg-card/95 sm:backdrop-blur-xl sm:shadow-2xl h-full sm:h-auto w-full flex flex-col justify-center p-6 sm:p-8 rounded-none border-0 sm:rounded-3xl sm:border border-border/80">
+      <div className="relative z-10 w-full min-h-[100dvh] sm:min-h-0 sm:max-w-md sm:mx-4 sm:my-8 flex flex-col bg-card sm:bg-transparent">
+        <div className="bg-card sm:bg-card/95 sm:backdrop-blur-xl sm:shadow-2xl w-full flex flex-col p-6 sm:p-8 rounded-none border-0 sm:rounded-3xl sm:border border-border/80">
           {/* Logo/Header */}
           <div className="text-center mb-8">
             <div
@@ -183,24 +183,18 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
             >
               {t('login.tagline')}
             </p>
-            <div className="flex flex-row items-center justify-center gap-3 w-full">
+            <div className="flex items-center justify-between gap-3 w-full">
               <button
                 type="button"
                 onClick={() => setShowInfoPage(true)}
-                className="inline-flex min-h-11 h-11 flex-1 sm:flex-initial items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-border/80 bg-card px-4 sm:px-5 text-[var(--text-sm)] font-medium text-foreground shadow-2xs transition-all duration-200 hover:border-primary/50 hover:bg-muted/70 hover:text-primary active:scale-[0.98] cursor-pointer"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-3 text-[var(--text-sm)] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 style={{ fontFamily: "'Inter', sans-serif" }}
                 aria-label={t('login.aboutRedesign')}
               >
                 <Sparkles className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
                 <span>{t('login.aboutRedesign')}</span>
               </button>
-              <div className="inline-flex min-h-11 h-11 flex-1 sm:flex-initial items-center justify-center">
-                <AccessibilityPanel
-                  settings={accessibility}
-                  forceShowLabel
-                  triggerClassName="w-full sm:w-auto h-11 px-4 sm:px-5 text-[var(--text-sm)] font-medium text-foreground rounded-xl active:scale-[0.98] cursor-pointer"
-                />
-              </div>
+              <AccessibilityPanel settings={accessibility} compact />
             </div>
           </div>
 

@@ -1,5 +1,105 @@
 [
   {
+    "English Text": "Done",
+    "Arabic Translation": "تم",
+    "UI Category": "Button"
+  },
+  {
+    "English Text": "Preferences and accessibility",
+    "Arabic Translation": "التفضيلات وإمكانية الوصول",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Choose your language, appearance, and reading preferences. Changes are saved automatically.",
+    "Arabic Translation": "اختر اللغة والمظهر وتفضيلات القراءة. تُحفظ التغييرات تلقائياً.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Reading and interaction",
+    "Arabic Translation": "القراءة والتفاعل",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Reset accessibility options",
+    "Arabic Translation": "إعادة ضبط خيارات إمكانية الوصول",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Find a section...",
+    "Arabic Translation": "ابحث عن قسم...",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Find a section. Shortcut Control K.",
+    "Arabic Translation": "ابحث عن قسم. الاختصار Control K.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Go to a section",
+    "Arabic Translation": "الانتقال إلى قسم",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Search the sections below, then select where you want to go.",
+    "Arabic Translation": "ابحث في الأقسام أدناه، ثم اختر القسم الذي تريد الانتقال إليه.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Manage your attendance, leave balances, and requests.",
+    "Arabic Translation": "تابع الحضور وأرصدة الإجازات والطلبات.",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "{{count}} unread notifications",
+    "Arabic Translation": "{{count}} إشعارات غير مقروءة",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Mark as read",
+    "Arabic Translation": "تحديد كمقروء",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Mark as unread",
+    "Arabic Translation": "تحديد كغير مقروء",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Dismiss {{title}}",
+    "Arabic Translation": "إزالة {{title}}",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "How leave approval works",
+    "Arabic Translation": "كيف تتم الموافقة على الإجازات",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "How mission approval works",
+    "Arabic Translation": "كيف تتم الموافقة على المأموريات",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Working hours and attendance guidance",
+    "Arabic Translation": "دليل ساعات العمل والحضور",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Understand roles and permissions",
+    "Arabic Translation": "دليل الأدوار والصلاحيات",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "How your pay is calculated",
+    "Arabic Translation": "كيف يُحسب راتبك",
+    "UI Category": "Interface"
+  },
+  {
+    "English Text": "Scrollable table",
+    "Arabic Translation": "جدول قابل للتمرير",
+    "UI Category": "Interface"
+  },
+  {
     "English Text": "Clear search",
     "Arabic Translation": "مسح البحث",
     "UI Category": "Accessibility label"

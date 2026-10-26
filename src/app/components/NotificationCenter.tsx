@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Bell, CheckCheck, Trash2, Calendar, FileText, Sparkles, X } from 'lucide-react';
+import { Bell, CheckCheck, Calendar, FileText, Briefcase, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Popover, PopoverContent, PopoverTrigger, PopoverClose } from './ui/popover';
 import { cn } from '@/lib/utils';
 
 export interface NotificationItem {
@@ -50,17 +50,6 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
     type: 'mission',
     unread: false,
   },
-  {
-    id: 'n-4',
-    title: 'PWA Offline Sync Ready',
-    titleAr: 'المزامنة دون اتصال جاهزة',
-    message: 'Offline caching activated. Offline submissions will sync automatically.',
-    messageAr: 'تم تفعيل التخزين دون اتصال. ستتم المزامنة تلقائياً عند الاتصال.',
-    timestamp: '1d ago',
-    timestampAr: 'منذ يوم',
-    type: 'system',
-    unread: false,
-  },
 ];
 
 export const NotificationCenter: React.FC<{ triggerClassName?: string }> = ({ triggerClassName }) => {
@@ -69,46 +58,28 @@ export const NotificationCenter: React.FC<{ triggerClassName?: string }> = ({ tr
   const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
   const [isOpen, setIsOpen] = useState(false);
+  const filtersRef = React.useRef<HTMLDivElement>(null);
+  const focusFilters = () => filtersRef.current?.querySelector<HTMLButtonElement>('[aria-pressed="true"]')?.focus();
 
+  const titleId = React.useId();
   const unreadCount = notifications.filter((n) => n.unread).length;
   const filteredList = notifications.filter((n) => (filter === 'unread' ? n.unread : true));
 
   const markAllAsRead = () => {
+    focusFilters();
     setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
   };
 
   const toggleRead = (id: string) => {
+    if (filter === 'unread') focusFilters();
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, unread: !n.unread } : n))
     );
   };
 
   const deleteNotification = (id: string) => {
+    focusFilters();
     setNotifications((prev) => prev.filter((n) => n.id !== id));
-  };
-
-  const clearAll = () => {
-    setNotifications([]);
-  };
-
-  const simulateIncomingAlert = () => {
-    const alertTypes: Array<'leave' | 'attendance' | 'mission'> = ['leave', 'attendance', 'mission'];
-    const randomType = alertTypes[Math.floor(Math.random() * alertTypes.length)];
-    const newId = `n-${Date.now()}`;
-
-    const newNotification: NotificationItem = {
-      id: newId,
-      title: randomType === 'leave' ? 'Urgent Sick Leave' : randomType === 'attendance' ? 'Overtime Request' : 'New Field Mission',
-      titleAr: randomType === 'leave' ? 'إجازة مرضية عاجلة' : randomType === 'attendance' ? 'طلب وقت إضافي' : 'مأمورية عمل جديدة',
-      message: randomType === 'leave' ? 'Michael Chen requested 1 day emergency leave.' : 'Field engineer requested 2 hours overtime.',
-      messageAr: randomType === 'leave' ? 'طلب مايكل تشين إجازة طارئة ليوم واحد.' : 'طلب مهندس الموقع ساعتين وقت إضافي.',
-      timestamp: isArabic ? 'الآن' : 'Just now',
-      timestampAr: 'الآن',
-      type: randomType,
-      unread: true,
-    };
-
-    setNotifications((prev) => [newNotification, ...prev]);
   };
 
   const getIcon = (type: NotificationItem['type']) => {
@@ -118,7 +89,7 @@ export const NotificationCenter: React.FC<{ triggerClassName?: string }> = ({ tr
       case 'attendance':
         return <Calendar className="w-4 h-4 text-sky-500" aria-hidden="true" />;
       case 'mission':
-        return <Sparkles className="w-4 h-4 text-emerald-500" aria-hidden="true" />;
+        return <Briefcase className="w-4 h-4 text-emerald-500" aria-hidden="true" />;
       default:
         return <Bell className="w-4 h-4 text-primary" aria-hidden="true" />;
     }
@@ -129,165 +100,67 @@ export const NotificationCenter: React.FC<{ triggerClassName?: string }> = ({ tr
       <PopoverTrigger asChild>
         <button
           type="button"
-          className={cn(
-            "relative flex h-11 w-11 items-center justify-center rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-foreground hover:bg-card hover:border-primary/40 shadow-2xs transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer",
-            triggerClassName
-          )}
-          aria-label={
-            unreadCount > 0
-              ? `${t('header.notifications', 'Notifications')} (${unreadCount} unread)`
-              : t('header.notifications', 'Notifications')
-          }
-          title={t('header.notifications', 'Notifications')}
+          className={cn('relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', triggerClassName)}
+          aria-label={unreadCount > 0 ? t('notifications.unreadCount', { count: unreadCount }) : t('header.notifications')}
+          title={t('header.notifications')}
         >
-          <Bell className="w-4 h-4 shrink-0 text-foreground" aria-hidden="true" />
-          {unreadCount > 0 && (
-            <>
-              <span className="absolute -top-1 -end-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground shadow-xs animate-pulse">
-                {unreadCount}
-              </span>
-              <span className="sr-only">{`${unreadCount} unread notifications`}</span>
-            </>
-          )}
+          <Bell className="h-5 w-5" aria-hidden="true" />
+          {unreadCount > 0 && <span aria-hidden="true" className="absolute end-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-700 px-1 text-[10px] font-semibold text-white">{unreadCount}</span>}
         </button>
       </PopoverTrigger>
-
       <PopoverContent
-        align={isArabic ? 'start' : 'end'}
-        sideOffset={8}
-        className="w-80 sm:w-96 p-0 shadow-lg border-border bg-card overflow-hidden z-[100]"
+        align="end" sideOffset={8} collisionPadding={16} dir={isArabic ? 'rtl' : 'ltr'}
+        aria-labelledby={titleId}
+        className="flex max-h-[min(32rem,var(--radix-popover-content-available-height))] w-[calc(100vw-2rem)] flex-col overflow-hidden bg-card p-0 sm:w-96"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-border/70 px-4 py-3 bg-muted/30">
-          <div className="flex items-center gap-2">
-            <h3 className="text-sm font-semibold text-foreground">
-              {t('notifications.title', 'Notifications')}
-            </h3>
-            {unreadCount > 0 && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                {unreadCount} {t('notifications.new', 'new')}
-              </span>
-            )}
-          </div>
+        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border px-4 py-3">
+          <h2 id={titleId} className="text-base font-semibold">{t('notifications.title')}</h2>
           <div className="flex items-center gap-1">
             {unreadCount > 0 && (
-              <button
-                type="button"
-                onClick={markAllAsRead}
-                className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors p-1 rounded hover:bg-muted"
-                title={t('notifications.markAllRead', 'Mark all as read')}
-              >
-                <CheckCheck className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{t('notifications.markAllRead', 'Mark all read')}</span>
+              <button type="button" onClick={markAllAsRead} aria-label={t('notifications.markAllRead')} title={t('notifications.markAllRead')} className="flex h-11 w-11 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <CheckCheck className="h-4 w-4" aria-hidden="true" />
               </button>
             )}
-            {notifications.length > 0 && (
-              <button
-                type="button"
-                onClick={clearAll}
-                className="text-xs text-muted-foreground hover:text-destructive transition-colors p-1 rounded hover:bg-muted"
-                title={t('notifications.clearAll', 'Clear all')}
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            )}
+            <PopoverClose aria-label={t('common.close')} className="flex h-11 w-11 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <X className="h-4 w-4" aria-hidden="true" />
+            </PopoverClose>
           </div>
         </div>
-
-        {/* Filter Tabs */}
-        <div className="flex border-b border-border/70 bg-muted/20 px-3 py-1.5 gap-2 text-xs">
-          <button
-            type="button"
-            onClick={() => setFilter('all')}
-            className={cn(
-              'px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer',
-              filter === 'all'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-            )}
-          >
-            {t('notifications.all', 'All')} ({notifications.length})
-          </button>
-          <button
-            type="button"
-            onClick={() => setFilter('unread')}
-            className={cn(
-              'px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer',
-              filter === 'unread'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-            )}
-          >
-            {t('notifications.unread', 'Unread')} ({unreadCount})
-          </button>
-
-          <button
-            type="button"
-            onClick={simulateIncomingAlert}
-            className="ms-auto text-[11px] text-muted-foreground hover:text-primary transition-colors underline decoration-dotted cursor-pointer"
-          >
-            {isArabic ? '+ تنبيه تجريبي' : '+ Demo alert'}
-          </button>
+        <div ref={filtersRef} className="flex shrink-0 gap-2 border-b border-border px-3 py-2" role="group" aria-label={t('notifications.title')}>
+          {(['all', 'unread'] as const).map((value) => (
+            <button key={value} type="button" aria-pressed={filter === value} onClick={() => setFilter(value)} className="min-h-11 rounded-lg px-3 text-sm text-muted-foreground transition-colors hover:bg-muted aria-pressed:bg-muted aria-pressed:font-semibold aria-pressed:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              {t('notifications.' + value)} ({value === 'all' ? notifications.length : unreadCount})
+            </button>
+          ))}
         </div>
-
-        {/* Notification List */}
-        <div className="max-h-80 overflow-y-auto divide-y divide-border/60">
+        <span className="sr-only" role="status">{t('notifications.unreadCount', { count: unreadCount })}</span>
+        <ul className="m-0 min-h-0 list-none divide-y divide-border overflow-y-auto overscroll-contain p-0">
           {filteredList.length === 0 ? (
-            <div className="py-8 text-center text-xs text-muted-foreground">
-              {t('notifications.empty', 'No notifications to display')}
-            </div>
-          ) : (
-            filteredList.map((item) => (
-              <div
-                key={item.id}
-                role="button"
-                tabIndex={0}
-                onClick={() => toggleRead(item.id)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    toggleRead(item.id);
-                  }
-                }}
-                aria-label={`${item.unread ? (isArabic ? 'غير مقروء: ' : 'Unread: ') : ''}${isArabic ? item.titleAr : item.title}`}
-                className={cn(
-                  'flex items-start gap-3 p-3 transition-colors cursor-pointer hover:bg-muted/40 relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg',
-                  item.unread ? 'bg-primary/[0.04]' : 'opacity-80'
-                )}
-              >
-                <div className="mt-0.5 shrink-0 rounded-full bg-background p-1.5 border border-border shadow-xs">
-                  {getIcon(item.type)}
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center justify-between gap-1">
-                    <p className="text-xs font-semibold text-foreground truncate">
-                      {isArabic ? item.titleAr : item.title}
-                    </p>
-                    <span className="text-[10px] text-muted-foreground shrink-0">
-                      {isArabic ? item.timestampAr : item.timestamp}
-                    </span>
-                  </div>
-                  <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                    {isArabic ? item.messageAr : item.message}
-                  </p>
-                </div>
-
+            <li className="px-4 py-10 text-center text-sm text-muted-foreground">{t('notifications.empty')}</li>
+          ) : filteredList.map((item) => {
+            const title = isArabic ? item.titleAr : item.title;
+            return (
+              <li key={item.id} className={cn('flex items-start gap-1 px-2 py-2', item.unread && 'bg-primary/[0.04]')}>
                 <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deleteNotification(item.id);
-                  }}
-                  className="opacity-0 group-hover:opacity-100 p-1 text-muted-foreground hover:text-destructive rounded transition-opacity"
-                  title={t('common.delete', 'Delete')}
+                  type="button" onClick={() => toggleRead(item.id)}
+                  aria-label={t(item.unread ? 'notifications.markRead' : 'notifications.markUnread') + ': ' + title}
+                  aria-describedby={titleId + '-' + item.id}
+                  className="flex min-w-0 flex-1 items-start gap-3 rounded-xl p-2 text-start hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <span className="mt-1 shrink-0" aria-hidden="true">{getIcon(item.type)}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className={cn('block text-sm', item.unread ? 'font-semibold text-foreground' : 'font-medium text-muted-foreground')}>{title}</span>
+                    <span id={titleId + '-' + item.id} className="mt-1 block text-xs leading-relaxed text-muted-foreground">{isArabic ? item.messageAr : item.message}</span>
+                    <span className="mt-2 block text-xs text-muted-foreground">{isArabic ? item.timestampAr : item.timestamp}</span>
+                  </span>
                 </button>
-              </div>
-            ))
-          )}
-        </div>
+                <button type="button" onClick={() => deleteNotification(item.id)} aria-label={t('notifications.dismiss', { title })} title={t('notifications.dismiss', { title })} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <X className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       </PopoverContent>
     </Popover>
   );

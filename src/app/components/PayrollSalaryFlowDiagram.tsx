@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Banknote,
   DollarSign,
@@ -6,15 +6,11 @@ import {
   Receipt,
   PiggyBank,
   ShieldCheck,
-  ChevronDown,
-  ChevronUp,
   Info,
   CheckCircle2,
   ArrowRight,
-  Sparkles,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
+import { HelpDisclosure } from './HelpDisclosure';
 import { useTranslation } from 'react-i18next';
 
 interface PayrollSalaryFlowDiagramProps {
@@ -26,7 +22,6 @@ export const PayrollSalaryFlowDiagram: React.FC<PayrollSalaryFlowDiagramProps> =
   className,
   defaultExpanded = false,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const { i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
@@ -49,50 +44,8 @@ export const PayrollSalaryFlowDiagram: React.FC<PayrollSalaryFlowDiagramProps> =
   const familyPercent = ((benchmark.familyDeduction / benchmark.totalCompensation) * 100).toFixed(1);
 
   return (
-    <div
-      className={cn(
-        'overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-muted/20 shadow-xs transition-all duration-300',
-        className
-      )}
-    >
-      {/* Header bar / Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 border-b border-border/60">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-            <Banknote className="w-5 h-5 animate-pulse" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-[var(--text-sm)] sm:text-base font-semibold text-foreground tracking-tight">
-                {isArabic ? 'مخطط تدفق هيكل الراتب والاستقطاعات الضريبية' : 'Salary Flow & Deductions Waterfall Pipeline'}
-              </h3>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                {isArabic ? 'هيكل التعويضات' : 'Compensation Flow'}
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {isArabic
-                ? 'مخطط تفاعلي يوضح توزيع الراتب الإجمالي والبدلات والاستقطاعات حتى صافي الراتب النهائي'
-                : 'Interactive waterfall diagram tracking gross earnings, allowances, statutory deductions and net take-home pay'}
-            </p>
-          </div>
-        </div>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="gap-2 rounded-xl text-xs font-semibold cursor-pointer shrink-0 self-start sm:self-auto hover:bg-muted"
-          aria-expanded={isExpanded}
-        >
-          <span>{isExpanded ? (isArabic ? 'إخفاء المخطط' : 'Hide Pipeline') : (isArabic ? 'عرض مخطط الراتب' : 'View Pipeline')}</span>
-          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </Button>
-      </div>
-
-      {/* Expanded Diagram Body */}
-      {isExpanded && (
-        <div className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
+    <HelpDisclosure title={isArabic ? 'كيف يُحسب راتبك' : 'How your pay is calculated'} defaultOpen={defaultExpanded} className={className}>
+      <div className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
           {/* Waterfall Stage Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             {/* 1. Base Gross */}
@@ -226,7 +179,6 @@ export const PayrollSalaryFlowDiagram: React.FC<PayrollSalaryFlowDiagramProps> =
             </span>
           </div>
         </div>
-      )}
-    </div>
+    </HelpDisclosure>
   );
 };

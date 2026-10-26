@@ -133,6 +133,18 @@ To prevent duplication and maintain consistent wording across components, we fol
 - Reset the content scroll position immediately when changing sections. Back-to-top scrolling must respect reduced-motion preferences and return keyboard focus to the content.
 - Hidden back-to-top controls must be excluded from keyboard navigation. Active navigation indicators should remain steady.
 
+### Application Header And Preferences
+
+- Keep the primary header to the current section, section search, notifications, preferences/accessibility, and account. Show the menu trigger when the sidebar is hidden.
+- Theme and language belong in the preferences dialog. Keyboard shortcuts belong in the account menu; design-system inspection is a development-only tool.
+- Avoid duplicate brand breadcrumbs, static online indicators, subscription badges without a corresponding feature, and persistent decorative animation.
+- Mount exactly one preferences dialog and trigger at every viewport. Hidden responsive wrappers must not own additional open dialogs or popovers.
+- Use labeled radio groups for theme/language, unique checkbox identifiers, inline descriptions, contained focus, Escape dismissal, and return focus to the invoking control. Save settings as they change.
+- Ordinary controls keep at least 44px targets; the larger-target preference increases buttons and inputs to 48px and checkboxes/switches to 32px.
+- Shared primary, destructive, and outline buttons use semantic color tokens in both themes. Avoid fixed blue gradients paired with a theme-dependent foreground.
+- Put optional workflow explanations in compact help disclosures. Keep operational forms, filters, and records visually primary.
+- Horizontally scrollable tables must be keyboard-focusable and have an accessible region name and visible focus indicator.
+
 ### Form Labels And Field Accessibility
 
 - Every visible label must be associated with its field using `htmlFor` and `id`, or an equivalent ARIA pattern.

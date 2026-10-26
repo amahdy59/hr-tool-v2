@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Compass,
   UserCheck,
   Coins,
   CheckCircle2,
-  ChevronDown,
-  ChevronUp,
   Info,
   Clock,
   Briefcase,
   MapPin,
   Laptop,
   FileCheck2,
-  Sparkles,
   ArrowRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
+import { HelpDisclosure } from './HelpDisclosure';
 import { useTranslation } from 'react-i18next';
 
 interface MissionWorkflowDiagramProps {
@@ -28,7 +25,6 @@ export const MissionWorkflowDiagram: React.FC<MissionWorkflowDiagramProps> = ({
   className,
   defaultExpanded = false,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const { i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
@@ -83,51 +79,8 @@ export const MissionWorkflowDiagram: React.FC<MissionWorkflowDiagramProps> = ({
   ];
 
   return (
-    <div
-      className={cn(
-        'overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-muted/20 shadow-xs transition-all duration-300',
-        className
-      )}
-    >
-      {/* Header bar / Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 border-b border-border/60">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
-            <Compass className="w-5 h-5 animate-pulse" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-[var(--text-sm)] sm:text-base font-semibold text-foreground tracking-tight">
-                {isArabic ? 'مسار وإجراءات اعتماد المأموريات الخارجية' : 'Field Mission Lifecycle & Approval Flow'}
-              </h3>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
-                {isArabic ? 'إجراءات السفر والميدان' : 'Field Operations'}
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {isArabic
-                ? 'مخطط زمني تفاعلي يوضح مراحل المأمورية من تقديم خطة السفر وحتى المزامنة مع الحضور'
-                : 'Interactive lifecycle illustrating travel dispatch, manager approval, allowances, and attendance recognition'}
-            </p>
-          </div>
-        </div>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="gap-2 rounded-xl text-xs font-semibold cursor-pointer shrink-0 self-start sm:self-auto hover:bg-muted"
-          aria-expanded={isExpanded}
-          aria-controls="mission-lifecycle-content"
-        >
-          <span>{isExpanded ? (isArabic ? 'إخفاء المسار' : 'Hide Lifecycle') : (isArabic ? 'عرض مسار المأموريات' : 'View Lifecycle')}</span>
-          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </Button>
-      </div>
-
-      {/* Expanded Diagram Body */}
-      {isExpanded && (
-        <div id="mission-lifecycle-content" className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
+    <HelpDisclosure title={isArabic ? 'كيف تتم الموافقة على المأموريات' : 'How mission approval works'} defaultOpen={defaultExpanded} className={className}>
+      <div id="mission-lifecycle-content" className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
           {/* Mission Categories Pills */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-medium text-muted-foreground me-1">
@@ -218,7 +171,6 @@ export const MissionWorkflowDiagram: React.FC<MissionWorkflowDiagramProps> = ({
             </div>
           </div>
         </div>
-      )}
-    </div>
+    </HelpDisclosure>
   );
 };

@@ -236,6 +236,27 @@ server.listen(0, '127.0.0.1', async () => {
       console.log(`   Checked all eight sections (${language}).`);
     }
 
+    async function checkPreferences(vp, language) {
+      await page.click('header [data-slot="dialog-trigger"]');
+      await page.waitForSelector('[data-panel="accessibility"]');
+      await checkDialogOverflow(`[${vp.name}] Preferences (${language})`);
+      const options = await page.$$('[data-panel="accessibility"] [role="checkbox"]');
+      for (const option of options) await option.click();
+      const result = await page.evaluate(() => {
+        const dialog = document.querySelector('[data-panel="accessibility"]');
+        return {
+          overflow: dialog.scrollWidth > dialog.clientWidth + 1,
+          clipped: [...dialog.querySelectorAll('button[role="radio"], label')].filter(control => control.scrollWidth > control.clientWidth + 1).map(control => control.textContent.trim()),
+        };
+      });
+      if (result.overflow || result.clipped.length) failures.push(`[${vp.name}] Enlarged preferences overflow (${language}): ${result.clipped.join(', ')}`);
+      else checksPassed++;
+      await checkHeaderResponsiveness(`[${vp.name}] Header with enlarged settings (${language})`);
+      await page.click('[data-panel="accessibility"] button[data-slot="button"]');
+      await page.keyboard.press('Escape');
+      await page.waitForSelector('[data-panel="accessibility"]', { hidden: true });
+    }
+
     for (const vp of VIEWPORTS) {
       console.log(`📐 Checking Viewport: ${vp.name} (${vp.width}x${vp.height})`);
       await page.setViewport({ width: vp.width, height: vp.height });
@@ -249,6 +270,15 @@ server.listen(0, '127.0.0.1', async () => {
       });
       await page.reload({ waitUntil: 'domcontentloaded' });
       await page.waitForSelector('input[type="email"]');
+      const loginFits = await page.evaluate(() => {
+        const card = document.querySelector('form').parentElement;
+        return card.getBoundingClientRect().top >= -1 && [...card.querySelectorAll('button, input')].every(control => {
+          const rect = control.getBoundingClientRect();
+          return rect.width === 0 || (rect.left >= -1 && rect.right <= innerWidth + 1);
+        });
+      });
+      if (!loginFits) failures.push(`[${vp.name}] Login controls are clipped or outside the viewport`);
+      else checksPassed++;
       await checkPageOverflow(`[${vp.name}] Login Page (EN)`);
 
       // 2. Login Page (Arabic)
@@ -332,6 +362,7 @@ server.listen(0, '127.0.0.1', async () => {
 
         // Navigate modules
         await checkModules(vp, 'EN');
+        await checkPreferences(vp, 'EN');
 
         // Check Arabic Dashboard
         await page.evaluate(() => localStorage.setItem('i18nextLng', 'ar'));
@@ -341,6 +372,7 @@ server.listen(0, '127.0.0.1', async () => {
         await checkPageOverflow(`[${vp.name}] Dashboard (AR)`);
         await checkHeaderResponsiveness(`[${vp.name}] Header (AR)`);
         await checkModules(vp, 'AR');
+        await checkPreferences(vp, 'AR');
       } else {
         throw new Error(`Demo login was not found at ${vp.width}px; authenticated checks must not be skipped.`);
       }

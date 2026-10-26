@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   LogIn,
   Building2,
   Coffee,
   Laptop,
   LogOut,
-  ChevronDown,
-  ChevronUp,
   Clock,
-  Sparkles,
   CheckCircle2,
   AlertCircle,
   Info,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
+import { HelpDisclosure } from './HelpDisclosure';
 import { useTranslation } from 'react-i18next';
 
 interface AttendanceTimelineDiagramProps {
@@ -30,7 +27,6 @@ export const AttendanceTimelineDiagram: React.FC<AttendanceTimelineDiagramProps>
   officePercentage = 53.4,
   goalPercentage = 40,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const { i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
@@ -95,50 +91,8 @@ export const AttendanceTimelineDiagram: React.FC<AttendanceTimelineDiagramProps>
   const isGoalMet = officePercentage >= goalPercentage;
 
   return (
-    <div
-      className={cn(
-        'overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-muted/20 shadow-xs transition-all duration-300',
-        className
-      )}
-    >
-      {/* Header bar / Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 border-b border-border/60">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-            <Clock className="w-5 h-5 animate-pulse" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-[var(--text-sm)] sm:text-base font-semibold text-foreground tracking-tight">
-                {isArabic ? 'المخطط الزمني للورديات ومؤشر الحضور المكتبي' : 'Daily Shift Schedule & In-Office Presence Goal'}
-              </h3>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                {isArabic ? 'سياسة الحضور' : 'Standard Shifts'}
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {isArabic
-                ? 'تفاصيل ساعات العمل الرسمية وفترات السماح ومتابعة نسبة الحضور المكتبي المطلوبة (٤٠٪)'
-                : 'Timeline of standard working hours, flex grace windows, and mandatory 40% in-office tracking'}
-            </p>
-          </div>
-        </div>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="gap-2 rounded-xl text-xs font-semibold cursor-pointer shrink-0 self-start sm:self-auto hover:bg-muted"
-          aria-expanded={isExpanded}
-        >
-          <span>{isExpanded ? (isArabic ? 'إخفاء المخطط' : 'Hide Schedule') : (isArabic ? 'عرض المخطط الزمني' : 'View Schedule')}</span>
-          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </Button>
-      </div>
-
-      {/* Expanded Diagram Body */}
-      {isExpanded && (
-        <div className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
+    <HelpDisclosure title={isArabic ? 'دليل ساعات العمل والحضور' : 'Working hours and attendance guidance'} defaultOpen={defaultExpanded} className={className}>
+      <div className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
           {/* Office Attendance Target Tracker Gauge Bar */}
           <div className="p-4 rounded-xl border border-border/80 bg-card space-y-2.5">
             <div className="flex items-center justify-between text-xs">
@@ -235,7 +189,6 @@ export const AttendanceTimelineDiagram: React.FC<AttendanceTimelineDiagramProps>
             </span>
           </div>
         </div>
-      )}
-    </div>
+    </HelpDisclosure>
   );
 };

@@ -65,8 +65,9 @@ describe('Header Component (State of the Art Toolbar & A11y)', () => {
     );
 
     expect(screen.getByRole('banner')).toBeTruthy();
-    expect(screen.getByRole('toolbar', { name: /application toolbar/i })).toBeTruthy();
-    expect(screen.getAllByText('HR Tool').length).toBeGreaterThan(0);
+    expect(screen.getByRole('group', { name: /application toolbar/i })).toBeTruthy();
+    expect(screen.getByText('Leaves Management')).toBeTruthy();
+    expect(screen.queryByText('HR Tool')).toBeNull();
   });
 
   it('triggers command palette when search bar is clicked', () => {
@@ -83,13 +84,13 @@ describe('Header Component (State of the Art Toolbar & A11y)', () => {
       />
     );
 
-    const searchButton = screen.getByRole('button', { name: /search or command palette/i });
+    const searchButton = screen.getByRole('button', { name: /find a section/i });
     fireEvent.click(searchButton);
 
     expect(onOpenCommandPaletteSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('toggles theme when quick theme button is clicked', () => {
+  it('keeps theme settings inside one preferences dialog', () => {
     const setThemeSpy = vi.fn();
     const accessibility = createMockAccessibility({
       theme: 'light',
@@ -105,13 +106,15 @@ describe('Header Component (State of the Art Toolbar & A11y)', () => {
       />
     );
 
-    const themeButton = screen.getByRole('button', { name: /switch to dark theme/i });
-    fireEvent.click(themeButton);
+    expect(screen.queryByRole('button', { name: /switch to dark theme/i })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Preferences and accessibility' }));
+    expect(screen.getAllByRole('dialog')).toHaveLength(1);
+    fireEvent.click(screen.getByRole('radio', { name: 'Dark' }));
 
     expect(setThemeSpy).toHaveBeenCalledWith('dark');
   });
 
-  it('toggles language when quick language button is clicked', () => {
+  it('keeps language settings inside preferences with readable labels', () => {
     const setLanguageSpy = vi.fn();
     const accessibility = createMockAccessibility({
       language: 'en',
@@ -127,13 +130,14 @@ describe('Header Component (State of the Art Toolbar & A11y)', () => {
       />
     );
 
-    const langButton = screen.getByRole('button', { name: /toggle language/i });
-    fireEvent.click(langButton);
+    expect(screen.queryByRole('button', { name: /toggle language/i })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Preferences and accessibility' }));
+    fireEvent.click(screen.getByRole('radio', { name: 'العربية' }));
 
     expect(setLanguageSpy).toHaveBeenCalledWith('ar');
   });
 
-  it('renders user menu trigger with user name and online indicator', () => {
+  it('keeps account details in the account menu and removes static online status', () => {
     const accessibility = createMockAccessibility();
 
     render(
@@ -147,6 +151,19 @@ describe('Header Component (State of the Art Toolbar & A11y)', () => {
 
     const userMenuTrigger = screen.getByRole('button', { name: /user account menu/i });
     expect(userMenuTrigger).toBeTruthy();
-    expect(screen.getAllByText('Ahmed Mahdy').length).toBeGreaterThan(0);
+    expect(userMenuTrigger.title).toBe('Ahmed Mahdy');
+    expect(screen.queryByText('Online')).toBeNull();
+    expect(screen.queryByText('HR Director')).toBeNull();
+    fireEvent.keyDown(userMenuTrigger, { key: 'ArrowDown' });
+    expect(screen.getByText('Ahmed Mahdy')).toBeTruthy();
+  });
+
+  it('offers keyboard shortcuts from the account menu', () => {
+    const onOpenShortcuts = vi.fn();
+    render(<Header currentUser={mockUser} accessibility={createMockAccessibility()} activeTab="dashboard" setActiveTab={vi.fn()} onOpenShortcuts={onOpenShortcuts} />);
+    expect(screen.queryByRole('button', { name: /keyboard shortcuts/i })).toBeNull();
+    fireEvent.keyDown(screen.getByRole('button', { name: 'User account menu' }), { key: 'ArrowDown' });
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Keyboard Shortcuts' }));
+    expect(onOpenShortcuts).toHaveBeenCalledOnce();
   });
 });

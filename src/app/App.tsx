@@ -130,21 +130,23 @@ export default function App() {
     let prefixTimeout: ReturnType<typeof setTimeout> | null = null;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isAuthenticated || e.defaultPrevented) return;
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        if (document.querySelector('[role="dialog"]:not([data-panel="search"])')) return;
+        e.preventDefault();
+        setCommandPaletteOpen((open) => !open);
+        return;
+      }
       if (
         e.target instanceof HTMLInputElement ||
         e.target instanceof HTMLTextAreaElement ||
+        (e.target as HTMLElement)?.closest('[role="dialog"], [role="menu"], [role="combobox"]') ||
         (e.target as HTMLElement)?.isContentEditable
       ) {
         return;
       }
 
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        setCommandPaletteOpen((open) => !open);
-        return;
-      }
-
-      if (e.altKey && e.key.toLowerCase() === 's') {
+      if (import.meta.env.DEV && e.altKey && e.key.toLowerCase() === 's') {
         e.preventDefault();
         setStyleguideOpen((open) => !open);
         return;
@@ -183,7 +185,7 @@ export default function App() {
       window.removeEventListener('keydown', handleKeyDown);
       if (prefixTimeout) clearTimeout(prefixTimeout);
     };
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const el = document.documentElement;
@@ -470,7 +472,6 @@ export default function App() {
           accessibility={accessibility} 
           onOpenCommandPalette={() => setCommandPaletteOpen(true)}
           onOpenShortcuts={() => setShortcutsOpen(true)}
-          onOpenStyleguide={() => setStyleguideOpen(true)}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           onLogout={handleLogout}
@@ -485,16 +486,15 @@ export default function App() {
         open={commandPaletteOpen} 
         onOpenChange={setCommandPaletteOpen} 
         onSelectTab={setActiveTab}
-        onLogout={handleLogout}
       />
       <KeyboardShortcutsPanel 
         open={shortcutsOpen} 
         onOpenChange={setShortcutsOpen} 
       />
-      <ComponentStyleguideModal
+      {import.meta.env.DEV && <ComponentStyleguideModal
         open={styleguideOpen}
         onOpenChange={setStyleguideOpen}
-      />
+      />}
 
       {/* Global Modals */}
       <RequestLeaveModal

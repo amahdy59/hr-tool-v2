@@ -30,7 +30,7 @@ describe('Logo Component (Modern Brand Identity & A11y)', () => {
   it('renders full brand lockup with wordmark and subtitle', () => {
     render(<Logo variant="full" ariaLabel="HR Tool Logo" showSubtitle={true} />);
     expect(screen.getAllByText(/Tool/).length).toBeGreaterThan(0);
-    expect(screen.getByText(/PRO/)).toBeTruthy();
+    expect(screen.queryByText('PRO')).toBeNull();
     expect(screen.getByText(/workforce suite/i)).toBeTruthy();
   });
 });

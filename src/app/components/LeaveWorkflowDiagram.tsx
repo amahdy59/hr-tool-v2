@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   CalendarPlus,
   UserCheck,
   ShieldCheck,
   CheckCircle2,
-  ChevronDown,
-  ChevronUp,
   Info,
   Clock,
-  Sparkles,
   ArrowRight,
   HelpCircle,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
+import { HelpDisclosure } from './HelpDisclosure';
 import { useTranslation } from 'react-i18next';
 
 interface LeaveWorkflowDiagramProps {
@@ -25,7 +21,6 @@ export const LeaveWorkflowDiagram: React.FC<LeaveWorkflowDiagramProps> = ({
   className,
   defaultExpanded = false,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const { i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
 
@@ -77,51 +72,8 @@ export const LeaveWorkflowDiagram: React.FC<LeaveWorkflowDiagramProps> = ({
   ];
 
   return (
-    <div
-      className={cn(
-        'overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-br from-card via-card to-muted/20 shadow-xs transition-all duration-300',
-        className
-      )}
-    >
-      {/* Header bar / Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 border-b border-border/60">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-            <Sparkles className="w-5 h-5 animate-pulse" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-[var(--text-sm)] sm:text-base font-semibold text-foreground tracking-tight">
-                {isArabic ? 'دليل ومسار اعتماد الإجازات' : 'Leave Request & Approval Lifecycle'}
-              </h3>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                {isArabic ? 'مسار العمل' : 'Standard Workflow'}
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {isArabic
-                ? 'مخطط يوضح خطوات الموافقة من التقديم حتى المزامنة مع كشف الحضور والرواتب'
-                : 'Interactive visual roadmap from employee submission to automated timesheet synchronization'}
-            </p>
-          </div>
-        </div>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="gap-2 rounded-xl text-xs font-semibold cursor-pointer shrink-0 self-start sm:self-auto hover:bg-muted"
-          aria-expanded={isExpanded}
-          aria-controls="leave-lifecycle-content"
-        >
-          <span>{isExpanded ? (isArabic ? 'إخفاء المسار' : 'Hide Lifecycle') : (isArabic ? 'عرض مسار الاعتماد' : 'View Lifecycle')}</span>
-          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </Button>
-      </div>
-
-      {/* Expanded Diagram Body */}
-      {isExpanded && (
-        <div id="leave-lifecycle-content" className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
+    <HelpDisclosure title={isArabic ? 'كيف تتم الموافقة على الإجازات' : 'How leave approval works'} defaultOpen={defaultExpanded} className={className}>
+      <div id="leave-lifecycle-content" className="p-4 sm:p-6 space-y-6 animate-in fade-in-50 duration-200">
           {/* Workflow Stepper Grid */}
           <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {steps.map((st, idx) => {
@@ -194,7 +146,6 @@ export const LeaveWorkflowDiagram: React.FC<LeaveWorkflowDiagramProps> = ({
             </div>
           </div>
         </div>
-      )}
-    </div>
+    </HelpDisclosure>
   );
 };

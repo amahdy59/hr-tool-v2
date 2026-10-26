@@ -389,37 +389,85 @@ server.listen(0, '127.0.0.1', async () => {
     await page.keyboard.press('Escape');
     await new Promise(r => setTimeout(r, 400));
 
-    console.log('\n--- Test 10: Component Styleguide Modal ---');
-    const styleguideOpened = await page.evaluate(() => {
-      const btn = Array.from(document.querySelectorAll('button')).find(b => {
-        const label = b.getAttribute('aria-label') || '';
-        const title = b.getAttribute('title') || '';
-        return label.includes('Styleguide') || label.includes('دليل') || label.includes('تصميم') || b.querySelector('svg.lucide-palette');
-      });
-      if (btn) {
-        btn.click();
-        return true;
+    console.log('\n--- Test 10: Preferences Dialog Regression ---');
+    for (const width of [1280, 375]) {
+      await page.setViewport({ width, height: 800 });
+      const trigger = 'header [data-slot="dialog-trigger"]';
+      for (let attempt = 0; attempt < 3; attempt++) {
+        await page.click(trigger);
+        await page.waitForSelector('[data-panel="accessibility"]');
+        await new Promise(r => setTimeout(r, 400));
+        assert(await page.evaluate(() => document.querySelectorAll('[role="dialog"]').length === 1), 'Preferences remains open as one dialog at ' + width + 'px, attempt ' + (attempt + 1));
+        assert(await page.evaluate(() => document.querySelector('[data-panel="accessibility"]').contains(document.activeElement)), 'Preferences owns focus at ' + width + 'px');
+        await page.keyboard.press('Escape');
+        await page.waitForSelector('[data-panel="accessibility"]', { hidden: true });
+        assert(await page.evaluate(() => document.activeElement?.getAttribute('data-slot') === 'dialog-trigger'), 'Preferences restores trigger focus at ' + width + 'px');
       }
-      return false;
-    });
-    assert(styleguideOpened, 'Component Styleguide trigger clicked');
-    await new Promise(r => setTimeout(r, 600));
 
-    const styleguideModalVisible = await page.evaluate(() => {
-      const titles = Array.from(document.querySelectorAll('[data-slot="dialog-title"], h2, h3'));
-      return titles.some(t => t.textContent && (t.textContent.includes('Design System') || t.textContent.includes('ADR-0004') || t.textContent.includes('نظام التصميم') || t.textContent.includes('Styleguide')));
-    });
-    assert(styleguideModalVisible, 'Design System Component Styleguide modal mounted');
+      await page.click(trigger);
+      await page.waitForSelector('[data-panel="accessibility"]');
+      for (const language of ['en', 'ar']) {
+        await page.click('[data-panel="accessibility"] [role="radio"][lang="' + language + '"]');
+        await page.waitForFunction((lang) => document.documentElement.lang === lang, {}, language);
+        assert(await page.evaluate(() => document.querySelectorAll('[role="dialog"]').length === 1), 'Changing language to ' + language + ' preserves the open dialog');
+      }
+      // The first section contains the theme group followed by the language group.
+      const radios = await page.$$('[data-panel="accessibility"] [role="radio"]');
+      for (const index of [0, 1]) {
+        await radios[index].click();
+        await page.waitForFunction((dark) => document.documentElement.classList.contains('dark') === dark, {}, index === 1);
+        assert(await radios[index].evaluate(el => el.getAttribute('aria-checked') === 'true'), 'Theme choice is selected and the dialog remains open');
+      }
+      const options = await page.$$('[data-panel="accessibility"] [role="checkbox"]');
+      for (const option of options) await option.click();
+      assert(await page.evaluate(() => [...document.querySelectorAll('[data-panel="accessibility"] [role="checkbox"]')].every(el => el.getAttribute('aria-checked') === 'true')), 'Every reading and interaction preference can be enabled');
+      await page.click('[data-panel="accessibility"] button[data-slot="button"]');
+      await page.waitForFunction(() => [...document.querySelectorAll('[data-panel="accessibility"] [role="checkbox"]')].every(el => el.getAttribute('aria-checked') === 'false'));
+      assert(await page.evaluate(() => ['accessibility-aaa-contrast', 'accessibility-aaa-targets', 'accessibility-large-text', 'accessibility-dyslexic', 'accessibility-focus-heavy'].every(key => localStorage.getItem(key) === 'false')), 'Reset persists disabled accessibility options');
+      for (let index = 0; index < 15; index++) await page.keyboard.press('Tab');
+      assert(await page.evaluate(() => document.querySelector('[data-panel="accessibility"]').contains(document.activeElement)), 'Tab stays inside preferences');
+      await page.keyboard.press('Escape');
+      await page.waitForSelector('[data-panel="accessibility"]', { hidden: true });
+    }
 
-    // Close styleguide modal
+    assert(await page.evaluate(() => !document.querySelector('header .lucide-palette') && !document.querySelector('header .lucide-moon') && !document.querySelector('header .lucide-keyboard')), 'Header keeps secondary and developer controls out of the primary toolbar');
+
+    console.log('\n--- Test 10.5: Section Search and Account Help ---');
+    await page.setViewport({ width: 1280, height: 800 });
+    await page.keyboard.down('Control');
+    await page.keyboard.press('k');
+    await page.keyboard.up('Control');
+    await page.waitForSelector('[data-panel="search"] input');
+    await page.type('[data-panel="search"] input', 'zzzz-no-matching-section');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowUp');
+    await page.click('[data-panel="search"] input', { clickCount: 3 });
+    await page.keyboard.down('Control');
+    await page.keyboard.press('a');
+    await page.keyboard.up('Control');
+    await page.keyboard.press('Backspace');
+    await page.waitForFunction(() => document.querySelectorAll('[data-panel="search"] [role="option"]').length === 8);
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    await page.waitForSelector('[data-panel="search"]', { hidden: true });
+    assert(await page.evaluate(() => document.querySelector('#main-content') !== null), 'Section search handles zero results and subsequent keyboard navigation');
+    await page.click('header [data-slot="dropdown-menu-trigger"]');
+    await page.waitForSelector('[role="menu"]');
+    const shortcutItem = await page.evaluateHandle(() => [...document.querySelectorAll('[role="menuitem"]')].find(item => item.querySelector('.lucide-keyboard')));
+    if (!shortcutItem.asElement()) throw new Error('Keyboard shortcuts is missing from account menu');
+    await shortcutItem.asElement().click();
+    await page.waitForSelector('[data-slot="dialog-content"]');
+    assert(await page.evaluate(() => document.querySelector('[data-slot="dialog-content"]').contains(document.activeElement)), 'Keyboard shortcuts opens from the account menu with dialog focus');
     await page.keyboard.press('Escape');
-    await new Promise(r => setTimeout(r, 400));
+    await page.waitForSelector('[data-slot="dialog-content"]', { hidden: true });
+    assert(await page.evaluate(() => document.activeElement?.getAttribute('data-slot') === 'dropdown-menu-trigger'), 'Closing account help restores account focus');
 
     console.log('\n--- Test 11: Mobile Navigation and Keyboard Focus ---');
     await page.setViewport({ width: 375, height: 667 });
     await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
     await page.click('header button[aria-haspopup="dialog"]');
     await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
+    await page.evaluate(() => Promise.all(document.querySelector('[data-slot="sheet-content"]').getAnimations().map(animation => animation.finished)));
     const drawerState = await page.evaluate(() => {
       const drawer = document.querySelector('[data-slot="sheet-content"]');
       const navButtons = [...drawer.querySelectorAll('nav button')];
@@ -445,7 +493,7 @@ server.listen(0, '127.0.0.1', async () => {
     await page.waitForFunction(() => document.querySelector('#main-content').scrollTop > 300);
     await page.click('header button[aria-haspopup="dialog"]');
     await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
-    await page.click('[data-slot="sheet-content"] nav li:nth-child(2) button');
+    await page.click('[data-slot="sheet-content"] nav button:not([aria-current="page"])');
     await page.waitForSelector('[data-slot="sheet-content"]', { hidden: true });
     await page.waitForFunction(() => document.querySelector('#main-content').scrollTop === 0);
     assert(await page.evaluate(() => {

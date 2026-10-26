@@ -190,12 +190,27 @@ server.listen(0, '127.0.0.1', async () => {
         await page.reload({ waitUntil: 'domcontentloaded' });
         await page.waitForSelector('#main-content');
         await page.waitForFunction((settings) => document.documentElement.lang === settings.language && document.documentElement.classList.contains('dark') === (settings.theme === 'dark'), {}, { language, theme });
+        await auditCurrentState(`Mobile dashboard (${language}, ${theme})`);
         await page.click('header button[aria-haspopup="dialog"]');
         await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
         await page.evaluate(() => document.fonts.ready);
         await auditCurrentState(`Mobile navigation (${language}, ${theme})`);
         await page.keyboard.press('Escape');
         await page.waitForSelector('[data-slot="sheet-content"]', { hidden: true });
+        await page.click('header [data-slot="dialog-trigger"]');
+        await page.waitForSelector('[data-panel="accessibility"]');
+        await auditCurrentState(`Preferences (${language}, ${theme})`);
+        const readingOptions = await page.$$('[data-panel="accessibility"] [role="checkbox"]');
+        for (const option of readingOptions) await option.click();
+        await auditCurrentState(`Preferences with all reading options (${language}, ${theme})`);
+        await page.click('[data-panel="accessibility"] button[data-slot="button"]');
+        await page.keyboard.press('Escape');
+        await page.waitForSelector('[data-panel="accessibility"]', { hidden: true });
+        await page.click('header [data-slot="popover-trigger"]');
+        await page.waitForSelector('[data-slot="popover-content"][data-state="open"]');
+        await auditCurrentState(`Notifications (${language}, ${theme})`);
+        await page.keyboard.press('Escape');
+        await page.waitForSelector('[data-slot="popover-content"]', { hidden: true });
       }
     }
 

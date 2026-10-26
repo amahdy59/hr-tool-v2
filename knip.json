@@ -6,7 +6,6 @@
   "ignoreDependencies": [
     "@radix-ui/*",
     "@supabase/ssr",
-    "cmdk",
     "next-themes",
     "react-hook-form",
     "express",
