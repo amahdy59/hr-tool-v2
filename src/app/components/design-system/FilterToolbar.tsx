@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Search, X, SlidersHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/app/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 export interface FilterToolbarProps {
   searchQuery?: string;
@@ -31,6 +32,8 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
   className,
 }) => {
   const searchInputId = React.useId();
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+  const { t } = useTranslation();
 
   return (
     <div
@@ -40,9 +43,9 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
       )}
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
-      <div className="flex flex-1 flex-wrap items-center gap-2.5">
+      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2.5">
         {onSearchChange && (
-          <div className="relative min-w-[220px] flex-1 max-w-md">
+          <div className="relative min-w-0 w-full basis-full sm:basis-[220px] flex-1 max-w-md">
             <label htmlFor={searchInputId} className="sr-only">
               {searchPlaceholder}
             </label>
@@ -51,18 +54,22 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
             </div>
             <input
               id={searchInputId}
-              type="text"
+              ref={searchInputRef}
+              type="search"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={searchPlaceholder}
-              className="h-11 min-h-[44px] w-full rounded-xl border border-border/80 bg-card ps-9 pe-9 text-sm text-foreground shadow-2xs outline-none transition-all placeholder:text-muted-foreground hover:border-slate-300 focus-visible:border-ring focus-visible:ring-4 focus-visible:ring-ring/30 dark:hover:border-slate-700"
+              className="h-11 min-h-[44px] w-full rounded-xl border border-border/80 bg-card ps-9 pe-12 text-sm text-foreground shadow-2xs outline-none transition-all placeholder:text-muted-foreground hover:border-slate-300 focus-visible:border-ring focus-visible:ring-4 focus-visible:ring-ring/30 dark:hover:border-slate-700 [&::-webkit-search-cancel-button]:appearance-none"
             />
             {searchQuery && (
               <button
                 type="button"
-                onClick={() => onSearchChange('')}
-                className="absolute inset-y-0 end-0 flex items-center pe-3 text-muted-foreground hover:text-foreground cursor-pointer"
-                aria-label="Clear search"
+                onClick={() => {
+                  onSearchChange('');
+                  searchInputRef.current?.focus();
+                }}
+                className="absolute inset-y-0 end-0 flex h-11 w-11 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+                aria-label={t('common.clearSearch', 'Clear search')}
               >
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>

@@ -142,7 +142,7 @@ export const Header: React.FC<HeaderProps> = ({
       {/* 1. Left Zone: Mobile Nav, Brand Mark (mobile), Search & Breadcrumbs */}
       <div className="flex min-w-0 items-center justify-start gap-2 sm:gap-3 flex-1">
         {/* Hamburger Menu on Mobile/Tablet */}
-        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen} modal={false}>
+        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <button
               className="lg:hidden flex items-center justify-center w-11 h-11 border border-border/80 bg-card/70 backdrop-blur-md shadow-2xs rounded-xl hover:bg-muted text-foreground transition-all duration-200 active:scale-95 cursor-pointer relative overflow-hidden shrink-0"
@@ -167,7 +167,7 @@ export const Header: React.FC<HeaderProps> = ({
           <SheetContent
             side={isArabic ? 'right' : 'left'}
             dir={isArabic ? 'rtl' : 'ltr'}
-            className="w-80 p-0 flex flex-col h-full bg-card/95 backdrop-blur-2xl"
+            className="w-80 max-w-[calc(100vw-1rem)] p-0 flex flex-col gap-0 h-dvh bg-card/95 backdrop-blur-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
           >
             <SheetHeader className="sr-only">
               <SheetTitle>{t('header.menu')}</SheetTitle>
@@ -175,7 +175,7 @@ export const Header: React.FC<HeaderProps> = ({
             </SheetHeader>
 
             {/* User Info on Mobile Drawer */}
-            <div className="p-4 border-b border-border/50">
+            <div className="p-4 pe-16 border-b border-border/50 shrink-0">
               <SheetClose asChild>
                 <button
                   onClick={() => setActiveTab('profile')}
@@ -206,8 +206,35 @@ export const Header: React.FC<HeaderProps> = ({
               </SheetClose>
             </div>
 
+            <nav aria-label={t('header.navigationMenu')} className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3">
+              <ul className="m-0 flex list-none flex-col gap-1 p-0">
+                {(Object.keys(tabIcons) as AppTab[]).filter((tab) => tab !== 'profile').map((tab) => {
+                  const Icon = tabIcons[tab];
+                  const isActive = tab === activeTab;
+                  return (
+                    <li key={tab}>
+                      <SheetClose asChild>
+                        <button
+                          type="button"
+                          onClick={() => setActiveTab(tab)}
+                          aria-current={isActive ? 'page' : undefined}
+                          className={cn(
+                            'flex min-h-11 w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-start text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                            isActive ? 'bg-primary/10 text-blue-700 dark:text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                          )}
+                        >
+                          <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
+                          <span>{t(`sidebar.${tab}`)}</span>
+                        </button>
+                      </SheetClose>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+
             {/* Drawer Bottom Actions */}
-            <div className="border-t border-border/60 p-3 mt-auto space-y-2">
+            <div className="border-t border-border/60 p-3 mt-auto space-y-2 shrink-0">
               {offlinePendingCount > 0 && (
                 <div
                   className="flex items-center gap-2 p-2.5 rounded-xl bg-amber-500/15 text-[#7C2D12] dark:text-amber-300 border border-amber-500/30 text-xs font-bold"
@@ -221,7 +248,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <SheetClose asChild>
                   <button
                     onClick={onLogout}
-                    className="w-full flex items-center justify-start gap-3 px-3 py-2.5 rounded-xl text-start text-[var(--text-sm)] font-medium text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-start gap-3 px-3 py-2.5 rounded-xl text-start text-[var(--text-sm)] font-medium text-red-700 dark:text-red-300 hover:bg-destructive/10 transition-colors cursor-pointer"
                     aria-label={t('sidebar.logout')}
                     title={t('sidebar.logout')}
                   >

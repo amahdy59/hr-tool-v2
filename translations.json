@@ -1,5 +1,10 @@
 [
   {
+    "English Text": "Clear search",
+    "Arabic Translation": "مسح البحث",
+    "UI Category": "Accessibility label"
+  },
+  {
     "Source Index": 0,
     "English Text": ", or",
     "Arabic Translation": "، أو",

@@ -183,11 +183,14 @@ export function DataTable<T>({
                     key={key}
                     data-state={isSelected ? 'selected' : undefined}
                     aria-selected={isSelected}
-                    onClick={onRowClick ? () => onRowClick(row, index) : undefined}
+                    onClick={onRowClick ? (e) => {
+                      if ((e.target as HTMLElement).closest('button, a, input, select, textarea, [role="button"], [role="checkbox"], [role="switch"]')) return;
+                      onRowClick(row, index);
+                    } : undefined}
                     onKeyDown={
                       onRowClick
                         ? (e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
+                            if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
                               e.preventDefault();
                               onRowClick(row, index);
                             }

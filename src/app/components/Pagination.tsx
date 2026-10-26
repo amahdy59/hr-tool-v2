@@ -79,7 +79,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   return (
     <nav
       aria-label={t('pagination.label', 'Pagination')}
-      className="flex flex-col gap-4 border-t border-border/70 bg-card/60 backdrop-blur-md px-4 py-4 sm:flex-row sm:items-center sm:justify-between rounded-b-2xl"
+      className="flex min-w-0 flex-col gap-4 border-t border-border/70 bg-card/60 backdrop-blur-md px-4 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between rounded-b-2xl"
       dir={isArabic ? 'rtl' : 'ltr'}
     >
       <div className="flex w-full flex-col items-center justify-center gap-3 text-[var(--text-sm)] text-muted-foreground sm:w-auto sm:flex-row sm:justify-start">
@@ -119,7 +119,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       </div>
 
       {hasPageNavigation && (
-        <ul className="m-0 flex w-full list-none flex-row items-center justify-center gap-1.5 p-1 bg-muted/40 backdrop-blur-md rounded-2xl border border-border/70 shadow-2xs sm:w-auto sm:justify-end">
+        <ul className="m-0 flex w-full max-w-full flex-wrap list-none flex-row items-center justify-center gap-1 p-1 bg-muted/40 backdrop-blur-md rounded-2xl border border-border/70 shadow-2xs sm:w-auto sm:justify-end">
           <li className="list-item">
             <Button
               variant="outline"
@@ -138,7 +138,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           {pageNumbers.map((page, index) => {
             if (typeof page === 'string') {
               return (
-                <li key={`ellipsis-${index}`} className="list-item">
+                <li key={`ellipsis-${index}`} className="hidden sm:list-item">
                   <span
                     className="flex h-10 w-9 items-center justify-center text-xs font-semibold text-muted-foreground"
                     aria-hidden="true"
@@ -155,8 +155,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               <li
                 key={`page-${page}`}
                 className={cn(
-                  !isActive && page !== 1 && page !== pageCount ? 'hidden min-[380px]:list-item' : undefined,
-                  'list-item'
+                  !isActive && page !== 1 && page !== pageCount ? 'hidden sm:list-item' : 'list-item'
                 )}
               >
                 <Button

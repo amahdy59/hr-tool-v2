@@ -415,6 +415,44 @@ server.listen(0, '127.0.0.1', async () => {
     await page.keyboard.press('Escape');
     await new Promise(r => setTimeout(r, 400));
 
+    console.log('\n--- Test 11: Mobile Navigation and Keyboard Focus ---');
+    await page.setViewport({ width: 375, height: 667 });
+    await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+    await page.click('header button[aria-haspopup="dialog"]');
+    await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
+    const drawerState = await page.evaluate(() => {
+      const drawer = document.querySelector('[data-slot="sheet-content"]');
+      const navButtons = [...drawer.querySelectorAll('nav button')];
+      const rect = drawer.getBoundingClientRect();
+      return {
+        sections: navButtons.length,
+        current: navButtons.filter(button => button.getAttribute('aria-current') === 'page').length,
+        focusInside: drawer.contains(document.activeElement),
+        fits: rect.left >= 0 && rect.right <= innerWidth,
+      };
+    });
+    assert(drawerState.sections === 7, 'Mobile drawer provides all seven main sections');
+    assert(drawerState.current === 1, 'Mobile drawer identifies the current section');
+    assert(drawerState.focusInside, 'Opening mobile navigation moves focus inside the drawer');
+    assert(drawerState.fits, 'Mobile drawer fits the viewport');
+    for (let index = 0; index < 12; index++) await page.keyboard.press('Tab');
+    assert(await page.evaluate(() => document.querySelector('[data-slot="sheet-content"]').contains(document.activeElement)), 'Tab navigation stays inside the open mobile drawer');
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('[data-slot="sheet-content"]', { hidden: true });
+    assert(await page.evaluate(() => document.activeElement?.getAttribute('aria-expanded') === 'false'), 'Closing mobile navigation returns focus to its trigger');
+
+    await page.evaluate(() => document.querySelector('#main-content').scrollTo({ top: 500, behavior: 'instant' }));
+    await page.waitForFunction(() => document.querySelector('#main-content').scrollTop > 300);
+    await page.click('header button[aria-haspopup="dialog"]');
+    await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
+    await page.click('[data-slot="sheet-content"] nav li:nth-child(2) button');
+    await page.waitForSelector('[data-slot="sheet-content"]', { hidden: true });
+    await page.waitForFunction(() => document.querySelector('#main-content').scrollTop === 0);
+    assert(await page.evaluate(() => {
+      const control = document.querySelector('button[aria-label="Scroll to top"], button[aria-label="العودة إلى الأعلى"]');
+      return !control || control.closest('[hidden]') !== null;
+    }), 'Section navigation resets scroll and hides the inactive back-to-top control');
+
     console.log('\n--- E2E Test Summary ---');
     const passed = report.filter(r => r.status === 'PASS').length;
     const failed = report.filter(r => r.status === 'FAIL').length;

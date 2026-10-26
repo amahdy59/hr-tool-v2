@@ -60,6 +60,8 @@ const TEST_SCENARIOS = [
   { name: 'case_study_desktop', width: 1280, height: 800, lang: 'en', action: 'case_study' },
   { name: 'dashboard_desktop_en', width: 1280, height: 800, lang: 'en', action: 'dashboard' },
   { name: 'dashboard_mobile_ar', width: 375, height: 667, lang: 'ar', action: 'dashboard' },
+  { name: 'navigation_mobile_en', width: 375, height: 667, lang: 'en', action: 'navigation' },
+  { name: 'navigation_mobile_ar', width: 375, height: 667, lang: 'ar', action: 'navigation' },
 ];
 
 server.listen(0, '127.0.0.1', async () => {
@@ -183,7 +185,7 @@ server.listen(0, '127.0.0.1', async () => {
           await page.waitForSelector('main, h1', { timeout: 10000 });
           await new Promise(r => setTimeout(r, 600));
         }
-      } else if (sc.action === 'dashboard') {
+      } else if (sc.action === 'dashboard' || sc.action === 'navigation') {
         const quickLoginBtn = await page.evaluateHandle(() => {
           const btns = Array.from(document.querySelectorAll('button'));
           return btns.find(b => {
@@ -196,6 +198,10 @@ server.listen(0, '127.0.0.1', async () => {
           await quickLoginBtn.asElement().click();
           await page.waitForSelector('#main-content', { timeout: 10000 });
           await new Promise(r => setTimeout(r, 800));
+        }
+        if (sc.action === 'navigation') {
+          await page.click('header button[aria-haspopup="dialog"]');
+          await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
         }
       }
 

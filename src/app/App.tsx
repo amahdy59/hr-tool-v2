@@ -105,9 +105,13 @@ export default function App() {
       : `${t('login.signInHeading')} - ${t('common.appName')}`;
     document.title = title;
     if (isAuthenticated) {
-      setAnnouncement(`Navigated to ${title}`);
+      setAnnouncement(title);
     }
   }, [activeTab, isAuthenticated, t]);
+
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0, behavior: 'instant' });
+  }, [activeTab, isAuthenticated]);
 
   useEffect(() => {
     const el = document.documentElement;
@@ -417,7 +421,7 @@ export default function App() {
     return (
       <div className="animate-fadeIn">
         <Suspense fallback={
-          <div className="flex items-center justify-center min-h-[400px] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <div role="status" className="flex items-center justify-center min-h-[400px] text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             <div className="flex flex-col items-center gap-3">
               <span className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></span>
               <span>{t('common.loading')}</span>
@@ -432,7 +436,7 @@ export default function App() {
 
   return (
     <DirectionProvider dir={isArabic ? 'rtl' : 'ltr'}>
-      <div className="flex h-screen bg-background text-foreground overflow-hidden">
+      <div className="flex h-dvh bg-background text-foreground overflow-hidden">
       <a
         href="#main-content"
         className="skip-link fixed start-4 top-4 z-[100] flex min-h-11 min-w-11 -translate-y-20 items-center justify-center rounded-md bg-primary px-4 py-2.5 text-primary-foreground opacity-0 shadow-lg transition-transform focus:translate-y-0 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
@@ -471,7 +475,7 @@ export default function App() {
           setActiveTab={setActiveTab}
           onLogout={handleLogout}
         />
-        <main ref={mainRef} id="main-content" tabIndex={-1} aria-label={t('common.mainContent', 'Main content')} className="app-main-scroll flex-1 overflow-y-auto bg-muted cursor-default pb-24 lg:pb-6 pt-16 outline-none">
+        <main ref={mainRef} id="main-content" tabIndex={-1} aria-label={t('common.mainContent', 'Main content')} className="app-main-scroll flex-1 overflow-y-auto bg-muted cursor-default pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-6 pt-16 outline-none">
           <h1 className="sr-only">{t(`pages.${activeTab}`)}</h1>
           {renderContent()}
         </main>
@@ -590,14 +594,14 @@ const BottomToolbar: React.FC<{
   const { t } = useTranslation();
 
   return (
-    <nav aria-label={t('navigation.bottomNavigation', 'Bottom mobile navigation')} className="lg:hidden fixed bottom-0 start-0 end-0 z-30 h-16 border-t border-border/80 bg-card/90 backdrop-blur-xl flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)] shadow-lg">
+    <nav aria-label={t('navigation.bottomNavigation', 'Bottom mobile navigation')} className="lg:hidden fixed bottom-0 start-0 end-0 z-30 h-[calc(4rem+env(safe-area-inset-bottom))] border-t border-border/80 bg-card/90 backdrop-blur-xl flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)] shadow-lg">
       <button
         onClick={() => setActiveTab('dashboard')}
         aria-current={activeTab === 'dashboard' ? 'page' : undefined}
         aria-label={t('dashboard.home')}
         className={cn(
           "flex flex-col items-center justify-center gap-1 text-[10px] font-medium h-12 min-w-11 px-3 rounded-xl transition-all active:scale-95 cursor-pointer",
-          activeTab === 'dashboard' ? 'text-primary bg-primary/10' : 'text-muted-foreground hover:bg-muted/60'
+          activeTab === 'dashboard' ? 'text-blue-700 dark:text-primary bg-primary/10' : 'text-muted-foreground hover:bg-muted/60'
         )}
       >
         <LayoutDashboard className="w-5 h-5" />

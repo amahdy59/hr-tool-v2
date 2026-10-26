@@ -177,6 +177,28 @@ server.listen(0, '127.0.0.1', async () => {
       await auditCurrentState('6. Authenticated Dashboard (English)');
     }
 
+    // Exercise the actual modal drawer in both locales and themes.
+    // Selecting language through storage avoids depending on hidden desktop controls.
+    await page.setViewport({ width: 375, height: 667 });
+    await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+    for (const language of ['en', 'ar']) {
+      for (const theme of ['light', 'dark']) {
+        await page.evaluate((settings) => {
+          localStorage.setItem('i18nextLng', settings.language);
+          localStorage.setItem('app-theme', settings.theme);
+        }, { language, theme });
+        await page.reload({ waitUntil: 'domcontentloaded' });
+        await page.waitForSelector('#main-content');
+        await page.waitForFunction((settings) => document.documentElement.lang === settings.language && document.documentElement.classList.contains('dark') === (settings.theme === 'dark'), {}, { language, theme });
+        await page.click('header button[aria-haspopup="dialog"]');
+        await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
+        await page.evaluate(() => document.fonts.ready);
+        await auditCurrentState(`Mobile navigation (${language}, ${theme})`);
+        await page.keyboard.press('Escape');
+        await page.waitForSelector('[data-slot="sheet-content"]', { hidden: true });
+      }
+    }
+
     console.log('\n--------------------------------------------------');
     console.log(`🏁 [Accessibility Audit] Completed. Total Violations: ${totalViolations}`);
 
@@ -188,7 +210,7 @@ server.listen(0, '127.0.0.1', async () => {
       console.error('💥 [Accessibility Audit] FAILED: WCAG 2.2 violations detected.');
       process.exitCode = 1;
     } else {
-      console.log('🎉 [Accessibility Audit] PASSED: 100% WCAG 2.2 AAA compliant across all audited states.');
+      console.log('🎉 [Accessibility Audit] PASSED: No automated WCAG A/AA violations in the audited states.');
       process.exitCode = 0;
     }
   } catch (err) {

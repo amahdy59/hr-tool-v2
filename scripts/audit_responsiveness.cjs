@@ -209,12 +209,46 @@ server.listen(0, '127.0.0.1', async () => {
 
     console.log(`Auditing ${VIEWPORTS.length} standard viewports across multiple routes and locales...\n`);
 
+    async function checkModules(vp, language) {
+      const modules = ['dashboard', 'attendance', 'employees', 'leaves', 'missions', 'roles', 'payrolls', 'profile'];
+      for (const [index, name] of modules.entries()) {
+        if (vp.width < 1024) {
+          await page.click('header button[aria-haspopup="dialog"]');
+          await page.waitForSelector('[data-slot="sheet-content"][data-state="open"]');
+          await page.evaluate(() => Promise.all(document.querySelector('[data-slot="sheet-content"]').getAnimations().map(animation => animation.finished)));
+          await checkDialogOverflow(`[${vp.name}] Navigation drawer (${language})`);
+          const buttons = await page.$$(name === 'profile' ? '[data-slot="sheet-content"] button' : '[data-slot="sheet-content"] nav button');
+          if (!buttons[name === 'profile' ? 0 : index]) throw new Error(`Missing mobile destination: ${name}`);
+          await buttons[name === 'profile' ? 0 : index].click();
+          await page.waitForSelector('[data-slot="sheet-content"]', { hidden: true });
+        } else {
+          const buttons = await page.$$('aside button');
+          if (!buttons[index]) throw new Error(`Missing desktop destination: ${name}`);
+          await buttons[index].click();
+        }
+        await new Promise(r => setTimeout(r, 350));
+        await page.waitForFunction(() => !document.querySelector('#main-content > .animate-fadeIn > [role="status"]'));
+        await checkPageOverflow(`[${vp.name}] Module: ${name} (${language})`);
+        const paginationFits = await page.evaluate(() => [...document.querySelectorAll('main nav')].every(nav => nav.scrollWidth <= nav.clientWidth + 1));
+        if (!paginationFits) failures.push(`[${vp.name}] Pagination overflows in ${name} (${language})`);
+        else checksPassed++;
+      }
+      console.log(`   Checked all eight sections (${language}).`);
+    }
+
     for (const vp of VIEWPORTS) {
       console.log(`📐 Checking Viewport: ${vp.name} (${vp.width}x${vp.height})`);
       await page.setViewport({ width: vp.width, height: vp.height });
 
       // 1. Login Page (English)
       await page.goto(baseUrl, { waitUntil: 'networkidle0' });
+      await page.evaluate(() => {
+        localStorage.removeItem('hr_tool_auth');
+        localStorage.removeItem('hr_tool_user');
+        localStorage.setItem('i18nextLng', 'en');
+      });
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      await page.waitForSelector('input[type="email"]');
       await checkPageOverflow(`[${vp.name}] Login Page (EN)`);
 
       // 2. Login Page (Arabic)
@@ -297,25 +331,18 @@ server.listen(0, '127.0.0.1', async () => {
         }
 
         // Navigate modules
-        const coreModules = ['attendance', 'employees', 'leaves', 'missions', 'roles', 'profile'];
-        for (const mod of coreModules) {
-          await page.evaluate((m) => {
-            const links = Array.from(document.querySelectorAll('button, a'));
-            const link = links.find(el => (el.textContent || '').toLowerCase().includes(m));
-            if (link) link.click();
-          }, mod);
-          await new Promise(r => setTimeout(r, 350));
-          await checkPageOverflow(`[${vp.name}] Module: ${mod} (EN)`);
-        }
+        await checkModules(vp, 'EN');
 
         // Check Arabic Dashboard
-        const dashArBtn = await page.$('button[aria-label="Switch language to Arabic"], button[aria-label*="العربية"]');
-        if (dashArBtn) {
-          await dashArBtn.click();
-          await new Promise(r => setTimeout(r, 500));
-          await checkPageOverflow(`[${vp.name}] Dashboard (AR)`);
-          await checkHeaderResponsiveness(`[${vp.name}] Header (AR)`);
-        }
+        await page.evaluate(() => localStorage.setItem('i18nextLng', 'ar'));
+        await page.reload({ waitUntil: 'domcontentloaded' });
+        await page.waitForSelector('#main-content');
+        await page.waitForFunction(() => document.documentElement.lang === 'ar');
+        await checkPageOverflow(`[${vp.name}] Dashboard (AR)`);
+        await checkHeaderResponsiveness(`[${vp.name}] Header (AR)`);
+        await checkModules(vp, 'AR');
+      } else {
+        throw new Error(`Demo login was not found at ${vp.width}px; authenticated checks must not be skipped.`);
       }
     }
 

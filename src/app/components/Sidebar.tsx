@@ -111,7 +111,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         
         {/* Active indicator */}
         {isActive && !collapsed && (
-          <span className="hidden sm:block ms-auto w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)] animate-pulse shrink-0" />
+          <span className="hidden sm:block ms-auto w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" aria-hidden="true" />
         )}
       </button>
     );

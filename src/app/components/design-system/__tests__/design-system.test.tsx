@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
+import '@/i18n';
 import { StatCard } from '../StatCard';
 import { FilterToolbar } from '../FilterToolbar';
 import { ChartCard } from '../ChartCard';
@@ -58,6 +59,7 @@ describe('Design System Primitives', () => {
       const clearBtn = screen.getByRole('button', { name: /Clear search/i });
       fireEvent.click(clearBtn);
       expect(handleSearchChange).toHaveBeenCalledWith('');
+      expect(document.activeElement).toBe(input);
     });
   });
 
@@ -158,6 +160,32 @@ describe('Design System Primitives', () => {
 
       expect(screen.getByText('No staff found')).toBeTruthy();
       expect(screen.getByText('Try adjusting your search criteria')).toBeTruthy();
+    });
+
+    it('keeps nested row actions independent from opening the row', () => {
+      const onRowClick = vi.fn();
+      const onAction = vi.fn();
+      render(
+        <DataTable
+          data={[{ id: '1', name: 'Sara Miller', role: 'Staff Engineer' }]}
+          columns={[...columns, { key: 'actions', header: 'Actions', render: () => <button onClick={onAction}>Edit employee</button> }]}
+          keyExtractor={(item) => item.id}
+          onRowClick={onRowClick}
+        />
+      );
+
+      const action = screen.getByRole('button', { name: 'Edit employee' });
+      fireEvent.keyDown(action, { key: 'Enter' });
+      fireEvent.keyDown(action, { key: ' ' });
+      fireEvent.click(action);
+      expect(onAction).toHaveBeenCalledTimes(1);
+      expect(onRowClick).not.toHaveBeenCalled();
+
+      const row = screen.getByRole('rowheader', { name: 'Sara Miller' }).closest('tr')!;
+      fireEvent.keyDown(row, { key: 'Enter' });
+      fireEvent.keyDown(row, { key: ' ' });
+      fireEvent.click(screen.getByText('Sara Miller'));
+      expect(onRowClick).toHaveBeenCalledTimes(3);
     });
   });
 });

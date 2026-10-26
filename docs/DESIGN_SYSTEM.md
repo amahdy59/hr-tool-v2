@@ -122,6 +122,16 @@ To prevent duplication and maintain consistent wording across components, we fol
 - Active page buttons require `aria-current="page"`.
 - Buttons must keep a minimum `44px` touch target (`h-11`).
 - Page-size selects must be programmatically labeled, preferably with `React.useId()`.
+- On narrow screens, keep the first, current, and last page available; hide intermediate pages and ellipses. Allow the control group to wrap instead of overflowing its card.
+
+### Mobile Navigation And Motion
+
+- The navigation drawer must expose the same seven main sections as the desktop sidebar, plus profile and logout actions.
+- Use a modal drawer with focus containment, Escape dismissal, and return focus to the menu trigger. The drawer and scrim must sit above the fixed header.
+- Keep the navigation list independently scrollable on short screens, with safe-area padding and a close control of at least 44px.
+- Use the dynamic viewport height for the application shell and include the bottom safe-area inset in both toolbar height and content padding.
+- Reset the content scroll position immediately when changing sections. Back-to-top scrolling must respect reduced-motion preferences and return keyboard focus to the content.
+- Hidden back-to-top controls must be excluded from keyboard navigation. Active navigation indicators should remain steady.
 
 ### Form Labels And Field Accessibility
 

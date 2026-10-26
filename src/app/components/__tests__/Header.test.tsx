@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import '@/i18n';
 import { Header } from '../Header';
 import type { AccessibilitySettings } from '../AccessibilityPanel';
@@ -31,6 +31,28 @@ const mockUser = {
 };
 
 describe('Header Component (State of the Art Toolbar & A11y)', () => {
+  it('provides every section in the mobile drawer and closes after navigation', () => {
+    const setActiveTab = vi.fn();
+    render(
+      <Header
+        currentUser={mockUser}
+        accessibility={createMockAccessibility()}
+        activeTab="leaves"
+        setActiveTab={setActiveTab}
+      />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open navigation menu' }));
+    const dialog = screen.getByRole('dialog');
+    const navigation = within(dialog).getByRole('navigation', { name: 'Navigation menu' });
+    expect(within(navigation).getAllByRole('button')).toHaveLength(7);
+    expect(within(navigation).getByRole('button', { name: 'Leaves Management' }).getAttribute('aria-current')).toBe('page');
+
+    fireEvent.click(within(navigation).getByRole('button', { name: 'Employees' }));
+    expect(setActiveTab).toHaveBeenCalledWith('employees');
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
   it('renders application toolbar banner with active section breadcrumb', () => {
     const accessibility = createMockAccessibility();
     render(

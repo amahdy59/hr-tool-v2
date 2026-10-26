@@ -32,12 +32,14 @@ export const ScrollToTop: React.FC<ScrollToTopProps> = ({ scrollContainerRef }) 
   const scrollToTop = () => {
     scrollContainerRef.current?.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
     });
+    scrollContainerRef.current?.focus({ preventScroll: true });
   };
 
   return (
     <nav
+      hidden={!isVisible}
       aria-label={isArabic ? "العودة إلى الأعلى" : "Back to top"}
       className={`fixed bottom-24 z-50 transition-all duration-300 transform end-5 rtl:end-12 sm:bottom-8 sm:end-8 sm:rtl:end-16 ${
         isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
