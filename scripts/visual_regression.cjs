@@ -14,6 +14,7 @@ if (!fs.existsSync(baselinesDir)) {
 }
 
 const shouldUpdate = process.argv.includes('--update-baselines');
+const scenarioName = process.argv.find(arg => arg.startsWith('--scenario='))?.slice('--scenario='.length);
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -96,7 +97,9 @@ server.listen(0, '127.0.0.1', async () => {
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
     });
 
-    for (const sc of TEST_SCENARIOS) {
+    const scenarios = scenarioName ? TEST_SCENARIOS.filter(scenario => scenario.name === scenarioName) : TEST_SCENARIOS;
+    if (scenarios.length === 0) throw new Error(`Unknown visual scenario: ${scenarioName}`);
+    for (const sc of scenarios) {
       // Create an isolated incognito browser context for every scenario
       const context = await browser.createBrowserContext();
       const page = await context.newPage();
@@ -160,7 +163,7 @@ server.listen(0, '127.0.0.1', async () => {
       }, sc.lang, sc.theme || 'dark');
 
       await page.setViewport({ width: sc.width, height: sc.height });
-      await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+      await page.goto(baseUrl, { waitUntil: 'networkidle0' });
       await page.waitForSelector('#root', { timeout: 10000 });
       await page.evaluate(() => (document.fonts ? document.fonts.ready : Promise.resolve()));
       await new Promise(r => setTimeout(r, 200));
@@ -224,7 +227,12 @@ server.listen(0, '127.0.0.1', async () => {
         document.documentElement.style.scrollBehavior = 'auto';
       });
       await page.mouse.move(0, 0);
-      await page.evaluate(() => (document.fonts ? document.fonts.ready : Promise.resolve()));
+      await page.evaluate(async (language) => {
+        const family = language === 'ar' ? 'Noto Sans Arabic' : 'Inter';
+        await Promise.all([400, 500, 600, 700].map(weight => document.fonts.load(`${weight} 14px "${family}"`)));
+        await document.fonts.ready;
+        if (!document.fonts.check(`400 14px "${family}"`)) throw new Error(`Screenshot font failed to load: ${family}`);
+      }, sc.lang);
       await new Promise(r => setTimeout(r, 400));
 
       const currentBuffer = await page.screenshot({ fullPage: false });
@@ -264,6 +272,7 @@ server.listen(0, '127.0.0.1', async () => {
         if (diffPercentage > maxAllowedDiff) {
           const diffPath = path.join(baselinesDir, `diff-${sc.name}.png`);
           fs.writeFileSync(diffPath, PNG.sync.write(diff));
+          fs.writeFileSync(path.join(baselinesDir, `actual-${sc.name}.png`), currentBuffer);
           console.error(`   ❌ [Visual Regression] ${sc.name}: ${mismatchedPixels} pixels differ (${diffPercentage.toFixed(2)}%). Saved diff to ${diffPath}`);
           failures++;
         } else {
