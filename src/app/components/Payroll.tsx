@@ -705,7 +705,7 @@ const PayslipModal = ({ employee, onClose, onDownload, selectedMonth, selectedYe
         <Button variant="outline" onClick={onClose} className="rounded-xl">
           Close
         </Button>
-        <Button onClick={onDownload} className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white gap-2">
+        <Button onClick={onDownload} className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98] gap-2">
           <Download className="w-4 h-4" /> Download Payslip
         </Button>
       </div>

@@ -260,7 +260,7 @@ export const RequestMissionModal: React.FC<RequestMissionModalProps> = ({
           </div>
 
           <Button
-            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
+            className="w-full rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
             onClick={handleSubmit}
             disabled={daysRequested === 0}
           >

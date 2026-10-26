@@ -672,7 +672,7 @@ const ProfessionalProfileContent: React.FC<{ currentUser: any; searchQuery?: str
 
           {/* Export Resume Button */}
           <div className="flex justify-end pt-1">
-            <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white gap-2 whitespace-nowrap min-h-11 px-6 text-base font-semibold" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
+            <Button className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98] gap-2 whitespace-nowrap min-h-11 px-6 text-base font-semibold" onClick={handleExportResume} style={{ fontFamily: "'Inter', sans-serif" }}>
               <Download className="w-5 h-5" /> Download PDF Resume
             </Button>
           </div>
@@ -762,7 +762,7 @@ const EditAboutModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => vo
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -806,7 +806,7 @@ const EditContactModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

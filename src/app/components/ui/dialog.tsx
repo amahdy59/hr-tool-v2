@@ -56,17 +56,17 @@ const DialogContent = React.forwardRef<
       ref={ref}
       data-slot="dialog-content"
       className={cn(
-        "bg-background/80 backdrop-blur-xl border border-white/20 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed z-[9999] flex flex-col overflow-y-auto duration-200 shadow-lg gap-4",
+        "bg-card/95 backdrop-blur-2xl text-card-foreground border border-border/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed z-[9999] flex flex-col overflow-y-auto overscroll-contain duration-200 shadow-2xl gap-4",
         // Mobile styles: full screen covering header
         "left-0 right-0 top-0 bottom-0 w-full h-full max-w-none translate-x-0 translate-y-0 rounded-none border-0 p-5 pt-12 pb-8",
         // Desktop styles: centered card
-        "sm:left-[50%] sm:top-[50%] sm:bottom-auto sm:right-auto sm:h-auto sm:w-full sm:max-w-lg sm:max-h-[calc(100dvh-2rem)] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-3xl sm:border sm:border-border/80 sm:p-6 sm:shadow-2xl",
+        "sm:left-[50%] sm:top-[50%] sm:bottom-auto sm:right-auto sm:h-auto sm:w-full sm:max-w-lg sm:max-h-[calc(100dvh-2.5rem)] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-2xl sm:border sm:p-6",
         className,
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="ring-offset-background focus:ring-ring absolute top-4 end-4 rounded-full p-1.5 opacity-70 transition-all hover:opacity-100 hover:bg-muted text-muted-foreground hover:text-foreground focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer">
+      <DialogPrimitive.Close className="ring-offset-background focus:ring-ring absolute top-4 end-4 inline-flex items-center justify-center size-8 rounded-full bg-muted/60 hover:bg-muted border border-border/50 text-muted-foreground hover:text-foreground transition-all focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer">
         <XIcon />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>

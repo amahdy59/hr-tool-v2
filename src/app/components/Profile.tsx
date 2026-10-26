@@ -246,7 +246,7 @@ const DownloadCenter: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
       <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h3 id="download-center-heading" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">My Documents</h3>
-        <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => openPicker()}>
+        <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98] gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => openPicker()}>
           <Upload className="w-4 h-4" /> Upload Document
         </Button>
       </div>
@@ -275,7 +275,7 @@ const LegacyDownloadCenter = () => (
   <div className="space-y-6">
     <div className="flex items-center justify-between">
       <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--section-heading-size)', fontWeight: 'var(--section-heading-weight)' }} className="text-foreground">My Documents</h3>
-      <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => toast.success('Upload dialog would open')}>
+      <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98] gap-2" style={{ fontFamily: "'Inter', sans-serif" }} onClick={() => toast.success('Upload dialog would open')}>
         <Upload className="w-4 h-4" /> Upload Document
       </Button>
     </div>
@@ -537,7 +537,7 @@ const EditPersonalInfoModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Discard Changes</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Personal information updated successfully'); }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => { onOpenChange(false); toast.success('Personal information updated successfully'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -553,7 +553,7 @@ const EditNoteModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => voi
         <div className="space-y-1"><label className={labelClass}>About</label><textarea dir="auto" value={note} onChange={e => setNote(e.target.value)} rows={5} className={cn(inputClass, 'h-auto py-2')} /></div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('About section updated'); }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => { onOpenChange(false); toast.success('About section updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -593,7 +593,7 @@ const EditExperienceModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Experience updated'); }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => { onOpenChange(false); toast.success('Experience updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -628,7 +628,7 @@ const EditEducationModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) =
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Education updated'); }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => { onOpenChange(false); toast.success('Education updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -659,7 +659,7 @@ const EditCertificationModal: React.FC<{ open: boolean; onOpenChange: (v: boolea
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Certification updated'); }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => { onOpenChange(false); toast.success('Certification updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -699,7 +699,7 @@ const EditSkillsModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => v
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Skills updated'); }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => { onOpenChange(false); toast.success('Skills updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -728,7 +728,7 @@ const EditProjectModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Project updated'); }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => { onOpenChange(false); toast.success('Project updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -796,7 +796,7 @@ const ChangeImageModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleUpload}>Upload</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={handleUpload}>Upload</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -819,7 +819,7 @@ const EditEmergencyContactsModal: React.FC<{ open: boolean; onOpenChange: (v: bo
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-xl border-border">Cancel</Button>
-          <Button className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={() => { onOpenChange(false); toast.success('Emergency contacts updated'); }}>Save</Button>
+          <Button className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => { onOpenChange(false); toast.success('Emergency contacts updated'); }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

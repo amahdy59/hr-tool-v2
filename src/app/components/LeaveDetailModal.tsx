@@ -149,7 +149,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                           className={cn(
                             'w-8 h-8 rounded-full flex items-center justify-center border transition-all duration-300',
                             isCompleted
-                              ? 'bg-chart-3 border-chart-3 text-white shadow-sm'
+                              ? 'bg-primary border-primary text-primary-foreground shadow-sm'
                               : 'border-border bg-card text-muted-foreground'
                           )}
                         >
@@ -188,7 +188,7 @@ export const LeaveDetailModal: React.FC<LeaveDetailModalProps> = ({
                           <div
                             className={cn(
                               'h-[3px] w-full transition-all duration-300 rounded-full',
-                              idx < currentStep ? 'bg-chart-3' : 'bg-border'
+                              idx < currentStep ? 'bg-primary' : 'bg-border'
                             )}
                           />
                         </div>

@@ -308,39 +308,48 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         )}
 
-        {/* Quick Theme Switcher */}
-        <button
-          type="button"
-          onClick={handleToggleTheme}
-          className="hidden sm:flex h-11 w-11 items-center justify-center rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-muted-foreground hover:bg-card hover:text-foreground hover:border-primary/40 shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
-          aria-label={isDarkMode ? t('header.switchToLight') : t('header.switchToDark')}
-          title={isDarkMode ? t('header.switchToLight') : t('header.switchToDark')}
-        >
-          {isDarkMode ? (
-            <Sun className="w-4 h-4 text-amber-400 transition-transform rotate-0" aria-hidden="true" />
-          ) : (
-            <Moon className="w-4 h-4 text-slate-700 dark:text-slate-200 transition-transform rotate-0" aria-hidden="true" />
-          )}
-        </button>
+        {/* Unified Quick Controls Capsule (Theme + Language) */}
+        <div className="hidden sm:inline-flex items-center p-0.5 rounded-xl border border-border/80 bg-card/60 backdrop-blur-md shadow-2xs gap-0.5 shrink-0">
+          {/* Quick Theme Switcher */}
+          <button
+            type="button"
+            onClick={handleToggleTheme}
+            className="h-10 w-10 inline-flex items-center justify-center rounded-lg text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            aria-label={isDarkMode ? t('header.switchToLight') : t('header.switchToDark')}
+            title={isDarkMode ? t('header.switchToLight') : t('header.switchToDark')}
+          >
+            {isDarkMode ? (
+              <Sun className="w-4 h-4 text-amber-400 transition-transform rotate-0" aria-hidden="true" />
+            ) : (
+              <Moon className="w-4 h-4 text-slate-700 dark:text-slate-200 transition-transform rotate-0" aria-hidden="true" />
+            )}
+          </button>
 
-        {/* Quick Language Switcher */}
-        <button
-          type="button"
-          onClick={handleToggleLanguage}
-          className="hidden md:flex h-11 min-w-[44px] px-2.5 items-center justify-center gap-1.5 rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-muted-foreground hover:bg-card hover:text-foreground hover:border-primary/40 shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
-          aria-label={t('header.toggleLanguage')}
-          title={t('header.toggleLanguage')}
-        >
-          <Languages className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
-          <span className="text-[11px] font-bold uppercase tracking-wider text-foreground">
-            {isArabic ? 'EN' : 'عربي'}
-          </span>
-        </button>
+          {/* Divider */}
+          <div className="hidden md:block h-4 w-px bg-border/60" aria-hidden="true" />
+
+          {/* Quick Language Switcher */}
+          <button
+            type="button"
+            onClick={handleToggleLanguage}
+            className="hidden md:inline-flex h-10 px-2.5 items-center justify-center gap-1.5 rounded-lg text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            aria-label={t('header.toggleLanguage')}
+            title={t('header.toggleLanguage')}
+          >
+            <Languages className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
+            <span className="text-[11px] font-bold uppercase tracking-wider text-foreground">
+              {isArabic ? 'EN' : 'عربي'}
+            </span>
+          </button>
+        </div>
 
         {/* Notification Center */}
-        <div className="hidden sm:block">
+        <div className="hidden sm:block shrink-0">
           <NotificationCenter />
         </div>
+
+        {/* Subtle Visual Divider */}
+        <div className="hidden sm:block h-5 w-px bg-border/60 mx-0.5" aria-hidden="true" />
 
         {onOpenStyleguide && (
           <button

@@ -1402,7 +1402,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* Actions */}
       <div className="space-y-2 pt-2">
-        <Button onClick={onApply} className="w-full rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">
+        <Button onClick={onApply} className="w-full rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]">
           Apply Filter
         </Button>
         <Button variant="outline" onClick={onClear} className="w-full rounded-xl border-border/80 active:scale-[0.98]">

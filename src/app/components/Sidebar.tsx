@@ -77,16 +77,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
           sidebarItemTextClass,
           collapsed ? 'sm:justify-center' : 'sm:justify-start',
           isActive
-            ? 'bg-gradient-to-r from-blue-600/25 to-indigo-600/20 text-white font-semibold shadow-xs border-s-4 border-blue-500 scale-[0.99]'
-            : 'text-slate-300 hover:text-white hover:bg-white/10 hover:scale-[1.01] active:scale-[0.98]'
+            ? 'bg-gradient-to-r from-blue-600/25 via-blue-500/15 to-blue-600/5 text-white font-semibold shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_2px_8px_rgba(37,99,235,0.15)]'
+            : 'text-slate-300 hover:text-white hover:bg-white/[0.08] active:scale-[0.98]'
         )}
       >
+        {/* Leading active indicator bar */}
+        {isActive && (
+          <span
+            className="absolute start-0 top-2 bottom-2 w-1 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.9)] transition-all duration-300"
+            aria-hidden="true"
+          />
+        )}
+
         {/* Ripple effect on click */}
         <span className="absolute inset-0 bg-white/10 opacity-0 group-active:opacity-100 transition-opacity duration-200" />
         
         <item.icon className={cn(
           "w-5 h-5 shrink-0 transition-transform duration-200 ease-out",
-          isActive ? "text-blue-400 scale-110" : "text-slate-400 group-hover:scale-110 group-hover:text-white"
+          isActive ? "text-blue-400 scale-105 drop-shadow-[0_0_8px_rgba(96,165,250,0.4)]" : "text-slate-400 group-hover:scale-105 group-hover:text-white"
         )} />
         <span
           style={{

@@ -625,7 +625,7 @@ const EditPersonalInfoModal: React.FC<{
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save Changes</Button>
+          <Button className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save Changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -686,7 +686,7 @@ const EditEmergencyModal: React.FC<{
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }}>Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
+          <Button className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={handleSave} style={{ fontFamily: "'Inter', sans-serif" }}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -842,7 +842,7 @@ const BankRequestModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => 
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>
+          <Button className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={uploading}>
             {uploading ? 'Submitting...' : 'Submit Request'}
           </Button>
         </DialogFooter>
@@ -906,7 +906,7 @@ const EmploymentUpdateModal: React.FC<{ open: boolean; onOpenChange: (v: boolean
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl border-border" style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>Cancel</Button>
-          <Button className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>
+          <Button className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={handleSubmit} style={{ fontFamily: "'Inter', sans-serif" }} disabled={submitting}>
             {submitting ? 'Submitting...' : 'Request Update'}
           </Button>
         </DialogFooter>

@@ -242,7 +242,7 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({ open, 
               <button
                 type="button"
                 onClick={() => setActiveTab('pdf')}
-                className={cn("pb-2.5 px-4 font-[var(--font-weight-medium)] text-[var(--text-sm)] border-b-2 transition-colors cursor-pointer", activeTab === 'pdf' ? "border-chart-3 text-chart-3 font-[var(--font-weight-bold)]" : "border-transparent text-muted-foreground")}
+                className={cn("pb-2.5 px-4 font-[var(--font-weight-medium)] text-[var(--text-sm)] border-b-2 transition-colors cursor-pointer", activeTab === 'pdf' ? "border-primary text-primary font-[var(--font-weight-bold)]" : "border-transparent text-muted-foreground")}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 LinkedIn PDF Export / Resume
@@ -250,7 +250,7 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({ open, 
               <button
                 type="button"
                 onClick={() => setActiveTab('link')}
-                className={cn("pb-2.5 px-4 font-[var(--font-weight-medium)] text-[var(--text-sm)] border-b-2 transition-colors cursor-pointer", activeTab === 'link' ? "border-chart-3 text-chart-3 font-[var(--font-weight-bold)]" : "border-transparent text-muted-foreground")}
+                className={cn("pb-2.5 px-4 font-[var(--font-weight-medium)] text-[var(--text-sm)] border-b-2 transition-colors cursor-pointer", activeTab === 'link' ? "border-primary text-primary font-[var(--font-weight-bold)]" : "border-transparent text-muted-foreground")}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Public Profile URL
@@ -274,7 +274,7 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({ open, 
                     className="absolute inset-0 opacity-0 cursor-pointer"
                   />
                   <div className="flex flex-col items-center justify-center gap-2">
-                    <span className="bg-chart-3/10 text-chart-3 p-3 rounded-full">
+                    <span className="bg-primary/10 text-primary p-3 rounded-full">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
                     </span>
                     <span className="font-[var(--font-weight-medium)] text-[var(--text-base)]" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -310,8 +310,8 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({ open, 
         {parsingStep > 0 && parsingStep < 4 && (
           <div className="flex flex-col items-center justify-center py-16 space-y-6">
             <div className="relative flex items-center justify-center">
-              <div className="w-16 h-16 border-4 border-chart-3/20 border-t-chart-3 rounded-full animate-spin"></div>
-              <span className="absolute text-xs font-bold text-chart-3">in</span>
+              <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+              <span className="absolute text-xs font-bold text-primary">in</span>
             </div>
             <div className="text-center space-y-2">
               <h3 className="font-[var(--font-weight-semibold)] text-[var(--text-lg)] animate-pulse" style={{ fontFamily: "'Inter', sans-serif" }}>

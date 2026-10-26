@@ -159,19 +159,23 @@ export const Logo: React.FC<LogoProps> = ({
   }
 
   return (
-    <div className={cn("inline-flex items-center gap-2.5 select-none text-start", className)}>
+    <div
+      dir="ltr"
+      data-no-auto-translate="true"
+      className={cn("inline-flex items-center gap-2.5 select-none text-start", className)}
+    >
       <LogoIcon className={iconSizes[size]} ariaLabel={ariaLabel} />
-      <div className="flex flex-col justify-center leading-none">
-        <div className="flex items-center gap-1.5">
-          <span className={cn("font-black tracking-tight text-foreground", textSizes[size])}>
+      <div className="flex flex-col justify-center leading-none min-w-0">
+        <div className="flex items-center gap-1.5 whitespace-nowrap">
+          <span className={cn("font-black tracking-tight text-foreground whitespace-nowrap", textSizes[size])}>
             HR<span className="text-primary font-bold">Tool</span>
           </span>
-          <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold tracking-wider uppercase bg-primary/10 text-primary border border-primary/20">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold tracking-wider uppercase bg-primary/10 text-primary border border-primary/20 shrink-0">
             PRO
           </span>
         </div>
         {showSubtitle && (
-          <span className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase mt-0.5 hidden sm:block">
+          <span className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase mt-0.5 whitespace-nowrap hidden sm:block">
             Workforce Suite
           </span>
         )}

@@ -1012,7 +1012,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         confirmLabel="Switch Weekends"
         cancelLabel="Discard"
         confirmVariant="default"
-        confirmClassName="bg-chart-3 hover:bg-chart-3/90 text-white"
         onConfirm={handleConfirmWeekendChange}
         onCancel={handleWeekendDiscard}
       />

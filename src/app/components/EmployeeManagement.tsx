@@ -94,7 +94,7 @@ const uniqueOptions = (values: Array<string | undefined>) =>
   Array.from(new Set(values.map((value) => value?.trim()).filter((value): value is string => Boolean(value)))).sort((a, b) => a.localeCompare(b));
 
 // ── Shared input style ──
-const inputClass = "w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs";
+const inputClass = "w-full min-h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 focus-visible:border-ring focus-visible:ring-4 focus-visible:ring-ring/30 outline-none transition-all duration-200";
 const labelClass = "block text-start text-[var(--text-sm)] font-[var(--font-weight-medium)] text-foreground";
 const pageShellClass = "w-full max-w-7xl mx-auto px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 space-y-6";
 const tabHeaderClass = "flex w-full min-w-0 flex-col gap-4 md:flex-row md:items-center md:justify-between";
@@ -332,7 +332,7 @@ export const EmployeeManagement: React.FC = () => {
           <div className={tabActionsClass}>
             {activeSubTab === 'directory' && (
               <>
-                <Button size="sm" className="w-full md:w-auto gap-2 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddEmpOpen(true)}>
+                <Button size="sm" className="w-full md:w-auto gap-2 rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddEmpOpen(true)}>
                   <Plus className="w-4 h-4" /> {t('employeeManagement.addEmployee')}
                 </Button>
                 <Button variant="outline" size="sm" className="w-full md:w-auto gap-2 rounded-xl border-border/80 shadow-2xs active:scale-[0.98]" onClick={() => {
@@ -344,12 +344,12 @@ export const EmployeeManagement: React.FC = () => {
               </>
             )}
             {activeSubTab === 'departments' && (
-              <Button size="sm" className="w-full md:w-auto gap-2 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddDeptOpen(true)}>
+              <Button size="sm" className="w-full md:w-auto gap-2 rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddDeptOpen(true)}>
                 <Plus className="w-4 h-4" /> {t('employeeManagement.addDepartment')}
               </Button>
             )}
             {activeSubTab === 'jobtitles' && (
-              <Button size="sm" className="w-full md:w-auto gap-2 rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddJtOpen(true)}>
+              <Button size="sm" className="w-full md:w-auto gap-2 rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddJtOpen(true)}>
                 <Plus className="w-4 h-4" /> {t('employeeManagement.addJobTitle')}
               </Button>
             )}
@@ -971,7 +971,7 @@ const EmployeeFilterPanel: React.FC<{
       <CheckboxGroup label="Activity Type" items={activityTypesList.length ? activityTypesList : ACTIVITY_TYPES} selected={activityTypes} toggle={toggleActivity} />
       <CheckboxGroup label="Employment Type" items={employmentTypesList.length ? employmentTypesList : EMPLOYMENT_TYPES} selected={employmentTypes} toggle={toggleEmployment} />
       <div className="space-y-2 pt-2">
-        <Button onClick={onApply} className="w-full rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">Apply Filter</Button>
+        <Button onClick={onApply} className="w-full rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]">Apply Filter</Button>
         <Button variant="outline" onClick={onClear} className="w-full rounded-xl border-border/80 active:scale-[0.98]">Clear Filter</Button>
       </div>
     </div>
@@ -1049,64 +1049,85 @@ const EmployeeFormModal: React.FC<{
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-[var(--text-lg)] font-[var(--font-weight-semibold)]">{title}</DialogTitle>
+      <DialogContent className="sm:max-w-2xl max-h-[90vh]">
+        <DialogHeader className="pb-3 border-b border-border/60">
+          <DialogTitle className="text-[var(--text-lg)] font-semibold text-foreground flex items-center gap-2">
+            <Users className="w-5 h-5 text-primary" />
+            <span>{title}</span>
+          </DialogTitle>
           <DialogDescription className="sr-only">{title}</DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-1 gap-6">
+
+        <div className="space-y-6 py-2">
+          {/* Section 1: Personal Information */}
           <div className="space-y-4">
-            <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Personal Information</p>
-            <FormField label="Name" value={name} onChange={setName} placeholder="First and last name" />
-            <FormField label="Employee Number" value={employeeNumber} onChange={setEmployeeNumber} placeholder="XXXXX" />
-            <FormField label="Email" value={email} onChange={setEmail} placeholder="email@acme.com" type="email" />
-            <FormField label="Phone" value={phone} onChange={setPhone} placeholder="+972(0) XXXX-XXXX" />
-            <div className="space-y-1">
-              <label className={labelClass}>Gender</label>
-              <Select value={gender} onValueChange={setGender}>
-                <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="Female">Female</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex items-center gap-2 pb-1.5 border-b border-border/40">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                Personal Information
+              </span>
             </div>
-            <label className="flex items-center gap-2.5 cursor-pointer">
-              <Checkbox checked={isManager} onCheckedChange={(c) => setIsManager(!!c)} />
-              <span className="text-[var(--text-sm)] text-foreground font-[var(--font-weight-normal)]">Is a direct line manager</span>
-            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="Name" value={name} onChange={setName} placeholder="First and last name" />
+              <FormField label="Employee Number" value={employeeNumber} onChange={setEmployeeNumber} placeholder="XXXXX" />
+              <FormField label="Email" value={email} onChange={setEmail} placeholder="email@acme.com" type="email" />
+              <FormField label="Phone" value={phone} onChange={setPhone} placeholder="+972(0) XXXX-XXXX" />
+              <div className="space-y-1">
+                <label className={labelClass}>Gender</label>
+                <Select value={gender} onValueChange={setGender}>
+                  <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <label className="flex items-center gap-3 p-3 rounded-xl border border-border/70 bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer sm:col-span-2">
+                <Checkbox checked={isManager} onCheckedChange={(c) => setIsManager(!!c)} />
+                <div className="text-start">
+                  <span className="text-[var(--text-sm)] font-medium text-foreground block">Is a direct line manager</span>
+                  <span className="text-xs text-muted-foreground block">Designates managerial authority for team approvals</span>
+                </div>
+              </label>
+            </div>
           </div>
 
+          {/* Section 2: Job Related */}
           <div className="space-y-4">
-            <p className="text-[var(--text-sm)] font-[var(--font-weight-semibold)] text-foreground">Job Related</p>
-            <FilterSelect label="Department" value={dept} onChange={setDept} options={departmentsList} />
-            <FilterSelect label="Job Title" value={jobTitle} onChange={setJobTitle} options={jobTitlesList} />
-            <div className="space-y-1">
-              <label className={labelClass}>Contract Type</label>
-              <Select value={contractType} onValueChange={setContractType}>
-                <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Permanent">Permanent</SelectItem>
-                  <SelectItem value="Contract">Contract</SelectItem>
-                  <SelectItem value="Freelance">Freelance</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex items-center gap-2 pb-1.5 border-b border-border/40">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                Job Related
+              </span>
             </div>
-            <FormField label="Hire Date" value={hireDate} onChange={setHireDate} type="date" />
-            <div className="space-y-1">
-              <label className={labelClass}>Activity Type</label>
-              <Select value={activityType} onValueChange={setActivityType}>
-                <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Direct">Direct</SelectItem>
-                  <SelectItem value="InDirect">InDirect</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FilterSelect label="Department" value={dept} onChange={setDept} options={departmentsList} />
+              <FilterSelect label="Job Title" value={jobTitle} onChange={setJobTitle} options={jobTitlesList} />
+              <div className="space-y-1">
+                <label className={labelClass}>Contract Type</label>
+                <Select value={contractType} onValueChange={setContractType}>
+                  <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Permanent">Permanent</SelectItem>
+                    <SelectItem value="Contract">Contract</SelectItem>
+                    <SelectItem value="Freelance">Freelance</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <FormField label="Hire Date" value={hireDate} onChange={setHireDate} type="date" />
+              <div className="space-y-1 sm:col-span-2">
+                <label className={labelClass}>Activity Type</label>
+                <Select value={activityType} onValueChange={setActivityType}>
+                  <SelectTrigger className="min-h-[44px] rounded-xl border-border/80"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Direct">Direct</SelectItem>
+                    <SelectItem value="InDirect">InDirect</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </div>
 
-        <DialogFooter className="pt-4">
+        <DialogFooter className="pt-4 border-t border-border/50">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Cancel</Button>
           <Button onClick={() => {
             onSave({
@@ -1123,7 +1144,7 @@ const EmployeeFormModal: React.FC<{
               isManager,
               img: employee?.img || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop'
             });
-          }} className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">
+          }} className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]">
             {employee ? 'Save' : 'Add'}
           </Button>
         </DialogFooter>
@@ -1277,7 +1298,7 @@ const AccessCardsModal: React.FC<{
                   </Select>
                 </div>
               </div>
-              <Button onClick={handleAddCard} className="rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">Assign Card</Button>
+              <Button onClick={handleAddCard} className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]">Assign Card</Button>
             </div>
 
             {/* Assigned Cards Table */}
@@ -1475,7 +1496,7 @@ const DepartmentFormModal: React.FC<{
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Cancel</Button>
-          <Button onClick={() => onSave({ name, deptId })} className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">
+          <Button onClick={() => onSave({ name, deptId })} className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]">
             {department ? 'Save Department' : 'Add Department'}
           </Button>
         </DialogFooter>
@@ -1510,7 +1531,7 @@ const JobTitleFormModal: React.FC<{
         </div>
         <DialogFooter className="pt-4 gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto rounded-xl">Cancel</Button>
-          <Button onClick={() => onSave(jtName)} className="w-full sm:w-auto rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white shadow-2xs hover:shadow-xs active:scale-[0.98]">
+          <Button onClick={() => onSave(jtName)} className="w-full sm:w-auto rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]">
             {jt ? 'Save Job Title' : 'Add Job Title'}
           </Button>
         </DialogFooter>

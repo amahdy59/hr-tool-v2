@@ -374,7 +374,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
                 <span className={cn("text-[var(--text-xs)] font-bold px-2 py-0.5 rounded-full border",
                   daysRequested > currentBalance
                     ? "bg-destructive/10 text-destructive border-destructive/20"
-                    : "bg-chart-3/15 text-chart-3 border-chart-3/30"
+                    : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30"
                 )}>
                   {daysRequested > currentBalance ? (isArabic ? 'رصيد غير كافٍ' : 'Insufficient Balance') : (isArabic ? 'رصيد كافٍ' : 'Balance Sufficient')}
                 </span>
@@ -559,7 +559,7 @@ export const RequestLeaveModal: React.FC<RequestLeaveModalProps> = ({
           {/* Submit Button */}
           <Button
             id="leave-submit-button"
-            className="w-full bg-chart-3 hover:bg-chart-3/90 text-white cursor-pointer"
+            className="w-full shadow-2xs hover:shadow-xs active:scale-[0.98] cursor-pointer"
             onClick={handleSubmit}
           >
             {mode === 'edit' ? 'Save changes' : 'Book time off'}

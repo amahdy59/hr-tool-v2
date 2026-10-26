@@ -254,7 +254,7 @@ export const RolesManagement: React.FC = () => {
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-2.5 w-full sm:w-auto">
-          <Button className="w-full sm:w-auto bg-chart-3 hover:bg-chart-3/90 text-white gap-2 rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddRoleOpen(true)}>
+          <Button className="w-full sm:w-auto gap-2 rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={() => setAddRoleOpen(true)}>
             <Plus className="w-4 h-4" /> {t('roles.addNewRole')}
           </Button>
           <Button variant="outline" className="hidden sm:flex w-full sm:w-auto gap-2 rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]" onClick={handleUploadData}>
@@ -403,7 +403,7 @@ export const RolesManagement: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                className="bg-chart-3 hover:bg-chart-3/90 text-white rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
+                className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
                 onClick={handleAddRole}
               >
                 Add New Role
@@ -447,7 +447,7 @@ export const RolesManagement: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                className="bg-chart-3 hover:bg-chart-3/90 text-white rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
+                className="rounded-xl shadow-2xs hover:shadow-xs active:scale-[0.98]"
                 onClick={handleSaveEdit}
               >
                 Save Role

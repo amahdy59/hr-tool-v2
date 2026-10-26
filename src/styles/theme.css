@@ -541,29 +541,31 @@
   /* Modern, stylish scrollbar styles */
   /* Webkit browsers (Chrome, Safari, Edge) */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
   
   ::-webkit-scrollbar-track {
-    background: var(--muted);
-    border-radius: 4px;
+    background: transparent !important;
   }
   
   ::-webkit-scrollbar-thumb {
-    background: var(--muted-foreground);
-    border-radius: 4px;
+    background: color-mix(in srgb, var(--foreground) 18%, transparent);
+    border-radius: 9999px;
+    border: 1.5px solid transparent;
+    background-clip: padding-box;
     transition: background 0.2s ease;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
+    background: color-mix(in srgb, var(--foreground) 38%, transparent);
+    background-clip: padding-box;
   }
   
   /* Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--muted-foreground) var(--muted);
+    scrollbar-color: color-mix(in srgb, var(--foreground) 20%, transparent) transparent;
   }
   
   /* Hide scrollbar class */
@@ -578,6 +580,7 @@
   /* Ensure scrollbars have smooth transitions */
   ::-webkit-scrollbar-thumb:active {
     background: var(--primary);
+    background-clip: padding-box;
   }
   
   /* Clean horizontal scrollbar for tabs */

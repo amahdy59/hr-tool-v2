@@ -445,7 +445,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
               type="submit"
               disabled={isLoading}
               className={cn(
-                'w-full min-h-[44px] rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white transition-all shadow-2xs hover:shadow-xs active:scale-[0.98] cursor-pointer',
+                'w-full min-h-[44px] rounded-xl bg-gradient-to-b from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 active:from-blue-700 active:to-blue-800 text-white border border-blue-500/30 transition-all shadow-2xs hover:shadow-xs active:scale-[0.98] cursor-pointer',
                 isLoading && 'opacity-70 cursor-not-allowed active:scale-100'
               )}
               style={{
@@ -629,7 +629,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, accessibility }) => {
                 type="submit"
                 disabled={isLoading}
                 className={cn(
-                  'w-full min-h-[44px] rounded-xl bg-chart-3 hover:bg-chart-3/90 text-white transition-all shadow-2xs hover:shadow-xs active:scale-[0.98] cursor-pointer',
+                  'w-full min-h-[44px] rounded-xl bg-gradient-to-b from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 active:from-blue-700 active:to-blue-800 text-white border border-blue-500/30 transition-all shadow-2xs hover:shadow-xs active:scale-[0.98] cursor-pointer',
                   isLoading && 'opacity-70 cursor-not-allowed active:scale-100'
                 )}
                 style={{

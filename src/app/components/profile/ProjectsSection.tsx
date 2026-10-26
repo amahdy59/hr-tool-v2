@@ -330,7 +330,7 @@ const EditProjectModal: React.FC<{
           </div>
           <div className="md:col-span-2 mt-2">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input id="featured-checkbox" type="checkbox" checked={featured} onChange={e => setFeatured(e.target.checked)} className="w-4.5 h-4.5 rounded border-border text-chart-3 focus:ring-2 focus:ring-ring/50" />
+              <input id="featured-checkbox" type="checkbox" checked={featured} onChange={e => setFeatured(e.target.checked)} className="w-4.5 h-4.5 rounded border-border text-primary focus:ring-2 focus:ring-primary/40 cursor-pointer" />
               <span className="text-[var(--text-base)] text-foreground font-[var(--font-weight-medium)]" style={{ fontFamily: "'Inter', sans-serif" }}>Feature this project (pin to top)</span>
             </label>
           </div>
