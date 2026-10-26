@@ -29,15 +29,11 @@ import {
   Pencil,
   Filter,
   Briefcase,
+  Calendar,
   Umbrella,
   Printer,
-  Users,
-  CheckCircle2,
-  Clock,
-  ArrowUpRight,
   Sparkles,
 } from 'lucide-react';
-import { StatCard } from '@/app/components/design-system';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { format, parseISO, isValid } from 'date-fns';
@@ -441,46 +437,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
         </div>
       </div>
 
-      {/* KPI Metric Cards (Apple HIG & Material 3 Design System) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title={isArabic ? 'إجمالي الموظفين' : 'Total Employees'}
-          value={142}
-          icon={<Users className="w-5 h-5" />}
-          iconBgClassName="bg-blue-500/10"
-          iconColorClassName="text-blue-600 dark:text-blue-400"
-          badge={{ text: '+4.5%', variant: 'positive' }}
-          subtitle={isArabic ? '12 قسم نشط' : '12 active departments'}
-        />
-        <StatCard
-          title={isArabic ? 'حضور اليوم' : "Today's Attendance"}
-          value="94.8%"
-          icon={<CheckCircle2 className="w-5 h-5" />}
-          iconBgClassName="bg-emerald-500/10"
-          iconColorClassName="text-emerald-600 dark:text-emerald-400"
-          badge={{ text: '+1.2%', variant: 'positive' }}
-          subtitle={isArabic ? '135 موظف حاضر' : '135 checked-in on time'}
-        />
-        <StatCard
-          title={isArabic ? 'طلبات قيد الانتظار' : 'Pending Leaves'}
-          value={3}
-          icon={<Clock className="w-5 h-5" />}
-          iconBgClassName="bg-amber-500/10"
-          iconColorClassName="text-amber-600 dark:text-amber-400"
-          badge={{ text: isArabic ? 'بانتظار المراجعة' : 'Review', variant: 'warning' }}
-          subtitle={isArabic ? 'أحدث طلب منذ ساعتين' : 'Latest requested 2h ago'}
-        />
-        <StatCard
-          title={isArabic ? 'مأموريات نشطة' : 'Active Missions'}
-          value={5}
-          icon={<Briefcase className="w-5 h-5" />}
-          iconBgClassName="bg-violet-500/10"
-          iconColorClassName="text-violet-600 dark:text-violet-400"
-          badge={{ text: isArabic ? 'ميداني' : 'Field', variant: 'neutral' }}
-          subtitle={isArabic ? '2 خارجية، 3 محلية' : '2 external, 3 domestic'}
-        />
-      </div>
-
       {/* Timesheet Section (Desktop / Tablet >= 990px) */}
       <section className="hidden space-y-2 min-[990px]:block" aria-labelledby="timesheet-heading">
         <h3
@@ -871,30 +827,30 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
-                <tr className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3.5 text-foreground font-medium">{t('leave.annualLeave')}</td>
-                  <td className="px-4 py-3.5 text-foreground">{calculateAnnualEntitlement(2013)} {t('dashboard.days')}</td>
-                  <td className="px-4 py-3.5 text-foreground">5</td>
-                  <td className="px-4 py-3.5 text-foreground">4</td>
+                <tr className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors duration-150">
+                  <th scope="row" className="px-4 py-3.5 text-foreground font-semibold text-start">{t('leave.annualLeave')}</th>
+                  <td className="px-4 py-3.5 text-foreground tabular-nums font-medium">{calculateAnnualEntitlement(2013)} {t('dashboard.days')}</td>
+                  <td className="px-4 py-3.5 text-foreground tabular-nums">5</td>
+                  <td className="px-4 py-3.5 text-foreground tabular-nums">4</td>
                   <td className="px-4 py-3.5">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">6</span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/25 tabular-nums">6</span>
                   </td>
                   <td className="px-4 py-3.5">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25 tabular-nums">
                       {calculateAnnualEntitlement(2013) - 5 + 4 - 6} {t('dashboard.days')}
                     </span>
                   </td>
                 </tr>
-                <tr className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3.5 text-foreground font-medium">{t('leave.sickLeave')}</td>
-                  <td className="px-4 py-3.5 text-foreground">45 {t('dashboard.days')}</td>
+                <tr className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors duration-150">
+                  <th scope="row" className="px-4 py-3.5 text-foreground font-semibold text-start">{t('leave.sickLeave')}</th>
+                  <td className="px-4 py-3.5 text-foreground tabular-nums font-medium">45 {t('dashboard.days')}</td>
                   <td className="px-4 py-3.5 text-muted-foreground">--</td>
                   <td className="px-4 py-3.5 text-muted-foreground">--</td>
                   <td className="px-4 py-3.5">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">5</span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/25 tabular-nums">5</span>
                   </td>
                   <td className="px-4 py-3.5">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">40 days</span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25 tabular-nums">40 days</span>
                   </td>
                 </tr>
               </tbody>
@@ -971,10 +927,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRequestLeave, onRequestM
                     balance: isArabic ? 'حسب الحالة / بدون حد أقصى' : 'Case-by-case / No limit',
                   },
                 ].map((row) => (
-                  <tr key={row.type} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3.5 font-medium text-foreground" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
+                  <tr key={row.type} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors duration-150">
+                    <th scope="row" className="px-4 py-3.5 font-semibold text-foreground text-start" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
                       {row.type}
-                    </td>
+                    </th>
                     <td className="px-4 py-3.5" style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--text-sm)' }}>
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted/60 text-foreground border border-border/70">
                         {row.balance}
@@ -1142,18 +1098,37 @@ const HistoryRow: React.FC<{
   onCancel: () => void;
   onEdit: () => void;
 }> = ({ item, onView, onCancel, onEdit }) => {
+  const isMission = item.type.toLowerCase().includes('mission') || item.type.includes('مأمورية');
+
   return (
-    <tr className="hover:bg-muted/30 transition-colors">
-      <td className="px-4 py-3.5 align-middle font-medium text-foreground text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
-        {item.type}
-      </td>
-      <td className="px-4 py-3.5 align-middle whitespace-nowrap text-sm text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <tr className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors duration-150">
+      <th
+        scope="row"
+        className="px-4 py-3.5 align-middle font-semibold text-foreground text-sm text-start"
+        style={{ fontFamily: "'Inter', sans-serif" }}
+      >
+        <div className="flex items-center gap-2.5">
+          <span
+            className={cn(
+              'flex size-7 items-center justify-center rounded-lg shrink-0 border shadow-2xs',
+              isMission
+                ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20'
+                : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+            )}
+            aria-hidden="true"
+          >
+            {isMission ? <Briefcase className="size-3.5" /> : <Calendar className="size-3.5" />}
+          </span>
+          <span>{item.type}</span>
+        </div>
+      </th>
+      <td className="px-4 py-3.5 align-middle whitespace-nowrap text-sm text-foreground tabular-nums font-mono" style={{ fontFamily: "'Inter', sans-serif" }}>
         {item.reqDate}
       </td>
-      <td className="px-4 py-3.5 align-middle whitespace-nowrap text-sm text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <td className="px-4 py-3.5 align-middle whitespace-nowrap text-sm text-foreground tabular-nums" style={{ fontFamily: "'Inter', sans-serif" }}>
         {item.range}
       </td>
-      <td className="px-4 py-3.5 align-middle text-sm text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <td className="px-4 py-3.5 align-middle text-sm text-foreground tabular-nums font-medium" style={{ fontFamily: "'Inter', sans-serif" }}>
         {item.duration}
       </td>
       <td className="px-4 py-3.5 align-middle text-sm text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>

@@ -63,7 +63,7 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   },
 ];
 
-export const NotificationCenter: React.FC = () => {
+export const NotificationCenter: React.FC<{ triggerClassName?: string }> = ({ triggerClassName }) => {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.resolvedLanguage === 'ar' || i18n.language.startsWith('ar');
   const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
@@ -129,7 +129,10 @@ export const NotificationCenter: React.FC = () => {
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="relative flex h-11 w-11 items-center justify-center rounded-md border border-border bg-muted/50 text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+          className={cn(
+            "relative flex h-11 w-11 items-center justify-center rounded-xl border border-border/80 bg-card/60 backdrop-blur-md text-foreground hover:bg-card hover:border-primary/40 shadow-2xs transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer",
+            triggerClassName
+          )}
           aria-label={
             unreadCount > 0
               ? `${t('header.notifications', 'Notifications')} (${unreadCount} unread)`
@@ -137,10 +140,10 @@ export const NotificationCenter: React.FC = () => {
           }
           title={t('header.notifications', 'Notifications')}
         >
-          <Bell className="w-4 h-4 shrink-0" aria-hidden="true" />
+          <Bell className="w-4 h-4 shrink-0 text-foreground" aria-hidden="true" />
           {unreadCount > 0 && (
             <>
-              <span className="absolute -top-1 -end-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground shadow-sm animate-pulse">
+              <span className="absolute -top-1 -end-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground shadow-xs animate-pulse">
                 {unreadCount}
               </span>
               <span className="sr-only">{`${unreadCount} unread notifications`}</span>

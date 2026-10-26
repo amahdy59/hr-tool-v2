@@ -74,7 +74,12 @@ server.listen(0, '127.0.0.1', async () => {
   let comparisons = 0;
 
   try {
-    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || (fs.existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : undefined);
+    const windowsBrowser = [
+      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+      'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+    ].find(p => fs.existsSync(p));
+    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || (fs.existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : windowsBrowser);
     const uniqueUserDir = path.join(os.tmpdir(), `puppeteer_vis_${Date.now()}_${Math.random().toString(36).slice(2)}`);
     browser = await puppeteer.launch({
       headless: true,

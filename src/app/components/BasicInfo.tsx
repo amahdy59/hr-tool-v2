@@ -970,7 +970,7 @@ const EmploymentInfoItem: React.FC<{
       </span>
       <div className="flex items-center gap-2 shrink-0">
         {badge && (
-          <span className="rounded-xl border border-[#2563EB] bg-[#EAF2FF] px-2 py-0.5 text-[var(--text-xs)] font-[var(--font-weight-semibold)] text-[#1E3A8A] whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary dark:text-blue-300 whitespace-nowrap shadow-2xs" style={{ fontFamily: "'Inter', sans-serif" }}>
             {badge}
           </span>
         )}

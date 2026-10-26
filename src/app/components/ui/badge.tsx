@@ -25,6 +25,10 @@ const badgeVariants = cva(
           "border-blue-500/30 bg-blue-500/15 text-blue-800 dark:border-blue-700 dark:bg-blue-950/70 dark:text-blue-200",
         neutral:
           "border-slate-500/20 bg-slate-500/10 text-slate-700 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-200",
+        skill:
+          "border-primary/25 bg-primary/10 text-primary dark:border-primary/30 dark:bg-primary/15 dark:text-blue-300 [a&]:hover:bg-primary/20",
+        violet:
+          "border-violet-500/25 bg-violet-500/10 text-violet-800 dark:border-violet-500/30 dark:bg-violet-950/50 dark:text-violet-200",
       },
     },
     defaultVariants: {

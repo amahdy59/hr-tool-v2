@@ -20,6 +20,7 @@ import { Button } from './ui/button';
 import { PayrollService } from '../../lib/services/dbServices';
 import { useTranslation } from 'react-i18next';
 import { localizeDepartmentName, localizeJobTitle, localizePersonName } from '@/lib/localizedNames';
+import { PayrollSalaryFlowDiagram } from './PayrollSalaryFlowDiagram';
 
 // Mock employee data with sample names
 const INITIAL_EMPLOYEES = [
@@ -370,6 +371,9 @@ const OverviewTab = ({ selectedMonth, setSelectedMonth, selectedYear, setSelecte
       <SummaryCard icon={TrendingUp} label="Pending Actions" value="3" color="text-accent" />
     </div>
 
+    {/* Visual Salary & Deductions Waterfall Pipeline Diagram */}
+    <PayrollSalaryFlowDiagram />
+
     {/* Quick Payslip Generator */}
     <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-4">
       <div className="flex items-center justify-between border-b border-border pb-2.5">
@@ -485,20 +489,19 @@ const EmployeesTab = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-border/60">
-            {filteredEmployees.map((employee: any, index: number) => (
+            {filteredEmployees.map((employee: any) => (
               <tr
                 key={employee.id}
-                className={cn(
-                  'hover:bg-muted/30 transition-colors',
-                  index % 2 === 0 ? 'bg-card' : 'bg-muted/15'
-                )}
+                className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors"
               >
-                <TableCell><span data-no-auto-translate className="font-mono text-xs text-muted-foreground">{employee.sesaId}</span></TableCell>
+                <th scope="row" className="px-4 py-3.5 whitespace-nowrap text-sm align-middle text-start font-normal">
+                  <span data-no-auto-translate className="font-mono text-xs text-muted-foreground">{employee.sesaId}</span>
+                </th>
                 <TableCell weight="medium">{localizePersonName(employee.name, language)}</TableCell>
                 <TableCell>{localizeDepartmentName(employee.department, language)}</TableCell>
-                <TableCell>${employee.grossSalary.toLocaleString()}</TableCell>
-                <TableCell>${employee.totalDeductions.toLocaleString()}</TableCell>
-                <TableCell weight="semibold" color="text-chart-3">${employee.netPay.toLocaleString()}</TableCell>
+                <TableCell className="tabular-nums">${employee.grossSalary.toLocaleString()}</TableCell>
+                <TableCell className="tabular-nums">${employee.totalDeductions.toLocaleString()}</TableCell>
+                <TableCell weight="semibold" color="text-chart-3" className="tabular-nums">${employee.netPay.toLocaleString()}</TableCell>
                 <td className="px-4 py-3.5 whitespace-nowrap text-end">
                   <button
                     onClick={() => handleGeneratePayslip(employee)}

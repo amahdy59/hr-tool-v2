@@ -491,7 +491,7 @@ export const EmployeeManagement: React.FC = () => {
                       <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">{isArabic ? 'الإجراءات' : 'Actions'}</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border">
+                  <tbody className="divide-y divide-border/60">
                     {paginatedEmployees.map((emp) => {
                       const empDisplayName = localizePersonName(emp.name, language);
                       const initials = empDisplayName
@@ -501,8 +501,8 @@ export const EmployeeManagement: React.FC = () => {
                         .slice(0, 2)
                         .toUpperCase();
                       return (
-                        <tr key={emp.id} className="hover:bg-muted/40 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
-                          <td className="whitespace-nowrap px-4 py-2 md:py-3.5">
+                        <tr key={emp.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
+                          <th scope="row" className="whitespace-nowrap px-4 py-2 md:py-3.5 text-start font-normal">
                             <div className="flex items-center gap-3">
                               <div className="relative w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600/10 to-indigo-600/20 text-blue-600 dark:text-blue-300 font-bold flex items-center justify-center text-xs border border-blue-500/20 shrink-0">
                                 {initials}
@@ -510,7 +510,7 @@ export const EmployeeManagement: React.FC = () => {
                               </div>
                               <span className="text-foreground font-semibold hover:text-primary transition-colors cursor-pointer">{empDisplayName}</span>
                             </div>
-                          </td>
+                          </th>
                         {visibleColumns.empNumber && (
                           <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground uppercase tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Emp#:</span><span data-no-auto-translate>{emp.employeeNumber}</span></td>
                         )}
@@ -582,12 +582,12 @@ export const EmployeeManagement: React.FC = () => {
                       <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border">
+                  <tbody className="divide-y divide-border/60">
                     {paginatedActivityLog.map((log) => (
-                      <tr key={log.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3">
+                      <tr key={log.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                        <th scope="row" className="whitespace-nowrap px-4 py-1 md:py-3 text-start font-normal">
                           <span className="font-[var(--font-weight-medium)] text-foreground">{log.admin}</span>
-                        </td>
+                        </th>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Action:</span>{log.action}</td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">Date:</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{formatLocalizedDate(log.date, language)}</span></td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Affected:</span>{log.affectedCount}</td>
@@ -644,10 +644,10 @@ export const EmployeeManagement: React.FC = () => {
                       <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border">
+                  <tbody className="divide-y divide-border/60">
                     {paginatedDepartments.map((dept) => (
-                      <tr key={dept.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)]">{localizeDepartmentName(dept.name, language)}</td>
+                      <tr key={dept.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                        <th scope="row" className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground font-[var(--font-weight-medium)] text-start font-normal">{localizeDepartmentName(dept.name, language)}</th>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium" data-no-auto-translate>Department ID:</span><span data-no-auto-translate>{dept.deptId}</span></td>
                         <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums"><span className="md:hidden text-muted-foreground me-2 font-medium">Total:</span>{dept.totalNumber}</td>
                         <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
@@ -690,10 +690,10 @@ export const EmployeeManagement: React.FC = () => {
                     <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border">
+                <tbody className="divide-y divide-border/60">
                   {paginatedJobTitles.map((jt) => (
-                    <tr key={jt.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{localizeJobTitle(jt.title, language)}</td>
+                    <tr key={jt.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors">
+                      <th scope="row" className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)] text-start font-normal">{localizeJobTitle(jt.title, language)}</th>
                       <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums">{jt.count}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-end">
                         <div className="flex flex-row items-center justify-center sm:justify-end gap-2 pt-2 w-full">
@@ -1176,10 +1176,10 @@ const FormerEmployeeModal: React.FC<{
                   <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-end">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-border/60">
                 {formerEmployees.map((fe, i) => (
-                  <tr key={i} className="hover:bg-muted/30">
-                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{localizePersonName(fe.name, language)}</td>
+                  <tr key={i} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors">
+                    <th scope="row" className="whitespace-nowrap px-4 py-3 text-foreground text-start font-normal">{localizePersonName(fe.name, language)}</th>
                     <td className="whitespace-nowrap px-4 py-3 text-muted-foreground uppercase tabular-nums"><span data-no-auto-translate>{fe.employeeNumber}</span></td>
                     <td className="whitespace-nowrap px-4 py-3 text-foreground">{localizeDepartmentName(fe.dept, language)}</td>
                     <td className="whitespace-nowrap px-4 py-3 text-foreground">{localizeJobTitle(fe.title, language)}</td>
@@ -1295,10 +1295,10 @@ const AccessCardsModal: React.FC<{
                       <th scope="col" className="whitespace-nowrap px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-start">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border">
+                  <tbody className="divide-y divide-border/60">
                     {mockCards.map((card) => (
-                      <tr key={card.id} className="hover:bg-muted/30">
-                        <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums">{card.cardNumber}</td>
+                      <tr key={card.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors">
+                        <th scope="row" className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums text-start font-normal">{card.cardNumber}</th>
                         <td className="whitespace-nowrap px-4 py-3 text-foreground">{card.startDate}</td>
                         <td className="whitespace-nowrap px-4 py-3 text-foreground">{card.endDate}</td>
                         <td className="whitespace-nowrap px-4 py-3 text-foreground">{card.cardType}</td>

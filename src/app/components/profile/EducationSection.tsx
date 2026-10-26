@@ -66,11 +66,11 @@ const EducationItem: React.FC<{
       <div className="space-y-2">
         <p className="text-base font-bold text-foreground pt-0.5">{data.degree}{data.fieldOfStudy && `, ${data.fieldOfStudy}`}</p>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border/70 bg-muted/40 text-xs font-medium text-muted-foreground whitespace-nowrap shadow-2xs">
             {data.currentlyStudying ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}
           </span>
           {data.grade && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border/70 bg-muted/40 text-xs font-medium text-muted-foreground whitespace-nowrap shadow-2xs">
               Grade: {data.grade}
             </span>
           )}

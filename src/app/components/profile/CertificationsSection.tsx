@@ -58,7 +58,11 @@ const CertificationItem: React.FC<{
     <div className="relative group space-y-1 pb-6 border-b border-border last:border-b-0 last:pb-0">
       <div className="flex items-center gap-2">
         <h3 className="text-base font-bold text-foreground" data-no-auto-translate>{data.title}</h3>
-        {isExpired && <span className="px-2 py-0.5 bg-red-50 text-red-900 border border-red-200 dark:bg-red-950/30 dark:text-red-200 dark:border-red-800 rounded-full text-sm font-semibold">Expired</span>}
+        {isExpired && (
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/25 shadow-2xs">
+            Expired
+          </span>
+        )}
       </div>
       <p className="text-base text-foreground">{data.issuer}</p>
       <p className="text-base text-muted-foreground pt-1">

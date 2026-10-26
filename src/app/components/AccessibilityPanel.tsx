@@ -41,6 +41,9 @@ interface AccessibilityPanelProps {
   settings: AccessibilitySettings;
   triggerClassName?: string;
   forceShowLabel?: boolean;
+  compact?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 type OptionDef = {
@@ -210,7 +213,17 @@ const AccessibilityOption: React.FC<{ option: OptionDef }> = ({ option }) => {
   );
 };
 
-export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings, triggerClassName, forceShowLabel = false }) => {
+export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({
+  settings,
+  triggerClassName,
+  forceShowLabel = false,
+  compact = false,
+  open: controlledOpen,
+  onOpenChange: setControlledOpen,
+}) => {
+  const [internalOpen, setInternalOpen] = React.useState(false);
+  const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  const setIsOpen = setControlledOpen || setInternalOpen;
   const { t, i18n } = useTranslation();
   const {
     highContrast,
@@ -312,19 +325,23 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
     <Button
       variant="outline"
       className={cn(
-        "relative flex h-11 items-center justify-center border-border/80 text-foreground transition-all duration-200 hover:border-primary/50 hover:shadow-sm",
-        forceShowLabel ? "w-auto gap-2 px-4" : "w-11 xl:w-auto xl:gap-2 xl:px-4",
+        "relative flex h-11 items-center justify-center border-border/80 text-foreground transition-all duration-200 hover:border-primary/50 hover:shadow-xs",
+        compact ? "w-11 px-0" : forceShowLabel ? "w-auto gap-2 px-4" : "w-11 xl:w-auto xl:gap-2 xl:px-4",
         triggerClassName
       )}
-      aria-label={t('header.accessibility')}
+      aria-label={
+        activeCount > 0
+          ? `${t('header.accessibility')} (${activeCount})`
+          : t('header.accessibility')
+      }
       title={t('header.accessibility')}
     >
       <Accessibility className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
-      <span className={cn(forceShowLabel ? "inline" : "hidden xl:inline")} style={{ fontFamily: "'Inter', sans-serif" }}>
+      <span className={cn(compact ? "hidden" : forceShowLabel ? "inline" : "hidden xl:inline")} style={{ fontFamily: "'Inter', sans-serif" }}>
         {t('header.accessibility')}
       </span>
       {activeCount > 0 && (
-        <span className="absolute -top-1.5 -end-1.5 sm:top-auto sm:-translate-y-1/2 sm:start-auto sm:-end-2 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-card shadow-sm">
+        <span className="absolute -top-1 -end-1 sm:top-auto sm:-translate-y-1/2 sm:start-auto sm:-end-1 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-card shadow-xs">
           {activeCount}
         </span>
       )}
@@ -429,7 +446,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
   return (
     <>
       <div className="sm:hidden h-full flex items-stretch">
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             {triggerButton}
           </SheetTrigger>
@@ -448,7 +465,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ settings
       </div>
 
       <div className="hidden sm:block h-full flex items-stretch">
-        <Popover>
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
           <PopoverTrigger asChild>
             {triggerButton}
           </PopoverTrigger>

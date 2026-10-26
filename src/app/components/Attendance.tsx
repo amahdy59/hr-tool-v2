@@ -20,11 +20,17 @@ import {
   X,
   HelpCircle,
   CheckCircle,
+  CheckCircle2,
+  Clock,
+  Briefcase,
+  Users,
   XCircle,
   Printer,
   FileText,
 } from 'lucide-react';
+import { StatCard } from '@/app/components/design-system';
 import { StatusBadge } from './StatusBadge';
+import { AttendanceTimelineDiagram } from './AttendanceTimelineDiagram';
 import { cn } from '@/lib/utils';
 import {
   Select,
@@ -630,7 +636,49 @@ export const Attendance: React.FC = () => {
     <div className="space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto">
       {/* ── Page Title ── */}
       <div>
-        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">Employee Attendance</h2>
+        <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">
+          {isArabic ? 'حضور الموظفين' : 'Employee Attendance'}
+        </h2>
+      </div>
+
+      {/* ── KPI Metric Cards (Apple HIG & Material 3 Design System) ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          title={isArabic ? 'إجمالي الموظفين' : 'Total Employees'}
+          value={142}
+          icon={<Users className="w-5 h-5" />}
+          iconBgClassName="bg-blue-500/10"
+          iconColorClassName="text-blue-600 dark:text-blue-400"
+          badge={{ text: '+4.5%', variant: 'positive' }}
+          subtitle={isArabic ? '12 قسم نشط' : '12 active departments'}
+        />
+        <StatCard
+          title={isArabic ? 'حضور اليوم' : "Today's Attendance"}
+          value="94.8%"
+          icon={<CheckCircle2 className="w-5 h-5" />}
+          iconBgClassName="bg-emerald-500/10"
+          iconColorClassName="text-emerald-600 dark:text-emerald-400"
+          badge={{ text: '+1.2%', variant: 'positive' }}
+          subtitle={isArabic ? '135 موظف حاضر' : '135 checked-in on time'}
+        />
+        <StatCard
+          title={isArabic ? 'طلبات قيد الانتظار' : 'Pending Leaves'}
+          value={3}
+          icon={<Clock className="w-5 h-5" />}
+          iconBgClassName="bg-amber-500/10"
+          iconColorClassName="text-amber-600 dark:text-amber-400"
+          badge={{ text: isArabic ? 'بانتظار المراجعة' : 'Review', variant: 'warning' }}
+          subtitle={isArabic ? 'أحدث طلب منذ ساعتين' : 'Latest requested 2h ago'}
+        />
+        <StatCard
+          title={isArabic ? 'مأموريات نشطة' : 'Active Missions'}
+          value={5}
+          icon={<Briefcase className="w-5 h-5" />}
+          iconBgClassName="bg-violet-500/10"
+          iconColorClassName="text-violet-600 dark:text-violet-400"
+          badge={{ text: isArabic ? 'ميداني' : 'Field', variant: 'neutral' }}
+          subtitle={isArabic ? '2 خارجية، 3 محلية' : '2 external, 3 domestic'}
+        />
       </div>
 
       {/* ── Search & Filters Row ── */}
@@ -847,9 +895,9 @@ export const Attendance: React.FC = () => {
                 {translatedSummaryData.map((item) => (
                   <tr
                     key={item.id}
-                    className="hover:bg-muted/30 transition-colors"
+                    className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors duration-150"
                   >
-                    <th scope="row" className="px-4 py-3.5 text-start font-[var(--font-weight-normal)]">
+                    <th scope="row" className="px-4 py-3.5 text-start font-semibold">
                       <div className="flex items-center gap-2.5">
                         <div
                           className="w-3 h-3 rounded-sm shrink-0"
@@ -858,10 +906,10 @@ export const Attendance: React.FC = () => {
                         <span className="text-foreground">{item.name}</span>
                       </div>
                     </th>
-                    <td className={cn('px-4 py-3.5 font-[var(--font-weight-medium)]', isArabic ? 'text-start' : 'text-end', severityHoursClass(item.severity))}>
+                    <td className={cn('px-4 py-3.5 font-medium tabular-nums font-mono', isArabic ? 'text-start' : 'text-end', severityHoursClass(item.severity))}>
                       {item.hours}{isArabic ? 'س' : 'h'}
                     </td>
-                    <td className={cn('px-4 py-3.5 text-muted-foreground', isArabic ? 'text-start' : 'text-end')}>{item.percentage}%</td>
+                    <td className={cn('px-4 py-3.5 text-muted-foreground tabular-nums', isArabic ? 'text-start' : 'text-end')}>{item.percentage}%</td>
                   </tr>
                 ))}
                 {/* Total */}
@@ -1009,28 +1057,38 @@ export const Attendance: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
-                <tr className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3.5 text-foreground font-[var(--font-weight-medium)]">Annual Leave</td>
-                  <td className="px-4 py-3.5 text-foreground text-start">21 days</td>
-                  <td className="px-4 py-3.5 text-foreground text-start">5</td>
-                  <td className="px-4 py-3.5 text-foreground text-start">4</td>
+                <tr className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors">
+                  <th scope="row" className="px-4 py-3.5 text-foreground font-[var(--font-weight-medium)] text-start">Annual Leave</th>
+                  <td className="px-4 py-3.5 text-foreground text-start tabular-nums">21 days</td>
+                  <td className="px-4 py-3.5 text-foreground text-start tabular-nums">5</td>
+                  <td className="px-4 py-3.5 text-foreground text-start tabular-nums">4</td>
                   <td className="px-4 py-3.5 text-start">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">6</span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 tabular-nums">6</span>
                   </td>
                   <td className="px-4 py-3.5 text-start">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">14 days</span>
+                    <div className="flex items-center gap-2.5">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 tabular-nums">14 days</span>
+                      <div className="hidden sm:block w-24 h-1.5 rounded-full bg-muted overflow-hidden" title="67% balance remaining">
+                        <div className="h-full bg-emerald-500 rounded-full" style={{ width: '66.7%' }} />
+                      </div>
+                    </div>
                   </td>
                 </tr>
-                <tr className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3.5 text-foreground font-[var(--font-weight-medium)]">Sick Leave</td>
-                  <td className="px-4 py-3.5 text-foreground text-start">14 days</td>
-                  <td className="px-4 py-3.5 text-foreground text-start">0</td>
-                  <td className="px-4 py-3.5 text-foreground text-start">2</td>
+                <tr className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors">
+                  <th scope="row" className="px-4 py-3.5 text-foreground font-[var(--font-weight-medium)] text-start">Sick Leave</th>
+                  <td className="px-4 py-3.5 text-foreground text-start tabular-nums">14 days</td>
+                  <td className="px-4 py-3.5 text-foreground text-start tabular-nums">0</td>
+                  <td className="px-4 py-3.5 text-foreground text-start tabular-nums">2</td>
                   <td className="px-4 py-3.5 text-start">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">3</span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 tabular-nums">3</span>
                   </td>
                   <td className="px-4 py-3.5 text-start">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">13 days</span>
+                    <div className="flex items-center gap-2.5">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 tabular-nums">13 days</span>
+                      <div className="hidden sm:block w-24 h-1.5 rounded-full bg-muted overflow-hidden" title="92% balance remaining">
+                        <div className="h-full bg-emerald-500 rounded-full" style={{ width: '92.8%' }} />
+                      </div>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -1038,6 +1096,9 @@ export const Attendance: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* ── Daily Shift Schedule & Office Goal Timeline Diagram ── */}
+      <AttendanceTimelineDiagram officePercentage={53.4} goalPercentage={40} />
 
       {/* ── Days View ── */}
       <section className="space-y-3" aria-labelledby="attendance-days-heading">
@@ -1134,11 +1195,11 @@ export const Attendance: React.FC = () => {
                     <tr
                       key={row.id}
                       className={cn(
-                        'transition-colors cursor-default',
-                        isWeekend ? 'bg-muted/20' : 'hover:bg-muted/30'
+                        'transition-colors cursor-default border-b border-border/60',
+                        isWeekend ? 'bg-muted/20 text-muted-foreground' : 'even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08]'
                       )}
                     >
-                      <td className={cn('px-4 py-3.5 text-sm align-middle', isWeekend ? 'text-muted-foreground' : 'text-foreground font-medium')}>{row.day}</td>
+                      <th scope="row" className={cn('px-4 py-3.5 text-sm align-middle text-start', isWeekend ? 'text-muted-foreground font-normal' : 'text-foreground font-medium')}>{row.day}</th>
                       <td className={cn('px-4 py-3.5 text-sm align-middle', isWeekend ? 'text-muted-foreground' : 'text-foreground')}>{row.date}</td>
                       <td className={cn('px-4 py-3.5 text-sm align-middle tabular-nums', isWeekend ? 'text-muted-foreground' : 'text-foreground font-mono')}>{row.timeIn}</td>
                       <td className={cn('px-4 py-3.5 text-sm align-middle tabular-nums', isWeekend ? 'text-muted-foreground' : 'text-foreground font-mono')}>{row.timeOut}</td>

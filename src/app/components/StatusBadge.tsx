@@ -7,6 +7,7 @@ import {
   UserX,
   Coffee,
   MinusCircle,
+  Info,
   LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -39,7 +40,7 @@ const statusIcons: Record<string, LucideIcon> = {
   error: XCircle,
   cancelled: XCircle,
   rejected: XCircle,
-  info: Building2,
+  info: Info,
   inoffice: Building2,
   noshow: UserX,
   weekend: Coffee,

@@ -4,8 +4,8 @@ import {
   LayoutDashboard,
   CalendarCheck,
   Users,
-  FileText,
-  Rocket,
+  CalendarRange,
+  Briefcase,
   ShieldCheck,
   UserCircle,
   LogOut,
@@ -46,8 +46,8 @@ const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'attendance', label: 'Attendance', icon: CalendarCheck },
   { id: 'employees', label: 'Employees', icon: Users },
-  { id: 'leaves', label: 'Leaves Management', icon: FileText },
-  { id: 'missions', label: 'Missions Management', icon: Rocket },
+  { id: 'leaves', label: 'Leaves Management', icon: CalendarRange },
+  { id: 'missions', label: 'Missions Management', icon: Briefcase },
   { id: 'roles', label: 'Roles Management', icon: ShieldCheck },
   { id: 'payrolls', label: 'Payroll', icon: Banknote },
 ] as const satisfies ReadonlyArray<{ id: AppTab; label: string; icon: React.ComponentType<{ className?: string }> }>;
@@ -133,11 +133,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, colla
         )}
       >
         {/* Logo */}
-        <div className={cn('flex items-center shrink-0 px-4 border-b border-white/5', collapsed ? 'h-16 justify-center' : 'h-16')}>
+        <div className={cn('flex items-center shrink-0 px-4 border-b border-white/5 transition-all duration-300', collapsed ? 'h-16 justify-center' : 'h-16')}>
           {collapsed ? (
-            <Logo className="w-8 h-8 text-white" ariaLabel="HR Logo" />
+            <Logo variant="icon" size="md" ariaLabel={t('common.appName')} />
           ) : (
-            <Logo className="w-12 h-12 text-white" ariaLabel="HR Tool Logo" />
+            <Logo
+              variant="full"
+              size="md"
+              ariaLabel={t('common.appName')}
+              className="text-white [&_span.text-foreground]:text-white [&_span.text-muted-foreground]:text-slate-400"
+            />
           )}
         </div>
 

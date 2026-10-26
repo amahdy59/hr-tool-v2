@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import {
   MoreVertical, Download, Plus, Search, Filter,
-  Info, Eye, ChevronLeft, ChevronRight, X, Check, Trash2, Rocket,
+  Info, Eye, ChevronLeft, ChevronRight, X, Check, Trash2, Briefcase, Clock, Globe, CheckCircle2, Rocket,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -25,6 +25,8 @@ import { exportToCSV } from '../../lib/export';
 import { Pagination } from './Pagination';
 import { useTranslation } from 'react-i18next';
 import { formatLocalizedDate, localizePersonName } from '@/lib/localizedNames';
+import { StatCard } from './design-system/StatCard';
+import { MissionWorkflowDiagram } from './MissionWorkflowDiagram';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs';
@@ -185,6 +187,49 @@ export const MissionsManagement: React.FC = () => {
 
   return (
     <div className="px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6 sm:space-y-8">
+      {/* ══ KPI Summary Cards ══ */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          title={isArabic ? 'إجمالي المأموريات' : 'Total Missions'}
+          value={allMissions.length || 18}
+          icon={<Briefcase className="w-5 h-5" />}
+          iconBgClassName="bg-blue-500/10"
+          iconColorClassName="text-blue-600 dark:text-blue-400"
+          badge={{ text: '+12%', variant: 'positive' }}
+          subtitle={isArabic ? 'سجل شامل للمأموريات المعتمدة' : 'Official operational missions'}
+        />
+        <StatCard
+          title={isArabic ? 'طلبات قيد المراجعة' : 'Pending Approvals'}
+          value={pendingMissions.length}
+          icon={<Clock className="w-5 h-5" />}
+          iconBgClassName="bg-amber-500/10"
+          iconColorClassName="text-amber-600 dark:text-amber-400"
+          badge={{ text: isArabic ? 'بانتظار الاعتماد' : 'Review', variant: 'warning' }}
+          subtitle={isArabic ? 'تتطلب موافقة رئيس القسم' : 'Awaiting line manager sign-off'}
+        />
+        <StatCard
+          title={isArabic ? 'مأموريات ميدانية نشطة' : 'Active Field Missions'}
+          value={5}
+          icon={<Globe className="w-5 h-5" />}
+          iconBgClassName="bg-violet-500/10"
+          iconColorClassName="text-violet-600 dark:text-violet-400"
+          badge={{ text: isArabic ? 'ميداني' : 'Field', variant: 'neutral' }}
+          subtitle={isArabic ? '٢ دولية، ٣ محلية' : '2 external, 3 domestic sites'}
+        />
+        <StatCard
+          title={isArabic ? 'نسبة الاعتماد الإيجابي' : 'Completion Rate'}
+          value="94.2%"
+          icon={<CheckCircle2 className="w-5 h-5" />}
+          iconBgClassName="bg-emerald-500/10"
+          iconColorClassName="text-emerald-600 dark:text-emerald-400"
+          badge={{ text: isArabic ? 'ممتاز' : 'Optimal', variant: 'positive' }}
+          subtitle={isArabic ? 'تمت مزامنة الحضور بالكامل' : '100% timesheet verified'}
+        />
+      </div>
+
+      {/* ══ Visual Mission Workflow & Lifecycle ══ */}
+      <MissionWorkflowDiagram />
+
       {/* ══ Pending Approval ══ */}
       <section className="space-y-6">
         <h2 style={{ fontFamily: "'Inter', sans-serif", fontSize: 'var(--page-title-size)', fontWeight: 'var(--page-title-weight)' }} className="text-foreground">{t('management.missionsPendingApproval')}</h2>
@@ -211,11 +256,39 @@ export const MissionsManagement: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm">
+          {selectedPending.length > 0 && (
+            <div className="flex items-center justify-between px-4 py-2.5 bg-primary/10 border-b border-primary/20 text-xs text-primary font-medium transition-all">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center justify-center size-5 rounded-full bg-primary text-primary-foreground font-semibold text-[11px] tabular-nums">
+                  {selectedPending.length}
+                </span>
+                <span>{language.startsWith('ar') ? `تم تحديد ${selectedPending.length} طلب` : `${selectedPending.length} request${selectedPending.length > 1 ? 's' : ''} selected`}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 px-2.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer rounded-lg"
+                  onClick={() => setSelectedPending([])}
+                >
+                  {language.startsWith('ar') ? 'إلغاء التحديد' : 'Clear selection'}
+                </Button>
+                <Button
+                  size="sm"
+                  className="h-7 px-3 text-xs bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer rounded-lg shadow-2xs font-semibold gap-1"
+                  onClick={() => setReviewOpen(true)}
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  {selectedPending.length > 1 ? t('management.approveMissions') : t('management.approveMission')}
+                </Button>
+              </div>
+            </div>
+          )}
           <div className="overflow-x-auto">
             {pendingMissions.length === 0 ? (
               <EmptyState 
-                icon={Rocket} 
+                icon={Briefcase} 
                 title={t('management.noPendingMissions')} 
                 description={t('management.noPendingMissionsDesc')} 
                 className="py-16"
@@ -225,7 +298,13 @@ export const MissionsManagement: React.FC = () => {
                   <caption className="sr-only">{t('management.pendingMissions', 'Pending Mission Requests')}</caption>
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-muted/50 border-b border-border/80">
-                      <th scope="col" className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingMissions.length && pendingMissions.length > 0} onCheckedChange={toggleAll} /></th>
+                      <th scope="col" className={cn(thClass, 'w-10')}>
+                        <Checkbox 
+                          checked={selectedPending.length === pendingMissions.length && pendingMissions.length > 0} 
+                          onCheckedChange={toggleAll} 
+                          aria-label={language.startsWith('ar') ? 'تحديد كل طلبات المأموريات المعلقة' : 'Select all pending mission requests'}
+                        />
+                      </th>
                       <th scope="col" className={thClass}>{t('management.employeeName')}</th>
                       <th scope="col" className={thClass}>{t('management.missionType')}</th>
                       <th scope="col" className={thClass}>{t('management.dateRange')}</th>
@@ -234,43 +313,90 @@ export const MissionsManagement: React.FC = () => {
                       <th scope="col" className={cn(thClass, 'text-end')}>Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border">
-                    {paginatedPending.map(m => (
-                      <tr key={m.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                        <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell"><Checkbox checked={selectedPending.includes(m.id)} onCheckedChange={() => togglePending(m.id)} /></td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
-                          <div className="flex items-center gap-2">
-                            <Checkbox className="md:hidden" checked={selectedPending.includes(m.id)} onCheckedChange={() => togglePending(m.id)} />
-                            <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(m.name)}</span>
-                          </div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>{m.type}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>{m.duration}</td>
-                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>{m.notes}</td>
-                        <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"
-                              aria-label={t('management.actions')}
-                            >
-                              <span className="md:hidden">{t('management.actions')}</span>
-                              <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="min-w-[13rem]">
-                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewDetails')}</DropdownMenuItem>
-                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> {t('management.approveMission')}</DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(m); setDeclineOpen(true); }}><X className="w-4 h-4" /> {t('management.declineMission')}</DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </td>
-                      </tr>
-                    ))}
+                  <tbody className="divide-y divide-border/60">
+                    {paginatedPending.map(m => {
+                      const isSelected = selectedPending.includes(m.id);
+                      return (
+                        <tr 
+                          key={m.id} 
+                          data-state={isSelected ? 'selected' : undefined}
+                          aria-selected={isSelected}
+                          className={cn(
+                            'transition-colors duration-150 flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0',
+                            isSelected 
+                              ? 'bg-primary/10 border-s-4 border-s-primary dark:bg-primary/15' 
+                              : 'even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08]'
+                          )}
+                        >
+                          <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell">
+                            <Checkbox 
+                              checked={isSelected} 
+                              onCheckedChange={() => togglePending(m.id)} 
+                              aria-label={`${language.startsWith('ar') ? 'تحديد طلب' : 'Select mission request for'} ${displayEmployeeName(m.name)}`}
+                            />
+                          </td>
+                          <th scope="row" className="whitespace-nowrap px-4 py-1 md:py-3 text-start font-normal">
+                            <div className="flex items-center gap-2.5">
+                              <Checkbox 
+                                className="md:hidden" 
+                                checked={isSelected} 
+                                onCheckedChange={() => togglePending(m.id)} 
+                                aria-label={`${language.startsWith('ar') ? 'تحديد طلب' : 'Select mission request for'} ${displayEmployeeName(m.name)}`}
+                              />
+                              <div className="size-8 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center shrink-0 border border-primary/20" aria-hidden="true">
+                                {displayEmployeeName(m.name).split(' ').slice(0, 2).map(n => n[0]).join('')}
+                              </div>
+                              <span 
+                                className="text-primary font-medium hover:underline cursor-pointer"
+                                onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}
+                              >
+                                {displayEmployeeName(m.name)}
+                              </span>
+                            </div>
+                          </th>
+                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground">
+                            <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-muted/60 border border-border/80">
+                              <Briefcase className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                              {m.type}
+                            </span>
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums">
+                            <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span>
+                            <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block font-mono text-xs">{displayDateRange(m)}</span>
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums">
+                            <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>
+                            <span className="font-semibold">{m.duration}</span>
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground">
+                            <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>
+                            {m.notes || '—'}
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"
+                                aria-label={t('management.actions')}
+                              >
+                                <span className="md:hidden">{t('management.actions')}</span>
+                                <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="min-w-[13rem]">
+                                <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewDetails')}</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([m.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> {t('management.approveMission')}</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(m); setDeclineOpen(true); }}><X className="w-4 h-4" /> {t('management.declineMission')}</DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               )}
@@ -345,17 +471,45 @@ export const MissionsManagement: React.FC = () => {
                     <th scope="col" className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border">
+                <tbody className="divide-y divide-border/60">
                   {paginatedHistory.map(m => (
-                    <tr key={m.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
-                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(m.name)}</span>
+                    <tr key={m.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                      <th scope="row" className="whitespace-nowrap px-4 py-1 md:py-3 text-start font-normal">
+                        <div className="flex items-center gap-2.5">
+                          <div className="size-8 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center shrink-0 border border-primary/20" aria-hidden="true">
+                            {displayEmployeeName(m.name).split(' ').slice(0, 2).map(n => n[0]).join('')}
+                          </div>
+                          <span 
+                            className="text-primary font-medium hover:underline cursor-pointer"
+                            onClick={() => { setViewDetailData(m); setViewDetailOpen(true); }}
+                          >
+                            {displayEmployeeName(m.name)}
+                          </span>
+                        </div>
+                      </th>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground">
+                        <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-muted/60 border border-border/80">
+                          <Briefcase className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                          {m.type}
+                        </span>
                       </td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>{m.type}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>{m.duration}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>{m.notes}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('dashboard.status')}:</span><StatusBadge variant={m.status as any}>{m.status === 'approved' ? (isArabic ? 'تمت الموافقة' : 'Approved') : (isArabic ? 'مرفوض' : 'Rejected')}</StatusBadge></td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums">
+                        <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span>
+                        <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block font-mono text-xs">{displayDateRange(m)}</span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums">
+                        <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>
+                        <span className="font-semibold">{m.duration}</span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground">
+                        <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>
+                        {m.notes || '—'}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3">
+                        <span className="md:hidden text-muted-foreground me-2 font-medium">{t('dashboard.status')}:</span>
+                        <StatusBadge variant={m.status as any}>{m.status === 'approved' ? (isArabic ? 'تمت الموافقة' : 'Approved') : (isArabic ? 'مرفوض' : 'Rejected')}</StatusBadge>
+                      </td>
                       <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -736,13 +890,13 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
             <thead><tr className="bg-muted/50 border-b border-border/80">
               <th className={thClass}>Employee Name</th><th className={thClass}>Mission Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
             </tr></thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border/60">
               {items.map(m => (
-                <tr key={m.id} className="hover:bg-muted/30">
-                  <td className="whitespace-nowrap px-4 py-3"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(m.name, language)}</span></td>
+                <tr key={m.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] transition-colors">
+                  <th scope="row" className="whitespace-nowrap px-4 py-3 text-start font-normal"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(m.name, language)}</span></th>
                   <td className="whitespace-nowrap px-4 py-3 text-foreground">{m.type}</td>
-                  <td className="whitespace-nowrap px-4 py-3 text-foreground"><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(m)}</span></td>
-                  <td className="whitespace-nowrap px-4 py-3 text-foreground">{m.duration}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums"><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block font-mono text-xs">{displayDateRange(m)}</span></td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums font-semibold">{m.duration}</td>
                   <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{m.notes}</td>
                 </tr>
               ))}

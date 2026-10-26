@@ -14,6 +14,7 @@ import {
   localizePersonName,
 } from '@/lib/localizedNames';
 import { Pagination } from './Pagination';
+import { RoleHierarchyDiagram } from './RoleHierarchyDiagram';
 
 // ── Interfaces ──
 interface RoleAssignment {
@@ -229,6 +230,9 @@ export const RolesManagement: React.FC = () => {
         </h2>
       </div>
 
+      {/* ── Visual Role Hierarchy & Permissions Diagram ── */}
+      <RoleHierarchyDiagram />
+
       {/* ── Filters & Actions Row ── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         {/* Department Filter */}
@@ -301,46 +305,55 @@ export const RolesManagement: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
-                {paginatedRoles.map((role) => (
-                  <tr key={role.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
-                    <td className="whitespace-nowrap px-4 py-2 md:py-3.5 text-foreground font-[var(--font-weight-medium)] flex justify-between md:table-cell align-middle">
-                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.employeeName')}:</span>
-                      <span>{localizePersonName(role.employeeName, language)}</span>
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-1 md:py-3.5 text-foreground flex justify-between md:table-cell align-middle">
-                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.dateEnrolled')}:</span>
-                      <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'}>{displayDate(role.dateEnrolled)}</span>
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-1 md:py-3.5 text-muted-foreground flex justify-between md:table-cell align-middle">
-                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.dateLeft')}:</span>
-                      <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'}>{displayDate(role.dateLeft)}</span>
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-1 md:py-3.5 text-foreground flex justify-between md:table-cell align-middle">
-                      <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.jobTitle')}:</span>
-                      <span>{localizeJobTitle(role.jobTitle, language)}</span>
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-3.5 md:text-end mt-2 md:mt-0 align-middle">
-                      <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 w-full md:w-auto">
-                        <button
-                          onClick={() => handleEditRole(role)}
-                          className="w-full md:w-auto inline-flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 md:size-9 hover:bg-muted rounded-xl transition-all cursor-pointer border border-border/80 text-muted-foreground hover:text-foreground active:scale-95 shadow-2xs"
-                          title={t('roles.editRole')}
-                        >
-                          <span className="md:hidden">{t('roles.editRole')}</span>
-                          <Pencil className="w-4 h-4 text-primary" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteRole(role)}
-                          className="w-full md:w-auto inline-flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 md:size-9 hover:bg-destructive/10 rounded-xl transition-all cursor-pointer border border-destructive/40 text-destructive active:scale-95 shadow-2xs"
-                          title={t('roles.deleteRole')}
-                        >
-                          <span className="md:hidden">{t('roles.deleteRole')}</span>
-                          <Trash2 className="w-4 h-4 text-destructive" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                {paginatedRoles.map((role) => {
+                  const empName = localizePersonName(role.employeeName, language);
+                  const initials = empName.split(' ').slice(0, 2).map((n: string) => n[0]).join('').toUpperCase();
+                  return (
+                    <tr key={role.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0 group">
+                      <th scope="row" className="whitespace-nowrap px-4 py-2 md:py-3.5 text-foreground font-[var(--font-weight-medium)] flex justify-between md:table-cell align-middle text-start font-normal">
+                        <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.employeeName')}:</span>
+                        <div className="flex items-center gap-2.5">
+                          <div className="size-8 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center shrink-0 border border-primary/20" aria-hidden="true">
+                            {initials}
+                          </div>
+                          <span className="font-semibold text-foreground">{empName}</span>
+                        </div>
+                      </th>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3.5 text-foreground flex justify-between md:table-cell align-middle tabular-nums">
+                        <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.dateEnrolled')}:</span>
+                        <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="font-mono text-xs">{displayDate(role.dateEnrolled)}</span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3.5 text-muted-foreground flex justify-between md:table-cell align-middle tabular-nums">
+                        <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.dateLeft')}:</span>
+                        <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="font-mono text-xs">{displayDate(role.dateLeft)}</span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3.5 text-foreground flex justify-between md:table-cell align-middle">
+                        <span className="md:hidden text-muted-foreground font-[var(--font-weight-medium)]">{t('roles.jobTitle')}:</span>
+                        <span>{localizeJobTitle(role.jobTitle, language)}</span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3.5 md:text-end mt-2 md:mt-0 align-middle">
+                        <div className="flex flex-col md:flex-row items-center md:justify-end gap-2 w-full md:w-auto">
+                          <button
+                            onClick={() => handleEditRole(role)}
+                            className="w-full md:w-auto inline-flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 md:size-9 hover:bg-muted rounded-xl transition-all cursor-pointer border border-border/80 text-muted-foreground hover:text-foreground active:scale-95 shadow-2xs"
+                            title={t('roles.editRole')}
+                          >
+                            <span className="md:hidden">{t('roles.editRole')}</span>
+                            <Pencil className="w-4 h-4 text-primary" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteRole(role)}
+                            className="w-full md:w-auto inline-flex justify-center items-center gap-2 p-2 min-h-[44px] md:min-h-0 md:size-9 hover:bg-destructive/10 rounded-xl transition-all cursor-pointer border border-destructive/40 text-destructive active:scale-95 shadow-2xs"
+                            title={t('roles.deleteRole')}
+                          >
+                            <span className="md:hidden">{t('roles.deleteRole')}</span>
+                            <Trash2 className="w-4 h-4 text-destructive" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

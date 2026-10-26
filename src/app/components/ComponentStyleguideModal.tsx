@@ -116,17 +116,41 @@ export const ComponentStyleguideModal: React.FC<ComponentStyleguideModalProps> =
               {isArabic ? 'شارات الحالة والمؤشرات' : 'Status Badges & Identifiers'}
             </h4>
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 shadow-2xs">
                 <CheckCircle2 className="w-3.5 h-3.5" /> Approved
               </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20 shadow-2xs">
                 <Clock className="w-3.5 h-3.5" /> Pending
               </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-destructive/10 text-destructive dark:text-red-300 border border-destructive/20">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-destructive/10 text-destructive dark:text-red-300 border border-destructive/20 shadow-2xs">
                 <XCircle className="w-3.5 h-3.5" /> Rejected
               </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20 shadow-2xs">
                 <AlertTriangle className="w-3.5 h-3.5" /> In Review
+              </span>
+            </div>
+          </section>
+
+          {/* Section 5: Skill & Tag Pills */}
+          <section className="space-y-3">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {isArabic ? 'شارات المهارات والعلامات' : 'Skill & Tag Pills'}
+            </h4>
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/[0.08] text-emerald-900 border border-emerald-300/80 dark:bg-emerald-500/15 dark:text-emerald-200 dark:border-emerald-700/80 shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Expert
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-violet-500/[0.08] text-violet-900 border border-violet-300/80 dark:bg-violet-500/15 dark:text-violet-200 dark:border-violet-700/80 shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-500" /> Advanced
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-500/[0.08] text-sky-900 border border-sky-300/80 dark:bg-sky-500/15 dark:text-sky-200 dark:border-sky-700/80 shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-sky-500" /> Intermediate
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-500/[0.08] text-slate-800 border border-slate-300/80 dark:bg-slate-500/15 dark:text-slate-200 dark:border-slate-700/80 shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-500" /> Beginner
+              </span>
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 dark:bg-primary/15 dark:text-blue-300 shadow-2xs">
+                Skill Tag
               </span>
             </div>
           </section>

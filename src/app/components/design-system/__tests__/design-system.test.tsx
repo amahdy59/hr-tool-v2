@@ -88,11 +88,11 @@ describe('Design System Primitives', () => {
     }
 
     const columns: ColumnDef<TestItem>[] = [
-      { key: 'name', header: 'Name', render: (row) => row.name },
+      { key: 'name', header: 'Name', isRowHeader: true, render: (row) => row.name },
       { key: 'role', header: 'Role', render: (row) => row.role },
     ];
 
-    it('renders table headers and rows accurately', () => {
+    it('renders table headers and rows accurately with accessible row headers', () => {
       const data: TestItem[] = [
         { id: '1', name: 'Sara Miller', role: 'Staff Engineer' },
         { id: '2', name: 'Omar Tarek', role: 'Product Designer' },
@@ -111,6 +111,38 @@ describe('Design System Primitives', () => {
       expect(screen.getByText('Role')).toBeTruthy();
       expect(screen.getByText('Sara Miller')).toBeTruthy();
       expect(screen.getByText('Omar Tarek')).toBeTruthy();
+
+      // Verify row header scope
+      const rowHeader = screen.getByRole('rowheader', { name: 'Sara Miller' });
+      expect(rowHeader).toBeTruthy();
+    });
+
+    it('renders selection banner and highlights selected rows', () => {
+      const data: TestItem[] = [
+        { id: '1', name: 'Sara Miller', role: 'Staff Engineer' },
+        { id: '2', name: 'Omar Tarek', role: 'Product Designer' },
+      ];
+
+      const handleClear = vi.fn();
+
+      render(
+        <DataTable
+          data={data}
+          columns={columns}
+          keyExtractor={(item) => item.id}
+          selectedRowKeys={['1']}
+          selectionBanner={{
+            count: 1,
+            total: 2,
+            onClear: handleClear,
+          }}
+        />
+      );
+
+      expect(screen.getByText('1 of 2 selected')).toBeTruthy();
+      const clearBtn = screen.getByRole('button', { name: /clear/i });
+      fireEvent.click(clearBtn);
+      expect(handleClear).toHaveBeenCalled();
     });
 
     it('renders empty state when data array is empty', () => {

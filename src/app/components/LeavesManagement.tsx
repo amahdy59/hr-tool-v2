@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
   MoreVertical, Download, Plus, Search, Filter,
-  Info, Edit, Trash2, Eye, ChevronLeft, ChevronRight, X, Check, FileText,
+  Info, Edit, Trash2, Eye, ChevronLeft, ChevronRight, X, Check, FileText, Calendar,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -27,6 +27,7 @@ import { enqueueOfflineAction } from '../../lib/offlineQueue';
 import { Pagination } from './Pagination';
 import { useTranslation } from 'react-i18next';
 import { formatLocalizedDate, localizePersonName } from '@/lib/localizedNames';
+import { LeaveWorkflowDiagram } from './LeaveWorkflowDiagram';
 
 // ── Shared styles ──
 const inputClass = 'w-full h-[44px] px-3.5 border border-border/80 rounded-xl bg-card text-foreground text-[var(--text-sm)] text-start focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all shadow-2xs';
@@ -267,6 +268,9 @@ export const LeavesManagement: React.FC = () => {
 
   return (
     <div className="px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-6 max-w-7xl mx-auto space-y-6 sm:space-y-8">
+      {/* ══ Visual Leave Workflow & Lifecycle ══ */}
+      <LeaveWorkflowDiagram />
+
       {/* ══ Pending Approval ══ */}
       <section className="space-y-6">
         <div>
@@ -301,7 +305,35 @@ export const LeavesManagement: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-card border border-border/80 rounded-2xl overflow-hidden shadow-sm">
+          {selectedPending.length > 0 && (
+            <div className="flex items-center justify-between px-4 py-2.5 bg-primary/10 border-b border-primary/20 text-xs text-primary font-medium transition-all">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center justify-center size-5 rounded-full bg-primary text-primary-foreground font-semibold text-[11px] tabular-nums">
+                  {selectedPending.length}
+                </span>
+                <span>{language.startsWith('ar') ? `تم تحديد ${selectedPending.length} طلب` : `${selectedPending.length} request${selectedPending.length > 1 ? 's' : ''} selected`}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 px-2.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer rounded-lg"
+                  onClick={() => setSelectedPending([])}
+                >
+                  {language.startsWith('ar') ? 'إلغاء التحديد' : 'Clear selection'}
+                </Button>
+                <Button
+                  size="sm"
+                  className="h-7 px-3 text-xs bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer rounded-lg shadow-2xs font-semibold gap-1"
+                  onClick={() => setReviewOpen(true)}
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  {selectedPending.length > 1 ? t('management.approveLeaves') : t('management.approveLeave')}
+                </Button>
+              </div>
+            </div>
+          )}
           <div className="overflow-x-auto">
             {pendingLeaves.length === 0 ? (
               <EmptyState 
@@ -315,7 +347,13 @@ export const LeavesManagement: React.FC = () => {
                 <caption className="sr-only">{t('management.pendingLeaves', 'Pending Leave Requests')}</caption>
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-muted/50 border-b border-border/80">
-                    <th scope="col" className={cn(thClass, 'w-10')}><Checkbox checked={selectedPending.length === pendingLeaves.length && pendingLeaves.length > 0} onCheckedChange={toggleAllPending} /></th>
+                    <th scope="col" className={cn(thClass, 'w-10')}>
+                      <Checkbox 
+                        checked={selectedPending.length === pendingLeaves.length && pendingLeaves.length > 0} 
+                        onCheckedChange={toggleAllPending} 
+                        aria-label={language.startsWith('ar') ? 'تحديد كل طلبات الإجازات المعلقة' : 'Select all pending leave requests'}
+                      />
+                    </th>
                     <th scope="col" className={thClass}>{t('management.employeeName')}</th>
                     <th scope="col" className={thClass}>{t('management.leaveType')}</th>
                     <th scope="col" className={thClass}>{t('management.dateRange')}</th>
@@ -324,43 +362,90 @@ export const LeavesManagement: React.FC = () => {
                     <th scope="col" className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border">
-                  {paginatedPending.map(leave => (
-                    <tr key={leave.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                      <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell"><Checkbox checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} /></td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
-                        <div className="flex items-center gap-2">
-                          <Checkbox className="md:hidden" checked={selectedPending.includes(leave.id)} onCheckedChange={() => togglePending(leave.id)} />
-                          <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(leave.name)}</span>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>{leave.type}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(leave)}</span></td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>{leave.duration}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>{leave.notes}</td>
-                      <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"
-                              aria-label={t('management.actions')}
+                <tbody className="divide-y divide-border/60">
+                  {paginatedPending.map(leave => {
+                    const isSelected = selectedPending.includes(leave.id);
+                    return (
+                      <tr 
+                        key={leave.id} 
+                        data-state={isSelected ? 'selected' : undefined}
+                        aria-selected={isSelected}
+                        className={cn(
+                          'transition-colors duration-150 flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0',
+                          isSelected 
+                            ? 'bg-primary/10 border-s-4 border-s-primary dark:bg-primary/15' 
+                            : 'even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08]'
+                        )}
+                      >
+                        <td className="whitespace-nowrap px-4 py-3 hidden md:table-cell">
+                          <Checkbox 
+                            checked={isSelected} 
+                            onCheckedChange={() => togglePending(leave.id)} 
+                            aria-label={`${language.startsWith('ar') ? 'تحديد طلب' : 'Select leave request for'} ${displayEmployeeName(leave.name)}`}
+                          />
+                        </td>
+                        <th scope="row" className="whitespace-nowrap px-4 py-1 md:py-3 text-start font-normal">
+                          <div className="flex items-center gap-2.5">
+                            <Checkbox 
+                              className="md:hidden" 
+                              checked={isSelected} 
+                              onCheckedChange={() => togglePending(leave.id)} 
+                              aria-label={`${language.startsWith('ar') ? 'تحديد طلب' : 'Select leave request for'} ${displayEmployeeName(leave.name)}`}
+                            />
+                            <div className="size-8 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center shrink-0 border border-primary/20" aria-hidden="true">
+                              {displayEmployeeName(leave.name).split(' ').slice(0, 2).map(n => n[0]).join('')}
+                            </div>
+                            <span 
+                              className="text-primary font-medium hover:underline cursor-pointer"
+                              onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}
                             >
-                              <span className="md:hidden">{t('management.actions')}</span>
-                              <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="min-w-[13rem]">
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewLeave')}</DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> {t('management.approveLeave')}</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(leave); setDeclineOpen(true); }}><X className="w-4 h-4" /> {t('management.declineLeave')}</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </td>
-                    </tr>
-                  ))}
+                              {displayEmployeeName(leave.name)}
+                            </span>
+                          </div>
+                        </th>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground">
+                          <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-muted/60 border border-border/80">
+                            <Calendar className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                            {leave.type}
+                          </span>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums">
+                          <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span>
+                          <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block font-mono text-xs">{displayDateRange(leave)}</span>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums">
+                          <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>
+                          <span className="font-semibold">{leave.duration}</span>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-1 md:py-3 text-muted-foreground">
+                          <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.notesPrefix')}</span>
+                          {leave.notes || '—'}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="md:size-9 md:p-0 w-full justify-center rounded-xl border border-transparent hover:border-border/80 hover:bg-muted/80 active:scale-95 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer shadow-none hover:shadow-2xs"
+                                aria-label={t('management.actions')}
+                              >
+                                <span className="md:hidden">{t('management.actions')}</span>
+                                <MoreVertical className="hidden md:block w-4 h-4 text-muted-foreground" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="min-w-[13rem]">
+                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}><Eye className="w-4 h-4" /> {t('management.viewLeave')}</DropdownMenuItem>
+                              <DropdownMenuItem className="cursor-pointer gap-2" onClick={() => { setSelectedPending([leave.id]); setReviewOpen(true); }}><Check className="w-4 h-4" /> {t('management.approveLeave')}</DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem variant="destructive" className="cursor-pointer gap-2" onClick={() => { setDeclineData(leave); setDeclineOpen(true); }}><X className="w-4 h-4" /> {t('management.declineLeave')}</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             )}
@@ -419,12 +504,12 @@ export const LeavesManagement: React.FC = () => {
                   <th scope="col" className={cn(thClass, 'text-end')}>Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-border/60">
                 {paginatedHolidays.map(h => (
-                  <tr key={h.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)]">{h.type}</td>
-                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{h.range}</td>
-                    <td className="whitespace-nowrap px-4 py-3 text-foreground">{h.duration}</td>
+                  <tr key={h.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors">
+                    <th scope="row" className="whitespace-nowrap px-4 py-3 text-foreground font-[var(--font-weight-medium)] text-start font-normal">{h.type}</th>
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums font-mono text-xs">{h.range}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums font-semibold">{h.duration}</td>
                     <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{h.notes}</td>
                     <td className="whitespace-nowrap px-4 py-3 text-end">
                       <DropdownMenu>
@@ -528,16 +613,41 @@ export const LeavesManagement: React.FC = () => {
                     <th scope="col" className={cn(thClass, 'text-end')}>{t('management.actions')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border">
+                <tbody className="divide-y divide-border/60">
                   {paginatedHistory.map(leave => (
-                    <tr key={leave.id} className="hover:bg-muted/30 transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 font-semibold md:font-normal">
-                        <span className="text-primary font-[var(--font-weight-medium)] hover:underline cursor-pointer">{displayEmployeeName(leave.name)}</span>
+                    <tr key={leave.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] dark:hover:bg-primary/[0.08] transition-colors flex flex-col md:table-row p-4 md:p-0 border-b md:border-b-0">
+                      <th scope="row" className="whitespace-nowrap px-4 py-1 md:py-3 text-start font-normal">
+                        <div className="flex items-center gap-2.5">
+                          <div className="size-8 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center shrink-0 border border-primary/20" aria-hidden="true">
+                            {displayEmployeeName(leave.name).split(' ').slice(0, 2).map(n => n[0]).join('')}
+                          </div>
+                          <span 
+                            className="text-primary font-medium hover:underline cursor-pointer"
+                            onClick={() => { setViewProfileData(leave); setViewProfileOpen(true); }}
+                          >
+                            {displayEmployeeName(leave.name)}
+                          </span>
+                        </div>
+                      </th>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground">
+                        <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-muted/60 border border-border/80">
+                          <Calendar className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                          {leave.type}
+                        </span>
                       </td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.typePrefix')}</span>{leave.type}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(leave)}</span></td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>{leave.duration}</td>
-                      <td className="whitespace-nowrap px-4 py-1 md:py-3"><span className="md:hidden text-muted-foreground me-2 font-medium">{t('dashboard.status')}:</span><StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? (isArabic ? 'تمت الموافقة' : 'Approved') : (isArabic ? 'مرفوض' : 'Rejected')}</StatusBadge></td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums">
+                        <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.datesPrefix')}</span>
+                        <span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block font-mono text-xs">{displayDateRange(leave)}</span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3 text-foreground tabular-nums">
+                        <span className="md:hidden text-muted-foreground me-2 font-medium">{t('management.durationPrefix')}</span>
+                        <span className="font-semibold">{leave.duration}</span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-1 md:py-3">
+                        <span className="md:hidden text-muted-foreground me-2 font-medium">{t('dashboard.status')}:</span>
+                        <StatusBadge variant={leave.status as any}>{leave.status === 'approved' ? (isArabic ? 'تمت الموافقة' : 'Approved') : (isArabic ? 'مرفوض' : 'Rejected')}</StatusBadge>
+                      </td>
                       <td className="whitespace-nowrap px-4 py-3 md:text-end mt-2 md:mt-0">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -954,13 +1064,13 @@ const ReviewSelectedModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) 
             <thead><tr className="bg-muted/50 border-b border-border/80">
               <th className={thClass}>Employee Name</th><th className={thClass}>Leave Type</th><th className={thClass}>Date Range</th><th className={thClass}>Duration</th><th className={thClass}>Notes</th>
             </tr></thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border/60">
               {items.map(l => (
-                <tr key={l.id} className="hover:bg-muted/30">
-                  <td className="whitespace-nowrap px-4 py-3"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(l.name, language)}</span></td>
+                <tr key={l.id} className="even:bg-muted/[0.15] hover:bg-primary/[0.04] transition-colors">
+                  <th scope="row" className="whitespace-nowrap px-4 py-3 text-start font-normal"><span className="text-foreground font-[var(--font-weight-medium)]">{localizePersonName(l.name, language)}</span></th>
                   <td className="whitespace-nowrap px-4 py-3 text-foreground">{l.type}</td>
-                  <td className="whitespace-nowrap px-4 py-3 text-foreground"><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block">{displayDateRange(l)}</span></td>
-                  <td className="whitespace-nowrap px-4 py-3 text-foreground">{l.duration}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums"><span dir={language.startsWith('ar') ? 'rtl' : 'ltr'} className="inline-block font-mono text-xs">{displayDateRange(l)}</span></td>
+                  <td className="whitespace-nowrap px-4 py-3 text-foreground tabular-nums font-semibold">{l.duration}</td>
                   <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{l.notes}</td>
                 </tr>
               ))}

@@ -82,15 +82,15 @@ const ExperienceItem: React.FC<{
         <div className="space-y-2">
           <p className="text-base font-bold text-foreground pt-0.5">{data.role}</p>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border/70 bg-muted/40 text-xs font-medium text-muted-foreground whitespace-nowrap shadow-2xs">
               {data.currentlyWorking ? `${data.startDate} - Present` : `${data.startDate} - ${data.endDate}`}
             </span>
             {data.location && (
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border/70 bg-muted/40 text-xs font-medium text-muted-foreground whitespace-nowrap shadow-2xs">
                 {data.location} {data.locationType ? `(${data.locationType})` : ''}
               </span>
             )}
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border bg-card text-sm text-foreground whitespace-nowrap">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full border border-border/70 bg-muted/40 text-xs font-medium text-muted-foreground whitespace-nowrap shadow-2xs">
               {data.employmentType}
             </span>
           </div>
@@ -118,7 +118,10 @@ const ExperienceItem: React.FC<{
             <div className="pt-2 flex flex-wrap gap-1.5 items-center">
               <span className="text-xs text-muted-foreground font-[var(--font-weight-medium)] me-1">Skills:</span>
               {data.skillsUsed.map((sk, i) => (
-                <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-secondary/60 text-secondary-foreground text-xs font-medium">
+                <span
+                  key={i}
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 dark:bg-primary/15 dark:text-blue-300 dark:border-primary/30 shadow-2xs transition-colors"
+                >
                   {sk}
                 </span>
               ))}

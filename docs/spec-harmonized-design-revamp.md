@@ -54,16 +54,17 @@ This specification defines the complete visual and interaction overhaul of the H
 
 ### 1. Dashboard
 - **Hero Banner**: Subtle mesh gradient greeting card with user avatar, contextual date & greeting ("Good morning, Ahmed"), and prominent action buttons ("Request Leave", "Request Mission").
-- **KPI Cards**: 4 responsive metric tiles:
-  - Total Employees, Today's Attendance Rate, Pending Leave Requests, Active Missions.
-  - Tonal icon containers with dual-tone Lucide icons.
-  - Material 3 percentage trend pill (`+4.2% from last month` with emerald/amber tint).
 - **Interactive Timesheet / Weekly Attendance**: Modern calendar widget with pill-based event chips, clear weekend indicators, and interactive day cards.
 - **Recent Requests Table**: Upgraded table container with soft row hover highlights, status pills, and action menus.
 
 ### 2. Attendance Management
-- Stat counters (Present, Late, Remote, On Leave) with color-coded tonal indicators.
-- Quick punch-in / check-in card with live clock and animated status indicator.
+- **KPI Workforce Metric Tiles**: 4 responsive metric tiles:
+  - Total Employees (142, 12 active departments).
+  - Today's Attendance Rate (94.8%, 135 checked-in on time).
+  - Pending Leave Requests (3, Review badge, latest 2h ago).
+  - Active Missions (5, Field badge, 2 external, 3 domestic).
+  - Tonal icon containers with dual-tone Lucide icons and trend pills.
+- Stat counters & Summary view with color-coded tonal indicators and compliance bar.
 - Biometric & attendance logs data table with date range picker, search filter, export buttons, and pagination.
 
 ### 3. Employee Directory

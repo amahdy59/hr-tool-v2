@@ -78,7 +78,7 @@ const ProjectItem: React.FC<{
           <h3 className="text-lg font-bold text-foreground">{data.title}</h3>
           {data.featured && <span title="Featured project"><Star className="w-4.5 h-4.5 text-[#0F766E] fill-[#0F766E] dark:text-[#2DD4BF] dark:fill-[#2DD4BF]" /></span>}
         </div>
-        <span className="px-2.5 py-1 bg-muted/50 text-foreground rounded-full text-sm font-medium shrink-0 w-fit">
+        <span className="inline-flex items-center px-2.5 py-0.5 bg-muted/70 text-foreground border border-border/70 rounded-full text-xs font-semibold shrink-0 w-fit shadow-2xs">
           {data.category}
         </span>
       </div>
@@ -94,9 +94,12 @@ const ProjectItem: React.FC<{
         {data.desc}
       </p>
       {data.toolsUsed.length > 0 && (
-        <div className="flex flex-wrap gap-2 pt-2">
+        <div className="flex flex-wrap gap-1.5 pt-2">
           {data.toolsUsed.map((tool, idx) => (
-            <span key={idx} className="px-2.5 py-1 bg-[#EFF6FF] text-[#1D4ED8] dark:bg-[#1E3A8A]/30 dark:text-[#93C5FD] rounded text-sm font-medium">
+            <span
+              key={idx}
+              className="inline-flex items-center px-2.5 py-0.5 bg-primary/10 text-primary border border-primary/20 dark:bg-primary/15 dark:text-blue-300 dark:border-primary/30 rounded-full text-xs font-medium shadow-2xs transition-colors"
+            >
               {tool}
             </span>
           ))}

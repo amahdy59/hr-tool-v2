@@ -447,10 +447,10 @@ const DocumentCard: React.FC<{
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-[var(--text-base)] font-[var(--font-weight-semibold)] text-foreground">{item.title}</p>
             <span className={cn(
-              'px-2 py-0.5 rounded-full border text-[var(--text-xs)] font-[var(--font-weight-semibold)]',
+              'inline-flex items-center px-2.5 py-0.5 rounded-full border text-xs font-semibold shadow-2xs',
               item.status === 'Uploaded'
-                ? 'bg-[#E7F6EF] text-[#064E3B] border-[#047857]'
-                : 'bg-[#FFF4DE] text-[#7C2D12] border-[#C2410C]'
+                ? 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-200 border-emerald-500/30 dark:bg-emerald-950/70 dark:border-emerald-700'
+                : 'bg-amber-500/10 text-amber-800 dark:text-amber-200 border-amber-500/30 dark:bg-amber-950/70 dark:border-amber-700'
             )}>
               {item.status}
             </span>
@@ -677,8 +677,18 @@ const EditSkillsModal: React.FC<{ open: boolean; onOpenChange: (v: boolean) => v
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2">
             {skills.map(s => (
-              <span key={s} className="px-3 py-1 w-fit rounded-full border border-[#2563EB] bg-[#EAF2FF] text-[#1E3A8A] text-[var(--text-xs)] font-[var(--font-weight-semibold)] flex items-center gap-1.5">
-                {s} <button className="hover:text-destructive cursor-pointer"><X className="w-3 h-3" /></button>
+              <span
+                key={s}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-primary/25 bg-primary/10 text-primary dark:text-blue-300 text-xs font-semibold shadow-2xs transition-all hover:bg-primary/15"
+              >
+                <span>{s}</span>
+                <button
+                  type="button"
+                  aria-label={`Remove ${s}`}
+                  className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full opacity-60 hover:opacity-100 hover:bg-black/10 dark:hover:bg-white/20 transition-all hover:text-destructive cursor-pointer -me-0.5"
+                >
+                  <X className="w-2.5 h-2.5" />
+                </button>
               </span>
             ))}
           </div>
